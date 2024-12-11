@@ -142,6 +142,46 @@ if ( !class_exists('TMPCODER_Elementor_Hooks') ){
                         'condition' => ['layout' => 'full_width'],
                     ]
                 );
+
+                $element->add_control(
+                    'custom_section_justify_content',
+                    [
+                        'label' => esc_html__('Justify Content', 'sastra-essential-addons-for-elementor'),
+                        'type' => \Elementor\Controls_Manager::CHOOSE,
+                        'label_block' => true,
+                        'options' => [
+                            'start' => [
+                                'title' => esc_html__( 'Start', 'sastra-essential-addons-for-elementor' ),
+                                'icon' => 'eicon-justify-start-h',
+                            ],
+                            'center' => [
+                                'title' => esc_html__( 'Middle', 'sastra-essential-addons-for-elementor' ),
+                                'icon' => 'eicon-justify-center-h',
+                            ],
+                            'end' => [
+                                'title' => esc_html__( 'End', 'sastra-essential-addons-for-elementor' ),
+                                'icon' => 'eicon-justify-end-h',
+                            ],
+                            'space-between' => [
+                                'title' => esc_html__( 'Space Between', 'sastra-essential-addons-for-elementor' ),
+                                'icon' => 'eicon-justify-space-between-h',
+                            ],
+                            'space-around' => [
+                                'title' => esc_html__( 'Space Around', 'sastra-essential-addons-for-elementor' ),
+                                'icon' => 'eicon-justify-space-around-h',
+                            ],
+                            'space-evenly' => [
+                                'title' => esc_html__( 'Space Evenly', 'sastra-essential-addons-for-elementor' ),
+                                'icon' => 'eicon-justify-space-evenly-h',
+                            ],
+                        ],
+                        'default' => '',
+                        'prefix_class' => 'tmpcoder-custom-justify-content-',
+                        'selectors' => [
+                            '{{WRAPPER}} .elementor-container' => 'justify-content: {{VALUE}};',
+                        ],
+                    ]
+                );
             }
         }
 

@@ -85,6 +85,23 @@ class TMPCODER_Parallax_Scroll {
         );
 
         if ( tmpcoder_is_availble() ) {
+            \TMPCODER\Extensions\TMPCODER_Parallax_Scroll_Pro::add_control_ambient_animate($element);
+        } else {
+            $element->add_control(
+                'ambient_animate',
+                [
+                    // Translators: %s is the icon.
+                    'label' => sprintf( __( 'Ambient Animation %s', 'sastra-essential-addons-for-elementor' ), '<i class="eicon-pro-icon"></i>' ),
+                    'type' => Controls_Manager::SWITCHER,
+                    'classes' => 'tmpcoder-pro-control',
+                    'condition' => [
+                        'tmpcoder_enable_jarallax' => 'yes'
+                    ]
+                ]
+            );
+        }
+
+        if ( tmpcoder_is_availble() ) {
             \TMPCODER\Extensions\TMPCODER_Parallax_Scroll_Pro::add_control_scroll_effect($element);
         } else {
             $element->add_control(
@@ -102,7 +119,8 @@ class TMPCODER_Parallax_Scroll {
                     ],
                     'render_type' => 'template',
                     'condition' => [
-                        'tmpcoder_enable_jarallax' => 'yes'
+                        'tmpcoder_enable_jarallax' => 'yes',
+                        'ambient_animate' => 'no',
                     ]
                 ]
             );
@@ -218,7 +236,7 @@ class TMPCODER_Parallax_Scroll {
             ]
         );
 
-        $repeater->add_control(
+        $repeater->add_responsive_control(
             'layer_width',
             [
                 'label' => esc_html__( 'Image Width', 'sastra-essential-addons-for-elementor' ),
@@ -360,6 +378,7 @@ class TMPCODER_Parallax_Scroll {
                     'speed-data' => $settings['speed'],
                     'bg-image' => $settings['bg_image']['url'],
                     'scroll-effect' => $settings['scroll_effect'],
+                    'ambient-animate' => $settings['ambient_animate'],
                 ] );
 
                 // if ( 'on' === get_option('tmpcoder-parallax-background', 'on') ) {
@@ -393,7 +412,7 @@ class TMPCODER_Parallax_Scroll {
         ob_start();
         
         if ( 'on' === get_option('tmpcoder-parallax-background', 'on') ) {
-            echo '<div class="tmpcoder-jarallax" speed-data-editor="{{settings.speed}}" scroll-effect-editor="{{settings.scroll_effect}}" bg-image-editor="{{settings.bg_image.url}}"></div>';
+            echo '<div class="tmpcoder-jarallax" speed-data-editor="{{settings.speed}}" scroll-effect-editor="{{settings.scroll_effect}}" bg-image-editor="{{settings.bg_image.url}}" ambient-animate-editor="{{settings.ambient_animate}}"></div>';
         }
         
         // Multi Layer

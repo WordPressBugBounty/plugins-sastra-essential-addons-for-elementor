@@ -1,8 +1,8 @@
 <?php
 /**
- * Sastra Addons for Elementor Compatibility for 'Elementor'
+ * Spexo Addons for Elementor Compatibility for 'Elementor'
  *
- * @package Sastra Addons for Elementor
+ * @package Spexo Addons for Elementor
  * @since 1.0.0
  */
 

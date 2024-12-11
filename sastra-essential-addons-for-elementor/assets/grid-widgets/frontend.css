@@ -2446,7 +2446,7 @@ div[class*="tmpcoder-sub-menu-fx"] .tmpcoder-mega-menu .tmpcoder-sub-mega-menu.t
 
 .tmpcoder-grid-image-wrap, .tmpcoder-grid-image-wrap-video, .tmpcoder-grid-video-wrap {
 	overflow: hidden;
-	-webkit-mask-image: -webkit-radial-gradient(white, black);
+/*	-webkit-mask-image: -webkit-radial-gradient(white, black);*/
 }
 
 .tmpcoder-grid-media-hover {
@@ -3760,14 +3760,6 @@ div[class*="tmpcoder-sub-menu-fx"] .tmpcoder-mega-menu .tmpcoder-sub-mega-menu.t
 	height: 100%;
 }
 
-.tmpcoder-adjust-slider-prev-arrow {
-	left: 1% !important;
-}
-
-.tmpcoder-adjust-slider-next-arrow {
-	right: 1% !important;
-}
-
 .tmpcoder-grid-slider-prev-arrow {
 	left: 1%;
 	-webkit-transform: translateY(-50%);
@@ -3780,6 +3772,14 @@ div[class*="tmpcoder-sub-menu-fx"] .tmpcoder-mega-menu .tmpcoder-sub-mega-menu.t
 	-webkit-transform: translateY(-50%) rotate(180deg);
 	-ms-transform: translateY(-50%) rotate(180deg);
 	transform: translateY(-50%) rotate(180deg);
+}
+
+.tmpcoder-adjust-slider-prev-arrow {
+	left: 1%;
+}
+
+.tmpcoder-adjust-slider-next-arrow {
+	right: 1%;
 }
 
 .tmpcoder-grid-slider-nav-fade .tmpcoder-grid-slider-arrow-container {
@@ -6943,7 +6943,6 @@ body:not(.elementor-editor-active) .tmpcoder-template-popup {
 .slick-vertical .slick-slide {
 	display: block;
 	height: auto;
-	border: 1px solid transparent;
 }
 
 .slick-arrow.slick-hidden {
@@ -10658,16 +10657,16 @@ a.tmpcoder-ajax-img-wrap {
 	border-bottom-left-radius: 3px;
 }
 
-.elementor-widget-tmpcoder-promo-box .tmpcoder-promo-box-title {
+/*.elementor-widget-tmpcoder-promo-box .tmpcoder-promo-box-title {
 	font-size: 24px;
 	font-weight: 600;
-}
+}*/
 
-.elementor-widget-tmpcoder-promo-box .tmpcoder-promo-box-description {
+/*.elementor-widget-tmpcoder-promo-box .tmpcoder-promo-box-description {
 	font-size: 15px;
-}
+}*/
 
-.elementor-widget-tmpcoder-promo-box .tmpcoder-promo-box-btn,
+/*.elementor-widget-tmpcoder-promo-box .tmpcoder-promo-box-btn,*/
 .elementor-widget-tmpcoder-promo-box .tmpcoder-promo-box-badge {
 	font-size: 14px;
 }
@@ -16557,6 +16556,7 @@ a.remove:before {
 .elementor-widget-tmpcoder-my-account-pro .select2-selection {
 	height: auto !important;
 	border: none !important;
+	background: unset;
 }
 
 .tmpcoder-my-account-tabs-horizontal nav.woocommerce-MyAccount-navigation,
@@ -18651,7 +18651,8 @@ a.remove:before {
 } */
 
 
-.elementor-widget-tmpcoder-post-grid .tmpcoder-grid-image-wrap .grid-main-image{
+.elementor-widget-tmpcoder-post-grid .tmpcoder-grid-image-wrap .grid-main-image,
+.elementor-widget-tmpcoder-post-grid .tmpcoder-grid-video-wrap .grid-main-image{
 	object-fit:cover;
 }
 

@@ -1,9 +1,9 @@
 <?php
 /**
- * Sastra Addons for Elementor
+ * Spexo Addons for Elementor
  *
  * @since  1.0.0
- * @package Sastra Addons for Elementor
+ * @package Spexo Addons for Elementor
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -85,7 +85,7 @@ if ( ! class_exists( 'Tmpcoder' ) ) :
 		public function reset_posts() {
 			
 			if ( wp_doing_ajax() ) {
-				check_ajax_referer( 'sastra-addons', '_ajax_nonce' );
+				check_ajax_referer( 'spexo-addons', '_ajax_nonce' );
 
 				if ( ! current_user_can( 'manage_options' ) ) {
 					wp_send_json_error( __( 'You are not allowed to perform this action', 'sastra-essential-addons-for-elementor' ) );

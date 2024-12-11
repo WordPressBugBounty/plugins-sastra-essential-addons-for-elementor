@@ -320,6 +320,32 @@ class TMPCODER_Mega_Menu extends Widget_Base {
 			]
 		);
 
+		$this->add_responsive_control(
+			'mega_menu_icon_vertical_offset',
+			[
+				'label' => esc_html__( 'Adjust Icon Vertical Position', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::SLIDER,
+				'size_units' => [ 'px', '%', 'em', 'custom' ],
+				'range' => [
+					'px' => [
+						'min' => -20,
+						'max' => 20,
+					],
+					'em' => [
+						'min' => -2,
+						'max' => 2,
+					],
+					'%' => [
+						'min' => -10,
+						'max' => 10,
+					],
+				],
+				'selectors' => [
+					'{{WRAPPER}} .tmpcoder-sub-icon' => 'top: {{SIZE}}{{UNIT}}; position: relative;',
+				],
+			]
+		);
+
 		$this->end_controls_section(); // End Controls Section
 
 		// Section: Menu Items -------

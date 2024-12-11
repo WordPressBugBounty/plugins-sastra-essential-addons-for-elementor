@@ -62,6 +62,9 @@ if (!function_exists('tmpcoder_get_theme_global_colors')) {
 
 		$global_palette = [];
 		$data = get_option(TMPCODER_THEME_OPTION_NAME);
+        if ( empty($data) ){
+            $data = get_option('tmpcoder_global_theme_options_sastrawp');
+        }
 
 		if (!empty($data)) {
 

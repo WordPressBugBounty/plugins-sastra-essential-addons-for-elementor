@@ -24,7 +24,7 @@ class TMPCODER_Add_Remove_From_Compare {
     
     function add_to_compare() {
 
-        if ( !isset($_POST['nonce']) || !wp_verify_nonce( sanitize_text_field(wp_unslash($_POST['nonce'])), 'sastra-addons') ) {
+        if ( !isset($_POST['nonce']) || !wp_verify_nonce( sanitize_text_field(wp_unslash($_POST['nonce'])), 'spexo-addons') ) {
             exit; // Get out of here, the nonce is rotten!
         }
 
@@ -68,7 +68,7 @@ class TMPCODER_Add_Remove_From_Compare {
     
     function remove_from_compare() {
 
-        if ( !isset($_POST['nonce']) || !wp_verify_nonce( sanitize_text_field(wp_unslash($_POST['nonce'])), 'sastra-addons') ) {
+        if ( !isset($_POST['nonce']) || !wp_verify_nonce( sanitize_text_field(wp_unslash($_POST['nonce'])), 'spexo-addons') ) {
             exit; // Get out of here, the nonce is rotten!
         }
 

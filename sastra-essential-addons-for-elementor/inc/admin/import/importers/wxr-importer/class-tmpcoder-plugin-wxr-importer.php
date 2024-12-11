@@ -1,9 +1,9 @@
 <?php
 /**
- * Class Sastra Addons for Elementor WXR Importer
+ * Class Spexo Addons for Elementor WXR Importer
  *
  * @since  1.0.0
- * @package Sastra Addons for Elementor
+ * @package Spexo Addons for Elementor
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Class Sastra Addons for Elementor WXR Importer
+ * Class Spexo Addons for Elementor WXR Importer
  *
  * @since  1.0.0
  */
@@ -218,7 +218,7 @@ class TMPCODER_Plugin_Wxr_Importer {
 		if ( wp_doing_ajax() ) {
 
 			// Verify Nonce.
-			check_ajax_referer( 'sastra-addons', '_ajax_nonce' );
+			check_ajax_referer( 'spexo-addons', '_ajax_nonce' );
 
 			// @codingStandardsIgnoreStart
 			// Start the event stream.
@@ -344,7 +344,7 @@ class TMPCODER_Plugin_Wxr_Importer {
 		$args = array(
 			'action'      => 'tmpcoder-plugin-wxr-import',
 			'id'          => '1',
-			'_ajax_nonce' => wp_create_nonce( 'sastra-addons' ),
+			'_ajax_nonce' => wp_create_nonce( 'spexo-addons' ),
 			'xml_id'      => $post_id,
 		);
 		

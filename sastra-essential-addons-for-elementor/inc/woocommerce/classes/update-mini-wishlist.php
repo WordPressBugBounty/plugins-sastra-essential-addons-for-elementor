@@ -34,7 +34,7 @@ class TMPCODER_Update_Mini_Wishlist {
     
     function update_mini_wishlist() {
 
-        if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'sastra-addons') ) {
+        if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'spexo-addons') ) {
             return; // Get out of here, the nonce is rotten!
         }
 

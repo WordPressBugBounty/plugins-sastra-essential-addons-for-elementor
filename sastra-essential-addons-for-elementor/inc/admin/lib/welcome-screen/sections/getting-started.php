@@ -24,14 +24,14 @@ $featuredList = array();
     $featuredArr = array(
         'title' => __( 'Prebuilt Blocks', 'sastra-essential-addons-for-elementor' ),
         'icon' => 'prebuilt-block.svg',
-        'action_link' => admin_url('admin.php?page=sastra-welcome&tab=prebuilt-blocks'),
+        'action_link' => admin_url('admin.php?page=spexo-welcome&tab=prebuilt-blocks'),
         'description' => __( 'Various ready to use blocks to speed up your desiging process.', 'sastra-essential-addons-for-elementor' ),
         'target' => '',
         'extra_class' => '',
     );
     array_push($featuredList, $featuredArr);
 
-    if (get_template() == 'sastrawp') {
+    if ( function_exists('get_template') && in_array(get_template(), array('sastrawp', 'spexo')) ) {
         $featuredArr = array(
             'title' => __( 'Prebuilt Websites', 'sastra-essential-addons-for-elementor' ),
             'icon' => 'prebuilt-websites.svg',
@@ -46,7 +46,7 @@ $featuredList = array();
      $featuredArr = array(
         'title' => __( 'Site Builder', 'sastra-essential-addons-for-elementor' ),
         'icon' => 'site-builder.svg',
-        'action_link' => admin_url('admin.php?page=sastra-welcome&tab=site-builder'),
+        'action_link' => admin_url('admin.php?page=spexo-welcome&tab=site-builder'),
         'description' => __( 'Customize your global sections and pages as per your requirements.', 'sastra-essential-addons-for-elementor' ),
         'target' => '',
         'extra_class' => '',
@@ -56,18 +56,18 @@ $featuredList = array();
     $featuredArr = array(
         'title' => __( 'Widget Settings', 'sastra-essential-addons-for-elementor' ),
         'icon' => 'widget-setting.svg',
-        'action_link' => admin_url('admin.php?page=sastra-welcome&tab=widgets'),
+        'action_link' => admin_url('admin.php?page=spexo-welcome&tab=widgets'),
         'description' => __( 'Turn off your widgets to optimize your website speed.', 'sastra-essential-addons-for-elementor' ),
         'target' => '',
-        'extra_class' => ((function_exists('get_template') && get_template() == 'sastrawp') ? 'set-box' : ''),
+        'extra_class' => ( function_exists('get_template') && in_array(get_template(), array('sastrawp', 'spexo')) ? 'set-box' : ''),
     );
     array_push($featuredList, $featuredArr);
 
-    if (get_template() == 'sastrawp' && class_exists('ReduxFramework')) {
+    if ( function_exists('get_template') && in_array(get_template(), array('sastrawp', 'spexo')) && class_exists('ReduxFramework')) {
         $featuredArr = array(
             'title' => __( 'Global Options', 'sastra-essential-addons-for-elementor' ),
             'icon' => 'global-setting.svg',
-            'action_link' => admin_url('admin.php?page=sastra_addon_global_settings'),
+            'action_link' => admin_url('admin.php?page=spexo_addons_global_settings'),
             'description' => __( 'Control all site-wide settings easily with Global Options.', 'sastra-essential-addons-for-elementor' ),
             'target' => '',
             'extra_class' => 'set-box',
@@ -143,7 +143,7 @@ $featuredList = array();
             <div class="common-box-shadow help-box relative">
                 <div class="pro-box-overlay"></div>
                 <div class="pro-box-main">
-                    <h3><img src="<?php echo esc_url(TMPCODER_ADDONS_ASSETS_URL.'images/rocket.svg'); ?>"><span><?php echo esc_html__( 'Get Sastra Addons Pro', 'sastra-essential-addons-for-elementor' ); ?></span></h3>
+                    <h3><img src="<?php echo esc_url(TMPCODER_ADDONS_ASSETS_URL.'images/rocket.svg'); ?>"><span><?php echo esc_html__( 'Get Spexo Addons Pro', 'sastra-essential-addons-for-elementor' ); ?></span></h3>
                     
                     <p> <?php echo esc_html__( 'Unlock access to all our premium widgets and features.', 'sastra-essential-addons-for-elementor' ); ?></p>
                     <ul>
@@ -152,7 +152,7 @@ $featuredList = array();
                         <li><img src="<?php echo esc_url(TMPCODER_ADDONS_ASSETS_URL.'images/icon-check-white.svg'); ?>"><span><?php echo esc_html('25+ Pro Prebuilt Sections','sastra-essential-addons-for-elementor'); ?></span></li>
                         <li><img src="<?php echo esc_url(TMPCODER_ADDONS_ASSETS_URL.'images/icon-check-white.svg'); ?>"><span><?php echo esc_html('15+ Pro Prebuilt WebSites','sastra-essential-addons-for-elementor'); ?></span></li>
                     </ul>
-                    <a href="<?php echo esc_url( TMPCODER_PURCHASE_PRO_URL.'?ref=tmpcoder-welcome-screen' ); ?>" target="_blank" class="pro-btn-link"><?php echo esc_html('Get Sastra Addons Pro','sastra-essential-addons-for-elementor'); ?></a>
+                    <a href="<?php echo esc_url( TMPCODER_PURCHASE_PRO_URL.'?ref=tmpcoder-welcome-screen' ); ?>" target="_blank" class="pro-btn-link"><?php echo esc_html('Get Spexo Addons Pro','sastra-essential-addons-for-elementor'); ?></a>
                 </div>
             </div>
             <?php } ?>

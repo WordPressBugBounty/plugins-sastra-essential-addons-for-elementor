@@ -9,7 +9,7 @@ function tmpcoder_theme_install_func(){
         die();
     }
 
-    $theme_slug = 'sastrawp';
+    $theme_slug = 'spexo';
     $current_theme = (is_object(wp_get_theme()->parent())) ? wp_get_theme()->parent() : wp_get_theme();
 
     if ( !wp_get_theme($theme_slug)->exists()  ) {
@@ -55,6 +55,7 @@ function tmpcoder_theme_install_func(){
 
         update_option(TMPCODER_PLUGIN_KEY.'_wizard_step', '1');
         update_option('sastrawp_wizard_page', 1);
+        update_option('spexo_wizard_page', 1);
         
         echo "00000";
         echo wp_json_encode( array('success'=> true, 'data' => array("message"=> __('Recommended theme activated successfully.','sastra-essential-addons-for-elementor') ) ) );
@@ -84,7 +85,7 @@ function tmpcoder_wizard_pro_addons_info(){
     ob_start();
         echo wp_kses_post(sprintf(
             /* translators: %s is License Activation Heading */
-            '<h2 class="wizard-heading">%s</h2>', __("Get Sastra Addons Pro", 'sastra-essential-addons-for-elementor')));
+            '<h2 class="wizard-heading">%s</h2>', __("Get Spexo Addons Pro", 'sastra-essential-addons-for-elementor')));
             echo '<p>'.esc_html('Unlock access to all our premium widgets and features.').'</p>';
             echo '<ul class="tmpcoder-wizard-pro-features-list">
                     <li>'.esc_html('80+ Pro Widgets').'</li>

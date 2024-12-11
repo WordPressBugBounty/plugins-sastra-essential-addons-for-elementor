@@ -102,7 +102,7 @@ if ( !class_exists('TemplatesWidgetRegister') ){
 
             $screen = get_current_screen();
 
-            if ( strpos($hook, TMPCODER_THEME.'-premade-blocks') || strpos($hook, 'sastra-welcome') ) {
+            if ( strpos($hook, TMPCODER_THEME.'-premade-blocks') || strpos($hook, 'spexo-welcome') ) {
                 wp_enqueue_style( 'tmpcoder-premade-blocks-css', TMPCODER_PLUGIN_URI .'assets/css/admin/premade-blocks'.tmpcoder_script_suffix().'.css', [], tmpcoder_get_plugin_version() );
                 wp_enqueue_script( 'tmpcoder-macy-js', TMPCODER_PLUGIN_URI .'assets/js/lib/macy/macy'.tmpcoder_script_suffix().'.js', ['jquery'], tmpcoder_get_plugin_version(), false );
                 wp_enqueue_script( 'tmpcoder-premade-blocks-js', TMPCODER_PLUGIN_URI .'assets/js/admin/premade-blocks'.tmpcoder_script_suffix().'.js', ['jquery'], tmpcoder_get_plugin_version(), false );
@@ -119,7 +119,7 @@ if ( !class_exists('TemplatesWidgetRegister') ){
                 ]
             );
               
-              if ( strpos($hook, 'sastra-theme-builder') || strpos($hook, 'sastra-welcome') ) {
+              if ( strpos($hook, 'sastra-theme-builder') || strpos($hook, 'spexo-welcome') ) {
                          
                 // enqueue CSS
                 wp_enqueue_style( 'tmpcoder-plugin-options-css', TMPCODER_PLUGIN_URI .'assets/css/admin/plugin-options'.tmpcoder_script_suffix().'.css', [], tmpcoder_get_plugin_version() );
@@ -359,11 +359,15 @@ if ( !class_exists('TemplatesWidgetRegister') ){
             wp_enqueue_script( 'tmpcoder-script-js', TMPCODER_PLUGIN_URI .'assets/js/script'.tmpcoder_script_suffix().'.js', array('jquery'), tmpcoder_get_plugin_version(), true );
 
             /* Enqueue the widgets style & script end */
+            $tmpcoder_site_settings = get_option(TMPCODER_THEME_OPTION_NAME);
+            if ( empty($tmpcoder_site_settings) ){
+                $tmpcoder_site_settings = get_option('tmpcoder_global_theme_options_sastrawp');
+            }
 
             wp_localize_script( 'tmpcoder-script-js', 'tmpcoder_plugin_script', array( 
                 'ajax_url' => admin_url( 'admin-ajax.php' ),
                 'resturl' => get_rest_url() . 'tmpcoderaddons/v1',
-                'nonce' => wp_create_nonce('sastra-addons'),
+                'nonce' => wp_create_nonce('spexo-addons'),
                 'addedToCartText' => esc_html__('was added to cart', 'sastra-essential-addons-for-elementor'),
                 'viewCart' => esc_html__('View Cart', 'sastra-essential-addons-for-elementor'),
                 'comparePageID' => get_option('tmpcoder_compare_page'),
@@ -377,7 +381,7 @@ if ( !class_exists('TemplatesWidgetRegister') ){
                 'select_empty' => esc_html__('Nothing selected', 'sastra-essential-addons-for-elementor'),
                 'file_empty' => esc_html__('Please upload a file', 'sastra-essential-addons-for-elementor'),
                 'recaptcha_error' => esc_html__('Recaptcha Error', 'sastra-essential-addons-for-elementor'),
-                'tmpcoder_site_settings' => $data = get_option(TMPCODER_THEME_OPTION_NAME),
+                'tmpcoder_site_settings' => $tmpcoder_site_settings,
             ));
         }
 
@@ -401,7 +405,7 @@ if ( !class_exists('TemplatesWidgetRegister') ){
               'tmpcoder-widgets-category',
               [
                 // Translators: %s is the plugin name.
-                'title' => sprintf(wp_kses_post( '%s Widgets <a class="tmpcoder-editor-upgrade-pro-icon" href="'.TMPCODER_PURCHASE_PRO_URL.'" target="_blank"><i class="eicon-upgrade-crown"></i>Upgrade</a>'), 'Sastra Addons'),
+                'title' => sprintf(wp_kses_post( '%s Widgets <a class="tmpcoder-editor-upgrade-pro-icon" href="'.TMPCODER_PURCHASE_PRO_URL.'" target="_blank"><i class="eicon-upgrade-crown"></i>Upgrade</a>'), 'Spexo Addons'),
                 'icon' => 'fa fa-star',
               ]
             );
@@ -410,7 +414,7 @@ if ( !class_exists('TemplatesWidgetRegister') ){
               'tmpcoder-theme-builder-widgets',
               [
                 // Translators: %s is the plugin name.
-                'title' => sprintf(wp_kses_post( '%s Theme Builder <a class="tmpcoder-editor-upgrade-pro-icon" href="'.TMPCODER_PURCHASE_PRO_URL.'" target="_blank"><i class="eicon-upgrade-crown"></i>Upgrade</a>'), 'Sastra Addons'),
+                'title' => sprintf(wp_kses_post( '%s Theme Builder <a class="tmpcoder-editor-upgrade-pro-icon" href="'.TMPCODER_PURCHASE_PRO_URL.'" target="_blank"><i class="eicon-upgrade-crown"></i>Upgrade</a>'), 'Spexo Addons'),
                 'icon' => 'fa fa-star',
               ]
             );
@@ -419,7 +423,7 @@ if ( !class_exists('TemplatesWidgetRegister') ){
               'tmpcoder-woocommerce-builder-widgets',
               [
                 // Translators: %s is the plugin name.
-                'title' => sprintf(wp_kses_post( '%s Woo Builder <a class="tmpcoder-editor-upgrade-pro-icon" href="'.TMPCODER_PURCHASE_PRO_URL.'" target="_blank"><i class="eicon-upgrade-crown"></i>Upgrade</a>'), 'Sastra Addons'),
+                'title' => sprintf(wp_kses_post( '%s Woo Builder <a class="tmpcoder-editor-upgrade-pro-icon" href="'.TMPCODER_PURCHASE_PRO_URL.'" target="_blank"><i class="eicon-upgrade-crown"></i>Upgrade</a>'), 'Spexo Addons'),
                 'icon' => 'fa fa-star',
               ]
             );
@@ -429,7 +433,7 @@ if ( !class_exists('TemplatesWidgetRegister') ){
               'tmpcoder-premium-widgets',
               [
                 // Translators: %s is the plugin name.
-                'title' => sprintf(wp_kses_post( '%s Premium Widgets <a href="'.TMPCODER_PURCHASE_PRO_URL.'" target="_blank"><i class="eicon-upgrade-crown"></i>Upgrade</a>'), 'Sastra Addons'),
+                'title' => sprintf(wp_kses_post( '%s Premium Widgets <a href="'.TMPCODER_PURCHASE_PRO_URL.'" target="_blank"><i class="eicon-upgrade-crown"></i>Upgrade</a>'), 'Spexo Addons'),
                 'icon' => 'fa fa-star',
               ]
             );

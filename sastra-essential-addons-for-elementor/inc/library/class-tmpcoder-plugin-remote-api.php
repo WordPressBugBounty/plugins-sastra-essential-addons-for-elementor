@@ -15,7 +15,7 @@ class TMPCODER_Remote_Api {
             'theme'     => TMPCODER_CURRENT_THEME_NAME,
             'version'   => TMPCODER_CURRENT_THEME_VERSION,
             'plugin'   => 'sastra-essential-addons-for-elementor',
-            'plugin_version'   => TMPCODER_PLUGIN_VER,
+            'plugin_version'   => (defined('TMPCODER_PLUGIN_VER') ? TMPCODER_PLUGIN_VER : ''),
         );
 
         $req_params = apply_filters('tmpcoder_request_param_pro_license_key', $req_params);
@@ -48,9 +48,11 @@ class TMPCODER_Remote_Api {
             'theme'     => TMPCODER_CURRENT_THEME_NAME,
             'version'   => TMPCODER_CURRENT_THEME_VERSION,
             'plugin'   => 'sastra-essential-addons-for-elementor',
-            'plugin_version'   => TMPCODER_PLUGIN_VER,
+            'plugin_version'   => (defined('TMPCODER_PLUGIN_VER') ? TMPCODER_PLUGIN_VER : ''),
             'sastrawp_installed' => ( wp_get_theme('sastrawp')->exists() ? '1' : '0'),
             'sastrawp_activated' => ( $theme->get_stylesheet() == 'sastrawp' && wp_get_theme('sastrawp')->exists() ? '1' : '0' ),
+            'spexo_installed' => ( wp_get_theme('spexo')->exists() ? '1' : '0'),
+            'spexo_activated' => ( $theme->get_stylesheet() == 'spexo' && wp_get_theme('spexo')->exists() ? '1' : '0' ),
             'sastra_addons_pro_installed' => (function_exists('tmpcoder_is_sastra_addons_pro_installed') && tmpcoder_is_sastra_addons_pro_installed() ? '1' : '0' ),
         );
 

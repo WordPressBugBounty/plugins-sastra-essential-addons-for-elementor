@@ -1,9 +1,9 @@
 <?php
 /**
- * Sastra Addons for Elementor Importer
+ * Spexo Addons for Elementor Importer
  *
  * @since  1.0.0
- * @package Sastra Addons for Elementor
+ * @package Spexo Addons for Elementor
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 if ( ! class_exists( 'TMPCODER_Importer' ) ) {
 
 	/**
-	 * Sastra Addons for Elementor Importer
+	 * Spexo Addons for Elementor Importer
 	 */
 
 	class TMPCODER_Importer {
@@ -77,7 +77,7 @@ if ( ! class_exists( 'TMPCODER_Importer' ) ) {
 
 		function tmpcoder_get_prebuilt_demos(){
 
-			if (!isset($_POST['_ajax_nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['_ajax_nonce'])), 'sastra-addons') || !current_user_can( 'manage_options' ) ) {
+			if (!isset($_POST['_ajax_nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['_ajax_nonce'])), 'spexo-addons') || !current_user_can( 'manage_options' ) ) {
 		      exit; // Get out of here, the nonce is rotten!
 		    }
 
@@ -118,7 +118,7 @@ if ( ! class_exists( 'TMPCODER_Importer' ) ) {
 		*/
 		function tmpcoder_fix_plugin_compatibility() {
 
-		    if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'sastra-addons') || !current_user_can( 'manage_options' ) ) {
+		    if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'spexo-addons') || !current_user_can( 'manage_options' ) ) {
 		      exit; // Get out of here, the nonce is rotten!
 		    }
 
@@ -149,7 +149,7 @@ if ( ! class_exists( 'TMPCODER_Importer' ) ) {
 		        'elementor/elementor.php',
 		        'elementor-pro/elementor-pro.php',
 		        'sastra-essential-addons-for-elementor/sastra-essential-addons-for-elementor.php',
-		        'sastra-addons-pro/sastra-addons-pro.php',
+                'sastra-addons-pro/sastra-addons-pro.php',
 		        'contact-form-7/wp-contact-form-7.php',
 		        'advanced-custom-fields/acf.php',
 		        'woocommerce/woocommerce.php',
@@ -160,6 +160,9 @@ if ( ! class_exists( 'TMPCODER_Importer' ) ) {
 		        'temporary-login-without-password/temporary-login-without-password.php',
 		        'wp-reset/wp-reset.php'
 		    ];
+            if ( defined('TMPCODER_PRO_PLUGIN_KEY') ){
+                $required_plugins[] = TMPCODER_PRO_PLUGIN_KEY.'/'. TMPCODER_PRO_PLUGIN_KEY .'.php';
+            }
 
 		    $required_plugins = array_merge($required_plugins,$add_plugins);
 
@@ -178,8 +181,8 @@ if ( ! class_exists( 'TMPCODER_Importer' ) ) {
 		    $theme = get_option('stylesheet');
 
 		    // Activate Sastra Theme
-		    if ( 'sastrawp' !== $theme ) {
-		        switch_theme( 'sastrawp' );
+		    if ( 'spexo' !== $theme ) {
+		        switch_theme( 'spexo' );
 		    }
 		}
 
@@ -188,7 +191,7 @@ if ( ! class_exists( 'TMPCODER_Importer' ) ) {
 		*/
 		function tmpcoder_activate_required_theme() {
 
-		    if (!isset($_POST['nonce']) || !wp_verify_nonce( sanitize_text_field( wp_unslash($_POST['nonce'])), 'sastra-addons' )  || !current_user_can( 'manage_options' ) ) {
+		    if (!isset($_POST['nonce']) || !wp_verify_nonce( sanitize_text_field( wp_unslash($_POST['nonce'])), 'spexo-addons' )  || !current_user_can( 'manage_options' ) ) {
 		      exit; // Get out of here, the nonce is rotten!
 		    }
 		    
@@ -196,7 +199,7 @@ if ( ! class_exists( 'TMPCODER_Importer' ) ) {
 		    $theme = get_option('stylesheet');
 
 		    // Activate Sastra Theme
-	        switch_theme( 'sastrawp' );
+	        switch_theme( 'spexo' );
 	        set_transient( 'sastra_activation_notice', true );
 		}
 		
@@ -206,7 +209,7 @@ if ( ! class_exists( 'TMPCODER_Importer' ) ) {
 				wp_send_json_error(__('Something went wrong','sastra-essential-addons-for-elementor'));
 			}
 
-			if (!isset($_POST['_ajax_nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['_ajax_nonce'])), 'sastra-addons') || !current_user_can( 'manage_options' ) ) {
+			if (!isset($_POST['_ajax_nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['_ajax_nonce'])), 'spexo-addons') || !current_user_can( 'manage_options' ) ) {
 		      exit; // Get out of here, the nonce is rotten!
 		    }
 
@@ -273,7 +276,7 @@ if ( ! class_exists( 'TMPCODER_Importer' ) ) {
 		*/
 		public function tmpcoder_activate_required_plugins() {
 
-		    if ( !isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'sastra-addons') || !current_user_can( 'manage_options' ) ) {
+		    if ( !isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'spexo-addons') || !current_user_can( 'manage_options' ) ) {
 		      exit; // Get out of here, the nonce is rotten!
 		    }
 
@@ -315,7 +318,7 @@ if ( ! class_exists( 'TMPCODER_Importer' ) ) {
 		public function prepare_xml_data() {
 
 			// Verify Nonce.
-			check_ajax_referer( 'sastra-addons', '_ajax_nonce' );
+			check_ajax_referer( 'spexo-addons', '_ajax_nonce' );
 
 			if ( ! current_user_can( 'customize' ) ) {
 				wp_send_json_error( __( 'You are not allowed to perform this action', 'sastra-essential-addons-for-elementor' ) );
@@ -380,7 +383,7 @@ if ( ! class_exists( 'TMPCODER_Importer' ) ) {
 		public function import_redux_options(){
 
 			// Verify Nonce.
-			check_ajax_referer( 'sastra-addons', '_ajax_nonce' );
+			check_ajax_referer( 'spexo-addons', '_ajax_nonce' );
 
 			if ( ! current_user_can( 'customize' ) ) {
 				wp_send_json_error( __( 'You are not allowed to perform this action', 'sastra-essential-addons-for-elementor' ) );
@@ -424,9 +427,13 @@ if ( ! class_exists( 'TMPCODER_Importer' ) ) {
 			        $update_setting = 0;
 			        $nav_menu_location_arr = array();
 			        $theme_options = get_option(TMPCODER_THEME_OPTION_NAME);
+                    if ( empty($theme_options) ){
+                        $theme_options = get_option('tmpcoder_global_theme_options_sastrawp');
+                    }
 
 			        if ( $update_setting == 1 ){
 			            update_option(TMPCODER_THEME_OPTION_NAME, $theme_options);
+                        update_option('tmpcoder_global_theme_options_sastrawp', $theme_options); // old theme
 			        }
 			        
 			        // ======================================================================
@@ -478,7 +485,7 @@ if ( ! class_exists( 'TMPCODER_Importer' ) ) {
 			
 			if ( wp_doing_ajax() ) {
 				// Verify Nonce.
-				check_ajax_referer( 'sastra-addons', '_ajax_nonce' );
+				check_ajax_referer( 'spexo-addons', '_ajax_nonce' );
 
 				if ( ! current_user_can( 'customize' ) ) {
 					wp_send_json_error( __( 'You are not allowed to perform this action', 'sastra-essential-addons-for-elementor' ) );
@@ -561,7 +568,7 @@ if ( ! class_exists( 'TMPCODER_Importer' ) ) {
 		public function import_revslider_data(){
 
 			// Verify Nonce.
-			check_ajax_referer( 'sastra-addons', '_ajax_nonce' );
+			check_ajax_referer( 'spexo-addons', '_ajax_nonce' );
 
 			if ( ! current_user_can( 'customize' ) ) {
 				wp_send_json_error( __( 'You are not allowed to perform this action', 'sastra-essential-addons-for-elementor' ) );
@@ -629,7 +636,7 @@ if ( ! class_exists( 'TMPCODER_Importer' ) ) {
 			if ( wp_doing_ajax() ) {
 				
 				// Verify Nonce.
-				check_ajax_referer( 'sastra-addons', '_ajax_nonce' );
+				check_ajax_referer( 'spexo-addons', '_ajax_nonce' );
 
 				if ( ! current_user_can( 'customize' ) ) {
 					wp_send_json_error( __( 'You are not allowed to perform this action', 'sastra-essential-addons-for-elementor' ) );
@@ -677,7 +684,7 @@ if ( ! class_exists( 'TMPCODER_Importer' ) ) {
 
 			if ( wp_doing_ajax() ) {
 				// Verify Nonce.
-				check_ajax_referer( 'sastra-addons', '_ajax_nonce' );
+				check_ajax_referer( 'spexo-addons', '_ajax_nonce' );
 
 				if ( ! current_user_can( 'customize' ) ) {
 					wp_send_json_error( __( 'You are not allowed to perform this action', 'sastra-essential-addons-for-elementor' ) );
@@ -872,7 +879,7 @@ if ( ! class_exists( 'TMPCODER_Importer' ) ) {
 				
 				// Verify Nonce.
 
-				check_ajax_referer( 'sastra-addons', '_ajax_nonce' );
+				check_ajax_referer( 'spexo-addons', '_ajax_nonce' );
 
 				if ( ! current_user_can( 'customize' ) ) {
 					wp_send_json_error( __( 'You are not allowed to perform this action', 'sastra-essential-addons-for-elementor' ) );

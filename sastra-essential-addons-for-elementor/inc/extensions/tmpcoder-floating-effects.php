@@ -77,7 +77,7 @@ class TMPCODER_Section_Floating_Effects {
 		$element->start_controls_section(
 			'section_tmpcoder_fe',
 			array(
-				'label' => esc_html('Floating Effects - Sastra Addons'),
+				'label' => esc_html('Floating Effects - Spexo Addons'),
 				'tab' => Controls_Manager::TAB_ADVANCED
 			)
 		);
@@ -129,7 +129,7 @@ class TMPCODER_Section_Floating_Effects {
 				'floating_effects_notice',
 				array(
 					'type'            => Controls_Manager::RAW_HTML,
-					'raw'             => __( 'The options in Style and Filters tabs are available in Sastra Addons Pro.', 'sastra-essential-addons-for-elementor' ) . '<a href="' . esc_url( TMPCODER_PURCHASE_PRO_URL ) . '" target="_blank">' . __( 'Upgrade now!', 'sastra-essential-addons-for-elementor' ) . '</a>',
+					'raw'             => __( 'The options in Style and Filters tabs are available in Spexo Addons Pro.', 'sastra-essential-addons-for-elementor' ) . '<a href="' . esc_url( TMPCODER_PURCHASE_PRO_URL ) . '" target="_blank">' . __( 'Upgrade now!', 'sastra-essential-addons-for-elementor' ) . '</a>',
 					'content_classes' => 'tmpcoder-pro-upgrade-notice',
 				)
 			);

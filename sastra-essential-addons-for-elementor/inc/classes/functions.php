@@ -1205,7 +1205,7 @@ if (!function_exists('tmpcoder_ajax_mailchimp_subscribe')) {
 	function tmpcoder_ajax_mailchimp_subscribe() {
 		// API Key
 		
-		if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'sastra-addons') ) {
+		if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'spexo-addons') ) {
             exit; // Get out of here, the nonce is rotten!
         }
 
@@ -1785,6 +1785,7 @@ if ( !function_exists('tmpcoder_wp_kses_allowed_html') ){
                 'value' => true,
                 'data-*' => true,
                 'aria-*' => true,
+                'selected' => true,
             ),
             'optgroup' => array(
                 'value' => true,
@@ -1922,7 +1923,7 @@ function tmpcoder_script_suffix() {
 }
 
 function tmpcoder_get_plugin_version() {
-	return TMPCODER_PLUGIN_VER;
+	return (defined('TMPCODER_PLUGIN_VER') ? TMPCODER_PLUGIN_VER : '');
 }
 
 /**
@@ -1996,7 +1997,7 @@ add_action('redux/field/'.TMPCODER_THEME_OPTION_NAME.'/fieldset/after/'.TMPCODER
 
 function tmpcoder_add_global_option($data){
 
-    if (get_template() == 'sastrawp') {
+    if ( in_array(get_template(), array('sastrawp', 'spexo') ) ) {
 
         if (isset($data['id']) && $data['id'] == 'heading_6') {
 

@@ -45,7 +45,7 @@ class TMPCODER_Templates_Library {
 		if ( get_current_screen()->post_type == TMPCODER_THEME_ADVANCED_HOOKS_POST_TYPE && isset($_GET['action']) && $_GET['action'] == 'edit' ) {// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			$elementor_template_type = isset($_GET['post']) ? sanitize_text_field(wp_unslash($_GET['post'])) : '';// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
-			$redirect_url = esc_url_raw( admin_url( 'admin.php?page=sastra-welcome&tab=site-builder' ) );
+			$redirect_url = esc_url_raw( admin_url( 'admin.php?page=spexo-welcome&tab=site-builder' ) );
 			wp_safe_redirect( $redirect_url );
 			exit;
 

@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
     public function data_fetch() {
 
-        if ( !isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'sastra-addons') || !current_user_can( 'manage_options' ) ) {
+        if ( !isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'spexo-addons') || !current_user_can( 'manage_options' ) ) {
             return; // Get out of here, the nonce is rotten!
         }
 

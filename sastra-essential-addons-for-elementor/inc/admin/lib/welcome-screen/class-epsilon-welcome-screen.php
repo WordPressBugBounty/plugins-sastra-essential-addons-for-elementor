@@ -323,7 +323,7 @@ class TMPCODER_Welcome_Screen {
 		}
 		
 		if (did_action( 'elementor/loaded' )) {
-			add_menu_page('Sastra Addons', 'Sastra Addons', 'manage_options', 'sastra-welcome',[$this,'render_welcome_screen'],TMPCODER_ADDONS_ASSETS_URL.'images/logo-icon.svg','58.6' );
+			add_menu_page('Spexo Addons', 'Spexo Addons', 'manage_options', 'spexo-welcome',[$this,'render_welcome_screen'],TMPCODER_ADDONS_ASSETS_URL.'images/logo-icon.svg','58.6' );
 		}
 	}
 
@@ -491,7 +491,7 @@ class TMPCODER_Welcome_Screen {
 			'global-options'   => array(
 				'id'    => 'global-options',
 				'icon'  => 'global-setting-tab.svg',
-				'url'   => admin_url('admin.php?page='.TMPCODER_THEME.'_addon_global_settings'),
+				'url'   => admin_url('admin.php?page='.TMPCODER_THEME.'_addons_global_settings'),
 				'label' => __( 'Global Options', 'sastra-essential-addons-for-elementor' ),
 			),
 			'settings'  => array(
@@ -510,7 +510,7 @@ class TMPCODER_Welcome_Screen {
 			),
 		);
 
-		if (defined('TMPCODER_CURRENT_THEME_NAME') && TMPCODER_CURRENT_THEME_NAME != 'SastraWP') {    
+		if (defined('TMPCODER_CURRENT_THEME_NAME') && !in_array(TMPCODER_CURRENT_THEME_NAME, array('SastraWP','Spexo')) ) { 
 			unset($arr['global-options']);
 			unset($arr['prebuilt-demos']);
 		}

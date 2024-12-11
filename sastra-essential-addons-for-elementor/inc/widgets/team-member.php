@@ -174,7 +174,6 @@ class TMPCODER_Team_Member extends Widget_Base {
 				[
 					'type' => Controls_Manager::RAW_HTML,
 					'raw' => '<span style="color:#2a2a2a;">Postioning Elements over Media and <br>Media Overlay</span> options are available<br> in the <strong><a href="'.TMPCODER_PURCHASE_PRO_URL.'?ref=rea-plugin-panel-team-member-upgrade-pro#purchasepro" target="_blank">Pro version</a></strong>',
-					// 'raw' => '<span style="color:#2a2a2a;">Postioning Elements over Media and <br>Media Overlay</span> options are available<br> in the <strong><a href="'. admin_url('admin.php?page=tmpcoder-addons-pricing') .'" target="_blank">Pro version</a></strong>',
 					'content_classes' => 'tmpcoder-pro-notice',
 				]
 			);

@@ -20,7 +20,7 @@ class TMPCODER_Compare_Popup_Action {
 
     function tmpcoder_get_page_content($request) {
 
-        if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'sastra-addons')) {
+        if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'spexo-addons')) {
 			wp_send_json_error(array(
 				'message' => esc_html__('Security check failed.', 'sastra-essential-addons-for-elementor'),
 			));

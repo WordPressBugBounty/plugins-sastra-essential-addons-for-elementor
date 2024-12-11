@@ -51,7 +51,7 @@ class TMPCODER_Check_Product {
     
     function check_product_in_wishlist() {
 
-        if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'sastra-addons')) {
+        if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'spexo-addons')) {
             exit; // Get out of here, the nonce is rotten!
         }
 
@@ -84,7 +84,7 @@ class TMPCODER_Check_Product {
     
     function check_product_in_compare() {
 
-        if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'sastra-addons')) {
+        if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'spexo-addons')) {
             exit; // Get out of here, the nonce is rotten!
         }
 
@@ -117,7 +117,7 @@ class TMPCODER_Check_Product {
     
     function check_product_in_wishlist_grid() {
 
-        if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'sastra-addons')) {
+        if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'spexo-addons')) {
             exit; // Get out of here, the nonce is rotten!
         }
 
@@ -146,7 +146,7 @@ class TMPCODER_Check_Product {
     
     function check_product_in_compare_grid() {
 
-        if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'sastra-addons')) {
+        if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'spexo-addons')) {
             exit; // Get out of here, the nonce is rotten!
         }
 

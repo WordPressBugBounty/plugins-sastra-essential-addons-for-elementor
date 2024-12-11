@@ -166,7 +166,7 @@ class TMPCODER_Social_Share extends Widget_Base {
 				'sharing_repeater_pro_notice',
 				[
 					'type' => Controls_Manager::RAW_HTML,
-					'raw' => 'More than 4 Buttons are available<br> in the <strong><a href="https://sastraessentialaddons.com/?ref=rea-plugin-panel-sharing-buttons-upgrade-pro#purchasepro" target="_blank">Pro version</a></strong>',
+					'raw' => 'More than 4 Buttons are available<br> in the <strong><a href="https://spexoaddons.com/?ref=rea-plugin-panel-sharing-buttons-upgrade-pro#purchasepro" target="_blank">Pro version</a></strong>',
 					'content_classes' => 'tmpcoder-pro-notice',
 				]
 			);

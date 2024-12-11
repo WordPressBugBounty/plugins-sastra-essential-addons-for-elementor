@@ -49,7 +49,7 @@ class TMPCODER_Reading_Progress_Bar extends Widget_Base {
 			'reading_progress_bar',
 			[
                 'tab' => Controls_Manager::TAB_CONTENT,
-				'label' => __( 'Reading Progress Bar - Sastra Addons for Elementor', 'sastra-essential-addons-for-elementor' ),
+				'label' => __( 'Reading Progress Bar - Spexo Addons for Elementor', 'sastra-essential-addons-for-elementor' ),
 			]
         );
 

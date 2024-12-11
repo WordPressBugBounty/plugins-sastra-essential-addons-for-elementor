@@ -8,7 +8,7 @@ require_once (TMPCODER_PLUGIN_DIR . 'inc/admin/includes/tmpcoder-templates-loop.
 
 // Register Menus
 function tmpcoder_addons_add_theme_builder_menu() {
-	add_submenu_page( TMPCODER_THEME.'-welcome', 'Site Builder', 'Site Builder', 'manage_options', 'sastra-welcome&tab=site-builder', 'tmpcoder_addons_theme_builder_page' );
+	add_submenu_page( TMPCODER_THEME.'-welcome', 'Site Builder', 'Site Builder', 'manage_options', 'spexo-welcome&tab=site-builder', 'tmpcoder_addons_theme_builder_page' );
 }
 
 add_action( 'admin_menu', 'tmpcoder_addons_add_theme_builder_menu' );
@@ -43,31 +43,31 @@ function tmpcoder_addons_theme_builder_page() {
             <!-- Tabs -->
             <div class="site-builder-main common-box-shadow tmpcoder-layout-tabs">
             <div class="nav-tab-wrapper tmpcoder-nav-tab-wrapper">
-                <a href="?page=sastra-welcome&tab=site-builder&layout_type=type_header" data-title="type_header" class="nav-tab <?php echo ($active_tab == 'type_header') ? 'nav-tab-active' : ''; ?>">
+                <a href="?page=spexo-welcome&tab=site-builder&layout_type=type_header" data-title="type_header" class="nav-tab <?php echo ($active_tab == 'type_header') ? 'nav-tab-active' : ''; ?>">
                     <?php esc_html_e( 'Header', 'sastra-essential-addons-for-elementor' ); ?>
                 </a>
-                <a href="?page=sastra-welcome&tab=site-builder&layout_type=type_footer" data-title="type_footer" class="nav-tab <?php echo ($active_tab == 'type_footer') ? 'nav-tab-active' : ''; ?>">
+                <a href="?page=spexo-welcome&tab=site-builder&layout_type=type_footer" data-title="type_footer" class="nav-tab <?php echo ($active_tab == 'type_footer') ? 'nav-tab-active' : ''; ?>">
                     <?php esc_html_e( 'Footer', 'sastra-essential-addons-for-elementor' ); ?>
                 </a>
-                <a href="?page=sastra-welcome&tab=site-builder&layout_type=type_archive" data-title="type_archive" class="nav-tab <?php echo ($active_tab == 'type_archive') ? 'nav-tab-active' : ''; ?>">
+                <a href="?page=spexo-welcome&tab=site-builder&layout_type=type_archive" data-title="type_archive" class="nav-tab <?php echo ($active_tab == 'type_archive') ? 'nav-tab-active' : ''; ?>">
                     <?php esc_html_e( 'Post Archive', 'sastra-essential-addons-for-elementor' ); ?>
                 </a>
-                <a href="?page=sastra-welcome&tab=site-builder&layout_type=type_single_post" data-title="type_single_post" class="nav-tab <?php echo ($active_tab == 'type_single_post') ? 'nav-tab-active' : ''; ?>">
+                <a href="?page=spexo-welcome&tab=site-builder&layout_type=type_single_post" data-title="type_single_post" class="nav-tab <?php echo ($active_tab == 'type_single_post') ? 'nav-tab-active' : ''; ?>">
                     <?php esc_html_e( 'Single Post', 'sastra-essential-addons-for-elementor' ); ?>
                 </a>
-                <a href="?page=sastra-welcome&tab=site-builder&layout_type=type_search_result_page" data-title="type_search_result_page" class="nav-tab <?php echo ($active_tab == 'type_search_result_page') ? 'nav-tab-active' : ''; ?>">
+                <a href="?page=spexo-welcome&tab=site-builder&layout_type=type_search_result_page" data-title="type_search_result_page" class="nav-tab <?php echo ($active_tab == 'type_search_result_page') ? 'nav-tab-active' : ''; ?>">
                     <?php esc_html_e( 'Search Results Page', 'sastra-essential-addons-for-elementor' ); ?>
                 </a>
-                <a href="?page=sastra-welcome&tab=site-builder&layout_type=type_404" data-title="type_404" class="nav-tab <?php echo ($active_tab == 'type_404') ? 'nav-tab-active' : ''; ?>">
+                <a href="?page=spexo-welcome&tab=site-builder&layout_type=type_404" data-title="type_404" class="nav-tab <?php echo ($active_tab == 'type_404') ? 'nav-tab-active' : ''; ?>">
                     <?php esc_html_e( '404 Page', 'sastra-essential-addons-for-elementor' ); ?>
                 </a>
-                <a href="?page=sastra-welcome&tab=site-builder&layout_type=type_product_archive" data-title="type_product_archive" class="nav-tab <?php echo esc_attr($active_tab == 'type_product_archive' ? 'nav-tab-active' : ''); ?>">
+                <a href="?page=spexo-welcome&tab=site-builder&layout_type=type_product_archive" data-title="type_product_archive" class="nav-tab <?php echo esc_attr($active_tab == 'type_product_archive' ? 'nav-tab-active' : ''); ?>">
                     <?php esc_html_e( 'Product Archive', 'sastra-essential-addons-for-elementor' ); ?>
                 </a>
-                <a href="?page=sastra-welcome&tab=site-builder&layout_type=type_product_category" data-title="type_product_category" class="nav-tab <?php echo esc_attr($active_tab == 'type_product_category' ? 'nav-tab-active' : ''); ?>">
+                <a href="?page=spexo-welcome&tab=site-builder&layout_type=type_product_category" data-title="type_product_category" class="nav-tab <?php echo esc_attr($active_tab == 'type_product_category' ? 'nav-tab-active' : ''); ?>">
                     <?php esc_html_e( 'Product Category', 'sastra-essential-addons-for-elementor' ); ?>
                 </a>
-                <a href="?page=sastra-welcome&tab=site-builder&layout_type=type_single_product" data-title="type_single_product" class="nav-tab <?php echo esc_attr($active_tab == 'type_single_product' ? 'nav-tab-active' : ''); ?>">
+                <a href="?page=spexo-welcome&tab=site-builder&layout_type=type_single_product" data-title="type_single_product" class="nav-tab <?php echo esc_attr($active_tab == 'type_single_product' ? 'nav-tab-active' : ''); ?>">
                     <?php esc_html_e( 'Single Product', 'sastra-essential-addons-for-elementor' ); ?>
                 </a>
             </div>

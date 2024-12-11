@@ -322,7 +322,7 @@ if ( ! function_exists( 'tmpcoder_demo_import_scripts_func' ) ) :
         wp_localize_script( 'tmpcoder-plugin-import-demos', 'tmpcoder_ajax_object', array( 
             'ajax_url' => admin_url( 'admin-ajax.php' ),
             'site_url' => site_url(),
-            'nonce' => wp_create_nonce('sastra-addons'),
+            'nonce' => wp_create_nonce('spexo-addons'),
             'start_import_message' => __('Start Importing...', 'sastra-essential-addons-for-elementor'),
             'delete_previews_demo_message' => __('Delete previously imported demo...', 'sastra-essential-addons-for-elementor'),
             'import_site_content_message' => __('Importing Site Content...', 'sastra-essential-addons-for-elementor'),
@@ -355,13 +355,13 @@ if (!function_exists('tmpcoder_get_theme_status')) {
         $theme = wp_get_theme();
 
         // Theme installed and activate.
-        if ( 'SastraWP' === $theme->name || 'SastraWP' === $theme->parent_theme ) {
+        if ( in_array($theme->name, array('SastraWP','Spexo') ) || in_array($theme->parent_theme, array('SastraWP','Spexo') ) ) {
             return 'req-theme-active';
         }
 
         // Theme installed but not activate.
         foreach ( (array) wp_get_themes() as $theme_dir => $theme ) {
-            if ( 'SastraWP' === $theme->name || 'SastraWP' === $theme->parent_theme ) {
+            if ( in_array($theme->name, array('SastraWP','Spexo') ) || in_array($theme->parent_theme, array('SastraWP','Spexo') ) ) {
                 return 'req-theme-inactive';
             }
         }

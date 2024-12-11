@@ -240,7 +240,7 @@ class TMPCODER_Theme_Layouts_Base {
 		$this->current_theme = get_template();
 
 		// Sastra Themes
-		$this->sastra_themes = ['sastrawp'];  // sastra-elementor
+		$this->sastra_themes = ['sastrawp','spexo'];  // sastra-elementor
 
 		// Popular Themes
 		if ( 'astra' === $this->current_theme ) {

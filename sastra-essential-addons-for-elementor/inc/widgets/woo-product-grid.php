@@ -805,7 +805,7 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 			[
 				'type' => Controls_Manager::RAW_HTML,
 				'raw' => 
-             		'To set <strong>Posts per Page</strong> for all <strong>Shop Pages</strong>, navigate to <strong><a href="'.esc_url(admin_url( '?page=sastra-welcome&tab=settings' )).'" target="_blank">Sastra Addons > Settings<a></strong>.',
+             		'To set <strong>Posts per Page</strong> for all <strong>Shop Pages</strong>, navigate to <strong><a href="'.esc_url(admin_url( '?page=spexo-welcome&tab=settings' )).'" target="_blank">Spexo Addons > Settings<a></strong>.',
 				'content_classes' => 'elementor-panel-alert elementor-panel-alert-info',
 				'condition' => [
 					'query_selection' => 'current',
@@ -1459,7 +1459,6 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 	            'element_align_pro_notice',
 	            [
 					'raw' => 'Vertical Align option is available<br> in the <strong><a href="'.TMPCODER_PURCHASE_PRO_URL.'?ref=rea-plugin-panel-woo-grid-upgrade-pro#purchasepro" target="_blank">Pro version</a></strong>',
-					// 'raw' => 'Vertical Align option is available<br> in the <strong><a href="'. admin_url('admin.php?page=tmpcoder-addons-pricing') .'" target="_blank">Pro version</a></strong>',
 					'type' => Controls_Manager::RAW_HTML,
 					'content_classes' => 'tmpcoder-pro-notice',
 					'condition' => [
@@ -8565,9 +8564,11 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 		// Default Order By
 		if ( 'sales' === $settings['query_orderby'] ) {
 			$args['meta_key'] = 'total_sales';
+			$args['order'] = $settings['order_direction'];
 			$args['orderby']  = 'meta_value_num';
 		} elseif ( 'rating' === $settings['query_orderby'] ) {
 			$args['meta_key'] = '_wc_average_rating';
+			$args['order'] = $settings['order_direction'];
 			$args['orderby']  = 'meta_value_num';
 		} elseif ( 'price-low' === $settings['query_orderby'] ) {
 			$args['meta_key'] = '_price';
@@ -9845,13 +9846,15 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 			$parent_filters = [];
 			
 			foreach ( $custom_filters as $key => $term_id ) {
-				$filter = get_term_by( 'id', $term_id, $taxonomy );
+				// $filter = get_term_by( 'id', $term_id, $taxonomy );
+				$filter = get_term_by( 'slug', $term_id, $taxonomy );
 				$data_attr = 'post_tag' === $taxonomy ? 'tag-'. $filter->slug : $taxonomy .'-'. $filter->slug;
 
 				// Parent Filters
 				if ( 0 === $filter->parent ) {
 					$children = get_term_children( $filter->term_id, $taxonomy );
 					$data_role = ! empty($children) ? ' data-role="parent"' : '';
+					// $data_role = ! empty($children) ? ' data-role=parent' : '';
 
 					echo '<li'. esc_attr($data_role) .' class="'. esc_attr($pointer_class) .'">';
 						if ( 'yes' !== $settings['filters_linkable'] ) {
@@ -9862,17 +9865,24 @@ class TMPCODER_Woo_Grid extends Widget_Base {
                                 ),
                                 'i' => array(
                                     'class'=> array(),
-                                )
+                                ),
+                                'sup' => array(
+				                    'data-brackets'=> array(),
+				                )
                             ));
 						} else {
-							echo wp_kses(''. $left_separator .'<a '. $pointer_item_class .' href="'. esc_url(get_term_link( $filter->term_id, $taxonomy )) .'">'. $left_icon . esc_html($filter->name) . $right_icon . esc_html($post_count) .'</a>'. $right_separator, array(
+							echo wp_kses(''. $left_separator .'<a '. $pointer_item_class .' href="'. esc_url(get_term_link( $filter->term_id, $taxonomy )) .'" data-filter=".'. esc_attr(urldecode($data_attr)) .'">'. $left_icon . esc_html($filter->name) . $right_icon . wp_kses_post($post_count) .'</a>'. $right_separator, array(
                                 'a' => array(
                                     'href' => array(),
                                     'class' => array(),
+                                    'data-filter' => array(),
                                 ),
                                 'i' => array(
                                     'class'=> array(),
-                                )
+                                ),
+                                'sup' => array(
+				                    'data-brackets'=> array(),
+				                )
                             ));
 						}
 					echo '</li>';
@@ -9897,11 +9907,15 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 					$data_role = ! empty($children) ? ' data-role="parent"' : '';
 					$hidden_class = $this->get_hidden_filter_class($filter->slug, $settings);
 
+					// $sub = $filter->count.'</sub>';
+					// $post_count = str_replace('</sub>', $sub, $post_count);
+
 					echo '<li'. esc_attr($data_role) .' class="'. esc_attr($pointer_class) . esc_attr($hidden_class) .'">';
 						if ( 'yes' !== $settings['filters_linkable'] ) {
 							echo wp_kses_post(''. $left_separator .'<span '. esc_attr($pointer_item_class) .' data-filter=".'. esc_attr(urldecode($data_attr)) .'">'. wp_kses_post($left_icon) . esc_html($filter->name) . wp_kses_post($right_icon) . wp_kses_post($post_count) .'</span>'. $right_separator);
 						} else {
-							echo wp_kses_post(''. $left_separator .'<a '. esc_attr($pointer_item_class) .' href="'. esc_url(get_term_link( $filter->term_id, $taxonomy )) .'" data-filter=".'. esc_attr(urldecode($data_attr)) .'">'. wp_kses_post($left_icon) . esc_html($filter->name) . wp_kses_post($right_icon) . esc_html($post_count) .'</a>'. $right_separator);
+
+							echo wp_kses_post(''. $left_separator .'<a '. esc_attr($pointer_item_class) .' href="'. esc_url(get_term_link( $filter->term_id, $taxonomy )) .'" data-filter=".'. esc_attr(urldecode($data_attr)) .'">'. wp_kses_post($left_icon) . esc_html($filter->name) . wp_kses_post($right_icon) . wp_kses_post($post_count) .'</a>'. $right_separator);
 						}
 					echo '</li>';
 
@@ -9916,6 +9930,7 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 		if ( 'yes' !== $settings['filters_linkable'] ) {
 			foreach ( array_unique( $parent_filters ) as $key => $parent_filter ) {
 				$parent = get_term_by( 'id', $parent_filter, $taxonomy );
+				// $parent = get_term_by( 'slug', $parent_filter, $taxonomy );
 				$children = get_term_children( $parent_filter, $taxonomy );
 				$data_attr = 'post_tag' === $taxonomy ? 'tag-'. $parent->slug : $taxonomy .'-'. $parent->slug;
 
@@ -9929,6 +9944,7 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 
 				foreach ( $children as $child ) {
 					$sub_filter = get_term_by( 'id', $child, $taxonomy );
+					// $sub_filter = get_term_by( 'slug', $child, $taxonomy );
 					$data_attr = 'post_tag' === $taxonomy ? 'tag-'. $sub_filter->slug : $taxonomy .'-'. $sub_filter->slug;
 
 					echo '<li data-role="sub" class="'. esc_attr($pointer_class) .'">';

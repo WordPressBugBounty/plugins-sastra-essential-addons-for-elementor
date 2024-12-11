@@ -484,7 +484,7 @@ class TMPCODER_Testimonial_Carousel extends Widget_Base {
 				'testimonial_repeater_pro_notice',
 				[
 					'type' => Controls_Manager::RAW_HTML,
-					'raw' => 'More than 4 Testimonials are available<br> in the <strong><a href="https://sastraessentialaddons.com/?ref=rea-plugin-panel-testimonial-carousel-upgrade-pro#purchasepro" target="_blank">Pro version</a></strong>',
+					'raw' => 'More than 4 Testimonials are available<br> in the <strong><a href="https://spexoaddons.com/?ref=rea-plugin-panel-testimonial-carousel-upgrade-pro#purchasepro" target="_blank">Pro version</a></strong>',
 					'content_classes' => 'tmpcoder-pro-notice',
 				]
 			);

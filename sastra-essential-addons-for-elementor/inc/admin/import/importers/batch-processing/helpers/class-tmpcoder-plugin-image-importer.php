@@ -13,7 +13,7 @@
  *
  *  $downloaded_image = TMPCODER_Image_Importer::get_instance()->import( $image );
  *
- * @package Sastra Addons for Elementor
+ * @package Spexo Addons for Elementor
  * @since 1.0.0
  */
 
@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 if ( ! class_exists( 'TMPCODER_Image_Importer' ) ) :
 
 	/**
-	 * Sastra Addons for Elementor Image Importer
+	 * Spexo Addons for Elementor Image Importer
 	 *
 	 * @since 1.0.0
 	 */

@@ -1,9 +1,9 @@
 <?php
 /**
- * Sastra Addons for Elementor Importer Log
+ * Spexo Addons for Elementor Importer Log
  *
  * @since  1.0.0
- * @package Sastra Addons for Elementor
+ * @package Spexo Addons for Elementor
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 if ( ! class_exists( 'TMPCODER_Importer_Log' ) ) :
 
 	/**
-	 * Sastra Addons for Elementor Importer
+	 * Spexo Addons for Elementor Importer
 	 */
 	class TMPCODER_Importer_Log {
 
@@ -164,7 +164,7 @@ if ( ! class_exists( 'TMPCODER_Importer_Log' ) ) :
 
 			self::add( '---' . PHP_EOL );
 			self::add( 'WHY IMPORT PROCESS CAN FAIL? READ THIS - ' );
-			self::add( 'https://sastraessentialaddons.com/' . PHP_EOL );
+			self::add( 'https://spexoaddons.com/' . PHP_EOL );
 			self::add( '---' . PHP_EOL );
 
 		}
@@ -186,7 +186,7 @@ if ( ! class_exists( 'TMPCODER_Importer_Log' ) ) :
 		 * @param  string $dir_name Directory Name.
 		 * @return array    Uploads directory array.
 		 */
-		public static function log_dir( $dir_name = 'sastra-addons' ) {
+		public static function log_dir( $dir_name = 'spexo-addons' ) {
 
 			$upload_dir = wp_upload_dir();
 

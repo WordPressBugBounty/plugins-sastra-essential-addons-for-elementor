@@ -268,7 +268,7 @@ class TMPCODER_Navigation_Menu extends Widget_Base {
 		$this->add_control(
 			'verticle_align',
 			[
-				'label' => esc_html__( 'Icon Vertical Align', 'sastra-essential-addons-for-elementor' ),
+				'label' => esc_html__( 'Adjust Icon Vertical Position', 'sastra-essential-addons-for-elementor' ),
 				'type' => Controls_Manager::SLIDER,
 				'size_units' => ['%'],
 				'range' => [

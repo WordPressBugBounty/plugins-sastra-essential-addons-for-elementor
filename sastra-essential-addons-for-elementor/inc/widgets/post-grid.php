@@ -974,7 +974,6 @@ class TMPCODER_Post_Grid extends Widget_Base {
 				[
 					'type' => Controls_Manager::RAW_HTML,
 					'raw' => 'More than <strong>4 Slides</strong> are available<br>in the <strong><a href="'.TMPCODER_PURCHASE_PRO_URL.'?ref=rea-plugin-panel-grid-upgrade-pro#purchasepro" target="_blank">Pro version</a></strong>',
-					// 'raw' => 'More than 4 Slides are available<br> in the <strong><a href="'. admin_url('admin.php?page=tmpcoder-addons-pricing') .'" target="_blank">Pro version</a></strong>',
 					'content_classes' => 'tmpcoder-pro-notice',
 					'condition' => [
 						'layout_select' => 'slider',
@@ -1632,7 +1631,6 @@ class TMPCODER_Post_Grid extends Widget_Base {
 	            'element_align_pro_notice',
 	            [
 					'raw' => 'Vertical Align option is available<br> in the <strong><a href="'.TMPCODER_PURCHASE_PRO_URL.'?ref=rea-plugin-panel-grid-upgrade-pro#purchasepro" target="_blank">Pro version</a></strong>',
-					// 'raw' => 'Vertical Align option is available<br> in the <strong><a href="'. admin_url('admin.php?page=tmpcoder-addons-pricing') .'" target="_blank">Pro version</a></strong>',
 					'type' => Controls_Manager::RAW_HTML,
 					'content_classes' => 'tmpcoder-pro-notice',
 					'condition' => [
@@ -9377,9 +9375,9 @@ class TMPCODER_Post_Grid extends Widget_Base {
 		// Custom Filters
 		if ( $settings['query_selection'] === 'dynamic' && ! empty( $custom_filters ) ) {
 			$parent_filters = [];
-			
+				
 			foreach ( $custom_filters as $key => $term_id ) {
-				$filter = get_term_by( 'id', $term_id, $taxonomy );
+				$filter = get_term_by( 'slug', $term_id, $taxonomy );
 				$data_attr = 'post_tag' === $taxonomy ? 'tag-'. $filter->slug : $taxonomy .'-'. $filter->slug;
 
 				// GOGA - tested but needs advanced testing
@@ -9398,7 +9396,7 @@ class TMPCODER_Post_Grid extends Widget_Base {
 						if ( 'yes' !== $settings['filters_linkable'] ) {
 							echo wp_kses(''. $left_separator .'<span '. $pointer_item_class .' data-filter=".'. esc_attr(urldecode($data_attr)) .'">'. $left_icon . esc_html($filter->name) . $right_icon . $post_count .'</span>'. $right_separator, tmpcoder_wp_kses_allowed_html()); 
 						} else {
-							echo wp_kses(''. $left_separator .'<a class="'. $active_class . ' ' . $pointer_item_class_name .'" href="'. esc_url(get_term_link( $filter->term_id, $taxonomy )) .'">'. $left_icon . esc_html($filter->name) . $right_icon . $post_count .'</a>'. $right_separator, tmpcoder_wp_kses_allowed_html()); 
+							echo wp_kses(''. $left_separator .'<a class="'. $active_class . ' ' . $pointer_item_class_name .'" href="'. esc_url(get_term_link( $filter->term_id, $taxonomy )) .'" data-filter=".'.esc_attr(urldecode($data_attr)).'">'. $left_icon . esc_html($filter->name) . $right_icon . $post_count .'</a>'. $right_separator, tmpcoder_wp_kses_allowed_html()); 
 						}
 					echo '</li>';
 
@@ -9446,8 +9444,10 @@ class TMPCODER_Post_Grid extends Widget_Base {
 
 		// Sub Filters
 		if ( 'yes' !== $settings['filters_linkable'] ) {
+
 			foreach ( array_unique( $parent_filters ) as $key => $parent_filter ) {
-				$parent = get_term_by( 'id', $parent_filter, $taxonomy );
+
+				$parent = get_term_by( 'slug', $parent_filter, $taxonomy );
 				$children = get_term_children( $parent_filter, $taxonomy );
 				$data_attr = 'post_tag' === $taxonomy ? 'tag-'. $parent->slug : $taxonomy .'-'. $parent->slug;
 
@@ -9460,7 +9460,8 @@ class TMPCODER_Post_Grid extends Widget_Base {
 				echo '</li>';
 
 				foreach ( $children as $child ) {
-					$sub_filter = get_term_by( 'id', $child, $taxonomy );
+					// $sub_filter = get_term_by( 'id', $child, $taxonomy );
+					$sub_filter = get_term_by( 'slug', $child, $taxonomy );
 					$data_attr = 'post_tag' === $taxonomy ? 'tag-'. $sub_filter->slug : $taxonomy .'-'. $sub_filter->slug;
 
 					echo '<li data-role="sub" class="'. esc_attr($pointer_class) .'">';

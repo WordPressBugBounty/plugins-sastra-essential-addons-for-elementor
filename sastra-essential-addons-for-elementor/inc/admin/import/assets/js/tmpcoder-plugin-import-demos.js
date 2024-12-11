@@ -35,7 +35,7 @@ jQuery(document).on('click','.import-demo-content', function(e){
     window.set_demo_name = jQuery('.demo-name').text('"'+theme_demo_name+'"');
     window.theme_demo_url = jQuery(this).closest('.plugin_box').find('.demo-preview-btn').attr('href');
 
-    var confirmImport = confirm('For the best results, it is recommended to temporarily deactivate All other Active plugins Except Elementor and Sastra Addons for Elementor.\n\nElementor Header, Footer, Pages, Media Files, Menus and some required plugins will be installed on your website.');
+    var confirmImport = confirm('For the best results, it is recommended to temporarily deactivate All other Active plugins Except Elementor and Spexo Addons for Elementor.\n\nElementor Header, Footer, Pages, Media Files, Menus and some required plugins will be installed on your website.');
 
     message_text.text(tmpcoder_ajax_object.start_import_message);
 
@@ -995,7 +995,7 @@ const installRequiredTheme = function() {
     }
 
     wp.updates.installTheme({
-        slug: 'sastrawp',
+        slug: 'spexo',
         success: function() {
             jQuery.post(
                 tmpcoder_ajax_object.ajax_url,

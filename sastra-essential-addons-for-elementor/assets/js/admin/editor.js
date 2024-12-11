@@ -39,7 +39,7 @@
 					if ( searchVal.includes('par') && $('.tmpcoder-elementor-search-notice').length < 1 ) {
 						$('#elementor-panel-elements-wrapper').prepend('\
 							<div class="tmpcoder-elementor-search-notice">\
-							<strong>Parallax Background</strong> is only available for the Section elements. <strong>Edit any section</strong> > <strong>"Styles"</strong> tab > <strong>"Parallax - Sastra Addons for Elementor"</strong>.\
+							<strong>Parallax Background</strong> is only available for the Section elements. <strong>Edit any section</strong> > <strong>"Styles"</strong> tab > <strong>"Parallax - Spexo Addons for Elementor"</strong>.\
 							</div>\
 						');
 					}
@@ -140,7 +140,7 @@
 			$('.tmpcoder-upgrade-dynamic-content').remove();
 
 			let defaultText = 'Create more personalized and dynamic sites by populating data from various sources with dozens of dynamic tags to choose from.';
-			let customText = '<br><br> Dynamic Content functionality is available for <strong>Sastra Addons for Elementor</strong> plugin as well as for <strong>Elementor Pro</strong> plugin. With <strong>Sastra Addons for Elementor Pro Plan</strong> you can create Custom Post Types, Custom Taxonomies, add any type of Custom Fields and many other cool features to create Dynamic Websites.';
+			let customText = '<br><br> Dynamic Content functionality is available for <strong>Spexo Addons for Elementor</strong> plugin as well as for <strong>Elementor Pro</strong> plugin. With <strong>Spexo Addons for Elementor Pro Plan</strong> you can create Custom Post Types, Custom Taxonomies, add any type of Custom Fields and many other cool features to create Dynamic Websites.';
 
 			$('.dialog-buttons-widget .dialog-message').html('');
 			$('.dialog-buttons-widget .dialog-message').html(defaultText + customText);
@@ -149,7 +149,7 @@
 				url = tmpcoder_config.TMPCODER_PURCHASE_PRO_URL+'?ref=tmpcoder-plugin-panel-dynamic-content-banner-upgrade-pro#purchasepro';
 
 			dialogButton.text('Upgrade Elementor');
-			dialogButton.after('<div class="tmpcoder-upgrade-dynamic-content"><div style="margin:8px 0 20px;">OR</div><a href="'+ url +'" target="_blank" style="display:block; margin-bottom: 10px; padding:9px 22px;background: #046bd2;" class="dialog-button elementor-button elementor-button-success">Upgrade Sastra Addons for Elementor Pro</a></div>');
+			dialogButton.after('<div class="tmpcoder-upgrade-dynamic-content"><div style="margin:8px 0 20px;">OR</div><a href="'+ url +'" target="_blank" style="display:block; margin-bottom: 10px; padding:9px 22px;background: #046bd2;" class="dialog-button elementor-button elementor-button-success">Upgrade Spexo Addons for Elementor Pro</a></div>');
 			dialogButton.next('a').css('display','block');
 
 		});

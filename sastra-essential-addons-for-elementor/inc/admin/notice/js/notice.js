@@ -14,7 +14,7 @@ const installRequiredTheme = function() {
         {
             $this.text(tmpcoder_ajax_object.installing);
             wp.updates.installTheme({
-                slug: 'sastrawp',
+                slug: 'spexo',
                 success: function() {
                     activeRequiredTheme();
                 }

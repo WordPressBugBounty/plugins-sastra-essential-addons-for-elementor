@@ -514,7 +514,7 @@
 					var href = window.location.href,
 						adminUrl = href.substring(0, href.indexOf('/wp-admin')+9);
 
-					var url = 'https://sastraessentialaddons.com/?ref=rea-plugin-library-'+ module +'-upgrade-pro#purchasepro';
+					var url = 'https://spexoaddons.com/?ref=rea-plugin-library-'+ module +'-upgrade-pro#purchasepro';
 					url = TmpcodersanitizeURL(url); 
 					window.open(url, '_blank');
 					return;

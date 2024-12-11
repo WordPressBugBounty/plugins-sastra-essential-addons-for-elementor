@@ -14,7 +14,7 @@ if (!function_exists('tmpcoder_error_log')) {
  * Functions
  *
  * @since 1.0.0
- * @package Sastra Addons for Elementor
+ * @package Spexo Addons for Elementor
  */
 
 if ( ! function_exists( 'tmpcoder_is_valid_image' ) ) :
@@ -115,7 +115,7 @@ function tmpcoder_get_reset_term_data() {
 }
 
 /**
- * Check if Import for Sastra Addons for Elementor is in progress
+ * Check if Import for Spexo Addons for Elementor is in progress
  *
  * @since 1.0.0
  * @return array

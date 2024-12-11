@@ -11,7 +11,7 @@ if ( ! function_exists( 'tmpcoder_demo_import_scripts_func' ) ) :
         wp_localize_script( 'tmpcoder-theme-install-from-notice', 'tmpcoder_ajax_object', array( 
             'ajax_url' => admin_url( 'admin-ajax.php' ),
             'welcome_url' => admin_url().'admin.php?page=tmpcoder-import-demo',
-            'nonce' => wp_create_nonce('sastra-addons'),
+            'nonce' => wp_create_nonce('spexo-addons'),
             'installing' => esc_html('Installing...'),
             'activating' => esc_html('Activating...'),
         ));
@@ -25,13 +25,13 @@ add_action( 'admin_notices', function(){
 	// Get Current Theme
     $theme = get_option('stylesheet');
 
-    if ( 'sastrawp' !== $theme && $theme != 'sastrawp-child' ) {
+    if ( ! in_array($theme, array('sastrawp','sastrawp-child','spexo','spexo-child') ) ) {
      	
     	if (get_transient('tmpcoder_activate_theme_dismissed_' . get_current_user_id())) {
 	        return;
 	    }
 
-	    if (tmpcoder_is_theme_installed('sastrawp')){
+	    if ( tmpcoder_is_theme_installed('spexo') ){
 
 			$upgrade_pro_notice = 
 	    	'<i class="tmpcoder-upgrade-pro-notice-dismiss activate-theme-notice" role="button" aria-label="Dismiss this notice." tabindex="0"></i>
@@ -41,8 +41,8 @@ add_action( 'admin_notices', function(){
 				</div>
 			</div>
 			<div class="tmpcoder-license-expiration-notice-content">
-				<h3>'.esc_html( 'Activate SastraWP Theme!').'</h3>
-				<p>'.esc_html('Activate the SastraWP theme and unlock a pre-built website with global features.').'</p>
+				<h3>'.esc_html( 'Activate Spexo Theme!').'</h3>
+				<p>'.esc_html('Activate the Spexo theme and unlock a pre-built website with global features.').'</p>
 				<div class="tmpcoder-license-expiration-notice-actions">
 					<button data-status="active" id="tmpcoder-install-active-theme-from-notice" class="button button-primary tmpcoder-license-renew-button tmpcoder-upgrade-pro-button">'.esc_html('Activate').'</button>
 				</div>
@@ -58,8 +58,8 @@ add_action( 'admin_notices', function(){
 				</div>
 			</div>
 			<div class="tmpcoder-license-expiration-notice-content">
-				<h3>'.esc_html( 'Install & Activate SastraWP Theme!').'</h3>
-				<p>'.esc_html('Install & Activate the SastraWP theme and unlock a pre-built website with global features.').'</p>
+				<h3>'.esc_html( 'Install & Activate Spexo Theme!').'</h3>
+				<p>'.esc_html('Install & Activate the Spexo theme and unlock a pre-built website with global features.').'</p>
 				<div class="tmpcoder-license-expiration-notice-actions">
 					<button id="tmpcoder-install-active-theme-from-notice" data-status="install" class="button button-primary tmpcoder-license-renew-button tmpcoder-upgrade-pro-button">'.esc_html('Install & Activate').'</button>
 				</div>

@@ -2438,3 +2438,30 @@ body .select2-container .select2-selection--single .select2-selection__arrow {
     margin: 0;
     padding: 0;
 }
+
+.fa-x-twitter:before {
+    content: "\e9ca";
+}
+
+.fa-x-twitter-square:before {
+    content: "\e9c9";
+}
+
+/* Ambient animation - start */
+.tmpcoder-ambient-animate-yes .jarallax-container {
+    animation: tmpcoderAnimateAmbient 20s linear infinite;
+}
+@keyframes tmpcoderAnimateAmbient {
+    0% {
+        transform: rotate(0deg) translateX(2em) rotate(0deg) scale(1.2);
+    }
+    100% {
+        transform: rotate(360deg) translateX(2em) rotate(-360deg) scale(1.2);
+    }
+}
+/* Ambient animation - end */
+
+.elementor-widget-tmpcoder-product-tabs .comment-text p.meta {
+    font-size: unset !important;
+}
+

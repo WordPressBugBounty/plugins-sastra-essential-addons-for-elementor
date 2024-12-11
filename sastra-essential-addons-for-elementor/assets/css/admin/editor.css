@@ -385,8 +385,8 @@
   color: red;
 }
 
-/* Help Button - select with referrals - [href^="https://sastraessentialaddons.com/contact/"] */
-#elementor-panel__editor__help__link[href^="https://sastraessentialaddons.com/support/"] {
+/* Help Button - select with referrals - [href^="https://spexoaddons.com/contact/"] */
+#elementor-panel__editor__help__link[href^="https://spexoaddons.com/support/"] {
   display: inline-block;
   padding: 12px 35px;
   font-size: 13px;
@@ -403,22 +403,22 @@
   transition: all 0.2s ease-in;
 }
 
-#elementor-panel__editor__help__link[href^="https://sastraessentialaddons.com/support/"]:hover {
+#elementor-panel__editor__help__link[href^="https://spexoaddons.com/support/"]:hover {
   color: #fff;
   background: #5729d9;
 }
 
-#elementor-panel__editor__help__link[href^="https://sastraessentialaddons.com/support/"] i {
+#elementor-panel__editor__help__link[href^="https://spexoaddons.com/support/"] i {
   color: #fff;
   font-size: 14px;
   vertical-align: top;
 }
 
-#elementor-panel__editor__help__link[href^="https://sastraessentialaddons.com/support/"]:hover i {
+#elementor-panel__editor__help__link[href^="https://spexoaddons.com/support/"]:hover i {
   color: #fff;
 }
 
-#elementor-panel__editor__help__link[href^="https://sastraessentialaddons.com/support/"]:hover i:before {
+#elementor-panel__editor__help__link[href^="https://spexoaddons.com/support/"]:hover i:before {
   content: '\e942' !important;
 }
 

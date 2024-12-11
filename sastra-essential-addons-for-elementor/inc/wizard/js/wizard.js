@@ -293,7 +293,7 @@
 
     // $(document).on('click', '#import-process-complete-popup .popup-close2', function(e){
     //     e.preventDefault();
-    //     window.location.href = '<?php echo esc_js(admin_url('admin.php?page=sastra-welcome')); ?>';
+    //     window.location.href = '<?php echo esc_js(admin_url('admin.php?page=spexo-welcome')); ?>';
     //     return false;
     // });
 

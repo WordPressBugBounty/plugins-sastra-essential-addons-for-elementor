@@ -1,8 +1,8 @@
 <?php
 /**
- * Sastra Addons for Elementor Compatibility for 3rd party plugins.
+ * Spexo Addons for Elementor Compatibility for 3rd party plugins.
  *
- * @package Sastra Addons for Elementor
+ * @package Spexo Addons for Elementor
  * @since 1.0.0
  */
 
@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 if ( ! class_exists( 'TMPCODER_Compatibility' ) ) :
 
 	/**
-	 * Sastra Addons for Elementor Compatibility
+	 * Spexo Addons for Elementor Compatibility
 	 *
 	 * @since 1.0.0
 	 */

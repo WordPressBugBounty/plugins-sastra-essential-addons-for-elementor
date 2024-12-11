@@ -47,7 +47,7 @@ class TMPCODER_Count_Wishlist_Compare_Items {
     
     function count_wishlist_items() {
 
-        if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'sastra-addons') ) {
+        if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'spexo-addons') ) {
             exit; // Get out of here, the nonce is rotten!
         }
 
@@ -103,7 +103,7 @@ class TMPCODER_Count_Wishlist_Compare_Items {
     
     function count_compare_items() {
 
-        if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'sastra-addons') ) {
+        if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'spexo-addons') ) {
             exit; // Get out of here, the nonce is rotten!
         }
 
@@ -135,7 +135,7 @@ class TMPCODER_Count_Wishlist_Compare_Items {
 
     public function compare_table() {
 
-        if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'sastra-addons') ) {
+        if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'spexo-addons') ) {
             exit; // Get out of here, the nonce is rotten!
         }
 

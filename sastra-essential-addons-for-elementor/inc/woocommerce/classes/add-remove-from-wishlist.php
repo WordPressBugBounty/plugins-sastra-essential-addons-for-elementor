@@ -24,7 +24,7 @@ class TMPCODER_Add_Remove_From_Wishlist {
     
     function add_to_wishlist() {
 
-        if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'sastra-addons')) {
+        if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'spexo-addons')) {
             exit; // Get out of here, the nonce is rotten!
         }
 
@@ -69,7 +69,7 @@ class TMPCODER_Add_Remove_From_Wishlist {
     
     function remove_from_wishlist() {
 
-        if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'sastra-addons')) {
+        if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'spexo-addons')) {
             exit; // Get out of here, the nonce is rotten!
         }
 

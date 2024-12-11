@@ -15,8 +15,8 @@ class TMPCODER_Sastra {
 
 		TMPCODER_Welcome_Screen::get_instance(
 			$config = array(
-				'theme-name' => 'Sastra',
-				'theme-slug' => 'sastrawp',
+				'theme-name' => 'Spexo',
+				'theme-slug' => 'spexo',
 				'actions'    => array(),
 				'plugins'    => array(),
 			)

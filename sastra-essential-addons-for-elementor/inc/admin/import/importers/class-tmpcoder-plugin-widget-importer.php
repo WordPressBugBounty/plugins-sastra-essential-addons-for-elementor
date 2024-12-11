@@ -7,7 +7,7 @@
  * Widget Data exporter class.
  *
  * @since 1.0.0
- * @package Sastra Addons for Elementor
+ * @package Spexo Addons for Elementor
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

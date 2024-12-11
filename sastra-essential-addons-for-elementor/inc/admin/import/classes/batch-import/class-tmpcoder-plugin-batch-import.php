@@ -2,7 +2,7 @@
 /**
  * Batch Import
  *
- * @package Sastra Addons for Elementor
+ * @package Spexo Addons for Elementor
  * @since 1.0.0
  */
 

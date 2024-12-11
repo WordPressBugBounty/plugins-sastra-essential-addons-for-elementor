@@ -140,10 +140,10 @@ class TMPCODER_Button extends Widget_Base {
 					'{{WRAPPER}} .tmpcoder-button::before' => '-webkit-transition-duration: {{VALUE}}s; transition-duration: {{VALUE}}s;-webkit-animation-duration: {{VALUE}}s;animation-duration: {{VALUE}}s;',
 					'{{WRAPPER}} .tmpcoder-button::after' => '-webkit-transition-duration: {{VALUE}}s; transition-duration: {{VALUE}}s;-webkit-animation-duration: {{VALUE}}s;animation-duration: {{VALUE}}s;',
 					'{{WRAPPER}} .tmpcoder-button::after' => '-webkit-transition-duration: {{VALUE}}s; transition-duration: {{VALUE}}s;-webkit-animation-duration: {{VALUE}}s;animation-duration: {{VALUE}}s;',
-					/*'{{WRAPPER}} .tmpcoder-button .tmpcoder-button-icon' => '-webkit-transition-duration: {{VALUE}}s; transition-duration: {{VALUE}}s;',
+					'{{WRAPPER}} .tmpcoder-button .tmpcoder-button-icon' => '-webkit-transition-duration: {{VALUE}}s; transition-duration: {{VALUE}}s;',
 					'{{WRAPPER}} .tmpcoder-button .tmpcoder-button-icon svg' => '-webkit-transition-duration: {{VALUE}}s; transition-duration: {{VALUE}}s;',
 					'{{WRAPPER}} .tmpcoder-button .tmpcoder-button-text' => '-webkit-transition-duration: {{VALUE}}s; transition-duration: {{VALUE}}s;-webkit-animation-duration: {{VALUE}}s;animation-duration: {{VALUE}}s;',
-					'{{WRAPPER}} .tmpcoder-button .tmpcoder-button-content' => '-webkit-transition-duration: {{VALUE}}s; transition-duration: {{VALUE}}s;-webkit-animation-duration: {{VALUE}}s;animation-duration: {{VALUE}}s;',*/
+					'{{WRAPPER}} .tmpcoder-button .tmpcoder-button-content' => '-webkit-transition-duration: {{VALUE}}s; transition-duration: {{VALUE}}s;-webkit-animation-duration: {{VALUE}}s;animation-duration: {{VALUE}}s;',
 				],
 			]
 		);

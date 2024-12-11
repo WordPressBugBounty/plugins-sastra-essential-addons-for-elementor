@@ -419,7 +419,7 @@ class TMPCODER_Advanced_Text extends Widget_Base {
 		// Section: Pro Features
 		tmpcoder_pro_features_list_section( $this, '', Controls_Manager::RAW_HTML, 'advanced-text', [
 			__('Clipped Text Effect', 'sastra-essential-addons-for-elementor'),
-			wp_kses('Examples - <a href="https://sastraessentialaddons.com/elementor-advanced-text-widget/?ref=rea-plugin-panel-pro-sec-advanced-text#clipped1" target="_blank">'.__('Clipped effects', 'sastra-essential-addons-for-elementor').'</a>', array(
+			wp_kses('Examples - <a href="https://spexoaddons.com/elementor-advanced-text-widget/?ref=rea-plugin-panel-pro-sec-advanced-text#clipped1" target="_blank">'.__('Clipped effects', 'sastra-essential-addons-for-elementor').'</a>', array(
                 'a' => array(
                     'href' => true,
                     'target' => true,

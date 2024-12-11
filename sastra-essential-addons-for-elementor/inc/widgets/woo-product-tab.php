@@ -992,6 +992,7 @@ class TMPCODER_Product_Tabs extends Widget_Base {
 				'default' => '#787878',
 				'selectors' => [
 					'{{WRAPPER}} .woocommerce-review__published-date' => 'color: {{VALUE}};',
+					'body {{WRAPPER}} .comment-text p.meta' => 'color: {{VALUE}} !important;',
 				],
 			]
 		);

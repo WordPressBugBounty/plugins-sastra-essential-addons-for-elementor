@@ -94,7 +94,7 @@ class Theme_Setup_Wizard_Class {
         $colors = $colors->colors;
         $active_color = $colors[2];
 
-        $theme_slug = 'sastrawp';
+        $theme_slug = 'spexo';
         $current_theme = (is_object(wp_get_theme()->parent())) ? wp_get_theme()->parent() : wp_get_theme();
 
         $theme_next_label = __('Next', 'sastra-essential-addons-for-elementor');
@@ -139,7 +139,7 @@ class Theme_Setup_Wizard_Class {
                         <span class="step-number">2</span><?php esc_html_e('Install Required Plugins', 'sastra-essential-addons-for-elementor'); ?>
                     </li>
                     <li class="nav-tab license-registration disabled" data-tab="license-registration">
-                        <span class="step-number">3</span><?php esc_html_e('Get Sastra Addons Pro', 'sastra-essential-addons-for-elementor'); ?>
+                        <span class="step-number">3</span><?php esc_html_e('Get Spexo Addons Pro', 'sastra-essential-addons-for-elementor'); ?>
                     </li>                  
                 </ul>
                 <div id="theme-installation" class="tab-content tab-content-theme-installation">
@@ -180,7 +180,7 @@ class Theme_Setup_Wizard_Class {
                                 <?php 
                                 $dashboard_url = admin_url();
                                 if (is_plugin_active( 'elementor/elementor.php' )) {
-                                    $dashboard_url .= 'admin.php?page=sastra-welcome';
+                                    $dashboard_url .= 'admin.php?page=spexo-welcome';
                                 }
                                 ?>
                                 <a class="tmpcoder-skip-wizard-link" data-url="<?php echo esc_url($dashboard_url) ?>" href="javascript:void(0)"><?php esc_html_e('Skip Setup & Go to Dashboard','sastra-essential-addons-for-elementor'); ?>   

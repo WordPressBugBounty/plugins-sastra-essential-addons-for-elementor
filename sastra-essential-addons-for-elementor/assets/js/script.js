@@ -6720,7 +6720,8 @@
             });
             
             if (!stickySectionExists) {
-                positionStyle = 'relative';
+                // positionStyle = 'relative';
+                positionStyle = 'fixed';
             }
 
             function changePositionType() {
