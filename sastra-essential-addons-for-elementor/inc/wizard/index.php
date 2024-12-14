@@ -25,7 +25,7 @@ function tmpcoder_enqueue_wizard_script(){
                 'site_setting_saving' => esc_html("Theme Installing...",'sastra-essential-addons-for-elementor'),
                 'required_plugin_installing' => esc_html("Required Plugin Installing",'sastra-essential-addons-for-elementor'),
                 'getting_required_plugins' => esc_html("Required Plugin Info Getting",'sastra-essential-addons-for-elementor'),
-                'loading_license_form' => esc_html("Sastra Pro Addons Info Getting...",'sastra-essential-addons-for-elementor'),
+                'loading_license_form' => esc_html("Spexo Addons Pro Info Getting...",'sastra-essential-addons-for-elementor'),
                 'install_required_plugins' => esc_html("Install Required Plugins",'sastra-essential-addons-for-elementor'),
                 'install_required_plugins_text' => sprintf("Make sure %s is running the most recent version. %s is designed to work with the required plugins listed below.", esc_html(TMPCODER_PLUGIN_NAME), esc_html(TMPCODER_PLUGIN_NAME)),
                 'install_and_activate' => esc_html("Install & Activate",'sastra-essential-addons-for-elementor'),

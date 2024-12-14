@@ -85,7 +85,9 @@ class TMPCODER_Parallax_Scroll {
         );
 
         if ( tmpcoder_is_availble() ) {
-            \TMPCODER\Extensions\TMPCODER_Parallax_Scroll_Pro::add_control_ambient_animate($element);
+            if ( method_exists('\TMPCODER\Extensions\TMPCODER_Parallax_Scroll_Pro','add_control_ambient_animate') ){
+                \TMPCODER\Extensions\TMPCODER_Parallax_Scroll_Pro::add_control_ambient_animate($element);
+            }
         } else {
             $element->add_control(
                 'ambient_animate',
@@ -120,7 +122,7 @@ class TMPCODER_Parallax_Scroll {
                     'render_type' => 'template',
                     'condition' => [
                         'tmpcoder_enable_jarallax' => 'yes',
-                        'ambient_animate' => 'no',
+                        'ambient_animate!' => 'yes',
                     ]
                 ]
             );
@@ -375,10 +377,10 @@ class TMPCODER_Parallax_Scroll {
             if ( 'yes' === $settings['tmpcoder_enable_jarallax'] ) { 
                 $element->add_render_attribute( '_wrapper', [
                     'class' => 'tmpcoder-jarallax',
-                    'speed-data' => $settings['speed'],
-                    'bg-image' => $settings['bg_image']['url'],
-                    'scroll-effect' => $settings['scroll_effect'],
-                    'ambient-animate' => $settings['ambient_animate'],
+                    'speed-data' => (isset($settings['speed']) ? $settings['speed'] : ''),
+                    'bg-image' => (isset($settings['bg_image']) && isset($settings['bg_image']['url']) ? $settings['bg_image']['url'] : ''),
+                    'scroll-effect' => (isset($settings['scroll_effect']) ? $settings['scroll_effect'] : ''),
+                    'ambient-animate' => (isset($settings['ambient_animate']) ? $settings['ambient_animate'] : ''),
                 ] );
 
                 // if ( 'on' === get_option('tmpcoder-parallax-background', 'on') ) {

@@ -317,7 +317,7 @@ class TMPCODER_Theme_Layouts_Base {
 			}
 			else
 			{
-				require TMPCODER_PLUGIN_DIR . 'inc/admin/templates/views/sastra/theme-header-sastra.php';
+				require TMPCODER_PLUGIN_DIR . 'inc/admin/templates/views/spexo/theme-header-spexo.php';
 			}
 			
 			$templates   = [];
@@ -355,7 +355,7 @@ class TMPCODER_Theme_Layouts_Base {
 			}
 			else
 			{
-				require TMPCODER_PLUGIN_DIR . 'inc/admin/templates/views/sastra/theme-footer-sastra.php';
+				require TMPCODER_PLUGIN_DIR . 'inc/admin/templates/views/spexo/theme-footer-spexo.php';
 			}
 
 			$templates   = [];

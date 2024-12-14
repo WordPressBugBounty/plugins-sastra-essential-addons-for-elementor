@@ -150,6 +150,7 @@ if ( ! class_exists( 'TMPCODER_Importer' ) ) {
 		        'elementor-pro/elementor-pro.php',
 		        'sastra-essential-addons-for-elementor/sastra-essential-addons-for-elementor.php',
                 'sastra-addons-pro/sastra-addons-pro.php',
+                'spexo-addons-pro/spexo-addons-pro.php',
 		        'contact-form-7/wp-contact-form-7.php',
 		        'advanced-custom-fields/acf.php',
 		        'woocommerce/woocommerce.php',

@@ -680,9 +680,9 @@ class TMPCODER_Post_Thumbnail extends Widget_Base {
 				}
 
 			echo '</div>';
-		}else{
+		}/*else{
             echo esc_html(__('No Featured Image', 'sastra-essential-addons-for-elementor'));
-        }
+        }*/
 	}
 
 	protected function render() {

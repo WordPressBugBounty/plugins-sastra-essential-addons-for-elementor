@@ -3,7 +3,7 @@
  * Plugin Name: Spexo Addons for Elementor
  * Plugin URI: http://spexoaddons.com/
  * Description: Spexo Addons for Elementor is all in one solution for complete starter sites, single page templates, blocks & images. This plugin offers additional features needed by our theme.
- * Version: 1.0.9
+ * Version: 1.0.10
  * Author: TemplatesCoder
  * Author URI:  https://templatescoder.com/
  * Elementor tested up to: 3.25.9
@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 $theme = (is_object(wp_get_theme()->parent())) ? wp_get_theme()->parent() : wp_get_theme();
 
 if ( ! defined( 'TMPCODER_PLUGIN_VER' ) ) {
-    define( 'TMPCODER_PLUGIN_VER', '1.0.9' );
+    define( 'TMPCODER_PLUGIN_VER', '1.0.10' );
 }
 
 if ( ! defined( 'TMPCODER_PLUGIN_NAME' ) ) {
@@ -114,7 +114,7 @@ if ( ! defined( 'TMPCODER_PLUGIN_KEY' ) ) {
 }
 
 if ( ! defined( 'TMPCODER_PRO_PLUGIN_KEY' ) ) {
-    define( 'TMPCODER_PRO_PLUGIN_KEY', 'spexo-addons-pro'); // pro plugin slug
+    define( 'TMPCODER_PRO_PLUGIN_KEY', 'sastra-addons-pro'); // pro plugin slug
 }
 
 
@@ -136,6 +136,19 @@ if ( ! function_exists( 'tmpcoder_setup' ) ) :
 		require TMPCODER_PLUGIN_DIR . 'inc/wizard/index.php';
 		require_once TMPCODER_PLUGIN_DIR . 'inc/classes/functions.php';
 		require_once TMPCODER_PLUGIN_DIR . 'inc/admin/import/classes/class-tmpcoder-plugin.php';
+
+		if ( get_option('tmpcoder_spexo_addons_version') != TMPCODER_PLUGIN_VER ){
+		    update_option('tmpcoder_spexo_addons_version', TMPCODER_PLUGIN_VER);		    
+            
+            $theme_setting = get_option(TMPCODER_THEME_OPTION_NAME);
+            if( empty($theme_setting) ) {
+                $theme_setting = get_option('tmpcoder_global_theme_options_sastrawp');
+                if ( !empty($theme_setting) ){
+                    update_option(TMPCODER_THEME_OPTION_NAME, $theme_setting);
+                }
+            }
+		    
+		}
 	}
 	add_action( 'plugins_loaded', 'tmpcoder_setup' );
 endif;
@@ -419,7 +432,7 @@ function tmpcoder_sastra_elementor_addon_activation_time() {//TODO: Try to locat
 // hook already exists with template kits notice
 register_deactivation_hook( __FILE__, 'tmpcoder_sastra_elementor_addon_activation_time' );
 
-if (is_multisite() && is_plugin_active_for_network(plugin_basename(__FILE__))) {
+if (is_multisite() && function_exists('is_plugin_active_for_network') && is_plugin_active_for_network(plugin_basename(__FILE__))) {
     
     add_action('admin_notices', 'tmpcoder_sastra_network_activation_notice');
     add_action('network_admin_notices', 'tmpcoder_sastra_network_activation_notice');

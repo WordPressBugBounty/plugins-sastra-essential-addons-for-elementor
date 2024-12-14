@@ -63,7 +63,19 @@ $featuredList = array();
     );
     array_push($featuredList, $featuredArr);
 
-    if ( function_exists('get_template') && in_array(get_template(), array('sastrawp', 'spexo')) && class_exists('ReduxFramework')) {
+    if ( ( function_exists('get_template') && get_template() == 'sastrawp' ) && class_exists('ReduxFramework') ) {
+        $featuredArr = array(
+            'title' => __( 'Global Options', 'sastra-essential-addons-for-elementor' ),
+            'icon' => 'global-setting.svg',
+            'action_link' => admin_url('admin.php?page=sastra_addon_global_settings'),
+            'description' => __( 'Control all site-wide settings easily with Global Options.', 'sastra-essential-addons-for-elementor' ),
+            'target' => '',
+            'extra_class' => 'set-box',
+        );
+        array_push($featuredList, $featuredArr);
+    }
+
+    if ( ( function_exists('get_template') && get_template() == 'spexo' ) && class_exists('ReduxFramework') ) {
         $featuredArr = array(
             'title' => __( 'Global Options', 'sastra-essential-addons-for-elementor' ),
             'icon' => 'global-setting.svg',

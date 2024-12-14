@@ -5,7 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 // Register Post Type
 function tmpcoder_register_mega_menu_cpt() {
     $args = array(
-        'label'               => esc_html__( 'Sastra Mega Menu', 'sastra-essential-addons-for-elementor' ),
+        'label'               => esc_html__( 'Spexo Mega Menu', 'sastra-essential-addons-for-elementor' ),
         'public'              => true,
         'publicly_queryable'  => true,
         'rewrite'             => false,
@@ -126,7 +126,7 @@ function tmpcoder_render_settings_popup() {
         <div class="tmpcoder-mm-settings-popup">
             <div class="tmpcoder-mm-settings-popup-header">
                 <span class="tmpcoder-mm-popup-logo" style="background:url('<?php echo esc_url(TMPCODER_ADDONS_ASSETS_URL .'images/logo-40x40.svg'); ?>') no-repeat center center / contain;">SA</span>
-                <span><?php esc_html_e('Sastra Mega Menu', 'sastra-essential-addons-for-elementor'); ?></span>
+                <span><?php esc_html_e('Spexo Mega Menu', 'sastra-essential-addons-for-elementor'); ?></span>
                 <span class="tmpcoder-mm-popup-title"><?php esc_html_e('Menu Item: ', 'sastra-essential-addons-for-elementor'); ?><span></span></span>
                 <span class="dashicons dashicons-no-alt tmpcoder-mm-settings-close-popup-btn"></span>
             </div>
