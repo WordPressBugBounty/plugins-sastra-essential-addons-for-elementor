@@ -5,14 +5,13 @@ use Elementor\Group_Control_Typography;
 use Elementor\Core\Responsive\Responsive;
 use Elementor\Group_Control_Background;
 use Elementor\Group_Control_Image_Size;
-use Elementor\Core\Schemes\Color;
 use Elementor\Group_Control_Border;
 use Elementor\Group_Control_Box_Shadow;
 use Elementor\Repeater;
-use Elementor\Core\Schemes\Typography;
 use Elementor\Widget_Base;
 use Elementor\Icons;
 use Elementor\Utils;
+use Elementor\Core\Kits\Documents\Tabs\Global_Typography;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
@@ -752,7 +751,9 @@ class TMPCODER_Progress_Bar extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name'     => 'title_typography',
-				'scheme' => Typography::TYPOGRAPHY_3,
+				'global' => [
+                    'default' => Global_Typography::TYPOGRAPHY_TEXT,
+                ],
 				'selector' => '{{WRAPPER}} .tmpcoder-prbar-title',
 				'condition' => [
 					'title!' => '',
@@ -819,7 +820,9 @@ class TMPCODER_Progress_Bar extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name'     => 'subtitle_typography',
-				'scheme' => Typography::TYPOGRAPHY_3,
+				'global' => [
+                    'default' => Global_Typography::TYPOGRAPHY_TEXT,
+                ],
 				'selector' => '{{WRAPPER}} .tmpcoder-prbar-subtitle',
 				'condition' => [
 					'subtitle!' => '',
@@ -886,7 +889,9 @@ class TMPCODER_Progress_Bar extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name'     => 'counter_typography',
-				'scheme' => Typography::TYPOGRAPHY_3,
+				'global' => [
+                    'default' => Global_Typography::TYPOGRAPHY_TEXT,
+                ],
 				'selector' => '{{WRAPPER}} .tmpcoder-prbar-counter',
 				'condition' => [
 					'counter_switcher' => 'yes',

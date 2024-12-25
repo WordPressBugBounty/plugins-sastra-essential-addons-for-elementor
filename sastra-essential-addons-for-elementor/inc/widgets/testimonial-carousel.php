@@ -5,14 +5,13 @@ use Elementor\Group_Control_Typography;
 use Elementor\Core\Responsive\Responsive;
 use Elementor\Group_Control_Background;
 use Elementor\Group_Control_Image_Size;
-use Elementor\Core\Schemes\Color;
 use Elementor\Group_Control_Border;
 use Elementor\Group_Control_Box_Shadow;
 use Elementor\Repeater;
-use Elementor\Core\Schemes\Typography;
 use Elementor\Widget_Base;
 use Elementor\Utils;
 use Elementor\Icons;
+use Elementor\Core\Kits\Documents\Tabs\Global_Typography;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
@@ -1167,7 +1166,9 @@ class TMPCODER_Testimonial_Carousel extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'title_typography',
-				'scheme' => Typography::TYPOGRAPHY_3,
+				'global' => [
+                    'default' => Global_Typography::TYPOGRAPHY_TEXT,
+                ],
 				'selector' => '{{WRAPPER}} .tmpcoder-testimonial-title',
 			]
 		);
@@ -1247,7 +1248,9 @@ class TMPCODER_Testimonial_Carousel extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'content_typography',
-				'scheme' => Typography::TYPOGRAPHY_3,
+				'global' => [
+                    'default' => Global_Typography::TYPOGRAPHY_TEXT,
+                ],
 				'selector' => '{{WRAPPER}} .tmpcoder-testimonial-content',
 			]
 		);
@@ -1327,7 +1330,9 @@ class TMPCODER_Testimonial_Carousel extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'date_typography',
-				'scheme' => Typography::TYPOGRAPHY_3,
+				'global' => [
+                    'default' => Global_Typography::TYPOGRAPHY_TEXT,
+                ],
 				'selector' => '{{WRAPPER}} .tmpcoder-testimonial-date',
 			]
 		);
@@ -1517,7 +1522,9 @@ class TMPCODER_Testimonial_Carousel extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'rating_color_typography',
-				'scheme' => Typography::TYPOGRAPHY_3,
+				'global' => [
+                    'default' => Global_Typography::TYPOGRAPHY_TEXT,
+                ],
 				'selector' => '{{WRAPPER}} .tmpcoder-testimonial-rating span',
 			]
 		);
@@ -1768,7 +1775,9 @@ class TMPCODER_Testimonial_Carousel extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'name_typography',
-				'scheme' => Typography::TYPOGRAPHY_3,
+				'global' => [
+                    'default' => Global_Typography::TYPOGRAPHY_TEXT,
+                ],
 				'selector' => '{{WRAPPER}} .tmpcoder-testimonial-name',
 			]
 		);
@@ -1846,7 +1855,9 @@ class TMPCODER_Testimonial_Carousel extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'job_typography',
-				'scheme' => Typography::TYPOGRAPHY_3,
+				'global' => [
+                    'default' => Global_Typography::TYPOGRAPHY_TEXT,
+                ],
 				'selector' => '{{WRAPPER}} .tmpcoder-testimonial-job',
 			]
 		);

@@ -3,10 +3,7 @@ namespace TMPCODER\Widgets;
 use Elementor\Controls_Manager;
 use Elementor\Widget_Button;
 use Elementor\Controls_Stack;
-use Elementor\Core\Kits\Documents\Tabs\Global_Colors;
 use Elementor\Core\Kits\Documents\Tabs\Global_Typography;
-use Elementor\Core\Schemes\Typography;
-use Elementor\Core\Schemes\Color;
 use Elementor\Group_Control_Border;
 use Elementor\Group_Control_Typography;
 use Elementor\Group_Control_Text_Stroke;
@@ -435,7 +432,9 @@ class TMPCODER_Woo_Add_To_Cart extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name'     => 'qty-label_typography',
-				'scheme' => Typography::TYPOGRAPHY_3,
+				'global' => [
+                    'default' => Global_Typography::TYPOGRAPHY_TEXT,
+                ],
 				'selector' => '{{WRAPPER}} .tmpcoder-product-add-to-cart .qty-label',
 				'fields_options' => [
 					'typography' => [
@@ -665,7 +664,9 @@ class TMPCODER_Woo_Add_To_Cart extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name'     => 'add_to_cart_qty_typography',
-				'scheme' => Typography::TYPOGRAPHY_3,
+				'global' => [
+                    'default' => Global_Typography::TYPOGRAPHY_TEXT,
+                ],
 				'selector' => '{{WRAPPER}} .tmpcoder-product-add-to-cart .quantity .qty',
 				'fields_options' => [
 					'typography' => [
@@ -1237,7 +1238,9 @@ class TMPCODER_Woo_Add_To_Cart extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name'     => 'add_to_cart_typography',
-				'scheme' => Typography::TYPOGRAPHY_3,
+				'global' => [
+                    'default' => Global_Typography::TYPOGRAPHY_TEXT,
+                ],
 				'selector' => '{{WRAPPER}} .tmpcoder-product-add-to-cart .single_add_to_cart_button, {{WRAPPER}} .tmpcoder-product-add-to-cart  a.added_to_cart',
 				'fields_options' => [
 					'typography' => [
@@ -1569,7 +1572,9 @@ class TMPCODER_Woo_Add_To_Cart extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name'     => 'grouped_title_typography',
-				'scheme' => Typography::TYPOGRAPHY_3,
+				'global' => [
+                    'default' => Global_Typography::TYPOGRAPHY_TEXT,
+                ],
 				'selector' => '{{WRAPPER}} .woocommerce-grouped-product-list-item__label a, {{WRAPPER}} .woocommerce-grouped-product-list-item__label label, {{WRAPPER}} .woocommerce-grouped-product-list-item .button',
 				'fields_options' => [
 					'typography' => [
@@ -1610,7 +1615,9 @@ class TMPCODER_Woo_Add_To_Cart extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name'     => 'grouped_price_typography',
-				'scheme' => Typography::TYPOGRAPHY_3,
+				'global' => [
+                    'default' => Global_Typography::TYPOGRAPHY_TEXT,
+                ],
 				'selector' => '{{WRAPPER}} .woocommerce-grouped-product-list-item__price span',
 				'fields_options' => [
 					'typography' => [
@@ -1761,7 +1768,9 @@ class TMPCODER_Woo_Add_To_Cart extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name'     => 'add_to_cart_variation_names',
-				'scheme' => Typography::TYPOGRAPHY_3,
+				'global' => [
+                    'default' => Global_Typography::TYPOGRAPHY_TEXT,
+                ],
 				'selector' => '{{WRAPPER}} .variations th.label label',
 				'fields_options' => [
 					'typography' => [
@@ -1963,7 +1972,9 @@ class TMPCODER_Woo_Add_To_Cart extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name'     => 'add_to_cart_variation_select',
-				'scheme' => Typography::TYPOGRAPHY_3,
+				'global' => [
+                    'default' => Global_Typography::TYPOGRAPHY_TEXT,
+                ],
 				'selector' => '{{WRAPPER}} .variations select, {{WRAPPER}} .variations option , .variations .cfvsw-swatches-option',
 			]
 		);
@@ -2326,7 +2337,9 @@ class TMPCODER_Woo_Add_To_Cart extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name'     => 'variation_description_typography',
-				'scheme' => Typography::TYPOGRAPHY_3,
+				'global' => [
+                    'default' => Global_Typography::TYPOGRAPHY_TEXT,
+                ],
 				'selector' => '{{WRAPPER}} .woocommerce-variation-description p',
 				'fields_options' => [
 					'typography' => [
@@ -2398,7 +2411,9 @@ class TMPCODER_Woo_Add_To_Cart extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name'     => 'variation_price_typography',
-				'scheme' => Typography::TYPOGRAPHY_3,
+				'global' => [
+                    'default' => Global_Typography::TYPOGRAPHY_TEXT,
+                ],
 				'selector' => '{{WRAPPER}} .woocommerce-variation-price span',
 				'fields_options' => [
 					'typography' => [
@@ -2487,7 +2502,9 @@ class TMPCODER_Woo_Add_To_Cart extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name'     => 'variation_availability_typography',
-				'scheme' => Typography::TYPOGRAPHY_3,
+				'global' => [
+                    'default' => Global_Typography::TYPOGRAPHY_TEXT,
+                ],
 				'selector' => '{{WRAPPER}} .woocommerce-variation-availability p.stock, {{WRAPPER}} .woocommerce-variation-availability p.stock'
 			]
 		);
@@ -2576,7 +2593,9 @@ class TMPCODER_Woo_Add_To_Cart extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'reset_typography',
-				'scheme' => Typography::TYPOGRAPHY_3,
+				'global' => [
+                    'default' => Global_Typography::TYPOGRAPHY_TEXT,
+                ],
 				'selector' => '{{WRAPPER}} .tmpcoder-product-add-to-cart .reset_variations',
 				'fields_options' => [
 					'typography' => [

@@ -3,7 +3,7 @@ namespace TMPCODER\Widgets;
 use Elementor\Widget_Base;
 use Elementor\Controls_Manager;
 use Elementor\Group_Control_Typography;
-use Elementor\Core\Schemes\Typography;
+use Elementor\Core\Kits\Documents\Tabs\Global_Typography;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -136,7 +136,9 @@ class TMPCODER_Breadcrumb  extends Widget_Base{
             [
                 'label' => esc_html__( 'Typography', 'sastra-essential-addons-for-elementor' ),
                 'name' => 'title_typography',
-                'scheme' => Typography::TYPOGRAPHY_3,
+                'global' => [
+                    'default' => Global_Typography::TYPOGRAPHY_TEXT,
+                ],
                 'selector' => '{{WRAPPER}} .sub-banner-title,{{WRAPPER}} .sub-banner-title span',
             ]
         );
@@ -231,7 +233,9 @@ class TMPCODER_Breadcrumb  extends Widget_Base{
             [
                 'label' => esc_html__( 'Typography', 'sastra-essential-addons-for-elementor' ),
                 'name' => 'link_typography',
-                'scheme' => Typography::TYPOGRAPHY_3,
+                'global' => [
+                    'default' => Global_Typography::TYPOGRAPHY_TEXT,
+                ],
                 'selector' => '{{WRAPPER}} .page-banner label a,{{WRAPPER}} .page-banner label, {{WRAPPER}} .page-banner .woocommerce-breadcrumb span, {{WRAPPER}}.page-banner .current-item-name, {{WRAPPER}} .woocommerce-breadcrumb',
             ]
         );

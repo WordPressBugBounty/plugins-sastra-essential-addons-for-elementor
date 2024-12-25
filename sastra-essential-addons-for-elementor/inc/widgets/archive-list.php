@@ -5,8 +5,7 @@ use Elementor\Controls_Manager;
 use Elementor\Core\Responsive\Responsive;
 use Elementor\Group_Control_Typography;
 use Elementor\Group_Control_Background;
-use Elementor\Core\Schemes\Color;
-use Elementor\Core\Schemes\Typography;
+use Elementor\Core\Kits\Documents\Tabs\Global_Typography;
 use Elementor\Group_Control_Image_Size;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -243,7 +242,9 @@ class TMPCODER_Archive_List extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name'     => 'tax_typography',
-				'scheme' => Typography::TYPOGRAPHY_3,
+				'global' => [
+                    'default' => Global_Typography::TYPOGRAPHY_TEXT,
+                ],
 				'selector' => '{{WRAPPER}} .tmpcoder-taxonomy-list li',
 				'fields_options' => [
 					'typography'      => [

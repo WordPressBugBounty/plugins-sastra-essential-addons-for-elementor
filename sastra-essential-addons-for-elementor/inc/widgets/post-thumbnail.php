@@ -5,9 +5,8 @@ use Elementor\Controls_Manager;
 use Elementor\Core\Responsive\Responsive;
 use Elementor\Group_Control_Box_Shadow;
 use Elementor\Group_Control_Typography;
-use Elementor\Core\Schemes\Typography;
-use Elementor\Core\Schemes\Color;
 use Elementor\Group_Control_Image_Size;
+use Elementor\Core\Kits\Documents\Tabs\Global_Typography;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
@@ -450,7 +449,9 @@ class TMPCODER_Post_Thumbnail extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name'     => 'image_caption_typography',
-				'scheme' => Typography::TYPOGRAPHY_3,
+				'global' => [
+                    'default' => Global_Typography::TYPOGRAPHY_TEXT,
+                ],
 				'selector' => '{{WRAPPER}} .tmpcoder-featured-media-caption span'
 			]
 		);

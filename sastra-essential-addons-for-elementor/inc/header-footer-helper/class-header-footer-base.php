@@ -522,10 +522,10 @@ class TMPCODER_Theme_Layouts_Base {
 			$elementor->frontend->enqueue_styles();
 		}
 
-		if ( class_exists( '\ElementorPro\Plugin' ) ) {
-			$elementor_pro = \ElementorPro\Plugin::instance();
-			$elementor_pro->enqueue_styles();
-		}
+		// if ( method_exists( '\ElementorPro\Plugin', 'enqueue_styles' ) ) {
+		// 	$elementor_pro = \ElementorPro\Plugin::instance();
+		// 	$elementor_pro->enqueue_styles();
+		// }
 
 		// Load Header Template CSS File
 		$header_template_id = !empty(tmpcoder_get_header_id()) ? tmpcoder_get_header_id() : false;

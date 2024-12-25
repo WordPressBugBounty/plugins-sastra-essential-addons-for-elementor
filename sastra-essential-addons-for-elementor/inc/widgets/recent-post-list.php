@@ -2,13 +2,13 @@
 namespace TMPCODER\Widgets;
 use Elementor\Widget_Base;
 use Elementor\Controls_Manager;
-use Elementor\Core\Schemes;
 use Elementor\Group_Control_Background;
 use Elementor\Group_Control_Border;
 use Elementor\Group_Control_Box_Shadow;
 use Elementor\Group_Control_Image_Size;
 use Elementor\Group_Control_Typography;
 use Elementor\Icons_Manager;
+use Elementor\Core\Kits\Documents\Tabs\Global_Typography;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;   // Exit if accessed directly.
@@ -659,7 +659,9 @@ class TMPCODER_Post_List extends Widget_Base {
 			[
 				'name'     => 'title_typography',
 				'label'    => __( 'Typography', 'sastra-essential-addons-for-elementor' ),
-				'scheme'   => Schemes\Typography::TYPOGRAPHY_2,
+				'global' => [
+                    'default' => Global_Typography::TYPOGRAPHY_SECONDARY,
+                ],
 				'selector' => '{{WRAPPER}} .tmpcoder-post-list-title',
 			]
 		);
@@ -917,7 +919,9 @@ class TMPCODER_Post_List extends Widget_Base {
 			[
 				'name'     => 'excerpt_typography',
 				'label'    => __( 'Typography', 'sastra-essential-addons-for-elementor' ),
-				'scheme'   => Schemes\Typography::TYPOGRAPHY_3,
+				'global' => [
+                    'default' => Global_Typography::TYPOGRAPHY_TEXT,
+                ],
 				'selector' => '{{WRAPPER}} .tmpcoder-post-list-excerpt p',
 			]
 		);
@@ -966,7 +970,9 @@ class TMPCODER_Post_List extends Widget_Base {
 			[
 				'name'     => 'meta_typography',
 				'label'    => __( 'Typography', 'sastra-essential-addons-for-elementor' ),
-				'scheme'   => Schemes\Typography::TYPOGRAPHY_3,
+				'global' => [
+                    'default' => Global_Typography::TYPOGRAPHY_TEXT,
+                ],
 				'selector' => '{{WRAPPER}} .tmpcoder-post-list-meta-wrap span',
 			]
 		);

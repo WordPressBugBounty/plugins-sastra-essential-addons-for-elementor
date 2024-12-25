@@ -4,8 +4,6 @@ use Elementor\Controls_Manager;
 use Elementor\Group_Control_Border;
 use Elementor\Group_Control_Box_Shadow;
 use Elementor\Group_Control_Typography;
-use Elementor\Core\Kits\Documents\Tabs\Global_Colors;
-use Elementor\Core\Kits\Documents\Tabs\Global_Typography;
 use Elementor\Widget_Base;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -651,10 +649,6 @@ class TMPCODER_Navigation_Menu extends Widget_Base {
 			[
 				'label' => esc_html__( 'Text Color', 'sastra-essential-addons-for-elementor' ),
 				'type' => Controls_Manager::COLOR,
-				// 'scheme' => [
-				// 	'type' => Color::get_type(),
-				// 	'value' => Color::COLOR_3,
-				// ],
 				'default' => '#333333',
 				'selectors' => [
 					'{{WRAPPER}} .tmpcoder-nav-menu .tmpcoder-menu-item,
@@ -677,10 +671,6 @@ class TMPCODER_Navigation_Menu extends Widget_Base {
 			[
 				'label' => esc_html__( 'Text Color', 'sastra-essential-addons-for-elementor' ),
 				'type' => Controls_Manager::COLOR,
-				// 'scheme' => [
-				// 	'type' => Color::get_type(),
-				// 	'value' => Color::COLOR_4,
-				// ],
 				'default' => '#5729d9',
 				'selectors' => [
 					'{{WRAPPER}} .tmpcoder-nav-menu .tmpcoder-menu-item:hover,
@@ -696,10 +686,6 @@ class TMPCODER_Navigation_Menu extends Widget_Base {
 			[
 				'label' => esc_html__( 'Pointer Color', 'sastra-essential-addons-for-elementor' ),
 				'type' => Controls_Manager::COLOR,
-				// 'scheme' => [
-				// 	'type' => Color::get_type(),
-				// 	'value' => Color::COLOR_4,
-				// ],
 				'default' => '#5729d9',
 				'selectors' => [
 					'{{WRAPPER}}.tmpcoder-pointer-line-fx .tmpcoder-menu-item:before,

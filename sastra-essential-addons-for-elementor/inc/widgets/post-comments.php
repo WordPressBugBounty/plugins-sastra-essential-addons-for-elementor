@@ -3,11 +3,10 @@ namespace TMPCODER\Widgets;
 use Elementor\Widget_Base;
 use Elementor\Controls_Manager;
 use Elementor\Core\Responsive\Responsive;
-use Elementor\Core\Schemes\Typography;
-use Elementor\Core\Schemes\Color;
 use Elementor\Group_Control_Typography;
 use Elementor\Group_Control_Box_Shadow;
 use Elementor\Group_Control_Border;
+use Elementor\Core\Kits\Documents\Tabs\Global_Typography;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
@@ -410,7 +409,9 @@ class TMPCODER_Post_Comments extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'section_title_typography',
-				'scheme' => Typography::TYPOGRAPHY_3,
+				'global' => [
+                    'default' => Global_Typography::TYPOGRAPHY_TEXT,
+                ],
 				'selector' => '{{WRAPPER}} .tmpcoder-comments-wrap > h3',
 				'fields_options' => [
 					'typography'      => [
@@ -789,7 +790,9 @@ class TMPCODER_Post_Comments extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name'     => 'nickname_typography',
-				'scheme' => Typography::TYPOGRAPHY_3,
+				'global' => [
+                    'default' => Global_Typography::TYPOGRAPHY_TEXT,
+                ],
 				'selector' => '{{WRAPPER}} .tmpcoder-comment-author',
 				'fields_options' => [
 					'typography'      => [
@@ -898,7 +901,9 @@ class TMPCODER_Post_Comments extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'metadata_typography',
-				'scheme' => Typography::TYPOGRAPHY_3,
+				'global' => [
+                    'default' => Global_Typography::TYPOGRAPHY_TEXT,
+                ],
 				'selector' => '{{WRAPPER}} .tmpcoder-comment-metadata',
 				'fields_options' => [
 					'typography' => [
@@ -981,7 +986,9 @@ class TMPCODER_Post_Comments extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name'     => 'content_typography',
-				'scheme' => Typography::TYPOGRAPHY_3,
+				'global' => [
+                    'default' => Global_Typography::TYPOGRAPHY_TEXT,
+                ],
 				'selector' => '{{WRAPPER}} .tmpcoder-comment-content',
 				'fields_options' => [
 					'typography'      => [
@@ -1064,7 +1071,9 @@ class TMPCODER_Post_Comments extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'reply_link_typography',
-				'scheme' => Typography::TYPOGRAPHY_3,
+				'global' => [
+                    'default' => Global_Typography::TYPOGRAPHY_TEXT,
+                ],
 				'selector' => '{{WRAPPER}} .tmpcoder-comment-reply a',
 				'fields_options' => [
 					'typography'      => [
@@ -1324,7 +1333,9 @@ class TMPCODER_Post_Comments extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'navigation_typography',
-				'scheme' => Typography::TYPOGRAPHY_3,
+				'global' => [
+                    'default' => Global_Typography::TYPOGRAPHY_TEXT,
+                ],
 				'selector' => '{{WRAPPER}} .tmpcoder-comments-navigation a, {{WRAPPER}} .tmpcoder-comments-navigation span',
 				'fields_options' => [
 					'typography'      => [
@@ -1589,7 +1600,9 @@ class TMPCODER_Post_Comments extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'tmpcoder_title_typography',
-				'scheme' => Typography::TYPOGRAPHY_3,
+				'global' => [
+                    'default' => Global_Typography::TYPOGRAPHY_TEXT,
+                ],
 				'selector' => '{{WRAPPER}} .tmpcoder-comment-reply-title',
 				'fields_options' => [
 					'typography'      => [
@@ -1817,7 +1830,9 @@ class TMPCODER_Post_Comments extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'comment_form_typography',
-				'scheme' => Typography::TYPOGRAPHY_3,
+				'global' => [
+                    'default' => Global_Typography::TYPOGRAPHY_TEXT,
+                ],
 				'selector' => '{{WRAPPER}} .tmpcoder-comment-form label, {{WRAPPER}} .tmpcoder-comment-form input[type=text], {{WRAPPER}} .tmpcoder-comment-form textarea, {{WRAPPER}} .tmpcoder-comment-form .logged-in-as',
 				'fields_options' => [
 					'typography'      => [
@@ -2097,7 +2112,9 @@ class TMPCODER_Post_Comments extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'submit_button_typography',
-				'scheme' => Typography::TYPOGRAPHY_3,
+				'global' => [
+                    'default' => Global_Typography::TYPOGRAPHY_TEXT,
+                ],
 				'selector' => '{{WRAPPER}} .tmpcoder-submit-comment',
 				'fields_options' => [
 					'typography'      => [

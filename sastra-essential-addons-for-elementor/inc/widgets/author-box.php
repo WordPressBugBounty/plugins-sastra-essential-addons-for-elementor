@@ -5,8 +5,7 @@ use Elementor\Controls_Manager;
 use Elementor\Core\Responsive\Responsive;
 use Elementor\Group_Control_Box_Shadow;
 use Elementor\Group_Control_Typography;
-use Elementor\Core\Schemes\Typography;
-use Elementor\Core\Schemes\Color;
+use Elementor\Core\Kits\Documents\Tabs\Global_Typography;
 use Elementor\Group_Control_Border;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -436,7 +435,9 @@ class TMPCODER_Author_Box extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name'     => 'name_typography',
-				'scheme' => Typography::TYPOGRAPHY_3,
+				'global' => [
+                    'default' => Global_Typography::TYPOGRAPHY_TEXT,
+                ],
 				'selector' => '{{WRAPPER}} .tmpcoder-author-box-name',
 				'fields_options' => [
 					'typography' => [
@@ -535,7 +536,9 @@ class TMPCODER_Author_Box extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'title_typography',
-				'scheme' => Typography::TYPOGRAPHY_3,
+				'global' => [
+                    'default' => Global_Typography::TYPOGRAPHY_TEXT,
+                ],
 				'selector' => '{{WRAPPER}} .tmpcoder-author-box-title',
 				'fields_options' => [
 					'typography'      => [
@@ -663,7 +666,9 @@ class TMPCODER_Author_Box extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name'     => 'archive_link_typography',
-				'scheme' => Typography::TYPOGRAPHY_3,
+				'global' => [
+                    'default' => Global_Typography::TYPOGRAPHY_TEXT,
+                ],
 				'selector' => '{{WRAPPER}} .tmpcoder-author-box-btn'
 			]
 		);

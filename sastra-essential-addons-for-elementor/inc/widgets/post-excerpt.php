@@ -1,9 +1,9 @@
 <?php
 namespace TMPCODER\Widgets;
 use Elementor\Widget_Base;
-use Elementor\Core\Schemes\Typography;
 use Elementor\Controls_Manager;
 use Elementor\Group_Control_Typography;
+use Elementor\Core\Kits\Documents\Tabs\Global_Typography;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
@@ -119,7 +119,9 @@ class TMPCODER_Post_Excerpt extends Widget_Base {
 				'name' => 'excerpt_typography',
 				'label' => __( 'Typography', 'sastra-essential-addons-for-elementor' ),
 				'selector' => '{{WRAPPER}} .tmpcoder-excerpt',
-				'scheme' => Typography::TYPOGRAPHY_2,
+				'global' => [
+                    'default' => Global_Typography::TYPOGRAPHY_SECONDARY,
+                ],
 			]
 		);
 

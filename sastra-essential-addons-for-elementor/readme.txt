@@ -1,9 +1,9 @@
 === Spexo Addons for Elementor - Free Elementor Addons, Widgets and Templates ===
 Contributors: templatescoderthemes, skywebtech
 Tags: elementor, elementor addons, elementor templates, elementor widgets, elements, widgets for elementor, elementor woocommerce builder, theme builder, header footer builder, elementor mega menu, elementor post grid, elementor product grid, addons for elementor
-Stable tag: 1.0.10
+Stable tag: 1.0.11
 Requires at least: 5.0
-Tested up to: 6.7.1
+Tested up to: 6.7
 Requires PHP: 7.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -367,3 +367,8 @@ Feel free to contact us anytime via [Support](https://templatescoder.com/support
 
 * Fixed: ambient_animate is undefined index
 * Fixed: add_control_ambient_animate is undefined method in Parallax ambient used.
+
+= v1.0.11 - 2024-12-18 =
+
+* Fixed: ElementorPro Plugin enqueue_styles function removed.
+* Improved: Enhanced compatibility with Elementor v3.26.0.
