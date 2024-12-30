@@ -85,6 +85,9 @@ if ( !class_exists('TemplatesWidgetRegister') ){
             // Register Scripts
             add_action( 'elementor/frontend/before_register_scripts', [ $this, 'tmpcoder_register_scripts' ], 998 );
 
+            // Frontend JS
+            add_action( 'elementor/frontend/before_enqueue_scripts', [ $this, 'tmpcoder_enqueue_frontend_scripts' ], 998 );
+
             // Promote Premium Widgets
             if ( current_user_can('administrator') ) {
               add_filter('elementor/editor/localize_settings', [$this, 'tmpcoder_promote_premium_widgets'], 100);
@@ -166,7 +169,43 @@ if ( !class_exists('TemplatesWidgetRegister') ){
             tmpcoder_get_plugin_version()
           );
 
+          wp_enqueue_style(
+            'tmpcoder-animations-link-css',
+            TMPCODER_PLUGIN_URI.'assets/grid-widgets/lib/tmpcoder-link-animations'.tmpcoder_script_suffix().'.css',
+            [],
+            tmpcoder_get_plugin_version()
+          );
+
+          wp_enqueue_style(
+              'tmpcoder-loading-animations-css',
+              TMPCODER_PLUGIN_URI.'assets/grid-widgets/lib/loading-animations'.tmpcoder_script_suffix().'.css',
+              [],
+              tmpcoder_get_plugin_version()
+            );
+
+          wp_enqueue_style( 
+            'tmpcoder-button-animations-css',
+            TMPCODER_PLUGIN_URI . 'assets/grid-widgets/lib/button-animations'.tmpcoder_script_suffix().'.css',
+            [],
+           tmpcoder_get_plugin_version() 
+          );
+
+          wp_enqueue_style(
+            'tmpcoder-animations-css',
+            TMPCODER_PLUGIN_URI . 'assets/css/lib/animations/tmpcoder-animations'.tmpcoder_script_suffix().'.css',
+            [],
+            tmpcoder_get_plugin_version()
+          );
+
+          wp_enqueue_style( 
+            'tmpcoder-text-animations-css', 
+            TMPCODER_PLUGIN_URI . 'assets/css/lib/animations/text-animations'.tmpcoder_script_suffix().'.css', 
+            [], 
+            tmpcoder_get_plugin_version() 
+          );
+
         }
+
         public function tmpcoder_enqueue_inner_panel_scripts() {
 
             wp_enqueue_script(
@@ -205,16 +244,10 @@ if ( !class_exists('TemplatesWidgetRegister') ){
         }
 
         public function enqueue_panel_styles() {
+
             wp_enqueue_style(
               'tmpcoder-addon-library-editor-css',
               TMPCODER_PLUGIN_URI . 'assets/css/admin/editor'. tmpcoder_script_suffix() .'.css',
-              [],
-              tmpcoder_get_plugin_version()
-            );
-
-            wp_register_style(
-              'tmpcoder-flipster-css',
-              TMPCODER_PLUGIN_URI . 'assets/css/lib/flipster/jquery.flipster'.tmpcoder_script_suffix().'.css',
               [],
               tmpcoder_get_plugin_version()
             );
@@ -282,42 +315,95 @@ if ( !class_exists('TemplatesWidgetRegister') ){
           wp_register_script('tmpcoder-aos-js', TMPCODER_PLUGIN_URI.'assets/js/lib/aos/aos'.tmpcoder_script_suffix().'.js', [], tmpcoder_get_plugin_version(), true);
 
           wp_register_script(
-            'tmpcoder-flipster',TMPCODER_PLUGIN_URI . 'assets/js/lib/flipster/jquery.flipster'.tmpcoder_script_suffix().'.js',
+            'tmpcoder-flipster',
+            TMPCODER_PLUGIN_URI . 'assets/js/lib/flipster/jquery.flipster'.tmpcoder_script_suffix().'.js',
             [],
             tmpcoder_get_plugin_version(),
             true
           );
+
+          wp_register_script( 
+            'tmpcoder-slick',
+             TMPCODER_PLUGIN_URI . 'assets/grid-widgets/lib/slick/slick'.tmpcoder_script_suffix().'.js',
+             [ 'jquery' ],
+             tmpcoder_get_plugin_version(),
+             true 
+          );
+
+          wp_register_script( 
+            'tmpcoder-lightgallery',
+             TMPCODER_PLUGIN_URI.'assets/grid-widgets/lib/lightgallery/lightgallery'.tmpcoder_script_suffix().'.js',
+             [ 'jquery' ],
+             tmpcoder_get_plugin_version(),
+             true 
+          );
+
+          wp_register_script( 
+            'tmpcoder-isotope',
+             TMPCODER_PLUGIN_URI.'assets/grid-widgets/lib/isotope/isotope'.tmpcoder_script_suffix().'.js',
+             [ 'jquery' ],
+             tmpcoder_get_plugin_version(),
+             true 
+          );
+          
+
         }
         
         public function tmpcoder_enqueue_scripts(){
             
             /* Enqueue the widgets style & script start */
 
-            wp_enqueue_style( 'text-animations-css', TMPCODER_PLUGIN_URI . 'assets/css/lib/animations/text-animations'.tmpcoder_script_suffix().'.css', [], tmpcoder_get_plugin_version() );
+            wp_enqueue_style( 
+              'tmpcoder-text-animations-css', 
+              TMPCODER_PLUGIN_URI . 'assets/css/lib/animations/text-animations'.tmpcoder_script_suffix().'.css', 
+              [], 
+              tmpcoder_get_plugin_version() 
+            );
 
-            wp_enqueue_style( 'tmpcoder-animations-css', TMPCODER_PLUGIN_URI . 'assets/css/lib/animations/tmpcoder-animations'.tmpcoder_script_suffix().'.css', [], tmpcoder_get_plugin_version() );
+            wp_register_style(
+              'tmpcoder-animations-css',
+              TMPCODER_PLUGIN_URI . 'assets/css/lib/animations/tmpcoder-animations'.tmpcoder_script_suffix().'.css',
+              [],
+              tmpcoder_get_plugin_version()
+            );
 
             /* Post/Product Style & Script Start */
             wp_enqueue_style( 'tmpcoder-woo-grid-css', TMPCODER_PLUGIN_URI . 'assets/grid-widgets/frontend'.tmpcoder_script_suffix().'.css', array('elementor-icons'), tmpcoder_get_plugin_version() );
             
-            wp_enqueue_style( 'tmpcoder-link-animations-css', TMPCODER_PLUGIN_URI . 'assets/grid-widgets/lib/tmpcoder-link-animations'.tmpcoder_script_suffix().'.css', [], tmpcoder_get_plugin_version() );
+            wp_register_style(
+              'tmpcoder-link-animations-css',
+              TMPCODER_PLUGIN_URI.'assets/grid-widgets/lib/tmpcoder-link-animations'.tmpcoder_script_suffix().'.css',
+              [],
+              tmpcoder_get_plugin_version()
+            );
+
+            wp_register_style(
+              'tmpcoder-button-animations-css',
+              TMPCODER_PLUGIN_URI . 'assets/grid-widgets/lib/button-animations'.tmpcoder_script_suffix().'.css',
+              [],
+              tmpcoder_get_plugin_version()
+            );
             
-            wp_enqueue_style( 'tmpcoder-button-animations-css', TMPCODER_PLUGIN_URI . 'assets/grid-widgets/lib/button-animations'.tmpcoder_script_suffix().'.css', [], tmpcoder_get_plugin_version() );
-            
-            wp_enqueue_style( 'tmpcoder-loading-animations-css', TMPCODER_PLUGIN_URI . 'assets/grid-widgets/lib/loading-animations'.tmpcoder_script_suffix().'.css', [], tmpcoder_get_plugin_version() );
+            wp_register_style(
+              'tmpcoder-loading-animations-css',
+              TMPCODER_PLUGIN_URI.'assets/grid-widgets/lib/loading-animations'.tmpcoder_script_suffix().'.css',
+              [],
+              tmpcoder_get_plugin_version()
+            );
 
-            wp_enqueue_style( 'tmpcoder-lightgallery-css', TMPCODER_PLUGIN_URI . 'assets/grid-widgets/lib/lightgallery/lightgallery'.tmpcoder_script_suffix().'.css', [], tmpcoder_get_plugin_version() );
-
-            wp_enqueue_script( 'tmpcoder-isotope-js', TMPCODER_PLUGIN_URI . 'assets/grid-widgets/lib/isotope/isotope'.tmpcoder_script_suffix().'.js', '', tmpcoder_get_plugin_version(), true );
-
-            wp_enqueue_script( 'tmpcoder-slick-js', TMPCODER_PLUGIN_URI . 'assets/grid-widgets/lib/slick/slick'.tmpcoder_script_suffix().'.js', '', tmpcoder_get_plugin_version(), true );
-
-            wp_enqueue_script( 'tmpcoder-lightgallery-js', TMPCODER_PLUGIN_URI . 'assets/grid-widgets/lib/lightgallery/lightgallery'.tmpcoder_script_suffix().'.js', [ 'jquery' ], tmpcoder_get_plugin_version(), true );
+            wp_register_style(
+              'tmpcoder-lightgallery-css',
+              TMPCODER_PLUGIN_URI . 'assets/grid-widgets/lib/lightgallery/lightgallery'.tmpcoder_script_suffix().'.css',
+              [],
+              tmpcoder_get_plugin_version()
+            );
 
             $get_reg_settins = get_option('tmpcoder_video_settings_options');
             if ( !empty($get_reg_settins) ){
                 wp_enqueue_script( 'tmpcoder-player-vimeo-js', 'https://player.vimeo.com/api/player.js', '', tmpcoder_get_plugin_version(), true );
             }
+
+            /* Enqueue the widgets style & script end */
 
             /* Post/Product Style & Script End */
 
@@ -329,7 +415,7 @@ if ( !class_exists('TemplatesWidgetRegister') ){
               tmpcoder_get_plugin_version()
             );
 
-            wp_enqueue_style(
+            wp_register_style(
               'tmpcoder-flipster-css',
               TMPCODER_PLUGIN_URI . 'assets/css/lib/flipster/jquery.flipster'.tmpcoder_script_suffix().'.css',
               [],
@@ -352,37 +438,52 @@ if ( !class_exists('TemplatesWidgetRegister') ){
               tmpcoder_get_plugin_version()
             );
             
-            wp_enqueue_style('tmpcoder-prebuild-style', TMPCODER_PLUGIN_URI . 'assets/css/admin/prebuild-style'.tmpcoder_script_suffix().'.css', array(), tmpcoder_get_plugin_version(), false  );
+            if ( \Elementor\Plugin::$instance->preview->is_preview_mode() ) {
+
+              wp_enqueue_style('tmpcoder-prebuild-style', TMPCODER_PLUGIN_URI . 'assets/css/admin/prebuild-style'.tmpcoder_script_suffix().'.css', array(), tmpcoder_get_plugin_version(), false  );
+
+            }
 
             wp_enqueue_style('tmpcoder-frontend-style', TMPCODER_PLUGIN_URI . 'assets/css/frontend'.tmpcoder_script_suffix().'.css', array(), tmpcoder_get_plugin_version(), false  );
             
-            wp_enqueue_script( 'tmpcoder-script-js', TMPCODER_PLUGIN_URI .'assets/js/script'.tmpcoder_script_suffix().'.js', array('jquery'), tmpcoder_get_plugin_version(), true );
+        }
 
-            /* Enqueue the widgets style & script end */
-            $tmpcoder_site_settings = get_option(TMPCODER_THEME_OPTION_NAME);
-            if ( empty($tmpcoder_site_settings) ){
-                $tmpcoder_site_settings = get_option('tmpcoder_global_theme_options_sastrawp');
-            }
+        public function tmpcoder_enqueue_frontend_scripts(){
 
-            wp_localize_script( 'tmpcoder-script-js', 'tmpcoder_plugin_script', array( 
-                'ajax_url' => admin_url( 'admin-ajax.php' ),
-                'resturl' => get_rest_url() . 'tmpcoderaddons/v1',
-                'nonce' => wp_create_nonce('spexo-addons'),
-                'addedToCartText' => esc_html__('was added to cart', 'sastra-essential-addons-for-elementor'),
-                'viewCart' => esc_html__('View Cart', 'sastra-essential-addons-for-elementor'),
-                'comparePageID' => get_option('tmpcoder_compare_page'),
-                'comparePageURL' => get_permalink(get_option('tmpcoder_compare_page')),
-                'wishlistPageID' => get_option('tmpcoder_wishlist_page'),
-                'wishlistPageURL' => get_permalink(get_option('tmpcoder_wishlist_page')),
-                'chooseQuantityText' => esc_html__('Please select the required number of items.', 'sastra-essential-addons-for-elementor'),
-                'site_key' => get_option('tmpcoder_recaptcha_v3_site_key'),
-                'is_admin' => current_user_can('manage_options'),
-                'input_empty' => esc_html__('Please fill out this field', 'sastra-essential-addons-for-elementor'),
-                'select_empty' => esc_html__('Nothing selected', 'sastra-essential-addons-for-elementor'),
-                'file_empty' => esc_html__('Please upload a file', 'sastra-essential-addons-for-elementor'),
-                'recaptcha_error' => esc_html__('Recaptcha Error', 'sastra-essential-addons-for-elementor'),
-                'tmpcoder_site_settings' => $tmpcoder_site_settings,
-            ));
+          wp_enqueue_script( 
+            'tmpcoder-script-js', TMPCODER_PLUGIN_URI .'assets/js/script'.tmpcoder_script_suffix().'.js', 
+            [
+              'jquery',
+              'elementor-frontend'
+            ], 
+            tmpcoder_get_plugin_version(), 
+            true 
+          );
+
+          $tmpcoder_site_settings = get_option(TMPCODER_THEME_OPTION_NAME);
+          if ( empty($tmpcoder_site_settings) ){
+              $tmpcoder_site_settings = get_option('tmpcoder_global_theme_options_sastrawp');
+          }
+
+          wp_localize_script( 'tmpcoder-script-js', 'tmpcoder_plugin_script', array( 
+              'ajax_url' => admin_url( 'admin-ajax.php' ),
+              'resturl' => get_rest_url() . 'tmpcoderaddons/v1',
+              'nonce' => wp_create_nonce('spexo-addons'),
+              'addedToCartText' => esc_html__('was added to cart', 'sastra-essential-addons-for-elementor'),
+              'viewCart' => esc_html__('View Cart', 'sastra-essential-addons-for-elementor'),
+              'comparePageID' => get_option('tmpcoder_compare_page'),
+              'comparePageURL' => get_permalink(get_option('tmpcoder_compare_page')),
+              'wishlistPageID' => get_option('tmpcoder_wishlist_page'),
+              'wishlistPageURL' => get_permalink(get_option('tmpcoder_wishlist_page')),
+              'chooseQuantityText' => esc_html__('Please select the required number of items.', 'sastra-essential-addons-for-elementor'),
+              'site_key' => get_option('tmpcoder_recaptcha_v3_site_key'),
+              'is_admin' => current_user_can('manage_options'),
+              'input_empty' => esc_html__('Please fill out this field', 'sastra-essential-addons-for-elementor'),
+              'select_empty' => esc_html__('Nothing selected', 'sastra-essential-addons-for-elementor'),
+              'file_empty' => esc_html__('Please upload a file', 'sastra-essential-addons-for-elementor'),
+              'recaptcha_error' => esc_html__('Recaptcha Error', 'sastra-essential-addons-for-elementor'),
+              'tmpcoder_site_settings' => $tmpcoder_site_settings,
+          ));
         }
 
         public function register_custom_control(){

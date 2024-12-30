@@ -3,7 +3,7 @@
  * Plugin Name: Spexo Addons for Elementor
  * Plugin URI: http://spexoaddons.com/
  * Description: Spexo Addons for Elementor is all in one solution for complete starter sites, single page templates, blocks & images. This plugin offers additional features needed by our theme.
- * Version: 1.0.11
+ * Version: 1.0.12
  * Author: TemplatesCoder
  * Author URI:  https://templatescoder.com/
  * Elementor tested up to: 3.26.0
@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 $theme = (is_object(wp_get_theme()->parent())) ? wp_get_theme()->parent() : wp_get_theme();
 
 if ( ! defined( 'TMPCODER_PLUGIN_VER' ) ) {
-    define( 'TMPCODER_PLUGIN_VER', '1.0.11' );
+    define( 'TMPCODER_PLUGIN_VER', '1.0.12' );
 }
 
 if ( ! defined( 'TMPCODER_PLUGIN_NAME' ) ) {
@@ -370,6 +370,12 @@ if ( ! function_exists( 'tmpcoder_is_sastra_addons_pro_installed' ) ) {
 function tmpcoder_plugin_activate() {
 	set_transient('tmpcoder_plugin_do_activation_redirect', true, 60);
     delete_transient('tmpcoder_latest_updates_notice_banner');
+
+    // Disable Elementor color schemes.
+    update_option('elementor_disable_color_schemes', 'yes');
+
+    // Disable Elementor typography schemes.
+    update_option('elementor_disable_typography_schemes', 'yes');
 }
 
 function tmpcoder_plugin_redirect() {

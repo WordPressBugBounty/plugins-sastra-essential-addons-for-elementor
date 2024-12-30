@@ -138,4 +138,26 @@ jQuery( document ).ready( function() {
   welcomeScreenFunctions.desabledUnusedWidget();
   welcomeScreenFunctions.setGlobalFonts();
   welcomeScreenFunctions.upgradeProNotice();
+
+    // var pluginMenuRef = jQuery('#adminmenuwrap #toplevel_page_spexo-welcome');
+    // console.log('pluginMenuRef', pluginMenuRef);
+    // pluginMenuRef.find('.wp-submenu-wrap li').each(function(){
+    //     console.log( jQuery(this).find('a').attr('href') );
+    //     if ( jQuery(this).find('a').attr('href') == welcomeScreen.global_options_link ){
+    //         jQuery(this).addClass('tmpcoder-global-options-menu');
+    //     }
+    //     else if( jQuery(this).find('a').attr('href') == welcomeScreen.widget_settings_link ){
+    //         jQuery(this).addClass('tmpcoder-widgets-settings-menu');
+    //     }
+    //     else if( jQuery(this).find('a').attr('href') == welcomeScreen.global_settings_link ){
+    //         jQuery(this).addClass('tmpcoder-intigration-settings-menu');
+    //     }
+    // });
+
+    // const $elementToMove = jQuery('.tmpcoder-global-options-menu');
+    // const $siblingElement = jQuery('.tmpcoder-intigration-settings-menu');
+    // if ( $siblingElement.length != 0 ){
+    //     $elementToMove.insertBefore($siblingElement);
+    // }
+
 });

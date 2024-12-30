@@ -95,12 +95,13 @@ class TMPCODER_Templates_Library_Sections {
                     $template_slug_for_image = !empty($data[$template_slug]['image']) ? $data[$template_slug]['image'] : TMPCODER_ADDONS_ASSETS_URL. 'images/placeholder.png';
 
 					// $template_slug 	 = $slug .'-'. $data[$i];
-					$template_class  = substr($template_slug, -4) == '-pro' && !tmpcoder_is_availble() ? ' tmpcoder-tplib-pro-wrap' : '';
+					// $template_class  = substr($template_slug, -4) == '-pro' && !tmpcoder_is_availble() ? ' tmpcoder-tplib-pro-wrap' : '';
+					$template_class  = substr($template_slug, -4) == '-pro' ? ' tmpcoder-tplib-pro-wrap' : '';
 					$template_class .= strpos($template_slug, 'woo') && !class_exists( 'WooCommerce' ) ? ' tmpcoder-tplib-woo-wrap' : '';
 
-					if (defined('TMPCODER_ADDONS_PRO_VERSION') && tmpcoder_is_availble()) {
-						$template_class .= ' tmpcoder-tplib-pro-active';
-					}
+					// if (defined('TMPCODER_ADDONS_PRO_VERSION') && tmpcoder_is_availble()) {
+					// 	$template_class .= ' tmpcoder-tplib-pro-active';
+					// }
 
 			?>
 

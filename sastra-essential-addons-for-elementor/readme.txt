@@ -1,7 +1,7 @@
 === Spexo Addons for Elementor - Free Elementor Addons, Widgets and Templates ===
 Contributors: templatescoderthemes, skywebtech
 Tags: elementor, elementor addons, elementor templates, elementor widgets, elements, widgets for elementor, elementor woocommerce builder, theme builder, header footer builder, elementor mega menu, elementor post grid, elementor product grid, addons for elementor
-Stable tag: 1.0.11
+Stable tag: 1.0.12
 Requires at least: 5.0
 Tested up to: 6.7
 Requires PHP: 7.4
@@ -372,3 +372,8 @@ Feel free to contact us anytime via [Support](https://templatescoder.com/support
 
 * Fixed: ElementorPro Plugin enqueue_styles function removed.
 * Improved: Enhanced compatibility with Elementor v3.26.0.
+
+= v1.0.12 - 2024-12-30 =
+
+* Added: New Prebuilt demo "Personal Blog"
+* Improved: Optimized the demo import process upload svg file support

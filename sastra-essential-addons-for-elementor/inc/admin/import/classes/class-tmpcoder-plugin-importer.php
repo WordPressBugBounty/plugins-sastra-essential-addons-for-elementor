@@ -329,6 +329,16 @@ if ( ! class_exists( 'TMPCODER_Importer' ) ) {
 				wp_send_json_error( __( 'The XMLReader library is not available. This library is required to import the content for the website.', 'sastra-essential-addons-for-elementor' ) );
 			}
 
+			/* Disable Upload MIME Type Support of Media Library Assistant Plugin*/
+			
+			update_option('mla_enable_upload_mimes', 'unchecked');
+
+			if ( version_compare( get_bloginfo( 'version' ), '5.1.0', '>=' ) ) {
+		    add_filter( 'wp_check_filetype_and_ext', [ $this, 'tmpcoder_tmpcoder_real_mime_types_5_1_0' ], 10, 5, 99 );
+			} else {
+			    add_filter( 'wp_check_filetype_and_ext', [ $this, 'tmpcoder_real_mime_types' ], 10, 4 );
+			}
+
 			$wxr_url = ( isset( $_REQUEST['wxr_url'] ) ) ? sanitize_text_field( wp_unslash( $_REQUEST['wxr_url'] ) ) : '';
 
 			if ( ! tmpcoder_is_valid_url( $wxr_url ) ) {
@@ -375,6 +385,56 @@ if ( ! class_exists( 'TMPCODER_Importer' ) ) {
 			} else {
 				wp_send_json_error( $xml_path['data'] );
 			}
+		}
+
+		function tmpcoder_tmpcoder_real_mime_types_5_1_0( $defaults, $file, $filename, $mimes, $real_mime ) {
+		    
+		   $ext = pathinfo( $filename, PATHINFO_EXTENSION );
+			
+			TMPCODER_Importer_Log::add('im here - '.$ext);
+
+		  	if ( 'svg' === $ext ) {
+				
+				TMPCODER_Importer_Log::add($ext);
+				TMPCODER_Importer_Log::add($defaults);
+
+	      		$defaults['ext']  = 'svg';
+	      		$defaults['type'] = 'image/svg+xml';
+	      		return $defaults;
+		  	}
+
+		    return $this->tmpcoder_real_mimes( $defaults, $filename, $mimes );
+
+		}
+
+		function tmpcoder_real_mime_types( $defaults, $file, $filename, $mimes ) {
+
+			$ext = pathinfo( $filename, PATHINFO_EXTENSION );
+			
+			TMPCODER_Importer_Log::add('im here - '.$ext);
+
+		  	if ( 'svg' === $ext ) {
+
+				TMPCODER_Importer_Log::add($ext);
+				TMPCODER_Importer_Log::add($defaults);
+
+	      		$defaults['ext']  = 'svg';
+	      		$defaults['type'] = 'image/svg+xml';
+	      		return $defaults;
+		  	}
+
+		    return $this->tmpcoder_real_mimes( $defaults, $filename, $mimes );
+		}
+
+		function tmpcoder_real_mimes( $defaults, $filename, $mimes ) {
+	        $defaults['ext']  = 'xml';
+	        $defaults['type'] = 'text/xml';
+
+	       //  $defaults['ext']  = 'svg';
+      		// $defaults['type'] = 'image/svg+xml';
+	       //  TMPCODER_Importer_Log::add($defaults);
+
+		    return $defaults;
 		}
 
 		/**

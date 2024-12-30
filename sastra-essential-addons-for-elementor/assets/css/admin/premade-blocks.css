@@ -278,7 +278,7 @@
 
 .tmpcoder-tplib-pro-wrap:not(.tmpcoder-tplib-pro-active):before {
     content: 'Pro';
-    background: #046bd2!important;
+    background: #5729d9!important;
 }
 
 @media screen and ( max-width: 1364px ) {

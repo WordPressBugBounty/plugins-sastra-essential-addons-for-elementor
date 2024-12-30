@@ -98,7 +98,6 @@ audio:not([controls]) {
 }
 
 img {
-	display: block;
 	border-style: none;
 }
 
@@ -3774,13 +3773,13 @@ div[class*="tmpcoder-sub-menu-fx"] .tmpcoder-mega-menu .tmpcoder-sub-mega-menu.t
 	transform: translateY(-50%) rotate(180deg);
 }
 
-.tmpcoder-adjust-slider-prev-arrow {
+/*.tmpcoder-adjust-slider-prev-arrow {
 	left: 1%;
 }
 
 .tmpcoder-adjust-slider-next-arrow {
 	right: 1%;
-}
+}*/
 
 .tmpcoder-grid-slider-nav-fade .tmpcoder-grid-slider-arrow-container {
 	opacity: 0;

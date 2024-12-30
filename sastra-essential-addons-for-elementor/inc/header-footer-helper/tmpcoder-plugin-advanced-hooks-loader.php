@@ -39,7 +39,21 @@ if ( ! class_exists( 'TMPCODER_Advanced_Hooks_Loader' ) ) {
 
 			add_action( 'init', array( $this, 'advanced_hooks_post_type' ) );
 			add_action( 'admin_enqueue_scripts', array( $this, 'tmpcoder_admin_enqueue_scripts_func' ) );
-			add_action( 'admin_menu', array( $this, 'register_admin_menu' ), 100 );
+			
+            // prebuild blocks menu register
+            add_action( 'admin_menu', array( $this, 'register_admin_menu' ), 90 );
+
+            // prebuild blocks menu register
+            add_action( 'admin_menu', array( $this, 'register_admin_menu_widgets' ), 100 );
+
+            // prebuild blocks menu register
+            add_action( 'admin_menu', array( $this, 'register_admin_menu_integrations' ), 100 );
+            
+            // support menu register
+            add_action( 'admin_menu', array( $this, 'register_admin_menu_support' ), 120 );
+            
+            // upgrade menu register
+            add_action( 'admin_menu', array( $this, 'register_admin_menu_upgrade' ), 130 );
 			
 			add_filter( 'manage_' . TMPCODER_THEME_ADVANCED_HOOKS_POST_TYPE . '_posts_columns', [ $this, 'set_shortcode_columns' ] );
 
@@ -167,8 +181,47 @@ if ( ! class_exists( 'TMPCODER_Advanced_Hooks_Loader' ) ) {
                     'manage_options',
                     'admin.php?page='.TMPCODER_THEME.'-welcome&tab=prebuilt-blocks'
                 );
+            }
+		}
 
-		        add_submenu_page(
+        public function register_admin_menu_widgets(){
+            if ( defined('TMPCODER_THEME') )
+            {
+                add_submenu_page(
+                    TMPCODER_THEME.'-welcome',
+                    __( 'Widget Settings', 'sastra-essential-addons-for-elementor' ),
+                    __( 'Widget Settings', 'sastra-essential-addons-for-elementor' ),
+                    'manage_options',
+                    'admin.php?page='.TMPCODER_THEME.'-welcome&tab=widgets'
+                );
+            }
+        }
+
+        public function register_admin_menu_integrations(){
+            if ( defined('TMPCODER_THEME') )
+            {
+                add_submenu_page(
+                    TMPCODER_THEME.'-welcome',
+                    __( 'Integrations', 'sastra-essential-addons-for-elementor' ),
+                    __( 'Integrations', 'sastra-essential-addons-for-elementor' ),
+                    'manage_options',
+                    'admin.php?page='.TMPCODER_THEME.'-welcome&tab=settings'
+                );
+            }
+        }
+
+        public function register_admin_menu_support() {
+            if ( defined('TMPCODER_THEME') )
+            {
+                add_submenu_page(
+		            TMPCODER_THEME.'-welcome',
+		            __( 'System Info', 'sastra-essential-addons-for-elementor' ),
+		            __( 'System Info', 'sastra-essential-addons-for-elementor' ),
+		            'manage_options',
+		            'admin.php?page='.TMPCODER_THEME.'-welcome&tab=system-info'
+		        );
+
+                add_submenu_page(
 		            TMPCODER_THEME.'-welcome',
 		            __( 'Support', 'sastra-essential-addons-for-elementor' ),
 		            __( 'Support', 'sastra-essential-addons-for-elementor' ),
@@ -176,17 +229,22 @@ if ( ! class_exists( 'TMPCODER_Advanced_Hooks_Loader' ) ) {
 		            'tmpcoder-support',
 		            TMPCODER_SUPPORT_URL
 		        );
+            }
+		}
 
-		        if (!tmpcoder_is_availble()) {
-			        add_submenu_page(
-			            TMPCODER_THEME.'-welcome',
-			            __( 'Upgrade', 'sastra-essential-addons-for-elementor' ),
-			            __( 'Upgrade', 'sastra-essential-addons-for-elementor' ),
-			            'manage_options',
-			            'tmpcoder-upgrade',
-			            'tmpcoder_addon_upgrade_page'
-			        );
-		        }
+        public function register_admin_menu_upgrade() {
+            if ( defined('TMPCODER_THEME') )
+            {
+                if ( !tmpcoder_is_availble() ){
+                    add_submenu_page(
+                        TMPCODER_THEME.'-welcome',
+                        __( 'Upgrade', 'sastra-essential-addons-for-elementor' ),
+                        __( 'Upgrade', 'sastra-essential-addons-for-elementor' ),
+                        'manage_options',
+                        'tmpcoder-upgrade',
+                        'tmpcoder_addon_upgrade_page'
+                    );
+                }
             }
 		}
 

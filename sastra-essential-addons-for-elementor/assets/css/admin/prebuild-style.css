@@ -472,9 +472,9 @@
     background: #5729d9;
 }
 
-.tmpcoder-tplib-sidebar[data-license="premium"] + .tmpcoder-tplib-template-gird .tmpcoder-tplib-template-wrap:before {
+/*.tmpcoder-tplib-sidebar[data-license="premium"] + .tmpcoder-tplib-template-gird .tmpcoder-tplib-template-wrap:before {
     display: none !important;
-}
+}*/
 
 @media screen and ( max-width: 1364px ) {
     .tmpcoder-tplib-template-wrap {

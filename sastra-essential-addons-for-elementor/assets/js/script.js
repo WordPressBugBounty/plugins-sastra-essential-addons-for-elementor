@@ -3817,13 +3817,27 @@
 
                 button.css('display', 'none');
 
-                if ( 'sidebar' === button.data('atc-popup') ) {
-                    if ( $('.tmpcoder-mini-cart-toggle-wrap a').length ) {
-                        $('.tmpcoder-mini-cart-toggle-wrap a').each(function() {
-                            if ( 'none' === $(this).closest('.tmpcoder-mini-cart-inner').find('.tmpcoder-mini-cart').css('display') ) {
-                                $(this).trigger('click');
-                            }
-                        });
+                if ('sidebar' === button.data('atc-popup')) {
+                    // Check if the sticky header is replace with a new header
+                    if ($('.tmpcoder-sticky-replace-header-yes').length) {
+                        // Determine whether the current display is the original header or the replaced header
+                        if (!$('.tmpcoder-sticky-section-yes').hasClass('tmpcoder-visibility-hidden')) {
+                            // Open the mini cart/sidebar from the original sticky header
+                            $('.tmpcoder-sticky-section-yes .tmpcoder-mini-cart-toggle-wrap a').trigger('click');
+                        } else {
+                            // Open the mini cart/sidebar from the replaced header
+                            $('.tmpcoder-hidden-header .tmpcoder-mini-cart-toggle-wrap a').trigger('click');
+                        }
+                    } else {
+                        // Check if the mini cart toggle is available
+                        if ($('.tmpcoder-mini-cart-toggle-wrap a').length) {
+                            // Iterate over each toggle to find and open the mini cart if it's hidden
+                            $('.tmpcoder-mini-cart-toggle-wrap a').each(function() {
+                                if ('none' === $(this).closest('.tmpcoder-mini-cart-inner').find('.tmpcoder-mini-cart').css('display')) {
+                                    $(this).trigger('click');
+                                }
+                            });
+                        }
                     }
                 } else if ( 'popup' === button.data('atc-popup') ) {
                     var popupItem = button.closest('.tmpcoder-grid-item'),
@@ -7682,27 +7696,26 @@
 
 // Resize Function - Debounce
 (function($,sr){
+    var debounce = function (func, threshold, execAsap) {
+        var timeout;
 
-  var debounce = function (func, threshold, execAsap) {
-      var timeout;
+        return function debounced () {
+            var obj = this, args = arguments;
+            function delayed () {
+                if (!execAsap)
+                    func.apply(obj, args);
+                timeout = null;
+            };
 
-      return function debounced () {
-          var obj = this, args = arguments;
-          function delayed () {
-              if (!execAsap)
-                  func.apply(obj, args);
-              timeout = null;
-          };
+            if (timeout)
+                clearTimeout(timeout);
+            else if (execAsap)
+                func.apply(obj, args);
 
-          if (timeout)
-              clearTimeout(timeout);
-          else if (execAsap)
-              func.apply(obj, args);
-
-          timeout = setTimeout(delayed, threshold || 100);
-      };
-  }
-  // smartresize 
-  jQuery.fn[sr] = function(fn){  return fn ? this.bind('resize', debounce(fn)) : this.trigger(sr); };
+            timeout = setTimeout(delayed, threshold || 100);
+        };
+    }
+    // smartresize 
+    jQuery.fn[sr] = function(fn){  return fn ? this.bind('resize', debounce(fn)) : this.trigger(sr); };
 })(jQuery,'smartresize');
 

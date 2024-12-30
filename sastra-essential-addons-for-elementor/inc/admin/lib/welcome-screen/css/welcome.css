@@ -547,7 +547,7 @@
 }
 
 .epsilon-framework-notice .epsilon-author-logo {
-	max-width: 100px;
+    max-width: 100px;
 }
 
 .tmpcoder-reg-tabs .heading i {
@@ -645,3 +645,55 @@
   margin: 0.5em 0px 1em 0 !important;
   font-size: 14px !important;
 }
+
+/*====== Prebuilt Websites lock section - START ======*/
+.tmpcoder-lock-pre-websites .tmpcoder-setting-tooltip {
+    width: unset;
+    margin-top: 24px;
+    margin-right: 24px;
+}
+
+.tmpcoder-lock-pre-websites .tmpcoder-setting-tooltip a span {
+    font-size: 28px;
+    line-height: 28px;
+    position: unset;
+    transform: unset;
+    margin: 0;
+    padding: 0;
+    width: unset;
+    height: unset;
+}
+
+.tmpcoder-lock-pre-websites .tmpcoder-setting-tooltip a {
+    background-color: unset;
+    padding: 0;
+    height: 28px;
+    width: 28px;
+}
+
+.tmpcoder-lock-pre-websites .tmpcoder-setting-tooltip .tmpcoder-setting-tooltip-text {
+    top: unset;
+    bottom: calc(100% + 25px);
+    left: 50%;
+    text-align: center;
+    transform: translateX(-50%);
+}
+.tmpcoder-lock-pre-websites .tmpcoder-setting-tooltip a span.dashicons-unlock {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.tmpcoder-lock-pre-websites .tmpcoder-setting-tooltip:hover .tmpcoder-setting-tooltip-text {
+    bottom: calc(100% + 10px);
+    top: unset;
+}
+
+.tmpcoder-lock-pre-websites .tmpcoder-setting {
+    margin-bottom: 0;
+}
+
+.tmpcoder-lock-pre-websites .common-box-shadow {
+    background-color: #0000001c;
+}
+/*====== Prebuilt Websites lock section - END ======*/

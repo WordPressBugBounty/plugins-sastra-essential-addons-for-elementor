@@ -7,7 +7,7 @@ function tmpcoder_add_import_demo_menu() {
     add_submenu_page( TMPCODER_THEME.'-welcome', 'Prebuilt Websites', 'Prebuilt Websites', 'manage_options', 'tmpcoder-import-demo', 'tmpcoder_import_demo_list' );
 }
 
-add_action( 'admin_menu', 'tmpcoder_add_import_demo_menu' );
+add_action( 'admin_menu', 'tmpcoder_add_import_demo_menu', 95 );
 
 function tmpcoder_import_demo_list(){
 
@@ -87,7 +87,7 @@ function tmpcoder_import_demo_list(){
                 }
 
                 ?>
-                <div class="col plugin_box grid-item" data-price="<?php echo esc_attr($is_price); ?>" data-title="<?php echo esc_attr(strtolower($value['name'])) ?>">
+                <div class="col plugin_box grid-item" data-price="<?php echo esc_attr($is_price); ?>" data-title="<?php echo esc_attr(strtolower($value['tags'])) ?>">
                     <?php if ( isset($value['new']) ){ ?>
                     <img src="<?php echo esc_url( TMPCODER_PLUGIN_URI .'/assets/images/new-tag-icon.png' ); ?>" alt="" loading="lazy" class="new-tag-icon" />
                     <?php } ?>

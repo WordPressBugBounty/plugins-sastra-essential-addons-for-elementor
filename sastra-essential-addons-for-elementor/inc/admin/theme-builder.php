@@ -8,10 +8,10 @@ require_once (TMPCODER_PLUGIN_DIR . 'inc/admin/includes/tmpcoder-templates-loop.
 
 // Register Menus
 function tmpcoder_addons_add_theme_builder_menu() {
-	add_submenu_page( TMPCODER_THEME.'-welcome', 'Site Builder', 'Site Builder', 'manage_options', 'spexo-welcome&tab=site-builder', 'tmpcoder_addons_theme_builder_page' );
+	add_submenu_page( TMPCODER_THEME.'-welcome', 'Site Builder', 'Site Builder', 'manage_options', 'spexo-welcome&tab=site-builder', 'tmpcoder_addons_theme_builder_page', 20 );
 }
 
-add_action( 'admin_menu', 'tmpcoder_addons_add_theme_builder_menu' );
+add_action( 'admin_menu', 'tmpcoder_addons_add_theme_builder_menu', 99 );
 
 function tmpcoder_addons_theme_builder_page() {
  

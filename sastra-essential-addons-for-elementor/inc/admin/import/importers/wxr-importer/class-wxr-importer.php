@@ -894,9 +894,10 @@ if ( ! class_exists( 'TMPCODER_Wxr_Importer' ) && class_exists( 'WP_Importer' ) 
 				$this->logger->error(
 					sprintf(
 						/* translators: %1$s is the post title, %2$s is post type. */
-						__( 'Failed to import "%1$s" (%2$s)', 'sastra-essential-addons-for-elementor' ),
+						__( 'Failed to import "%1$s" (%2$s %3$s)', 'sastra-essential-addons-for-elementor' ),
 						$data['post_title'],
-						$post_type_object->labels->singular_name
+						$post_type_object->labels->singular_name,
+						$post_id->get_error_message()
 					)
 				);
 				$this->logger->debug( $post_id->get_error_message() );
@@ -917,7 +918,7 @@ if ( ! class_exists( 'TMPCODER_Wxr_Importer' ) && class_exists( 'WP_Importer' ) 
 				stick_post( $post_id );
 			}
             // Map pre-import ID to local ID.
-			$this->processed_posts[ intval( $post['post_id'] ) ] = (int) $post_id;
+			$this->processed_posts[ intval( $data['post_id'] ) ] = (int) $post_id;
 			// map pre-import ID to local ID.
 			$this->mapping['post'][ $original_id ] = (int) $post_id;
 			if ( $requires_remapping ) {
@@ -1807,10 +1808,12 @@ if ( ! class_exists( 'TMPCODER_Wxr_Importer' ) && class_exists( 'WP_Importer' ) 
 			}
 			$filesize = filesize( $upload['file'] );
 			$headers  = wp_remote_retrieve_headers( $response );
-			if ( isset( $headers['content-length'] ) && $filesize !== (int) $headers['content-length'] ) {
+
+			if ( !isset( $headers['content-encoding'] ) && isset( $headers['content-length'] ) && $filesize !== (int) $headers['content-length'] ) {
 				wp_delete_file( $upload['file'] );
 				return new WP_Error( 'import_file_error', __( 'Remote file is incorrect size', 'sastra-essential-addons-for-elementor' ) );
 			}
+
 			if ( 0 === $filesize ) {
 				wp_delete_file( $upload['file'] );
 				return new WP_Error( 'import_file_error', __( 'Zero size file downloaded', 'sastra-essential-addons-for-elementor' ) );

@@ -8,7 +8,7 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 if ( ! defined( 'WPINC' ) ) {
-	die;
+    die;
 }
 
 /**
@@ -26,8 +26,10 @@ $featuredList = array();
         'icon' => 'prebuilt-block.svg',
         'action_link' => admin_url('admin.php?page=spexo-welcome&tab=prebuilt-blocks'),
         'description' => __( 'Various ready to use blocks to speed up your desiging process.', 'sastra-essential-addons-for-elementor' ),
+        'action_link_text' => 'Read More',
         'target' => '',
         'extra_class' => '',
+        'is_lock' => false,
     );
     array_push($featuredList, $featuredArr);
 
@@ -36,9 +38,23 @@ $featuredList = array();
             'title' => __( 'Prebuilt Websites', 'sastra-essential-addons-for-elementor' ),
             'icon' => 'prebuilt-websites.svg',
             'action_link' => admin_url('admin.php?page=tmpcoder-import-demo'),
-            'description' => __( 'Instantly launch your site with customizable using single click import.', 'sastra-essential-addons-for-elementor' ),
+            'description' => __( 'Launch your site instantly with prebuilt layouts and one-click import.', 'sastra-essential-addons-for-elementor' ),
+            'action_link_text' => 'Read More',
             'target' => '',
             'extra_class' => '',
+            'is_lock' => false,
+        );
+        array_push($featuredList, $featuredArr);
+    } else {
+        $featuredArr = array(
+            'title' => __( 'Prebuilt Websites', 'sastra-essential-addons-for-elementor' ),
+            'icon' => 'prebuilt-websites.svg',
+            'action_link' => admin_url('theme-install.php?search=spexo'),
+            'description' => __( 'Install Spexo theme and get prebuilt website.', 'sastra-essential-addons-for-elementor' ),
+            'action_link_text' => 'Get Spexo Theme',
+            'target' => '',
+            'extra_class' => 'tmpcoder-lock-pre-websites',
+            'is_lock' => true,
         );
         array_push($featuredList, $featuredArr);
     }
@@ -48,8 +64,10 @@ $featuredList = array();
         'icon' => 'site-builder.svg',
         'action_link' => admin_url('admin.php?page=spexo-welcome&tab=site-builder'),
         'description' => __( 'Customize your global sections and pages as per your requirements.', 'sastra-essential-addons-for-elementor' ),
+        'action_link_text' => 'Read More',
         'target' => '',
         'extra_class' => '',
+        'is_lock' => false,
     );
     array_push($featuredList, $featuredArr);
 
@@ -57,9 +75,11 @@ $featuredList = array();
         'title' => __( 'Widget Settings', 'sastra-essential-addons-for-elementor' ),
         'icon' => 'widget-setting.svg',
         'action_link' => admin_url('admin.php?page=spexo-welcome&tab=widgets'),
-        'description' => __( 'Turn off your widgets to optimize your website speed.', 'sastra-essential-addons-for-elementor' ),
+        'description' => __( 'Turn off unused widgets to optimize your website speed.', 'sastra-essential-addons-for-elementor' ),
+        'action_link_text' => 'Read More',
         'target' => '',
         'extra_class' => ( function_exists('get_template') && in_array(get_template(), array('sastrawp', 'spexo')) ? 'set-box' : ''),
+        'is_lock' => false,
     );
     array_push($featuredList, $featuredArr);
 
@@ -69,8 +89,10 @@ $featuredList = array();
             'icon' => 'global-setting.svg',
             'action_link' => admin_url('admin.php?page=sastra_addon_global_settings'),
             'description' => __( 'Control all site-wide settings easily with Global Options.', 'sastra-essential-addons-for-elementor' ),
+            'action_link_text' => 'Read More',
             'target' => '',
             'extra_class' => 'set-box',
+            'is_lock' => false,
         );
         array_push($featuredList, $featuredArr);
     }
@@ -81,8 +103,10 @@ $featuredList = array();
             'icon' => 'global-setting.svg',
             'action_link' => admin_url('admin.php?page=spexo_addons_global_settings'),
             'description' => __( 'Control all site-wide settings easily with Global Options.', 'sastra-essential-addons-for-elementor' ),
+            'action_link_text' => 'Read More',
             'target' => '',
             'extra_class' => 'set-box',
+            'is_lock' => false,
         );
         array_push($featuredList, $featuredArr);
     }
@@ -117,18 +141,45 @@ $featuredList = array();
                     <?php
                     if ( !empty( $featuredList ) ){
                         foreach ($featuredList as $key => $featuredItem) {
-                            ?>
-                            <div class="col-xl-4 <?php echo esc_attr($featuredItem['extra_class']) ?>">
-                                <div class="common-box-shadow">
-                                    <a target="<?php echo esc_attr($featuredItem['target']) ?>" href="<?php echo esc_url( $featuredItem['action_link'] ); ?>">
-                                        <div class="h-icon"><img src="<?php echo esc_url(TMPCODER_ADDONS_ASSETS_URL.'images/'.$featuredItem['icon']); ?>"></div>
-                                        <h3><?php echo esc_html($featuredItem['title']); ?></h3>
-                                        <p><?php echo esc_html($featuredItem['description']); ?></p>
-                                        <span class="read-more"><?php echo esc_html__( 'Read More', 'sastra-essential-addons-for-elementor' ); ?></span>
-                                    </a>
-                                </div>     
-                            </div>
-                            <?php 
+                            if ( $featuredItem['is_lock'] != true ) {
+                                ?>
+                                <div class="col-xl-4 <?php echo esc_attr($featuredItem['extra_class']) ?>">
+                                    <div class="common-box-shadow">
+                                        <a target="<?php echo esc_attr($featuredItem['target']) ?>" href="<?php echo esc_url( $featuredItem['action_link'] ); ?>">
+                                            <div class="h-icon"><img src="<?php echo esc_url(TMPCODER_ADDONS_ASSETS_URL.'images/'.$featuredItem['icon']); ?>"></div>
+                                            <h3><?php echo esc_html($featuredItem['title']); ?></h3>
+                                            <p><?php echo esc_html($featuredItem['description']); ?></p>
+                                            <!-- <span class="read-more"><?php echo esc_html__( 'Read More', 'sastra-essential-addons-for-elementor' ); ?></span> -->
+                                            <span class="read-more"><?php echo esc_html($featuredItem['action_link_text']); ?></span>
+                                        </a>
+                                    </div>     
+                                </div>
+                                <?php 
+                            } else {
+                                ?>
+                                <div class="col-xl-4 <?php echo esc_attr($featuredItem['extra_class']) ?>">
+                                    <div class="tmpcoder-settings-group-woo common-box-shadow">
+                                        <div class="tmpcoder-settings-group-tooltip">
+                                            <div class="tmpcoder-setting">
+                                                <a target="<?php echo esc_attr($featuredItem['target']) ?>" href="<?php echo esc_url( $featuredItem['action_link'] ); ?>">
+                                                    <div class="h-icon"><img src="<?php echo esc_url(TMPCODER_ADDONS_ASSETS_URL.'images/'.$featuredItem['icon']); ?>"></div>
+                                                    <h3><?php echo esc_html($featuredItem['title']); ?></h3>
+                                                    <p><?php echo esc_html($featuredItem['description']); ?></p>
+                                                    <span class="read-more"><?php echo esc_html($featuredItem['action_link_text']); ?></span>
+                                                </a>
+                                                <div class="tmpcoder-setting-tooltip">
+                                                    <a href="<?php echo esc_url( $featuredItem['action_link'] ); ?>" class="tmpcoder-setting-tooltip-link" target="<?php echo esc_attr($featuredItem['target']) ?>">
+                                                        <span class="dashicons dashicons-lock"></span>
+                                                        <span class="dashicons dashicons-unlock"></span>
+                                                    </a>
+                                                    <div class="tmpcoder-setting-tooltip-text"><?php esc_html_e( 'Get Spexo Theme', 'sastra-essential-addons-for-elementor' ); ?></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <?php
+                            }
                         }
                     }
                     ?>
@@ -137,6 +188,14 @@ $featuredList = array();
         </div>
 
         <div class="col-xl-4 help-box-main">
+            <?php /*
+            <div class="common-box-shadow help-box">
+                <a href="<?php echo esc_url(admin_url('admin.php?page=spexo-welcome&tab=system-info')); ?>" target="_blank">
+                    <h3><img src="<?php echo esc_url(TMPCODER_ADDONS_ASSETS_URL.'images/system-info-tab.svg'); ?>"><span><?php echo esc_html__( 'System Info', 'sastra-essential-addons-for-elementor' ); ?></span></h3>
+                    <p> <?php echo esc_html__( 'Comprehensive System Information for Plugin Compatibility and Performance', 'sastra-essential-addons-for-elementor' ); ?> </p>
+                </a>
+            </div>*/
+            ?>
             <div class="common-box-shadow help-box">
                 <a href="<?php echo esc_url(TMPCODER_RATING_LINK); ?>" target="_blank">
                     <h3><img src="<?php echo esc_url(TMPCODER_ADDONS_ASSETS_URL.'images/rate-us.svg'); ?>"><span><?php echo esc_html__( 'Rate Us', 'sastra-essential-addons-for-elementor' ); ?></span></h3>

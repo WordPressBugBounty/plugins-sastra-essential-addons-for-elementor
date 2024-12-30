@@ -132,11 +132,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 						$preview_type 	= $blocks[$module_slug][$template_slug]['type'];
 						$preview_url 	= $blocks[$module_slug][$template_slug]['url'];
 
-						$template_class = ( substr($template_slug, -4) == '-pro' && !tmpcoder_is_availble() ) ? ' tmpcoder-tplib-pro-wrap' : '';
+						//$template_class = ( substr($template_slug, -4) == '-pro' && !tmpcoder_is_availble() ) ? ' tmpcoder-tplib-pro-wrap' : '';
+						$template_class = ( substr($template_slug, -4) == '-pro' ) ? ' tmpcoder-tplib-pro-wrap' : '';
 
-						if (defined('TMPCODER_ADDONS_PRO_VERSION') && tmpcoder_is_availble()) {
-							$template_class .= ' tmpcoder-tplib-pro-active';
-						}
+						// if (defined('TMPCODER_ADDONS_PRO_VERSION') && tmpcoder_is_availble()) {
+						// 	$template_class .= ' tmpcoder-tplib-pro-active';
+						// }
 
 						$template_slug_for_image = !empty($blocks[$module_slug][$template_slug]['image']) ? $blocks[$module_slug][$template_slug]['image'] : TMPCODER_ADDONS_ASSETS_URL. 'images/placeholder.png';
 

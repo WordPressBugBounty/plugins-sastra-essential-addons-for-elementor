@@ -267,6 +267,9 @@ class TMPCODER_Welcome_Screen {
 					'activating_string'        => esc_html__( 'Activating', 'sastra-essential-addons-for-elementor' ),
 					'body_class'               => 'appearance_page_' . $this->theme_slug . '-welcome',
 					'no_actions'               => esc_html__( 'Hooray! There are no required actions for you right now.', 'sastra-essential-addons-for-elementor' ),
+                    'global_options_link' => esc_url('admin.php?page=spexo_addons_global_settings'),
+                    'widget_settings_link' => esc_url('admin.php?page='.TMPCODER_THEME.'-welcome&tab=widgets'),
+                    'global_settings_link' => esc_url('admin.php?page='.TMPCODER_THEME.'-welcome&tab=settings'),
 				)
 			);
 		}
@@ -323,7 +326,7 @@ class TMPCODER_Welcome_Screen {
 		}
 		
 		if (did_action( 'elementor/loaded' )) {
-			add_menu_page('Spexo Addons', 'Spexo Addons', 'manage_options', 'spexo-welcome',[$this,'render_welcome_screen'],TMPCODER_ADDONS_ASSETS_URL.'images/logo-icon.svg','58.6' );
+			add_menu_page('Spexo Addons', 'Spexo Addons', 'manage_options', 'spexo-welcome',[$this,'render_welcome_screen'],TMPCODER_ADDONS_ASSETS_URL.'images/logo-icon.svg', 30 );
 		}
 	}
 
@@ -379,7 +382,12 @@ class TMPCODER_Welcome_Screen {
 
 					<h2 class="nav-tab-wrapper wp-clearfix">
 						
-						<?php foreach ( $this->sections as $id => $section ) { ?>
+						<?php foreach ( $this->sections as $id => $section ) { 
+
+                            if ( in_array($id, array('system-info')) ){
+                                continue;
+                            }
+                            ?>
 							
 							<?php $class = $id === $tab ? 'nav-tab-active' : ''; ?>
 
@@ -529,6 +537,13 @@ class TMPCODER_Welcome_Screen {
 				$arr[ $id ] = $props;
 			}
 		}
+
+        $arr['license'] = array(
+            'id'    => 'license',
+            'icon'    => 'license.svg',
+            'url'   => admin_url('admin.php?page=tmpcoder-license-activation'),
+            'label' => __( 'License', 'sastra-essential-addons-for-elementor' )
+        );
 
 		$arr = apply_filters('tmpcoder_add_options_tabs', $arr);
 

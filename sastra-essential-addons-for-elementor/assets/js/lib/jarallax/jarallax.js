@@ -663,13 +663,13 @@
       const styles = {};
 
       // calculate parallax helping variables
-      const beforeTop = Math.max(0, contT);
-      const beforeTopEnd = Math.max(0, contH + contT);
-      const afterTop = Math.max(0, -contT);
-      const beforeBottom = Math.max(0, contT + contH - wndH);
-      const beforeBottomEnd = Math.max(0, contH - (contT + contH - wndH));
-      const afterBottom = Math.max(0, -contT + wndH - contH);
-      const fromViewportCenter = 1 - 2 * ((wndH - contT) / (wndH + contH));
+        const beforeTop = Math.max(0, contT);
+        const beforeTopEnd = Math.max(0, contH + contT);
+        const afterTop = Math.max(0, -contT);
+        const beforeBottom = Math.max(0, contT + contH - wndH);
+        const beforeBottomEnd = Math.max(0, contH - (contT + contH - wndH));
+        const afterBottom = Math.max(0, -contT + wndH - contH);
+        const fromViewportCenter = 1 - 2 * ((wndH - contT) / (wndH + contH));
 
       // calculate on how percent of section is visible
       let visiblePercent = 1;
