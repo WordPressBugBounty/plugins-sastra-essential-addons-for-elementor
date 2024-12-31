@@ -1,18 +1,18 @@
 === Spexo Addons for Elementor - Free Elementor Addons, Widgets and Templates ===
 Contributors: templatescoderthemes, skywebtech
-Tags: elementor, elementor addons, elementor templates, elementor widgets, elements, widgets for elementor, elementor woocommerce builder, theme builder, header footer builder, elementor mega menu, elementor post grid, elementor product grid, addons for elementor
-Stable tag: 1.0.12
+Tags: elementor, elementor addons, elementor templates, elementor widgets, woocommerce elementor, widgets for elementor
+Stable tag: 1.0.13
 Requires at least: 5.0
 Tested up to: 6.7
 Requires PHP: 7.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-Spexo Addons comes with Best 80+ widgets and extensions to extend the power of Elementor Page Builder.
+Spexo comes with 100+ best elementor addons and elementor template kit. All starter kit supports Astra, Spexo, Storefront, OceanWP, GeneratePress and more.
 
 == Description ==
 
-**Spexo Addons** is the easy to use and most flexible addon for [Elementor](https://wordpress.org/plugins/elementor/) page builder plugin. We aim to offer you the tools necessary to streamline and simplify the website development process. The most significant advantage is that you can develop anything **without writing a single line of code**. Whether you are a developer or not, our easy to use prebuilt widgets, extensions and builders will make your life easy and you can develop a beautiful, smooth and faster website.
+**Spexo Addons** (formerly Sastra Addons) is the easy to use and most flexible addon for [Elementor](https://wordpress.org/plugins/elementor/) page builder plugin. We aim to offer you the tools necessary to streamline and simplify the website development process. The most significant advantage is that you can develop anything **without writing a single line of code**. Whether you are a developer or not, our easy to use prebuilt widgets, extensions and builders will make your life easy and you can develop a beautiful, smooth and faster website.
 
 ##Spexo Addons for Elementor - comes with 80+ Best Free Elementor widgets, 200+ creative blocks & element pack, Ready to use prebuilt websites & elementor templates, Free addons for Elementor, Elementor Mega Menu Builder, Prebuilt Widgets, Blocks & Extensions##
 
@@ -121,15 +121,10 @@ Our Lottie animation widget gives you the ability to easily add Lottie Animation
 - [Business Corporate](https://spexoaddons.com/preview/business-corporate-elementor-template/)
 - [Business Startup](https://spexoaddons.com/preview/business-startup-elementor-template/)
 - [Cleaning Service](https://spexoaddons.com/preview/cleaning-service-elementor-template/)
-- [Clothes Store](https://spexoaddons.com/preview/clothes-store-elementor-template/)
 - [Consultancy Firm](https://spexoaddons.com/preview/consultancy-firm-elementor-template/)
 - [Design Agency](https://spexoaddons.com/preview/design-agency-elementor-template/)
 - [Digital Agency](https://spexoaddons.com/preview/digital-agency-elementor-template/)
-- [Electronics Store](https://spexoaddons.com/preview/electronics-store-elementor-template/)
-- [Fashion eCommerce](https://spexoaddons.com/preview/fashion-ecommerce-elementor-template/)
-- [Fashion Store](https://spexoaddons.com/preview/fashion-store-elementor-template/)
 - [Fitness](https://spexoaddons.com/preview/fitness-elementor-template/)
-- [Furniture Store](https://spexoaddons.com/preview/furniture-store-elementor-template/)
 - [GYM](https://spexoaddons.com/preview/gym-elementor-template/)
 - [Industrial](https://spexoaddons.com/preview/industrial-elementor-template/)
 - [Magazine](https://spexoaddons.com/preview/magazine-elementor-template/)
@@ -142,12 +137,34 @@ Our Lottie animation widget gives you the ability to easily add Lottie Animation
 - [Single Property](https://spexoaddons.com/preview/single-property-elementor-template/)
 - [Travel Agency](https://spexoaddons.com/preview/travel-agency-elementor-template/)
 - [Yoga Studio](https://spexoaddons.com/preview/yoga-studio-elementor-template/)
+- [Freelancer Portfolio](https://spexoaddons.com/preview/freelancer-portfolio-elementor-template/)
+- [Tech Company Elementor Template](https://spexoaddons.com/preview/tech-company-elementor-template/)
+- [Spa Elementor Template](https://spexoaddons.com/preview/spa-elementor-template/)
+- [Photography Portfolio](https://spexoaddons.com/preview/photography-portfolio-elementor-template/)
+- [Personal Blog Template](https://spexoaddons.com/preview/personal-blog-elementor-template/)
+
+### [WooCommerce Elementor Themes & Templates Kits](https://spexoaddons.com/spexo-elementor-theme/):
+- [Furniture Store](https://spexoaddons.com/preview/furniture-store-elementor-template/)
+- [Fashion eCommerce](https://spexoaddons.com/preview/fashion-ecommerce-elementor-template/)
+- [Fashion Store](https://spexoaddons.com/preview/fashion-store-elementor-template/)
+- [Cosmetic eCommerce Store](https://spexoaddons.com/preview/cosmetic-elementor-template/)
+- [Organic Store](https://spexoaddons.com/preview/organic-store-elementor-template/)
+- [Jewellery Shop](https://spexoaddons.com/preview/jewellery-shop-elementor-template/)
+- [Trendy Fashion eCommerce Store](https://spexoaddons.com/preview/trendy-fashion-elementor-template/)
+- [Fashion Shop](https://spexoaddons.com/preview/fashion-shop-elementor-template/)
+- [Clothing Store](https://spexoaddons.com/preview/clothing-store-elementor-template/)
+- [Mega Store eCommerce Template](https://spexoaddons.com/preview/mega-store-elementor-template/)
+- [Restaurant Elementor Template](https://spexoaddons.com/preview/restaurant-elementor-template/)
+- [Craft Beer](https://spexoaddons.com/preview/craft-beer-elementor-template/)
+- [Clothes Store](https://spexoaddons.com/preview/clothes-store-elementor-template/)
+- [Electronics Store](https://spexoaddons.com/preview/electronics-store-elementor-template/)
+- [Furniture Shop eCommerce Template](https://spexoaddons.com/preview/furniture-shop-elementor-template/)
 
 This plugin works best with [Spexo Theme](https://spexoaddons.com/spexo-elementor-theme/) for pre-built websites.
 
 ### Spexo Elementor Widgets
 
-Spexo Addons for Elementor offers powerful tools. These tools simplify building websites. Users can create without coding. The features help both developers and non-developers.
+Spexo is a popular Elementor addon with ready templates, advanced widgets, template kits & WooCommerce builders. Spexo Addons for Elementor offers powerful tools. These tools simplify building websites. Users can create without coding. The features help both developers and non-developers. Spexo Addons plugin works like ElementsKit, Essential Addons for Elementor, Royal Elementor Addons, Premium Addons, Happy Addons, PowerPack Addons, Unlimited Elements, Qi Addons, Ultimate Addons for Elementor, Spectra etc. Spexo plugin works with multiple WordPress themes like Spexo Theme, Astra, Storefront, OceanWP, Royal Theme and GeneratePress.
 
 ### Elementor mega menu widget
 [Elementor Mega Menu Widget](https://spexoaddons.com/widgets/elementor-mega-menu-widget/) builds customizable menus. It supports off-canvas mobile menus. The Nav Menu Widget customizes WordPress menus. It changes the look and feel without code. You can create mobile menus and dropdowns. It also supports hamburger menus and hover effects. This widget makes your menu responsive and unique. It’s a powerful tool for modern websites.
@@ -194,7 +211,7 @@ Elementor Parallax Background effect creates depth. It offers a smooth scrolling
 ### Caldera Forms styler for elementor
 [Elementor Caldera Forms Styler](https://spexoaddons.com/widgets/caldera-forms-styler-elementor/) customizes Caldera forms. You can adjust spacing and colors for better design. Caldera Forms Styler for Elementor allows you to customize Caldera Forms through Elementor. Adjust form elements, colors, and spacing to ensure your forms fit beautifully into your website design.
 ### Elementor templates & themes
-[Spexo Themes](https://spexoaddons.com/spexo-elementor-theme/) offer pre-built designs. These templates fit various industries. You can build professional sites fast. Elementor Templates & Themes collection offers pre-built, customizable templates for various industries. Whether you're building a personal blog, eCommerce store, or portfolio, these templates speed up development and help you create a professional website in minutes.
+[Spexo Themes](https://spexoaddons.com/spexo-elementor-theme/) offer pre-built designs. These templates fit various industries. You can build professional sites fast. Elementor Templates & Themes collection offers pre-built, customizable starter templates for various industries. Whether you're building a personal blog, eCommerce store, or portfolio, these templates speed up development. Lightweight Starter sites can help you to create a professional website in minutes.
 
 
 
@@ -213,7 +230,7 @@ Elementor Parallax Background effect creates depth. It offers a smooth scrolling
 Widgets and other features will be added with each major update based on popular demand. We are really trying to make this plugin one of the best in the repository.
 
 🏆 **BACKED BY A TRUSTED TEAM**
-**Spexo Addons for Elementor** is powered by [TemplatesCoder](https://templatescoder.com/), a dedicated WordPress product company, trusted by various happy users. TemplatesCoder is a division of [SkyWebTech](https://www.skywebtech.net/), An award winning agency with 15+ years of development experience in small to large scale projects.
+**Spexo Addons for Elementor** (formerly Sastra Essential Addons) is powered by [TemplatesCoder](https://templatescoder.com/), a dedicated WordPress product company, trusted by various happy users. TemplatesCoder is a division of [SkyWebTech](https://www.skywebtech.net/), An award winning agency with 15+ years of development experience in small to large scale projects.
 
 == Installation ==
 
@@ -240,7 +257,7 @@ It's due to your server PHP settings. Increase your server PHP memory limit from
 
 = Is it required to install the Spexo theme? =
 
-We recommend using [Spexo](https://wordpress.org/themes/spexo/) theme to utilize the full potential of the plugin but it works with other Elementor supported themes as well. Also, you need to install the Spexo theme to install a prebuilt websites.
+We recommend using [Spexo](https://wordpress.org/themes/spexo/) theme to utilize the full potential of the plugin but it works with other Elementor supported themes as well. Also, you need to install the Spexo theme to install prebuilt websites.
 
 = Does it work with any theme? =
 
@@ -377,3 +394,17 @@ Feel free to contact us anytime via [Support](https://templatescoder.com/support
 
 * Added: New Prebuilt demo "Personal Blog"
 * Improved: Optimized the demo import process upload svg file support
+
+= v1.0.13 - 2024-12-31 =
+
+* Added: Craft Beer Elementor Template - [Craft Beer](https://spexoaddons.com/preview/craft-beer-elementor-template/)
+* Added: Furniture Shop Elementor Template - [Furniture Shop](https://spexoaddons.com/preview/furniture-shop-elementor-template/)
+* Added: Freelancer Portfolio Elementor Template - [Freelancer Portfolio](https://spexoaddons.com/preview/freelancer-portfolio-elementor-template/)
+* Added: Restaurant Elementor Template - [Restaurant](https://spexoaddons.com/preview/restaurant-elementor-template/)
+* Added: Tech Company Elementor Template - [Tech Company](https://spexoaddons.com/preview/tech-company-elementor-template/)
+* Added: Spa Elementor Template - [Spa](https://spexoaddons.com/preview/spa-elementor-template/)
+* Added: Photography Portfolio Elementor Template - [Photography Portfolio](https://spexoaddons.com/preview/photography-portfolio-elementor-template/)
+* Added: Mega Store Elementor Template - [Mega Store](https://spexoaddons.com/preview/mega-store-elementor-template/)
+* Added: Personal Blog Elementor Template - [Personal Blog](https://spexoaddons.com/preview/personal-blog-elementor-template/)
+* Fixed: Gutter did not work for the pagination layout in the Post Grid/Slider/Carousel without Spexo Addons PRO.
+* Fixed: The icon color in the Recent Post List not changing on hover.
