@@ -2423,7 +2423,7 @@ class TMPCODER_Image_Accordion extends Widget_Base {
 			}
 
 			$layout['activeItem'] = [
-				'activeWidth' => $settings['accordion_active_item_style']['size'],
+				'activeWidth' => isset($settings['accordion_active_item_style']['size']) ? $settings['accordion_active_item_style']['size'] : '',
 				'defaultActive' => $settings['default_active'],
 				'interaction' => tmpcoder_is_availble() ? $settings['accordion_interaction'] : 'hover',
 				'overlayLink' => 'yes' === $item['wrapper_link'] && isset($item['accordion_btn_url']) ? $item['accordion_btn_url']['url'] : '',

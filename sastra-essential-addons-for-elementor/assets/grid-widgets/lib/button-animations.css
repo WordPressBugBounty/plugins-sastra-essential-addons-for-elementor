@@ -1435,7 +1435,7 @@
 	overflow: hidden
 }
 
-.tmpcoder-button-aylen::after,
+/* .tmpcoder-button-aylen::after, */
 .tmpcoder-button-aylen::before {
 	content: '';
 	position: absolute;

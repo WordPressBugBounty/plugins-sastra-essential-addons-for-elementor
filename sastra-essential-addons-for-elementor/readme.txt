@@ -1,7 +1,7 @@
 === Spexo Addons for Elementor - Free Elementor Addons, Widgets and Templates ===
 Contributors: templatescoderthemes, skywebtech
 Tags: elementor, elementor addons, elementor templates, elementor widgets, woocommerce elementor, widgets for elementor
-Stable tag: 1.0.13
+Stable tag: 1.0.14
 Requires at least: 5.0
 Tested up to: 6.7
 Requires PHP: 7.4
@@ -159,6 +159,8 @@ Our Lottie animation widget gives you the ability to easily add Lottie Animation
 - [Clothes Store](https://spexoaddons.com/preview/clothes-store-elementor-template/)
 - [Electronics Store](https://spexoaddons.com/preview/electronics-store-elementor-template/)
 - [Furniture Shop eCommerce Template](https://spexoaddons.com/preview/furniture-shop-elementor-template/)
+- [Smart Watch Single Product Elementor Template](https://spexoaddons.com/preview/smart-watch-elementor-template/)
+- [Drone Single Product Elementor Template](https://spexoaddons.com/preview/drone-elementor-template/)
 
 This plugin works best with [Spexo Theme](https://spexoaddons.com/spexo-elementor-theme/) for pre-built websites.
 
@@ -291,12 +293,13 @@ Feel free to contact us anytime via [Support](https://templatescoder.com/support
 
 == Screenshots ==
 
-1. Spexo  Addons Element Pack
-2. Banner and Header Elementor Widget
-3. Masonary Grid Widget for Elementor
-4. Image Gutter with Shape Widget for Elementor
-5. Pricing Table Elementor Widget
-6. Elementor Post Grid, Slider & Carousel Widget: Post Grid / Post Slider / Post Carousel
+1. Quickly create website using Spexo Addons 
+2. Huge collection of ready to use Elementor Templates
+3. Ready to use Elementor Widgets and Element Pack
+4. Masonary Grid Widget for Elementor
+5. Image Gutter with Shape Widget for Elementor
+6. Pricing Table Elementor Widget
+7. Elementor Post Grid, Slider & Carousel Widget: Post Grid / Post Slider / Post Carousel
 
 
 == Changelog ==
@@ -408,3 +411,10 @@ Feel free to contact us anytime via [Support](https://templatescoder.com/support
 * Added: Personal Blog Elementor Template - [Personal Blog](https://spexoaddons.com/preview/personal-blog-elementor-template/)
 * Fixed: Gutter did not work for the pagination layout in the Post Grid/Slider/Carousel without Spexo Addons PRO.
 * Fixed: The icon color in the Recent Post List not changing on hover.
+
+= v1.0.14 - 2025-01-02 =
+
+* Added: Smart Watch Elementor Template - [Smart Watch](https://spexoaddons.com/preview/smart-watch-elementor-template/)
+* Added: Drone Elementor Template - [Drone](https://spexoaddons.com/preview/drone-elementor-template/)
+* Improved: Enhanced the parallax background zoom effects for smoother transitions and improved visual impact.
+* Fixed: The responsiveness of the product grid to ensure better performance and compatibility across various screen sizes.

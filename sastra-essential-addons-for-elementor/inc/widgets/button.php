@@ -136,14 +136,16 @@ class TMPCODER_Button extends Widget_Base {
 				'max' => 5,
 				'step' => 0.1,
 				'selectors' => [
-					'{{WRAPPER}} .tmpcoder-button' => '-webkit-transition-duration: {{VALUE}}s; transition-duration: {{VALUE}}s;-webkit-animation-duration: {{VALUE}}s;animation-duration: {{VALUE}}s;',
-					'{{WRAPPER}} .tmpcoder-button::before' => '-webkit-transition-duration: {{VALUE}}s; transition-duration: {{VALUE}}s;-webkit-animation-duration: {{VALUE}}s;animation-duration: {{VALUE}}s;',
+					// '{{WRAPPER}} .tmpcoder-button' => '-webkit-transition-duration: {{VALUE}}s; transition-duration: {{VALUE}}s;-webkit-animation-duration: {{VALUE}}s;animation-duration: {{VALUE}}s;',
+					// '{{WRAPPER}} .tmpcoder-button::before' => '-webkit-transition-duration: {{VALUE}}s; transition-duration: {{VALUE}}s;-webkit-animation-duration: {{VALUE}}s;animation-duration: {{VALUE}}s;',
 					'{{WRAPPER}} .tmpcoder-button::after' => '-webkit-transition-duration: {{VALUE}}s; transition-duration: {{VALUE}}s;-webkit-animation-duration: {{VALUE}}s;animation-duration: {{VALUE}}s;',
 					'{{WRAPPER}} .tmpcoder-button::after' => '-webkit-transition-duration: {{VALUE}}s; transition-duration: {{VALUE}}s;-webkit-animation-duration: {{VALUE}}s;animation-duration: {{VALUE}}s;',
 					'{{WRAPPER}} .tmpcoder-button .tmpcoder-button-icon' => '-webkit-transition-duration: {{VALUE}}s; transition-duration: {{VALUE}}s;',
 					'{{WRAPPER}} .tmpcoder-button .tmpcoder-button-icon svg' => '-webkit-transition-duration: {{VALUE}}s; transition-duration: {{VALUE}}s;',
 					'{{WRAPPER}} .tmpcoder-button .tmpcoder-button-text' => '-webkit-transition-duration: {{VALUE}}s; transition-duration: {{VALUE}}s;-webkit-animation-duration: {{VALUE}}s;animation-duration: {{VALUE}}s;',
 					'{{WRAPPER}} .tmpcoder-button .tmpcoder-button-content' => '-webkit-transition-duration: {{VALUE}}s; transition-duration: {{VALUE}}s;-webkit-animation-duration: {{VALUE}}s;animation-duration: {{VALUE}}s;',
+                    '{{WRAPPER}} .tmpcoder-button' => 'transition: all {{VALUE}}s ease;',
+                    '{{WRAPPER}} .tmpcoder-button::before' => 'transition: all {{VALUE}}s ease;',
 				],
 			]
 		);
@@ -516,7 +518,28 @@ class TMPCODER_Button extends Widget_Base {
 				'selector' => '	{{WRAPPER}} [class*="elementor-animation"]:hover,
 								{{WRAPPER}} .tmpcoder-button::before,
 								{{WRAPPER}} .tmpcoder-button::after,
-								{{WRAPPER}} .tmpcoder-button:hover',
+								{{WRAPPER}} .tmpcoder-button
+									:not(.tmpcoder-button-aylen)
+									:not(.tmpcoder-button-rayen-left)
+									:not(.tmpcoder-button-rayen-right)
+									:not(.tmpcoder-button-wayra-left)
+									:not(.tmpcoder-button-wayra-right)
+									:not(.tmpcoder-button-isi-left)
+									:not(.tmpcoder-button-isi-right)
+									:not(.tmpcoder-button-sweep-to-right)
+									:not(.tmpcoder-button-sweep-to-left)
+									:not(.tmpcoder-button-sweep-to-bottom)
+									:not(.tmpcoder-button-sweep-to-top)
+									:not(.tmpcoder-button-bounce-to-right)
+									:not(.tmpcoder-button-bounce-to-left)
+									:not(.tmpcoder-button-bounce-to-bottom)
+									:not(.tmpcoder-button-bounce-to-top)
+									:not(.tmpcoder-button-radial-out)
+									:not(.tmpcoder-button-rectangle-out)
+									
+
+									:not(.tmpcoder-button-sweep-to-top):hover
+							',
 			]
 		);
 
