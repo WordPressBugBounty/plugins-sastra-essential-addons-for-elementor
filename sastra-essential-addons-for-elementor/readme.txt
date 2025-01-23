@@ -1,7 +1,7 @@
 === Spexo Addons for Elementor - Free Elementor Addons, Widgets and Templates ===
 Contributors: templatescoderthemes, skywebtech
 Tags: elementor, elementor addons, elementor templates, elementor widgets, woocommerce elementor, widgets for elementor
-Stable tag: 1.0.14
+Stable tag: 1.0.15
 Requires at least: 5.0
 Tested up to: 6.7
 Requires PHP: 7.4
@@ -418,3 +418,8 @@ Feel free to contact us anytime via [Support](https://templatescoder.com/support
 * Added: Drone Elementor Template - [Drone](https://spexoaddons.com/preview/drone-elementor-template/)
 * Improved: Enhanced the parallax background zoom effects for smoother transitions and improved visual impact.
 * Fixed: The responsiveness of the product grid to ensure better performance and compatibility across various screen sizes.
+
+= v1.0.15 - 2025-01-23 =
+
+* Security Enhancements: Improved wizard process security.
+* Improved: Enhanced compatibility with Elementor v3.27.0.

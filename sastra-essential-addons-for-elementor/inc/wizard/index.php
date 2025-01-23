@@ -20,6 +20,8 @@ function tmpcoder_enqueue_wizard_script(){
             array(
                 'wizard_step' => get_option(TMPCODER_PLUGIN_KEY.'_wizard_step'),
                 'form_nonce'  => wp_nonce_field( 'tmpcoder_install_plugins'),
+                'get_plugin_nonce'  => wp_create_nonce( 'tmpcoder_get_plugins'),
+                'get_pro_addons_info_nonce'  => wp_create_nonce( 'tmpcoder_get_pro_addons_info'),
                 'ok_text'     => esc_html("OK",'sastra-essential-addons-for-elementor'),
                 "next_step_btn" => esc_html("Next Step",'sastra-essential-addons-for-elementor'),
                 'site_setting_saving' => esc_html("Theme Installing...",'sastra-essential-addons-for-elementor'),
@@ -186,6 +188,7 @@ class Theme_Setup_Wizard_Class {
                                 <a class="tmpcoder-skip-wizard-link" data-url="<?php echo esc_url($dashboard_url) ?>" href="javascript:void(0)"><?php esc_html_e('Skip Setup & Go to Dashboard','sastra-essential-addons-for-elementor'); ?>   
                                 </a>
                                 <input type="hidden" name="action" value="tmpcoder_theme_install_func" />
+                                <input type="hidden" name="nonce" value="<?php echo esc_attr( wp_create_nonce( 'tmpcoder_install_theme' ) ); ?>" />
                                 <input type="submit" class="button button-primary next-step-btn" value="<?php echo esc_attr($theme_next_label); ?>" />
                             </div>
                         </form>

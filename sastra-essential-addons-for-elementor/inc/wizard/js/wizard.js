@@ -163,7 +163,11 @@
         $.ajax({
             url: ajaxurl,
             type: 'POST',
-            data: "action=tmpcoder_get_required_plugins_func&js_exist="+ js_exist,
+            data: {
+                'action':'tmpcoder_get_required_plugins_func',
+                'js_exist': js_exist,
+                'nonce': tmpcoderMessages.get_plugin_nonce,
+            },
             // dataType: 'json',
             beforeSend: function () {
                 //Before sending, like showing a loading animation
@@ -239,7 +243,11 @@
         $.ajax({
             url: ajaxurl,
             type: 'POST',
-            data: "action=tmpcoder_wizard_pro_addons_info&js_exist="+ js_exist,
+            data: {
+                'action':'tmpcoder_wizard_pro_addons_info',
+                'js_exist': js_exist,
+                'nonce': tmpcoderMessages.get_pro_addons_info_nonce
+            },
             // dataType: 'json',
             beforeSend: function () {
                 //Before sending, like showing a loading animation

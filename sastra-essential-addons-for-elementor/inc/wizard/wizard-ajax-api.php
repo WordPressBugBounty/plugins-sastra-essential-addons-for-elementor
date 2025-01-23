@@ -3,9 +3,18 @@
 add_action("wp_ajax_tmpcoder_theme_install_func", "tmpcoder_theme_install_func");
 add_action("wp_ajax_nopriv_tmpcoder_theme_install_func", "tmpcoder_theme_install_func");
 function tmpcoder_theme_install_func(){
+
+    if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'tmpcoder_install_theme') ) {
+    	exit; // Get out of here, the nonce is rotten!
+    }
     
     if ( ! is_user_logged_in() ){
-        echo "You must log in to site setup";
+        esc_html_e("You must log in to site setup", 'sastra-essential-addons-for-elementor');
+        die();
+    }
+
+    if ( ! current_user_can( 'install_themes' ) ){
+        esc_html_e("Sorry, you are not allowed to install themes on this site.", 'sastra-essential-addons-for-elementor');
         die();
     }
 
@@ -26,7 +35,7 @@ function tmpcoder_theme_install_func(){
             $upgrader = new Theme_Upgrader();
             $result = $upgrader->install($theme_info->download_link);
 
-            echo "00000";
+            esc_html_e("00000", 'sastra-essential-addons-for-elementor');
 
             // Check if the theme was installed successfully
             if ($result && !is_wp_error($result)) {
@@ -57,14 +66,14 @@ function tmpcoder_theme_install_func(){
         update_option('sastrawp_wizard_page', 1);
         update_option('spexo_wizard_page', 1);
         
-        echo "00000";
+        esc_html_e('00000','sastra-essential-addons-for-elementor');
         echo wp_json_encode( array('success'=> true, 'data' => array("message"=> __('Recommended theme activated successfully.','sastra-essential-addons-for-elementor') ) ) );
         exit;
     }else{
         
         update_option(TMPCODER_PLUGIN_KEY.'_wizard_step', '1');
 
-        echo "00000";
+        esc_html_e('00000','sastra-essential-addons-for-elementor');
 
         echo wp_json_encode( array('success'=> true, 'data' => array("message"=> __('Recommended theme activated successfully.','sastra-essential-addons-for-elementor') ) ) );
         exit;
@@ -74,9 +83,13 @@ function tmpcoder_theme_install_func(){
 add_action("wp_ajax_tmpcoder_wizard_pro_addons_info", "tmpcoder_wizard_pro_addons_info");
 add_action("wp_ajax_nopriv_tmpcoder_wizard_pro_addons_info", "tmpcoder_wizard_pro_addons_info");
 function tmpcoder_wizard_pro_addons_info(){
+
+    if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'tmpcoder_get_pro_addons_info') ) {
+    	exit; // Get out of here, the nonce is rotten!
+    }
     
     if ( ! is_user_logged_in() ){
-        echo "You must log in to site setup";
+        esc_html_e("You must log in to site setup", 'sastra-essential-addons-for-elementor');
         die();
     }
 
@@ -118,9 +131,13 @@ function tmpcoder_wizard_pro_addons_info(){
 add_action("wp_ajax_tmpcoder_get_required_plugins_func", "tmpcoder_get_required_plugins_func");
 add_action("wp_ajax_nopriv_tmpcoder_get_required_plugins_func", "tmpcoder_get_required_plugins_func");
 function tmpcoder_get_required_plugins_func(){
+
+    if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'tmpcoder_get_plugins') ) {
+    	exit; // Get out of here, the nonce is rotten!
+    }
     
     if ( ! is_user_logged_in() ){
-        echo "You must log in to site setup";
+        esc_html_e("You must log in to site setup", 'sastra-essential-addons-for-elementor');
         die();
     }
 
@@ -200,15 +217,20 @@ function tmpcoder_get_required_plugins_func(){
 add_action("wp_ajax_tmpcoder_install_required_plugins_func", "tmpcoder_install_required_plugins_func");
 add_action("wp_ajax_nopriv_tmpcoder_install_required_plugins_func", "tmpcoder_install_required_plugins_func");
 function tmpcoder_install_required_plugins_func(){
-    
-    if ( ! is_user_logged_in() ){
-        echo "You must log in to site setup";
-        die();
-    }
 
     // Check if nonce is valid.
     if ( ! isset($_POST['_wpnonce']) || ! wp_verify_nonce(sanitize_text_field(wp_unslash ($_POST['_wpnonce'])), 'tmpcoder_install_plugins' ) ) {
-        return;
+        exit;
+    }
+    
+    if ( ! is_user_logged_in() ){
+        esc_html_e("You must log in to site setup", 'sastra-essential-addons-for-elementor');
+        die();
+    }
+
+    if ( ! current_user_can('install_plugins') ) {
+        esc_html_e('Invalid User', 'sastra-essential-addons-for-elementor');
+        die();
     }
 
     $plugins = '';
@@ -272,8 +294,8 @@ function tmpcoder_install_required_plugins_func(){
     }
 
     ob_end_clean();
-    echo "  ";
-    echo "00000";
+    
+    esc_html_e("  00000", 'sastra-essential-addons-for-elementor');
 
     if ( empty($error) ){
 
