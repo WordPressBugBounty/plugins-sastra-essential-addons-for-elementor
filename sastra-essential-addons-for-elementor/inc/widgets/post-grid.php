@@ -8435,7 +8435,7 @@ class TMPCODER_Post_Grid extends Widget_Base {
 
 		$ids_array = '';
 
-		if (isset($settings[ 'query_exclude_'. $settings[ 'query_source' ]])) {
+		if ($settings[ 'query_exclude_'. $settings[ 'query_source' ]]) {
 			
 			$slug_args = [
 			    'post_type'      => $settings[ 'query_source' ],

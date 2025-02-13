@@ -1,7 +1,7 @@
 === Spexo Addons for Elementor - Free Elementor Addons, Widgets and Templates ===
 Contributors: templatescoderthemes, skywebtech
 Tags: elementor, elementor addons, elementor templates, elementor widgets, woocommerce elementor, widgets for elementor
-Stable tag: 1.0.16
+Stable tag: 1.0.17
 Requires at least: 5.0
 Tested up to: 6.7
 Requires PHP: 7.4
@@ -304,7 +304,11 @@ Feel free to contact us anytime via [Support](https://templatescoder.com/support
 
 == Changelog ==
 
-= v1.0.16 - 2025-02-13 =
+= v1.0.17 - 2025-02-13 =
+
+* Fixed: No post found issue in Post Grid Widget
+
+= v1.0.16 - 2025-02-10 =
 
 * Improved: Moved CSS and JS files specific to each widget into separate files for better performance.
 * Added: Option in admin bar for renew on demand assest for specific page and all pages
@@ -315,7 +319,7 @@ Feel free to contact us anytime via [Support](https://templatescoder.com/support
 * Fixed: PHP warning in "Magazine Grid" widget 
 * Improved: Image render process for optimize images using lazy load feture
 * Fixed: Output Escap related errors in "Post Timeline" widget  
-* Fixed: Errors in Woocommerce widget that occurs after deactive woocommerce plugin
+* Fixed: Errors in Woocommerce widget that occurs after deactive woocommerce plugin   
 
 = v1.0.15 - 2025-01-23 =
 
