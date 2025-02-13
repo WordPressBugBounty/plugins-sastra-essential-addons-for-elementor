@@ -38,7 +38,22 @@ class TMPCODER_Advanced_Text extends Widget_Base {
 	}
 
 	public function get_style_depends() {
-		return [ 'tmpcoder-text-animations-css' ];
+
+		$depends = [ 'tmpcoder-text-animations-css' => true, 'tmpcoder-advanced-text' => true ];
+
+		if ( ! tmpcoder_elementor()->preview->is_preview_mode() ) {
+			$settings = $this->get_settings_for_display();
+
+			if ( $settings['text_style'] != 'animated' ) {
+				unset( $depends['tmpcoder-text-animations-css'] );
+			}
+		}
+
+		return array_keys($depends); 
+	}
+
+	public function get_script_depends() {
+		return [ 'tmpcoder-advanced-text' ];
 	}
 
     public function get_custom_help_url() {

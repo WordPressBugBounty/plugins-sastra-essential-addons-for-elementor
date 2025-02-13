@@ -40,7 +40,11 @@ class TMPCODER_Search extends Widget_Base {
     }
 
     public function get_style_depends() {
-        return [ 'tmpcoder-animations-css', 'tmpcoder-link-animations-css', 'tmpcoder-button-animations-css', 'tmpcoder-loading-animations-css', 'tmpcoder-lightgallery-css' ];
+        return [ 'tmpcoder-animations-css', 'tmpcoder-link-animations-css', 'tmpcoder-button-animations-css', 'tmpcoder-loading-animations-css', 'tmpcoder-search' ];
+    }
+
+    public function get_script_depends() {
+        return ['tmpcoder-search'];
     }
 
     public function get_custom_help_url() {

@@ -44,11 +44,33 @@ class TMPCODER_Product_Media extends Widget_Base {
 	}
 
 	public function get_script_depends() {
-        return [ 'flexslider', 'zoom', 'wc-single-product', 'photoswipe', 'photoswipe-ui-default', 'tmpcoder-lightgallery', 'tmpcoder-product-script'];
+
+        $depends = [ 'flexslider' => true, 'zoom' => true, 'wc-single-product' => true, 'photoswipe' => true, 'photoswipe-ui-default' => true, 'tmpcoder-lightgallery' => true, 'tmpcoder-product-script' => true, 'tmpcoder-product-media' => true ];
+
+		if ( ! tmpcoder_elementor()->preview->is_preview_mode() ) {
+			$settings = $this->get_settings_for_display();
+
+			if ( !$settings['product_media_lightbox'] ) {
+				unset( $depends['tmpcoder-lightgallery'] );
+			}
+		}
+
+		return array_keys($depends);
 	}
 
 	public function get_style_depends() {
-		return [ 'woocommerce_prettyPhoto_css', 'photoswipe', 'photoswipe-default-skin', 'tmpcoder-lightgallery-css'];
+
+		$depends = [ 'woocommerce_prettyPhoto_css' => true, 'photoswipe' => true, 'photoswipe-default-skin' => true, 'tmpcoder-lightgallery-css' => true];
+
+		if ( ! tmpcoder_elementor()->preview->is_preview_mode() ) {
+			$settings = $this->get_settings_for_display();
+
+			if ( !$settings['product_media_lightbox'] ) {
+				unset( $depends['tmpcoder-lightgallery-css'] );
+			}
+		}
+
+		return array_keys($depends);
 	}
 
 	public function add_control_gallery_slider_thumbs() {
@@ -1627,7 +1649,4 @@ class TMPCODER_Product_Media extends Widget_Base {
         wc_get_template('single-product/product-image.php');
 		echo '</div>';
 	}
-	
 }
-
-

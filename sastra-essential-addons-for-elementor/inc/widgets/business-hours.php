@@ -44,6 +44,10 @@ class TMPCODER_Business_Hours extends Widget_Base {
 		return TMPCODER_NEED_HELP_URL;
     }
 
+    public function get_style_depends() {
+		return [ 'tmpcoder-business-hours' ];
+	}
+
 	public function add_repeater_args_icon() {
 		return [
 			'type' => Controls_Manager::HIDDEN,

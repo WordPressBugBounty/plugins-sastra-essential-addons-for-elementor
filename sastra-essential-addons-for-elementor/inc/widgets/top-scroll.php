@@ -32,6 +32,14 @@ class TMPCODER_Back_To_Top extends Widget_Base {
 		return [ 'back to top', 'scroll', 'scroll to top', 'back', 'top' ];
 	}
 
+	public function get_script_depends() {
+		return [ 'tmpcoder-back-to-top' ];
+	}
+
+	public function get_style_depends() {
+		return [ 'tmpcoder-back-to-top' ];
+	}
+
 	public function get_custom_help_url() {
     	if ( empty(get_option('tmpcoder_wl_plugin_links')) )
     		return TMPCODER_NEED_HELP_URL;

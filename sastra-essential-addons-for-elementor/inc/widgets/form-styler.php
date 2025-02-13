@@ -34,6 +34,10 @@ class TMPCODER_Form_Styler extends Widget_Base {
 		return [ 'cf7', 'contact form 7', 'caldera forms', 'ninja forms', 'wpforms', 'wp forms' ];
 	}
 
+	public function get_style_depends() {
+		return [ 'tmpcoder-forms' ];
+	}
+
     public function get_custom_help_url() {
 		return TMPCODER_NEED_HELP_URL;
     }

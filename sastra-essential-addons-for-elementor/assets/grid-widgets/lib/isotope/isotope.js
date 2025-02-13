@@ -3571,7 +3571,7 @@
 
 
 /*!
- * Infinite Scroll PACKAGED v3.0.5
+ * Infinite Scroll PACKAGED v4.0.1
  * Automatically add next page
  *
  * Licensed GPLv3 for open source use

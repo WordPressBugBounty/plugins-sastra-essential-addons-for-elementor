@@ -40,11 +40,51 @@ class TMPCODER_Media_Grid extends Widget_Base {
 	}
 
 	public function get_script_depends() {
-		return [ 'tmpcoder-isotope', 'tmpcoder-slick', 'tmpcoder-lightgallery' ];
+
+		$depends = [ 'tmpcoder-isotope' => true, 'tmpcoder-slick' => true, 'tmpcoder-lightgallery' => true, 'tmpcoder-grid-widgets' => true ];
+
+		if ( ! tmpcoder_elementor()->preview->is_preview_mode() ) {
+			$settings = $this->get_settings_for_display();
+
+			if ( $settings['layout_select'] != 'slider' ) {
+				unset( $depends['tmpcoder-slick'] );
+			}if ( $settings['layout_select'] != 'masonry' && $settings['layout_select'] != 'fitRows' ) {
+				unset( $depends['tmpcoder-isotope'] );
+			}
+
+			$filtered = array_filter($settings['grid_elements'], function($element) {
+			    return isset($element['element_select']) && $element['element_select'] === 'lightbox';
+			});
+
+			if (!$filtered) {
+				unset( $depends['tmpcoder-lightgallery'] );	
+			}
+		}
+
+		return array_keys($depends);
 	}
 
 	public function get_style_depends() {
-		return [ 'tmpcoder-animations-css', 'tmpcoder-link-animations-css', 'tmpcoder-loading-animations-css', 'tmpcoder-lightgallery-css' ];
+
+		$depends = [ 'tmpcoder-animations-css' => true, 'tmpcoder-link-animations-css' => true, 'tmpcoder-loading-animations-css' => true, 'tmpcoder-lightgallery-css' => true, 'tmpcoder-grid-widgets' => true ];
+
+		if ( !tmpcoder_elementor()->preview->is_preview_mode() ) {
+
+			$settings = $this->get_settings_for_display();
+			$filtered = array_filter($settings['grid_elements'], function($element) {
+			    return isset($element['element_select']) && $element['element_select'] === 'lightbox';
+			});
+
+			if ($settings['layout_pagination'] != 'yes') {
+				unset( $depends['tmpcoder-loading-animations-css'] );	
+			}
+
+			if (!$filtered) {
+				unset( $depends['tmpcoder-lightgallery-css'] );	
+			}
+		}
+
+		return array_keys($depends);
 	}
 
 	public function add_control_query_randomize() {
@@ -237,8 +277,6 @@ class TMPCODER_Media_Grid extends Widget_Base {
 			'author' => esc_html__( 'Author', 'sastra-essential-addons-for-elementor' ),
 			'lightbox' => esc_html__( 'Lightbox', 'sastra-essential-addons-for-elementor' ),
 			'separator' => esc_html__( 'Separator', 'sastra-essential-addons-for-elementor' ),
-			// 'pro-lk' => esc_html__( 'Likes (Pro)', 'sastra-essential-addons-for-elementor' ),
-			// 'pro-shr' => esc_html__( 'Sharing (Pro)', 'sastra-essential-addons-for-elementor' ),
 		];
 	}
 
@@ -6572,11 +6610,16 @@ class TMPCODER_Media_Grid extends Widget_Base {
 	// Render Post Thumbnail
 	public function render_post_thumbnail( $settings ) {
 		$id = get_the_ID();
-		$src = Group_Control_Image_Size::get_attachment_image_src( $id, 'layout_image_crop', $settings );
-		$alt = '' === wp_get_attachment_caption( $id ) ? get_the_title() : wp_get_attachment_caption( $id );
+
+		$settings[ 'layout_image_crop' ] = ['id' => $id];
+		$main_thumbnail_html = Group_Control_Image_Size::get_attachment_image_html( $settings, 'layout_image_crop' );
+
+		$image_original_class = 'wp-image-'.$id;
+		$custom_image_class = $image_original_class.' grid-main-image tmpcoder-anim-timing-'.$settings[ 'image_effects_animation_timing'];
+		$main_thumbnail_html = str_replace($image_original_class, $custom_image_class, $main_thumbnail_html);
 
 		echo '<div class="tmpcoder-grid-image-wrap" data-src="'. esc_url( wp_get_attachment_url( $id ) ) .'">';
-			echo '<img src="'. esc_url( $src ) .'" alt="'. esc_attr( $alt ) .'" class="tmpcoder-anim-timing-'. esc_html($settings[ 'image_effects_animation_timing']) .'">';
+			echo wp_kses_post($main_thumbnail_html);
 		echo '</div>';
 	}
 
@@ -6586,7 +6629,8 @@ class TMPCODER_Media_Grid extends Widget_Base {
 
 			if ( tmpcoder_is_availble() ) {
 				if ( '' !== $settings['overlay_image']['url'] ) {
-					echo '<img src="'. esc_url( $settings['overlay_image']['url'] ) .'">';
+					$overlay_image = Group_Control_Image_Size::get_attachment_image_html( $settings, 'thumbnail', 'overlay_image' );
+					echo wp_kses_post($overlay_image);
 				}
 			}
 

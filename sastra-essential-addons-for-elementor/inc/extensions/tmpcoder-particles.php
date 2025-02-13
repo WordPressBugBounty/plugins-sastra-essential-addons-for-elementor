@@ -9,18 +9,35 @@ class TMPCODER_Particles {
 
 	private static $_instance = null;
 
+	/**
+	 * Load Script
+	 *
+	 * @var $load_script
+	 */
+	private static $load_script = null;
+
 	public $default_particles = '{"particles":{"number":{"value":80,"density":{"enable":true,"value_area":800}},"color":{"value":"#000000"},"shape":{"type":"circle","stroke":{"width":0,"color":"#000000"},"polygon":{"nb_sides":5},"image":{"src":"img/github.svg","width":100,"height":100}},"opacity":{"value":0.5,"random":false,"anim":{"enable":false,"speed":1,"opacity_min":0.1,"sync":false}},"size":{"value":3,"random":true,"anim":{"enable":false,"speed":40,"size_min":0.1,"sync":false}},"line_linked":{"enable":true,"distance":150,"color":"#000000","opacity":0.4,"width":1},"move":{"enable":true,"speed":6,"direction":"none","random":false,"straight":false,"out_mode":"out","bounce":false,"attract":{"enable":false,"rotateX":600,"rotateY":1200}}},"interactivity":{"detect_on":"window","events":{"onhover":{"enable":true,"mode":"repulse"},"onclick":{"enable":true,"mode":"push"},"resize":true},"modes":{"grab":{"distance":400,"line_linked":{"opacity":1}},"bubble":{"distance":400,"size":40,"duration":2,"opacity":8,"speed":3},"repulse":{"distance":200,"duration":0.4},"push":{"particles_nb":4},"remove":{"particles_nb":2}}},"retina_detect":true}' ;
 
 	public function __construct() {
+
+		// Register Scripts
+    	add_action( 'elementor/frontend/before_register_scripts', [ $this, 'tmpcoder_register_scripts' ], 998 );
+
+    	// Enqueue the required JS file.
+		add_action( 'elementor/preview/enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+
 		add_action( 'elementor/element/section/section_background/after_section_end', [ $this, 'register_controls' ], 10 );
 		add_action( 'elementor/frontend/section/before_render', [ $this, '_before_render' ], 10, 1 );
 		add_action( 'elementor/section/print_template', [ $this, '_print_template' ], 10, 2 );
-        add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
+
+        add_action( 'elementor/frontend/before_render', array( $this, 'check_script_enqueue' ) );
 
         // FLEXBOX
         add_action( 'elementor/element/container/section_layout/after_section_end', [$this, 'register_controls'], 10 );
         add_action( 'elementor/frontend/container/before_render', [$this, '_before_render'], 10, 1 );
         add_action( 'elementor/container/print_template', [ $this, '_print_template' ], 10, 2 );
+        
+        
 	}
 
 	public function register_controls( $element ) {
@@ -168,8 +185,42 @@ class TMPCODER_Particles {
 		}
 	}
 
-    public function enqueue_scripts() {
-		wp_enqueue_script( 'tmpcoder-particles', TMPCODER_PLUGIN_URI . 'assets/js/lib/particles/particles'.tmpcoder_script_suffix().'.js', [ 'jquery' ], '3.0.6', true );
+    public static function enqueue_scripts() {
+
+		if ( ! wp_script_is( 'tmpcoder-particles', 'enqueued' ) ) {
+			wp_enqueue_script( 'tmpcoder-particles' );
+		}
+	}
+
+
+	public function check_script_enqueue($element){
+
+		if ( self::$load_script ) {
+			return;
+		}
+
+		$settings = $element->get_active_settings();
+
+		if ( isset($settings[ 'tmpcoder_enable_particles' ]) && $settings[ 'tmpcoder_enable_particles' ] == 'yes' ) {
+
+			$this->enqueue_scripts();
+
+			self::$load_script = true;
+
+			remove_action( 'elementor/frontend/before_render', array( $this, 'check_script_enqueue' ) );
+		}
+	}
+
+	public function tmpcoder_register_scripts(){
+
+		wp_register_script(
+            'tmpcoder-particles',
+             TMPCODER_PLUGIN_URI . 'assets/js/lib/particles/particles'.tmpcoder_script_suffix().'.js',
+             [ 'jquery' ],
+            '3.0.6',
+            true
+      	);
+
 	}
 
 }

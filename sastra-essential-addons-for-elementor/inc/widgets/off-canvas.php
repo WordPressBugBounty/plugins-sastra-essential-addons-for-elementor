@@ -39,7 +39,11 @@ class TMPCODER_Offcanvas extends Widget_Base {
 	}
 
 	public function get_style_depends() {
-		return [ 'tmpcoder-link-animations-css' ];
+		return [ 'tmpcoder-link-animations-css', 'tmpcoder-offcanvas' ];
+	}
+
+	public function get_script_depends() {
+		return [ 'tmpcoder-offcanvas' ];
 	}
 
     public function get_custom_help_url() {

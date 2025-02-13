@@ -30,6 +30,10 @@ class TMPCODER_Product_Rating extends Widget_Base {
 		return [ 'woocommerce', 'product-rating', 'product', 'rating' ];
 	}
 
+	public function get_style_depends() {
+		return [ 'tmpcoder-product-rating' ];
+	}
+
 	protected function register_controls() {
 
 		$this->start_controls_section(

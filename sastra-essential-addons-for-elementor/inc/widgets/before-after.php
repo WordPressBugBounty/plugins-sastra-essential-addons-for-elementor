@@ -36,7 +36,11 @@ class TMPCODER_Before_After extends Widget_Base {
 	}
 
 	public function get_script_depends() {
-		return [ 'jquery-event-move' ];
+		return [ 'jquery-event-move', 'tmpcoder-before-after' ];
+	}
+
+	public function get_style_depends() {
+		return [ 'tmpcoder-before-after' ];
 	}
 
     public function get_custom_help_url() {
@@ -727,6 +731,7 @@ class TMPCODER_Before_After extends Widget_Base {
 
 		// Image Source
 		$image_1_src = Group_Control_Image_Size::get_attachment_image_src( $settings['image_upload_1']['id'], 'image_size', $settings );
+
 		$image_2_src = Group_Control_Image_Size::get_attachment_image_src( $settings['image_upload_2']['id'], 'image_size', $settings );
 
 		// Divider
@@ -734,20 +739,22 @@ class TMPCODER_Before_After extends Widget_Base {
 			
 			// Defaults
 			if ( '' !== $settings['image_upload_1']['url'] ) {
-				$image_1_src = $settings['image_upload_1']['url'];
+				$settings[ 'image_upload_1' ] = ['id' => $settings['image_upload_1']['id']];
+				$image_upload_1 = Group_Control_Image_Size::get_attachment_image_html( $settings, 'image_upload_1' );
 			}
 			if ( '' !== $settings['image_upload_2']['url'] ) {
-				$image_2_src = $settings['image_upload_2']['url'];
+				$settings[ 'image_upload_2' ] = ['id' => $settings['image_upload_2']['id']];
+				$image_upload_2 = Group_Control_Image_Size::get_attachment_image_html( $settings, 'image_upload_2' );
 			}
 
 			// Image 1
 			echo '<div class="tmpcoder-ba-image-1">';
-				echo '<img src="'. esc_url( $image_1_src ) .'">';
+				echo wp_kses_post($image_upload_1);
 			echo '</div>';
 			
 			// Image 2
 			echo '<div class="tmpcoder-ba-image-2">';
-				echo '<img src="'. esc_url( $image_2_src ) .'">';
+				echo wp_kses_post($image_upload_2);
 			echo '</div>';
 
 			// Divider

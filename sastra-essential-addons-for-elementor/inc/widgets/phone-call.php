@@ -34,10 +34,12 @@ class TMPCODER_Phone_Call extends Widget_Base {
 	}
 
     public function get_custom_help_url() {
-    	
 		return TMPCODER_NEED_HELP_URL;
     }
 
+    public function get_style_depends() {
+		return [ 'tmpcoder-phone-call'];
+	}
 
 	protected function register_controls() {
 

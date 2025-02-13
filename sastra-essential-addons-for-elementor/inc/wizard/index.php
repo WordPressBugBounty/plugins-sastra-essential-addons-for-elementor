@@ -111,14 +111,14 @@ class Theme_Setup_Wizard_Class {
         }else{
             $theme_next_label = __('Install and Activate', 'sastra-essential-addons-for-elementor');
         }
-
+        
         ?>
         <div class="wrap tmpcoder-container">
             <hr class="wp-header-end">            
             <header class="tmpcoder-license-activation-header">
 	            <div>
 	                <div class="tmpcoder-license-activation-logo">
-	                    <div class="license-activation-header-logo"><img src="<?php echo esc_url(TMPCODER_ADDONS_ASSETS_URL.'images/logo.png'); ?>">
+	                    <div class="license-activation-header-logo"><img src="<?php echo esc_url( TMPCODER_ADDONS_ASSETS_URL.'images/spexo-logo-web.svg' ); ?>">
                         </div>
                         <span class="wizard-header">
 	                    <h1><?php echo esc_html( sprintf(

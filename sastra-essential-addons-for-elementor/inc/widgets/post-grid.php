@@ -41,11 +41,51 @@ class TMPCODER_Post_Grid extends Widget_Base {
 	}
 
 	public function get_script_depends() {
-		return [ 'tmpcoder-isotope', 'tmpcoder-slick', 'tmpcoder-lightgallery' ];
+
+		$depends = [ 'tmpcoder-isotope' => true, 'tmpcoder-slick' => true, 'tmpcoder-lightgallery' => true, 'tmpcoder-grid-widgets' => true ];
+
+		if ( ! tmpcoder_elementor()->preview->is_preview_mode() ) {
+			$settings = $this->get_settings_for_display();
+
+			if ( $settings['layout_select'] != 'slider' ) {
+				unset( $depends['tmpcoder-slick'] );
+			}if ( $settings['layout_select'] != 'masonry' && $settings['layout_select'] != 'fitRows' && $settings['layout_select'] != 'list' ) {
+				unset( $depends['tmpcoder-isotope'] );
+			}
+
+			$filtered = array_filter($settings['grid_elements'], function($element) {
+			    return isset($element['element_select']) && $element['element_select'] === 'lightbox';
+			});
+
+			if (!$filtered) {
+				unset( $depends['tmpcoder-lightgallery'] );	
+			}
+		}
+
+		return array_keys($depends);
 	}
 
 	public function get_style_depends() {
-		return [ 'tmpcoder-animations-css', 'tmpcoder-link-animations-css', 'tmpcoder-button-animations-css', 'tmpcoder-loading-animations-css', 'tmpcoder-lightgallery-css' ];
+
+		$depends = [ 'tmpcoder-animations-css' => true, 'tmpcoder-link-animations-css' => true, 'tmpcoder-button-animations-css' => true, 'tmpcoder-loading-animations-css' => true, 'tmpcoder-lightgallery-css' => true, 'tmpcoder-grid-widgets' => true ];
+
+		if ( !tmpcoder_elementor()->preview->is_preview_mode() ) {
+
+			$settings = $this->get_settings_for_display();
+			$filtered = array_filter($settings['grid_elements'], function($element) {
+			    return isset($element['element_select']) && $element['element_select'] === 'lightbox';
+			});
+
+			if ($settings['layout_pagination'] != 'yes') {
+				unset( $depends['tmpcoder-loading-animations-css'] );	
+			}
+
+			if (!$filtered) {
+				unset( $depends['tmpcoder-lightgallery-css'] );	
+			}
+		}
+
+		return array_keys($depends);
 	}
 
     public function get_custom_help_url() {
@@ -1416,7 +1456,8 @@ class TMPCODER_Post_Grid extends Widget_Base {
 				'separator' => 'before',
 				'condition' => [
 					'layout_select' => 'slider',
-				]
+				],
+				'frontend_available' => true
 			]
 		);
 
@@ -8394,7 +8435,7 @@ class TMPCODER_Post_Grid extends Widget_Base {
 
 		$ids_array = '';
 
-		if ($settings[ 'query_exclude_'. $settings[ 'query_source' ] ]) {
+		if (isset($settings[ 'query_exclude_'. $settings[ 'query_source' ]])) {
 			
 			$slug_args = [
 			    'post_type'      => $settings[ 'query_source' ],
@@ -8645,19 +8686,33 @@ class TMPCODER_Post_Grid extends Widget_Base {
 		
 		$video_image = $this->tmpcoder_render_post_thumbnail($settings, $post_id);
 
-
-
 		// get the meta value of video attachment
 		$post_meta = get_post_meta($post_id, $meta_key, true);
 
 		$video_class = !empty($post_meta) && tmpcoder_is_availble() ? 'tmpcoder-grid-video-wrap' : 'tmpcoder-grid-image-wrap';			
 
 		$src = Group_Control_Image_Size::get_attachment_image_src( $id, 'layout_image_crop', $settings );
+
+		$settings[ 'layout_image_crop' ] = ['id' => get_post_thumbnail_id()];
+		
+		$main_thumbnail_html = Group_Control_Image_Size::get_attachment_image_html( $settings, 'layout_image_crop' );
+
+		$image_original_class = 'wp-image-'.get_post_thumbnail_id();
+
+		$custom_image_class = $image_original_class.' grid-main-image tmpcoder-anim-timing-'.$settings[ 'image_effects_animation_timing'];
+
+		$main_thumbnail_html = str_replace($image_original_class, $custom_image_class, $main_thumbnail_html);
 		
 		if ( get_post_meta(get_the_ID(), 'tmpcoder_secondary_image_id') && !empty(get_post_meta(get_the_ID(), 'tmpcoder_secondary_image_id')) ) {
 			$src2 = Group_Control_Image_Size::get_attachment_image_src( get_post_meta(get_the_ID(), 'tmpcoder_secondary_image_id')[0], 'layout_image_crop', $settings );
+			$second_image_id = get_post_meta(get_the_ID(), 'tmpcoder_secondary_image_id', true);
+			$second_image_original_class = 'wp-image-'.$second_image_id;
+			$settings[ 'layout_image_crop' ] = ['id' => $second_image_id];
+			$secondory_thumbnail_html = Group_Control_Image_Size::get_attachment_image_html( $settings, 'layout_image_crop' );
 		} else {
+			$secondory_thumbnail_html = '';
 			$src2 = '';
+			$second_image_original_class = '';
 		}
 
 		$alt = '' === wp_get_attachment_caption( $id ) ? get_the_title() : wp_get_attachment_caption( $id );
@@ -8671,18 +8726,24 @@ class TMPCODER_Post_Grid extends Widget_Base {
 			echo !empty($video_image) ? wp_kses_post($video_image) : '';
 
 			echo wp_kses_post('<div class="'.esc_attr($video_class).'" data-src="'. esc_url( $src ) .'" data-img-on-hover="'. $settings['secondary_img_on_hover'] .'"  data-src-secondary="'. esc_url( $src2 ) .'">');
+
 				if ( 'yes' == $settings['grid_lazy_loading'] ) {
+
 					echo '<img data-no-lazy="1" src="'. esc_url(TMPCODER_ADDONS_ASSETS_URL) . 'images/icon-256x256.png" alt="'. esc_attr( $alt ) .'" class="grid-main-image tmpcoder-hidden-image tmpcoder-anim-timing-'. esc_attr($settings[ 'image_effects_animation_timing']) .'">';
+
 					if ( 'yes' == $settings['secondary_img_on_hover'] ) {
-						echo '<img data-no-lazy="1" src="'. esc_url( $src2 ) . '" alt="'. esc_attr( $alt ) .'" class="secondary-image grid-main-image tmpcoder-hidden-img tmpcoder-anim-timing-'. esc_attr($settings[ 'image_effects_animation_timing']) .'">';
+						$secondory_thumbnail_html = str_replace($second_image_original_class, $custom_image_class.' tmpcoder-hidden-img secondary-image ', $secondory_thumbnail_html);
+						echo wp_kses_post($secondory_thumbnail_html);
 					}
-					// echo !empty($video_image) ? wp_kses_post($video_image) : '';
+					
 				} else {
-					echo '<img data-no-lazy="1" src="'. esc_url( $src ) . '" alt="'. esc_attr( $alt ) .'" class="grid-main-image tmpcoder-anim-timing-'. esc_attr($settings[ 'image_effects_animation_timing']) .'">';
+
+					echo wp_kses_post($main_thumbnail_html);
+					
 					if ( 'yes' == $settings['secondary_img_on_hover'] ) {
-						echo '<img data-no-lazy="1" src="'. esc_url( $src2 ) . '" alt="'. esc_attr( $alt ) .'" class="secondary-image grid-main-image tmpcoder-hidden-img tmpcoder-anim-timing-'. esc_attr($settings[ 'image_effects_animation_timing']) .'">';
+						$secondory_thumbnail_html = str_replace($second_image_original_class, $custom_image_class.' tmpcoder-hidden-img secondary-image ', $secondory_thumbnail_html);
+						echo wp_kses_post($secondory_thumbnail_html);
 					}
-					// echo !empty($video_image) ? wp_kses_post($video_image) : '';
 				}
 			echo '</div>';
 		}
@@ -10088,5 +10149,4 @@ class TMPCODER_Post_Grid extends Widget_Base {
 		// Loop: End
 		endif;
 	}
-
 }

@@ -104,7 +104,7 @@ function tmpcoder_wizard_pro_addons_info(){
                     <li>'.esc_html('80+ Pro Widgets').'</li>
                     <li>'.esc_html('75+ Pro Prebuilt Blocks').'</li>
                     <li>'.esc_html('25+ Pro Prebuilt Sections').'</li>
-                    <li>'.esc_html('15+ Pro Prebuilt WebSites').'</li>
+                    <li>'.esc_html('30+ Pro Prebuilt WebSites').'</li>
                 </ul>';
 
             echo "<a target='_blank' href='".esc_url(TMPCODER_PURCHASE_PRO_URL.'?ref=tmpcoder-setup-wizard')."' class='tmpcoder-get-pro-btn'>";

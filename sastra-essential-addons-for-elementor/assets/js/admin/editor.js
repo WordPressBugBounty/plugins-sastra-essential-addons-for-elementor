@@ -31,6 +31,18 @@
 					clearTimeout(searchTimeout);
 				}
 
+				if (tmpcoder_config.is_key_expire){
+
+				    var titlesToHide = ['Custom Field', 'Product Filters', 'Category Grid', 'Woo Category Grid', 'Compare Table', 'Mini Compare', 'Compare Button', 'Wishlist Table', 'Mini Wishlist', 'Wishlist Button', 'Product Breadcrumbs', 'My Account', 'Cart Page', 'Checkout Page'];
+
+				    $('.elementor-element-wrapper').each(function() {
+				        var widgetTitle = $(this).find('.title').text().trim();
+				        if (titlesToHide.indexOf(widgetTitle) !== -1 && !$(this).hasClass('elementor-element--promotion')) {
+				            $(this).remove();
+				        }
+				    });
+				}
+
 				searchTimeout = setTimeout(function() {
 					searchTimeout = null;
 
@@ -43,23 +55,18 @@
 							</div>\
 						');
 					}
-
-					elementorCommon.ajax.addRequest( 'tmpcoder_elementor_search_data', {
-						data: {
-						    search_query: searchVal,
-						},
-						success: function() {
-							// console.log(searchVal);
-						}
-					});
 				}, 1000);
 			});
 		}
+		if (tmpcoder_config.is_key_expire){
+			$('#elementor-panel-category-tmpcoder-premium-widgets').remove();
+		}	
 
 		// Promote Premium Widgets
 		// if ( $('#elementor-panel-category-tmpcoder-widgets').length ) {
 			$('.elementor-element--promotion').on('click', function() {
-				var dialogButton = $('.dialog-button');
+				var dialogButton  = $('.dialog-button');
+				var dialogMessage = $('.dialog-message');
 
 				if ( $(this).find('.tmpcoder-icon').length ) {
 
@@ -71,7 +78,7 @@
 					var url = '',
 					upgradeURL = tmpcoder_config.TMPCODER_PURCHASE_PRO_URL,
 					demoURL = tmpcoder_config.TMPCODER_DEMO_IMPORT_API,
-					upgradeText = 'Ugrade to Pro',
+					upgradeText = 'Upgrade to Pro',
 					title = $(this).find('.title').text();
 
 					if ( title === 'My Account') {
@@ -115,9 +122,14 @@
 						upgradeURL = upgradeURL+'?ref=tmpcoder-plugin-panel-pro-widgets-catgrid-upgrade-pro#purchasepro';
 					}
 
+					if (tmpcoder_config.is_key_expire){
+						dialogMessage.text(tmpcoder_config.expire_notice);
+						upgradeText = tmpcoder_config.renew_button_text;
+						upgradeURL  = tmpcoder_config.TMPCODER_PURCHASE_PRO_URL+'?ref=spexo-addons-pro-renewal';
+					}
+
 					if ( !dialogButton.next('a').length ) {
-						dialogButton.after('<a href="'+ url +'" target="_blank" class="tmpcoder-see-it-in-action"></a>');
-						$('.tmpcoder-see-it-in-action').after('<a href="'+ upgradeURL +'" target="_blank" class="tmpcoder-see-it-in-action-upgrade e-accent dialog-button elementor-button">'+ upgradeText +'</a>');
+						dialogButton.after('<a href="'+ upgradeURL +'" target="_blank" class="tmpcoder-see-it-in-action-upgrade e-accent dialog-button elementor-button">'+ upgradeText +'</a>');
 					} else {
 						$('.tmpcoder-see-it-in-action').attr('href', url);
 					}
@@ -129,6 +141,7 @@
 				} else {
 					dialogButton.show();
 					dialogButton.next('a').hide();
+					$('.dialog-buttons-wrapper').find('a').hide();
 				}
 			});
 		// }
@@ -140,7 +153,7 @@
 			$('.tmpcoder-upgrade-dynamic-content').remove();
 
 			let defaultText = 'Create more personalized and dynamic sites by populating data from various sources with dozens of dynamic tags to choose from.';
-			let customText = '<br><br> Dynamic Content functionality is available for <strong>Spexo Addons for Elementor</strong> plugin as well as for <strong>Elementor Pro</strong> plugin. With <strong>Spexo Addons for Elementor Pro Plan</strong> you can create Custom Post Types, Custom Taxonomies, add any type of Custom Fields and many other cool features to create Dynamic Websites.';
+			let customText = '<br><br> Dynamic Content functionality is available for <strong>Spexo Addons for Elementor</strong> plugin as well as for <strong>Elementor Pro</strong> plugin.';
 
 			$('.dialog-buttons-widget .dialog-message').html('');
 			$('.dialog-buttons-widget .dialog-message').html(defaultText + customText);

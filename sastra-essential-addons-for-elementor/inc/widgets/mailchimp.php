@@ -30,6 +30,14 @@ class TMPCODER_Mailchimp extends Widget_Base {
 		return [ 'tmpcoder-widgets-category'];
 	}
 
+	public function get_script_depends() {
+		return [ 'tmpcoder-mailchimp'];
+	}
+
+	public function get_style_depends() {
+		return [ 'tmpcoder-mailchimp'];
+	}
+
 	public function get_keywords() {
 		return [ 'subscribe', 'subscription form', 'email subscription', 'sing up form', 'singup form', 'newsletter', 'mailchimp' ];
 	}

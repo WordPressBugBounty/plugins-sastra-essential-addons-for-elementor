@@ -34,6 +34,10 @@ class TMPCODER_Post_Info extends Widget_Base {
 		return [ 'post meta', 'post info', 'date', 'time', 'author', 'categories', 'tags', 'comments' ];
 	}
 
+	public function get_style_depends() {
+		return [ 'tmpcoder-post-info'];
+	}
+
 	public function add_options_post_info_select() {
 		return [
 			'date' => esc_html__( 'Date', 'sastra-essential-addons-for-elementor' ),

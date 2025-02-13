@@ -40,7 +40,11 @@ class TMPCODER_Flip_Box extends Widget_Base {
 	}
 
 	public function get_style_depends() {
-		return [ 'tmpcoder-button-animations-css', 'tmpcoder-animations-css' ];
+		return [ 'tmpcoder-animations-css', 'tmpcoder-flip-box' ];
+	}
+
+	public function get_script_depends() {
+		return [ 'tmpcoder-flip-box' ];
 	}
 
 	public function get_custom_help_url() {
@@ -1859,33 +1863,19 @@ class TMPCODER_Flip_Box extends Widget_Base {
 
 		$settings = $this->get_settings();
 
-		$front_image_src = Group_Control_Image_Size::get_attachment_image_src( $settings['front_image']['id'], 'front_image_size', $settings );
+		// $front_image_src = Group_Control_Image_Size::get_attachment_image_src( $settings['front_image']['id'], 'front_image_size', $settings );
 
-		if ( ! $front_image_src ) {
-			$front_image_src = $settings['front_image']['url'];
-		}
+		$settings[ 'front_image_size' ] = ['id' => $settings['front_image']['id']];
+		$front_image_html = Group_Control_Image_Size::get_attachment_image_html( $settings, 'front_image_size' );
 
-		if ( isset($settings['front_image']['alt']) ) {
-			$front_alt_text = $settings['front_image']['alt'];
-		} else {
-			$front_alt_text = '';
-		}
 
-		$back_image_src = Group_Control_Image_Size::get_attachment_image_src( $settings['back_image']['id'], 'back_image_size', $settings );
+		// $back_image_src = Group_Control_Image_Size::get_attachment_image_src( $settings['back_image']['id'], 'back_image_size', $settings );
 
-		if ( ! $back_image_src ) {
-			$back_image_src = $settings['back_image']['url'];
-		}
-
-		if ( isset($settings['back_image']['alt']) ) {
-			$back_alt_text = $settings['back_image']['alt'];
-		} else {
-			$back_alt_text = '';
-		}
+		$settings[ 'back_image_size' ] = ['id' => $settings['back_image']['id']];
+		$back_image_html = Group_Control_Image_Size::get_attachment_image_html( $settings, 'back_image_size' );
 
 		$back_btn_element = 'div';
 		$back_link = $settings['back_link']['url'];
-
 
 		if ( '' !== $back_link ) {
 
@@ -1933,9 +1923,9 @@ class TMPCODER_Flip_Box extends Widget_Base {
 					<?php } ?>
 
 					</div>
-					<?php elseif ( 'image' === $settings['front_icon_type'] && $front_image_src ) : ?>
+					<?php elseif ( 'image' === $settings['front_icon_type'] && $front_image_html ) : ?>
 					<div class="tmpcoder-flip-box-image">
-						<img alt="<?php echo esc_attr($front_alt_text); ?>" src="<?php echo esc_url( $front_image_src ); ?>" />
+						<?php echo wp_kses_post($front_image_html); ?> 
 					</div>
 					<?php endif; ?>
 					
@@ -1995,9 +1985,9 @@ class TMPCODER_Flip_Box extends Widget_Base {
 						<?php } ?>
 
 					</div>
-					<?php elseif ( 'image' === $settings['back_icon_type'] && $back_image_src ) : ?>
+					<?php elseif ( 'image' === $settings['back_icon_type'] && $back_image_html ) : ?>
 						<div class="tmpcoder-flip-box-image">
-							<img alt="<?php echo esc_attr($back_alt_text); ?>" src="<?php echo esc_url( $back_image_src ); ?>" >
+							<?php echo wp_kses_post($back_image_html); ?> 
 						</div>
 					<?php endif; ?>
 					

@@ -34,6 +34,10 @@ class TMPCODER_Page_List extends Widget_Base {
 		return [ 'page-list', 'list'];
 	}
 
+	public function get_style_depends() {
+		return [ 'tmpcoder-page-list'];
+	}
+
 	public function add_control_title_pointer_color_hr() {}
 
 	public function add_control_title_pointer() {}

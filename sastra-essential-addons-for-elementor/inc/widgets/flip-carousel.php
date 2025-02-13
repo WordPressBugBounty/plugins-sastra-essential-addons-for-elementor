@@ -40,11 +40,11 @@ class TMPCODER_Flip_Carousel extends Widget_Base {
 	}
 
 	public function get_script_depends() {
-		return [ 'tmpcoder-flipster' ];
+		return [ 'tmpcoder-flipster', 'tmpcoder-flip-carousel' ];
 	}
 
 	public function get_style_depends() {
-		return [ 'tmpcoder-flipster-css' ];
+		return [ 'tmpcoder-flipster-css', 'tmpcoder-flip-carousel' ];
 	}
 
     public function get_custom_help_url() {
@@ -1169,7 +1169,7 @@ class TMPCODER_Flip_Carousel extends Widget_Base {
 			'spacing' => $settings['spacing'],
 			'button_prev' => $icon_prev,
 			'button_next' => $icon_next,
-			'pagination_bg_color_hover' => $settings['pagination_bg_color_hover']
+			'pagination_bg_color_hover' => isset($settings['pagination_bg_color_hover']) ? $settings['pagination_bg_color_hover'] : ''
 		];
 
 		return wp_json_encode($attributes);
@@ -1198,7 +1198,9 @@ class TMPCODER_Flip_Carousel extends Widget_Base {
 				} if (TMPCODER_ADDONS_ASSETS_URL . 'images/flip-image.png' === $element['image']['url']) {
 					$flip_slide_image = '<img src="'. esc_url($element['image']['url']) .'" />';
 				} else {
-					$flip_slide_image = '<img alt="'. $element['image']['alt'] .'" src="'.  Group_Control_Image_Size::get_attachment_image_src( $element['image']['id'], 'flip_carousel_image_size', $settings ) .'" />';
+					$alt = isset($element['image']['alt']) ? $element['image']['alt'] : '';
+					$settings[ 'flip_carousel_image_size' ] = ['id' => $element['image']['id']];
+					$flip_slide_image = Group_Control_Image_Size::get_attachment_image_html( $settings, 'flip_carousel_image_size' );
 				}
 
 				if ( 'yes' === $settings['enable_figcaption'] ) {

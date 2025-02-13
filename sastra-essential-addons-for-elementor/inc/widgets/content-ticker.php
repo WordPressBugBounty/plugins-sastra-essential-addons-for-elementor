@@ -42,7 +42,23 @@ class TMPCODER_Content_Ticker extends Widget_Base {
 	}
 
 	public function get_script_depends() {
-		return [ 'tmpcoder-slick', 'tmpcoder-marquee' ];
+		$depends = [ 'tmpcoder-slick' => true, 'tmpcoder-marquee' => true, 'tmpcoder-content-ticker' => true ];
+
+		if ( ! tmpcoder_elementor()->preview->is_preview_mode() ) {
+			$settings = $this->get_settings_for_display();
+
+			if ( $settings['type_select'] != 'slider' ) {
+				unset( $depends['tmpcoder-slick'] );
+			}if ( $settings['type_select'] != 'marquee' ) {
+				unset( $depends['tmpcoder-marquee'] );
+			}
+		}
+
+		return array_keys($depends);
+	}
+
+	public function get_style_depends() {
+		return [ 'tmpcoder-content-ticker' ];
 	}
 
     public function get_custom_help_url() {
@@ -1975,8 +1991,13 @@ class TMPCODER_Content_Ticker extends Widget_Base {
 		while ( $posts->have_posts() ) : $posts->the_post();
 
 				$image_id = get_post_thumbnail_id();
-				$image_src = Group_Control_Image_Size::get_attachment_image_src( $image_id, 'image_size', $settings );
-				$image_alt = '' === wp_get_attachment_caption( $image_id ) ? get_the_title() : wp_get_attachment_caption( $image_id );
+				$settings[ 'image_size' ] = ['id' => $image_id];
+				$image_html = Group_Control_Image_Size::get_attachment_image_html( $settings, 'image_size' );
+				// Update the alt attribute
+					
+				if ('' === get_post_meta( $image_id, '_wp_attachment_image_alt', true )) {
+					$image_html = preg_replace( '/<img(.*?)alt="(.*?)"(.*?)>/i', '<img$1alt="'.get_the_title().'"$3>', $image_html );
+				}
 			?>
 
 			<div class="tmpcoder-ticker-item">
@@ -1993,8 +2014,8 @@ class TMPCODER_Content_Ticker extends Widget_Base {
 							echo '<a  href="'. esc_url( get_the_permalink() ).'">';
 						}
 
-						if ( 'yes' === $settings['image_switcher'] && $image_src ) {	
-							echo '<img src="'. esc_url( $image_src ) .'" alt="'. esc_attr( $image_alt ) .'">';
+						if ( 'yes' === $settings['image_switcher'] && $image_html ) {	
+							echo wp_kses_post($image_html);
 						}
 					
 						if ( 'image' === $settings['link_type'] || 'image-title' === $settings['link_type']  ) {

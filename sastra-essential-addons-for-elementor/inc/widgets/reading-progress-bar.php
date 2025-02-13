@@ -35,6 +35,14 @@ class TMPCODER_Reading_Progress_Bar extends Widget_Base {
         return [ 'tmpcoder-widgets-category'];
     }
 
+    public function get_script_depends() {
+        return [ 'tmpcoder-reading-progress-bar'];
+    }
+
+    public function get_style_depends() {
+        return [ 'tmpcoder-reading-progress-bar'];
+    }
+
     public function get_keywords() {
         return [ 'reading progress bar', 'skills bar', 'percentage bar', 'scroll' ];
     }

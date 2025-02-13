@@ -42,7 +42,7 @@ class TMPCODER_Promo_Box extends Widget_Base {
 	}
 
 	public function get_style_depends() {
-		return [ 'tmpcoder-animations-css' ];
+		return [ 'tmpcoder-animations-css', 'tmpcoder-promo-box' ];
 	}
 
     public function get_custom_help_url() {
@@ -1602,7 +1602,11 @@ class TMPCODER_Promo_Box extends Widget_Base {
 						?>
 
 					<?php elseif ( 'image' === $settings['content_icon_type'] && $content_image_src ) : ?>
-						<img src="<?php echo esc_url( $content_image_src ); ?>" >
+						<?php 
+							$settings[ 'layout_image_crop' ] = ['id' => $settings['content_image']['id']];
+							$content_image = Group_Control_Image_Size::get_attachment_image_html( $settings, 'layout_image_crop' );
+							echo wp_kses_post($content_image);
+						?>
 					<?php endif; ?>
 				</div>
 				<?php endif; ?>

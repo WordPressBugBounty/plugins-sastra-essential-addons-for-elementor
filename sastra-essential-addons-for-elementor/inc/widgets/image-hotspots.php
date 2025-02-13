@@ -40,6 +40,14 @@ class TMPCODER_Image_Hotspots extends Widget_Base {
 		return [ 'image hotspots' ];
 	}
 
+	public function get_script_depends() {
+		return [ 'tmpcoder-image-hotspots' ];
+	}
+
+	public function get_style_depends() {
+		return [ 'tmpcoder-image-hotspots' ];
+	}
+
     public function get_custom_help_url() {
     	return TMPCODER_NEED_HELP_URL;
     }
@@ -601,6 +609,7 @@ class TMPCODER_Image_Hotspots extends Widget_Base {
 				'default' => '#ffffff',
 				'selectors' => [
 					'{{WRAPPER}} .tmpcoder-hotspot-content' => 'color: {{VALUE}}',
+					'{{WRAPPER}} .tmpcoder-hotspot-content svg' => 'fill: {{VALUE}}',
 				],
 			]
 		);
@@ -703,7 +712,8 @@ class TMPCODER_Image_Hotspots extends Widget_Base {
 				],
 				'selectors' => [
 					'{{WRAPPER}} .tmpcoder-hotspot-content i' => 'font-size: {{SIZE}}{{UNIT}};',
-					'{{WRAPPER}} .tmpcoder-hotspot-content img' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}};'
+					'{{WRAPPER}} .tmpcoder-hotspot-content img' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .tmpcoder-hotspot-content svg' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}};'
 				],
 			]
 		);
@@ -928,11 +938,9 @@ class TMPCODER_Image_Hotspots extends Widget_Base {
 		$settings = $this->get_settings();
 
 		$item_count = 0;
-		$image_src = Group_Control_Image_Size::get_attachment_image_src( $settings['image']['id'], 'image_size', $settings );
-
-		if ( ! $image_src ) {
-			$image_src = $settings['image']['url'];
-		}
+		$settings[ 'image_size' ] = ['id' => $settings['image']['id']];
+		$image_html = Group_Control_Image_Size::get_attachment_image_html( $settings, 'image_size' );
+		$image_src = isset($settings['image']['url']) ? $settings['image']['url'] : '';
 
 		if ( ! tmpcoder_is_availble() ) {
 			$settings['tooltip_trigger'] = 'none';
@@ -951,15 +959,20 @@ class TMPCODER_Image_Hotspots extends Widget_Base {
 			
 			<?php if ( $image_src ) : ?>
 				<div class="tmpcoder-hotspot-image">
-					<img src="<?php echo esc_url( $image_src ); ?>" >
+					<?php
+			 			if ( !$image_html ) {
+							echo '<img src='.esc_url($settings['image']['url']).'>';
+						}
+						else
+						{
+				 			echo wp_kses_post($image_html); 
+						}
+				 	?>
 				</div>
 			<?php endif; ?>
 
 			<div class="tmpcoder-hotspot-item-container">
-				
-
 				<?php foreach ( $settings['hotspot_items'] as $key => $item ) : ?>
-					
 					<?php
 
 					if ( ! tmpcoder_is_availble() && $key === 2 ) {
@@ -1005,7 +1018,10 @@ class TMPCODER_Image_Hotspots extends Widget_Base {
 							<?php if ( '' !== $item['hotspot_icon']['value'] && 'svg' !== $item['hotspot_icon']['library'] ) : ?>
 								<i class="<?php echo esc_attr($item['hotspot_icon']['value']); ?>"></i>
 							<?php elseif ( '' !== $item['hotspot_icon']['value'] && 'svg' == $item['hotspot_icon']['library'] ) : ?>
-								<img src="<?php echo esc_url($item['hotspot_icon']['value']['url']); ?>">
+
+								<?php
+								\Elementor\Icons_Manager::render_icon( $item['hotspot_icon'], [ 'aria-hidden' => 'true' ] );
+								?>							
 							<?php endif; ?>
 
 						</<?php echo esc_attr( $hotspot_tag ); ?>>

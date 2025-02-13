@@ -169,7 +169,7 @@ class TMPCODER_Site_Logo extends Widget_Base {
 				],
 				'default'            => 'center',
 				'selectors'          => [
-					'{{WRAPPER}} .tmpcoder-site-logo-container, {{WRAPPER}} .tmpcoder-caption-width figcaption' => 'text-align: {{VALUE}};',
+					'{{WRAPPER}} .tmpcoder-site-logo-container, {{WRAPPER}} .tmpcoder-site-logo, {{WRAPPER}} .tmpcoder-caption-width figcaption' => 'text-align: {{VALUE}};',
 				],
 				'frontend_available' => true,
 			]
@@ -691,7 +691,12 @@ class TMPCODER_Site_Logo extends Widget_Base {
 		$settings = $this->get_settings_for_display();
 		if ( ! empty( $settings['custom_image']['url'] ) ) {
 			$logo = wp_get_attachment_image_src( $settings['custom_image']['id'], $size, true );
-		} else {
+		}else if( function_exists('tmpcoder_get_theme_logo') && ! empty( tmpcoder_get_theme_logo() ) ){
+            $logo = array( tmpcoder_get_theme_logo() );
+		}else if ( function_exists('tmpcoder_get_theme_text') && ! empty( tmpcoder_get_theme_text() ) ) {
+			$logo = array( tmpcoder_get_theme_text() );
+        }
+	 	else {
 			$logo = wp_get_attachment_image_src( get_theme_mod( 'custom_logo' ), $size, true );
 		}
 		return $logo[0];
@@ -708,8 +713,8 @@ class TMPCODER_Site_Logo extends Widget_Base {
 	protected function render() {
 		$link     = '';
 		$settings = $this->get_settings_for_display();
-
 		$has_caption = $this->has_caption( $settings );
+		$site_image = $this->site_image_url($settings['site_logo_size_size']);
 
 		$this->add_render_attribute( 'wrapper', 'class', 'tmpcoder-site-logo tmpcoder-site-logo1' );
 
@@ -780,7 +785,7 @@ class TMPCODER_Site_Logo extends Widget_Base {
 
 			if ( ! $has_custom_size ) {
 				$image_size = 'full';
-			}
+			}	
 		}
 
 		if ( ! empty( $settings['custom_image']['url'] ) ) {
@@ -789,10 +794,10 @@ class TMPCODER_Site_Logo extends Widget_Base {
             $image_data = array( tmpcoder_get_theme_logo() );
 		}else if ( function_exists('tmpcoder_get_theme_text') && ! empty( tmpcoder_get_theme_text() ) ) {
 			$image_data = array( tmpcoder_get_theme_text() );
-        } else if ( ! empty( get_bloginfo('name') ) ) {
-			echo wp_kses_post('<h2>'.get_bloginfo('name').'</h2>');
-        } else {
+        } else if ( ! empty( wp_get_attachment_image_src( get_theme_mod( 'custom_logo' ) ) ) ) {
 			$image_data = wp_get_attachment_image_src( get_theme_mod( 'custom_logo' ), $image_size, true );
+        } else {
+			echo wp_kses_post('<h2>'.get_bloginfo('name').'</h2>');
 		}
 
 		$site_image_class = 'elementor-animation-';
@@ -805,9 +810,12 @@ class TMPCODER_Site_Logo extends Widget_Base {
 
 			$alt_text = '';
 			if ( isset($image_url) && $image_url != "" ) {
-				
 				$image_id = $this->tmpcoder_get_image_id_from_url($image_url);
 				$alt_text = get_post_meta($image_id, '_wp_attachment_image_alt', true);
+				$settings[ 'image_size' ] = ['id' => $image_id];
+				$image_html = Group_Control_Image_Size::get_attachment_image_html( $settings, 'image_size' );
+
+				
 			}
 		}
 
@@ -817,12 +825,24 @@ class TMPCODER_Site_Logo extends Widget_Base {
         <?php if ( isset($image_url) && $image_url != "" ){ ?>
 			<div class="tmpcoder-site-logo-set">           
 				<div class="tmpcoder-site-logo-container">
-					<img class="tmpcoder-site-logo-img <?php echo esc_attr( $class_animation ); ?>"  src="<?php echo esc_url( $image_url ); ?>" alt="<?php echo esc_attr($alt_text); ?>"/>
+					<?php 
+					if ($image_html) {
+						$image_original_class = 'wp-image-'.$image_id;
+						$image_html = str_replace($image_original_class, $class_animation, $image_html);
+						echo wp_kses_post($image_html);
+					}
+					else
+					{
+						?>
+						<img class="tmpcoder-site-logo-img <?php echo esc_attr( $class_animation ); ?>"  src="<?php echo esc_url( $image_url ); ?>" alt="<?php echo esc_attr($alt_text); ?>"/>
+						<?php
+					}
+					?>
 				</div>
 			</div>
         <?php } ?>
 		<?php if ( $link ) : ?>
-					</a>
+			</a>
 		<?php endif; ?>
 		<?php
 		if ( $has_caption ) :

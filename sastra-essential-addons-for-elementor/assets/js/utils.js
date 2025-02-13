@@ -1,4 +1,4 @@
-const TmpcodersanitizeURL = function (url) {
+window.TmpcodersanitizeURL = function (url) {
 						
     if (url.startsWith('/') || url.startsWith('#')) {
         return url;

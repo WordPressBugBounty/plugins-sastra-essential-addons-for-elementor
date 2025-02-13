@@ -12,11 +12,26 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class TMPCODER_Parallax_Scroll {
 
+    /**
+     * Load Script
+     *
+     * @var $load_script
+     */
+    private static $load_script = null;
+
     public function __construct() {
+
+        // Register Scripts
+        add_action( 'elementor/frontend/before_register_scripts', [ $this, 'tmpcoder_register_scripts' ], 998 );
+
+        // Enqueue the required JS file.
+        add_action( 'elementor/preview/enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+
         add_action( 'elementor/element/section/section_background/after_section_end', [$this, 'register_controls'], 10);
         add_action( 'elementor/frontend/section/before_render', [$this, '_before_render'], 10, 1);
         add_action( 'elementor/section/print_template', [ $this, '_print_template' ], 10, 2 );
-        add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
+
+        add_action( 'elementor/frontend/before_render', array( $this, 'check_script_enqueue' ) );
 
         // FLEXBOX
         add_action('elementor/element/container/section_layout/after_section_end', [$this, 'register_controls'], 10);
@@ -455,14 +470,52 @@ class TMPCODER_Parallax_Scroll {
 
     public static function enqueue_scripts() {
         
-        if ( 'on' === get_option('tmpcoder-parallax-background', 'on') ) {
-            wp_enqueue_script( 'tmpcoder-jarallax', TMPCODER_PLUGIN_URI . 'assets/js/lib/jarallax/jarallax'.tmpcoder_script_suffix().'.js', ['jquery'], tmpcoder_get_plugin_version(), true );
+        if ( ! wp_script_is( 'tmpcoder-jarallax', 'enqueued' ) ) {
+            wp_enqueue_script( 'tmpcoder-jarallax' );
         }
 
-        if ( 'on' === get_option('tmpcoder-parallax-multi-layer', 'on') ) {
-            wp_enqueue_script( 'tmpcoder-parallax-hover', TMPCODER_PLUGIN_URI . 'assets/js/lib/parallax/parallax'.tmpcoder_script_suffix().'.js', ['jquery'], tmpcoder_get_plugin_version(), true );
+        if ( ! wp_script_is( 'tmpcoder-parallax-hover', 'enqueued' ) ) {
+            wp_enqueue_script( 'tmpcoder-parallax-hover' );
         }
     }
+
+    public function check_script_enqueue($element){
+
+        if ( self::$load_script ) {
+            return;
+        }
+
+        $settings = $element->get_active_settings();
+
+        if ( (isset($settings[ 'tmpcoder_enable_jarallax' ]) && $settings[ 'tmpcoder_enable_jarallax' ] == 'yes') || (isset($settings[ 'tmpcoder_enable_parallax_hover' ]) && $settings[ 'tmpcoder_enable_parallax_hover' ] == 'yes') ) {
+
+            $this->enqueue_scripts();
+
+            self::$load_script = true;
+
+            remove_action( 'elementor/frontend/before_render', array( $this, 'check_script_enqueue' ) );
+        }
+    }
+
+    public function tmpcoder_register_scripts(){
+
+        wp_register_script(
+            'tmpcoder-jarallax',
+            TMPCODER_PLUGIN_URI.'assets/js/lib/jarallax/jarallax'.tmpcoder_script_suffix().'.js',
+            [ 'jquery' ],
+            tmpcoder_get_plugin_version(),
+            true
+        );
+
+        wp_register_script(
+            'tmpcoder-parallax-hover',
+            TMPCODER_PLUGIN_URI.'assets/js/lib/parallax/parallax'.tmpcoder_script_suffix().'.js',
+            [ 'jquery' ],
+            tmpcoder_get_plugin_version(),
+            true
+        );
+    }
+
 }
 
 new TMPCODER_Parallax_Scroll();

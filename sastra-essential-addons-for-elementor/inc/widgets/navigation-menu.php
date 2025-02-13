@@ -34,8 +34,22 @@ class TMPCODER_Navigation_Menu extends Widget_Base {
 		return [ 'nav menu', 'header', 'navigation menu', 'horizontal menu', 'horizontal navigation', 'vertical menu', 'vertical navigation', 'burger menu', 'hamburger menu', 'mobile menu', 'responsive menu' ];
 	}
 
+	public function get_script_depends() {
+		return [ 'tmpcoder-nav-menu' ];
+	}
+
 	public function get_style_depends() {
-		return [ 'tmpcoder-link-animations-css' ];
+
+		$depends = [ 'tmpcoder-link-animations-css' => true, 'tmpcoder-nav-menu' => true ];
+
+		if ( !tmpcoder_elementor()->preview->is_preview_mode() ) {
+			$settings = $this->get_settings_for_display();
+
+			if ( $settings['menu_items_pointer'] == 'none' ) {
+				unset( $depends['tmpcoder-link-animations-css'] );
+			}
+		}
+		return array_keys($depends); 
 	}
 
 	public function get_custom_help_url() {

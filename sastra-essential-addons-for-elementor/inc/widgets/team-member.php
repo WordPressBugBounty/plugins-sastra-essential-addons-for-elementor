@@ -40,7 +40,7 @@ class TMPCODER_Team_Member extends Widget_Base {
 	}
 
 	public function get_style_depends() {
-		return [ 'tmpcoder-animations-css', 'tmpcoder-button-animations-css' ];
+		return [ 'tmpcoder-animations-css', 'tmpcoder-button-animations-css', 'tmpcoder-team-member' ];
 	}
 
     public function get_custom_help_url() {
@@ -1898,16 +1898,15 @@ class TMPCODER_Team_Member extends Widget_Base {
 		
 		<?php if ( '' !== $settings['member_image']['url'] ) : ?>
 			<?php 
-				$image_src = Group_Control_Image_Size::get_attachment_image_src( $settings['member_image']['id'], 'image_size', $settings );
-
-				if ( ! $image_src ) {
-					$image_src = $settings['member_image']['url'];
-				}
+				$settings[ 'image_size' ] = ['id' => $settings['member_image']['id']];
+				$image_html = Group_Control_Image_Size::get_attachment_image_html( $settings, 'image_size' );
+				// Update the alt attribute
+				$image_html = preg_replace( '/<img(.*?)alt="(.*?)"(.*?)>/i', '<img$1alt="'.$settings['member_name'].'"$3>', $image_html );
 			?>
 
 			<div class="tmpcoder-member-media">
 				<div class="tmpcoder-member-image">
-					<img src="<?php echo esc_url( $image_src ); ?>" alt="<?php echo esc_attr( $settings['member_name'] ); ?>">
+					<?php echo wp_kses_post($image_html) ?>
 				</div>
 				<?php $this->team_member_overlay(); ?>
 			</div>

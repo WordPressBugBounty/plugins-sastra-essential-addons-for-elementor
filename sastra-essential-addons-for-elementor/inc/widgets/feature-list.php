@@ -35,6 +35,14 @@ class TMPCODER_Feature_List extends Widget_Base {
 		return [ 'tmpcoder-widgets-category'];
 	}
 
+	public function get_script_depends() {
+		return [ 'tmpcoder-feature-list'];
+	}
+
+	public function get_style_depends() {
+		return [ 'tmpcoder-feature-list'];
+	}
+
 	public function get_keywords() {
 		return [ 'features', 'feature list', 'icon list' ];
 	}
@@ -42,7 +50,6 @@ class TMPCODER_Feature_List extends Widget_Base {
     public function get_custom_help_url() {
 		return TMPCODER_NEED_HELP_URL;
     }
-
     
 	protected function register_controls() {
 
@@ -58,7 +65,6 @@ class TMPCODER_Feature_List extends Widget_Base {
 
 		tmpcoder_library_buttons( $this, Controls_Manager::RAW_HTML );
 
-		
 		$this->add_responsive_control(
 			'list_layout',
 			[
@@ -944,8 +950,9 @@ class TMPCODER_Feature_List extends Widget_Base {
 									if ( 'icon' === $item['feature_list_media_type'] ) {
 										\Elementor\Icons_Manager::render_icon( $item['list_icon'], [ 'aria-hidden' => 'true' ] );
 									} else {
-										$src = \Elementor\Group_Control_Image_Size::get_attachment_image_src( $item['list_image']['id'], 'thumbnail', $settings );
-										echo '<img src="'. esc_url($src) .'">';
+										$settings[ 'layout_image_crop' ] = ['id' => $item['list_image']['id']];
+										$main_thumbnail_html = Group_Control_Image_Size::get_attachment_image_html( $settings, 'layout_image_crop' );
+										echo wp_kses_post($main_thumbnail_html);
 									}
 								echo '</div>';
                             echo '</div>';

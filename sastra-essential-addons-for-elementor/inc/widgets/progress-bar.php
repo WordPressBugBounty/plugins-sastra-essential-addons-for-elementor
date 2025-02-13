@@ -40,11 +40,11 @@ class TMPCODER_Progress_Bar extends Widget_Base {
 	}
 
 	public function get_script_depends() {
-		return [ 'jquery-numerator' ];
+		return [ 'jquery-numerator', 'tmpcoder-progress-bar' ];
 	}
 
 	public function get_style_depends() {
-		return [ 'tmpcoder-animations-css' ];
+		return [ 'tmpcoder-animations-css', 'tmpcoder-progress-bar' ];
 	}
 
 	public function add_control_layout() {
@@ -634,7 +634,7 @@ class TMPCODER_Progress_Bar extends Widget_Base {
 			[
 				'label' => esc_html__( 'Background Color', 'sastra-essential-addons-for-elementor' ),
 				'type' => Controls_Manager::COLOR,
-				// 'default' => '#5729d9',
+				'default' => '#5729d9',
 				'condition' => [
 					'circle_prline_bg_type' => 'color',
 					'layout' => 'circle',

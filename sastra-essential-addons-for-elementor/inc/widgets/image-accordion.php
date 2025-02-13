@@ -41,11 +41,41 @@ class TMPCODER_Image_Accordion extends Widget_Base {
 	}
 
 	public function get_script_depends() {
-        return ['tmpcoder-lightgallery'];
+
+        $depends = [ 'tmpcoder-lightgallery' => true, 'tmpcoder-image-accordion' => true];
+
+		if ( ! tmpcoder_elementor()->preview->is_preview_mode() ) {
+			$settings = $this->get_settings_for_display();
+
+			$filtered = array_filter($settings['accordion_elements'], function($element) {
+			    return isset($element['element_select']) && $element['element_select'] === 'lightbox';
+			});
+
+			if (!$filtered) {
+				unset( $depends['tmpcoder-lightgallery'] );	
+			}
+		}
+
+		return array_keys($depends);
 	}
 
 	public function get_style_depends() {
-		return [ 'tmpcoder-animations-css', 'tmpcoder-link-animations-css', 'tmpcoder-button-animations-css', 'tmpcoder-loading-animations-css', 'tmpcoder-lightgallery-css' ];
+
+		$depends = [ 'tmpcoder-animations-css' => true, 'tmpcoder-link-animations-css' => true, 'tmpcoder-button-animations-css' => true, 'tmpcoder-lightgallery-css' => true, 'tmpcoder-image-accordion' => true];
+
+		if ( ! tmpcoder_elementor()->preview->is_preview_mode() ) {
+			$settings = $this->get_settings_for_display();
+
+			$filtered = array_filter($settings['accordion_elements'], function($element) {
+			    return isset($element['element_select']) && $element['element_select'] === 'lightbox';
+			});
+
+			if (!$filtered) {
+				unset( $depends['tmpcoder-lightgallery-css'] );	
+			}
+		}
+
+		return array_keys($depends);
 	}
 
     public function get_custom_help_url() {
@@ -443,7 +473,10 @@ class TMPCODER_Image_Accordion extends Widget_Base {
 				'render_type' => 'template',
 				'default' => [
 					'url' => TMPCODER_ADDONS_ASSETS_URL . 'images/according-image-1.jpg',
-				]
+				],
+				'selectors' => [
+					'{{WRAPPER}} {{CURRENT_ITEM}} .tmpcoder-accordion-background' => 'background-image: url({{URL}})',
+				],
 			]
 		);
 
@@ -2444,13 +2477,13 @@ class TMPCODER_Image_Accordion extends Widget_Base {
 			?>
 				<?php echo wp_kses_post('<div data-src="'.esc_url($this->item_bg_image_url).'" class="tmpcoder-image-accordion-item elementor-repeater-item-'.$item['_id'] .' '. $this->get_image_effect_class( $settings ).'">');?>
 
-				<div class="tmpcoder-accordion-background" style="background-image: url(<?php echo esc_url($this->item_bg_image_url) ?>);"></div>
-						<?php
-							echo wp_kses_post('<div '. $render_attribute .'>');
-								$this->render_media_overlay( $settings );
-								$this->get_elements_by_location( 'over', $settings, $item );
-							echo '</div>';
-						?>
+				<div class="tmpcoder-accordion-background"></div>
+					<?php
+						echo wp_kses_post('<div '. $render_attribute .'>');
+							$this->render_media_overlay( $settings );
+							$this->get_elements_by_location( 'over', $settings, $item );
+						echo '</div>';
+					?>
 				</div>
 			<?php endforeach; ?>
 			</div>

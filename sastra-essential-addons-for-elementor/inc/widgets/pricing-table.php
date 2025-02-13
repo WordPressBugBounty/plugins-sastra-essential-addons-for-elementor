@@ -39,7 +39,18 @@ class TMPCODER_Pricing_Table extends Widget_Base {
 	}
 
 	public function get_style_depends() {
-		return [ 'tmpcoder-button-animations-css' ];
+
+		$depends = [ 'tmpcoder-button-animations-css' => true, 'tmpcoder-pricing-table' => true ];
+
+		if ( ! tmpcoder_elementor()->preview->is_preview_mode() ) {
+			$settings = $this->get_settings_for_display();
+
+			if ( $settings['btn_animation'] == 'tmpcoder-button-none' ) {
+				unset( $depends['tmpcoder-button-animations-css'] );
+			}
+		}
+
+		return array_keys($depends);
 	}
 
     public function get_custom_help_url() {
@@ -1034,6 +1045,7 @@ class TMPCODER_Pricing_Table extends Widget_Base {
 				'default' => '#5729d9',
 				'selectors' => [
 					'{{WRAPPER}} .tmpcoder-pricing-table-icon' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .tmpcoder-pricing-table-icon svg' => 'fill: {{VALUE}};',
 				],
 			]
 		);
@@ -2569,11 +2581,17 @@ class TMPCODER_Pricing_Table extends Widget_Base {
 			
 					<?php if ( $item['heading_icon_type'] === 'icon' && '' !== $item['select_icon']['value'] ) : ?>
 						<div class="tmpcoder-pricing-table-icon">
-							<i class="<?php echo esc_attr( $item['select_icon']['value'] ); ?>"></i>
+							<?php 
+							\Elementor\Icons_Manager::render_icon( $item['select_icon'], [ 'aria-hidden' => 'true' ] );
+							?>
 						</div>
 					<?php elseif ( $item['heading_icon_type'] === 'image' && ! empty( $item['heading_image']['url'] ) ) : ?>
 						<div class="tmpcoder-pricing-table-icon">
-							<img src="<?php echo esc_attr( $item['heading_image']['url'] ); ?>">
+							<?php 
+							$settings[ 'layout_image_crop' ] = ['id' => $item['heading_image']['id']];
+							$image_html = Group_Control_Image_Size::get_attachment_image_html( $settings, 'layout_image_crop' );
+							echo wp_kses_post($image_html);
+							?>
 						</div>
 					<?php endif; ?>
 

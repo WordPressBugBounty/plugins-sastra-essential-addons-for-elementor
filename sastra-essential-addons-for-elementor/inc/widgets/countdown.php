@@ -45,6 +45,14 @@ class TMPCODER_Countdown extends Widget_Base {
 		return TMPCODER_NEED_HELP_URL;
     }
 
+    public function get_script_depends() {
+		return ['tmpcoder-countdown'];
+	}
+
+	public function get_style_depends() {
+		return ['tmpcoder-countdown'];
+	}
+
 	public function add_control_countdown_type() {
 		$this->add_control(
 			'countdown_type',

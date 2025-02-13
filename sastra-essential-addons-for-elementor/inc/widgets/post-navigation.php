@@ -33,6 +33,10 @@ class TMPCODER_Post_Navigation extends Widget_Base {
         return [ 'tmpcoder-theme-builder-widgets'];
     }
 
+    public function get_style_depends() {
+        return [ 'tmpcoder-post-navigation'];
+    }
+
     public function get_keywords() {
         return [ 'navigation', 'arrows', 'pagination' ];
     }
@@ -782,23 +786,30 @@ class TMPCODER_Post_Navigation extends Widget_Base {
 
         // Image URLs
         if ( ! empty($prev_post) && 'yes' === $settings['post_nav_image'] ) {
+
             $prev_img_id = get_post_thumbnail_id( $prev_post->ID );
+            $settings[ 'post_nav_image_width_crop' ] = ['id' => $prev_img_id];
+            $prev_image_html = Group_Control_Image_Size::get_attachment_image_html( $settings, 'post_nav_image_width_crop' );
             $prev_image_url = Group_Control_Image_Size::get_attachment_image_src( $prev_img_id, 'post_nav_image_width_crop', $settings );
         }
         if ( ! empty($next_post) && 'yes' === $settings['post_nav_image'] ) {
             $next_img_id = get_post_thumbnail_id( $next_post->ID );
             $next_image_url = Group_Control_Image_Size::get_attachment_image_src( $next_img_id, 'post_nav_image_width_crop', $settings );
+            $settings[ 'post_nav_image_width_crop' ] = ['id' => $next_img_id];
+            $next_image_html = Group_Control_Image_Size::get_attachment_image_html( $settings, 'post_nav_image_width_crop' );
         }
 
         // Background Images
         if ( 'yes' === $settings['post_nav_image'] && 'yes' === $settings['post_nav_image_bg'] ) {
             if ( 'fixed' !== $settings['post_nav_layout'] ) {
                 if ( ! empty($prev_post) ) {
-                    $prev_post_bg = ' style="background-image: url('. esc_url($prev_image_url) .')"';
+                    // $prev_post_bg = ' style="background-image: url('. esc_url($prev_image_url) .')"';
+                    $prev_post_bg = 'background-image: url('. esc_url($prev_image_url).')';
                 }
 
                 if ( ! empty($next_post) ) {
-                    $next_post_bg = ' style="background-image: url('. esc_url($next_image_url) .')"';
+                    // $next_post_bg = ' style="background-image: url('. esc_url($next_image_url) .')"';
+                    $next_post_bg = 'background-image: url('.esc_url($next_image_url).')';
                 }
             }
         }
@@ -822,7 +833,7 @@ class TMPCODER_Post_Navigation extends Widget_Base {
         }
 
         // Previous Post
-        echo '<div class="tmpcoder-post-nav-prev '. esc_attr($layout_class) .'"'. esc_attr($prev_post_bg) .'>'; 
+        echo '<div class="tmpcoder-post-nav-prev '. esc_attr($layout_class) .'" style="'.esc_attr($prev_post_bg).'">'; 
             if ( ! empty($prev_post) ) {
                 echo '<a href="'. esc_url( get_permalink($prev_post->ID) ) .'" class="elementor-clearfix">';
                     // Left Arrow
@@ -831,7 +842,7 @@ class TMPCODER_Post_Navigation extends Widget_Base {
                     // Post Thumbnail
                     if ( 'yes' === $settings['post_nav_image'] ) {
                         if ( '' === $settings['post_nav_image_bg'] || 'fixed' === $settings['post_nav_layout'] ) {
-                            echo '<img src="'. esc_url( $prev_image_url ) .'" alt="">';
+                            echo wp_kses_post($prev_image_html);
                         }
                     }
 
@@ -882,14 +893,14 @@ class TMPCODER_Post_Navigation extends Widget_Base {
         }
 
         // Next Post
-        echo wp_kses('<div class="tmpcoder-post-nav-next '. esc_attr($layout_class) .'"'. $next_post_bg .'>', array(
+        echo wp_kses('<div class="tmpcoder-post-nav-next '. esc_attr($layout_class) .'" style="'.esc_attr($next_post_bg).'">', array(
             'div' => array(
                 'class'=> array(),
                 'style'=> array(),
             ),
         ));
             if ( ! empty($next_post) ) {
-                echo '<a href="'. esc_url( get_permalink($next_post->ID) ) .'" class="elementor-clearfix">';
+                echo '<a href="'. esc_url(get_permalink($next_post->ID)).'" class="elementor-clearfix">';
                     // Label & Title
                     if ( 'fixed' !== $settings['post_nav_layout'] ) {
                         echo '<div class="tmpcoder-post-nav-labels">';
@@ -914,7 +925,7 @@ class TMPCODER_Post_Navigation extends Widget_Base {
                     // Post Thumbnail
                     if ( 'yes' === $settings['post_nav_image'] ) {
                         if ( '' === $settings['post_nav_image_bg'] || 'fixed' === $settings['post_nav_layout'] ) {
-                            echo '<img src="'. esc_url( $next_image_url ) .'" alt="">';
+                            echo wp_kses_post($next_image_html);
                         }
                     }
 

@@ -35,14 +35,6 @@ class TMPCODER_Post_Thumbnail extends Widget_Base {
 		return [ 'image', 'media', 'post', 'thumbnail', 'video', 'gallery' ];
 	}
 
-	public function get_script_depends() {
-		return [ 'jquery-slick', 'tmpcoder-lightgallery' ];
-	}
-
-	public function get_style_depends() {
-		return [ 'tmpcoder-lightgallery-css' ];
-	}
-
 	protected function register_controls() {
 
 		// Get Available Meta Keys
@@ -616,6 +608,8 @@ class TMPCODER_Post_Thumbnail extends Widget_Base {
 		$lightbox = '';
         $src = Group_Control_Image_Size::get_attachment_image_src( $id, 'featured_media_image_crop', $settings );
 		$caption = wp_get_attachment_caption( $id );
+		$settings[ 'featured_media_image_crop' ] = ['id' => $id];
+		$image_html = Group_Control_Image_Size::get_attachment_image_html( $settings, 'featured_media_image_crop' );
 
 		$show_caption = $settings['featured_media_caption'];
 		
@@ -639,7 +633,7 @@ class TMPCODER_Post_Thumbnail extends Widget_Base {
 				if (isset($settings['image_link_url']) && $settings['image_link_url'] == 'media-file')
 				{
 					
-					echo wp_kses_post('<a href="'.$src.'"><img src="'. esc_url( $src ) .'" alt="'. esc_attr( $caption ) .'"></a>');
+					echo wp_kses_post('<a href="'.$src.'">'.$image_html.'</a>');
 				}
 				elseif (isset($settings['image_link_url']) && $settings['image_link_url'] == 'custom-url')
 				{
@@ -673,11 +667,11 @@ class TMPCODER_Post_Thumbnail extends Widget_Base {
 						}			
 					}
 
-					echo wp_kses_post('<a href="'.esc_url($link['url']).'" '.$attribute_value.' '.esc_attr($nofollow).' '.esc_attr($target).'><img src="'. esc_url( $src ) .'" alt="'. esc_attr( $caption ) .'"></a>');					
+					echo wp_kses_post('<a href="'.esc_url($link['url']).'" '.$attribute_value.' '.esc_attr($nofollow).' '.esc_attr($target).'>'.$image_html.'</a>');					
 				}
 				else
 				{
-					echo '<img src="'. esc_url( $src ) .'" alt="'. esc_attr( $caption ) .'">';
+					echo wp_kses_post($image_html);
 				}
 
 			echo '</div>';

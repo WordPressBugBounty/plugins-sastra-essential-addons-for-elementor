@@ -36,16 +36,45 @@ class TMPCODER_Posts_Timeline extends Widget_Base {
 	}
 
 	public function get_keywords() {
-		return [ 'post timeline', 'blog', 'post', 'posts', 'timeline', 'posts timeline', 'story timeline', 'content timeline'];
+		return [ 'spexo', 'post timeline', 'blog', 'post', 'posts', 'timeline', 'posts timeline', 'story timeline', 'content timeline'];
 	}
 
 	public function get_script_depends() {
-		// TODO: separate infinite-scroll from isotope
-		return [ 'swiper', 'tmpcoder-aos-js', 'tmpcoder-infinite-scroll' ];
+
+		$depends = [ 'swiper' => true, 'tmpcoder-aos-js' => true, 'tmpcoder-infinite-scroll' => true, 'tmpcoder-posts-timeline' => true ];
+
+		if ( ! tmpcoder_elementor()->preview->is_preview_mode() ) {
+			$settings = $this->get_settings_for_display();
+
+			if ( $settings['timeline_layout'] != 'horizontal-bottom' ) {
+				unset( $depends['swiper'] );
+			}if ( $settings['timeline_animation'] == 'none' ) {
+				unset( $depends['tmpcoder-aos-js'] );
+			}if ($settings['show_pagination'] != 'yes' ) {
+				unset( $depends['tmpcoder-infinite-scroll'] );
+			}
+		}
+
+		return array_keys($depends);
 	}
 
 	public function get_style_depends() {
-		return [ 'swiper', 'tmpcoder-animations-css', 'tmpcoder-loading-animations-css', 'tmpcoder-aos-css' ];
+
+		$depends = [ 'swiper' => true, 'tmpcoder-animations-css' => true, 'tmpcoder-loading-animations-css' => true, 'tmpcoder-aos-css' => true, 'tmpcoder-posts-timeline' => true ];
+
+		if ( ! tmpcoder_elementor()->preview->is_preview_mode() ) {
+			$settings = $this->get_settings_for_display();
+
+			if ( $settings['timeline_layout'] != 'horizontal-bottom' ) {
+				unset( $depends['swiper'] );
+			}if ( $settings['timeline_animation'] == 'none' ) {
+				unset( $depends['tmpcoder-aos-css'] );
+			}if ($settings['show_pagination'] != 'yes' ) {
+				unset( $depends['tmpcoder-loading-animations-css'] );
+			}
+		}
+
+		return array_keys($depends);
 	}
 
     public function get_custom_help_url() {
@@ -5151,7 +5180,9 @@ class TMPCODER_Posts_Timeline extends Widget_Base {
                 $this->image= wp_get_attachment_image($content['repeater_image']['id'], $this->thumbnail_size, true);                
             }
         } elseif (isset($content['repeater_image']['url']) && $content['repeater_image']['url'] != "") {
+
             $this->image = '<img src="'. esc_url($content['repeater_image']['url']) .'">';
+
         } elseif ($content['repeater_timeline_item_icon'] != '') {
             ob_start();
             \Elementor\Icons_Manager::render_icon( $content['repeater_timeline_item_icon'], [ 'aria-hidden' => 'true' ] );
@@ -5389,7 +5420,13 @@ class TMPCODER_Posts_Timeline extends Widget_Base {
 					
 					$id = get_post_thumbnail_id();
 					$this->src = Group_Control_Image_Size::get_attachment_image_src( $id, 'tmpcoder_thumbnail_dynamic', $settings );
-					
+
+					$settings[ 'tmpcoder_thumbnail_dynamic' ] = ['id' => $id];
+					$image_html = Group_Control_Image_Size::get_attachment_image_html( $settings, 'tmpcoder_thumbnail_dynamic' );
+
+					$image_original_class = 'wp-image-'.$id;
+					$custom_image_class = $image_original_class.' tmpcoder-thumbnail-image';
+					$image_html = str_replace($image_original_class, $custom_image_class, $image_html);
 
 					$this->content_and_animation_alignment($layout, $countItem, $settings);
 					$background_image = $settings['content_layout'] === 'background' ? get_the_post_thumbnail_url() : '';
@@ -5410,8 +5447,7 @@ class TMPCODER_Posts_Timeline extends Widget_Base {
 							echo '</div>';
 							echo '<div class="tmpcoder-story-info-vertical tmpcoder-data-wrap animated '. esc_attr($background_class) .'" data-aos="'. esc_attr($this->animation) .'" data-aos-left="'. esc_attr($this->animation_loadmore_left) .'" data-aos-right="'. esc_attr($this->animation_loadmore_right) .'" data-animation-offset="'. esc_attr($settings['animation_offset']) .'" data-animation-duration="'. esc_attr($settings['aos_animation_duration']) .'">';
 
-							echo 'image-top' === $settings['content_layout'] && !empty($this->src) || 'yes' === $settings['show_overlay']  && !empty($this->src) ? '<div class="tmpcoder-animation-wrap tmpcoder-timeline-media"><img class="tmpcoder-thumbnail-image" src="'. esc_url($this->src) .'">' : '';
-
+							echo 'image-top' === $settings['content_layout'] && !empty($this->src) || 'yes' === $settings['show_overlay']  && !empty($this->src) ? wp_kses_post('<div class="tmpcoder-animation-wrap tmpcoder-timeline-media">'.$image_html.'') : '';
 							
 								echo ($settings['show_overlay'] === 'yes' && !empty(get_the_post_thumbnail_url())) ? '<div class="tmpcoder-timeline-story-overlay '. esc_attr($this->animation_class) .'">' : '';
 
@@ -5442,10 +5478,7 @@ class TMPCODER_Posts_Timeline extends Widget_Base {
 									echo 'yes' === $this->show_readmore && 'yes' !== $settings['readmore_overlay'] ? '<div class="tmpcoder-read-more-wrap"><a class="tmpcoder-read-more-button" href="'. esc_url(get_the_permalink()) .'">'. esc_html($settings['read_more_text']) .'</a></div>' : '';
 
 							echo 'yes' !== $settings['title_overlay'] && 'yes' === $settings['show_title'] || 'yes' !== $settings['description_overlay'] && 'yes' === $settings['show_description'] || 'yes' === $settings['show_date'] && 'yes' !== $settings['date_overlay'] || 'yes' === $this->show_readmore && 'yes' !== $settings['readmore_overlay']  ? '</div>' : '';		
-
-								echo ($settings['content_layout'] === 'image-bottom' && !empty($this->src)) ? '<div class="tmpcoder-animation-wrap tmpcoder-timeline-media">
-								<img class="tmpcoder-thumbnail-image" src="'. esc_url($this->src) .'">
-								</div>' : '';
+								echo ($settings['content_layout'] === 'image-bottom' && !empty($this->src)) ? wp_kses_post('<div class="tmpcoder-animation-wrap tmpcoder-timeline-media">'.$image_html.'</div>') : '';
 
 							echo '</div>';
 					echo '</div>';
@@ -5573,7 +5606,7 @@ class TMPCODER_Posts_Timeline extends Widget_Base {
 				echo '</div>';
 	}
 	
-	public function render_dynamic_horizontal_timeline ( $settings, $dir, $autoplay, $loop, $slidesHeight, $swiper_speed, $swiper_delay, $swiper_pause_on_hover ) {
+	public function render_dynamic_horizontal_timeline( $settings, $dir, $autoplay, $loop, $slidesHeight, $swiper_speed, $swiper_delay, $swiper_pause_on_hover ) {
 		
 		wp_reset_postdata();
 
@@ -5591,11 +5624,16 @@ class TMPCODER_Posts_Timeline extends Widget_Base {
 					while( $this->my_query->have_posts() ) {
 						$this->my_query->the_post();
 
-						
-					
 					$id = get_post_thumbnail_id();
 					$this->src = Group_Control_Image_Size::get_attachment_image_src( $id, 'tmpcoder_thumbnail_dynamic', $settings );
 						
+					$settings[ 'tmpcoder_thumbnail_dynamic' ] = ['id' => $id];
+					$image_html = Group_Control_Image_Size::get_attachment_image_html( $settings, 'tmpcoder_thumbnail_dynamic' );
+
+					$image_original_class = 'wp-image-'.$id;
+					$custom_image_class = $image_original_class.' tmpcoder-thumbnail-image';
+					$image_html = str_replace($image_original_class, $custom_image_class, $image_html);
+
 						$background_image = $settings['content_layout'] === 'background' ? get_the_post_thumbnail_url() : '';
 						$background_class = $settings['content_layout'] === 'background' ? 'story-with-background' : '';
 						
@@ -5604,10 +5642,10 @@ class TMPCODER_Posts_Timeline extends Widget_Base {
 						echo '<div class="tmpcoder-story-info '. esc_attr($background_class) .'">';
 						echo ($settings['content_layout'] === 'image-top' && !empty($this->src)) || ($settings['show_overlay'] === 'yes' && !empty($this->src)) ? '<div class="tmpcoder-animation-wrap tmpcoder-timeline-media">' : '';
 
-						echo ($settings['content_layout'] === 'image-top' && !empty($this->src)) ? '<img class="tmpcoder-thumbnail-image" src="'. esc_url($this->src) .'">' : '';
-	
+						echo ($settings['content_layout'] === 'image-top' && !empty($this->src)) ? wp_kses_post($image_html) : '';
+
 						echo ($settings['show_overlay'] === 'yes' && !empty(get_the_post_thumbnail_url())) ? '<div class="tmpcoder-timeline-story-overlay '. esc_attr($this->animation_class) .'">' : '';
-	
+
 							echo 'yes' === $settings['show_title'] && 'yes' === $settings['title_overlay'] ? '<p class="tmpcoder-title-wrap" ><a class="tmpcoder-title" href="'. esc_url(get_the_permalink()) .'">'. esc_html(get_the_title()) .'</a></p>' : '';
 	
 							echo 'yes' === $settings['show_date'] && 'yes' === $settings['date_overlay'] ? '<div class="tmpcoder-inner-date-label">
@@ -5634,9 +5672,7 @@ class TMPCODER_Posts_Timeline extends Widget_Base {
 
 						echo 'yes' !== $settings['title_overlay'] && 'yes' === $settings['show_title'] || 'yes' !== $settings['description_overlay'] && 'yes' === $settings['show_description'] || 'yes' === $settings['show_date'] && 'yes' !== $settings['date_overlay'] || 'yes' === $this->show_readmore && 'yes' !== $settings['readmore_overlay'] ? '</div>' : '';
 	
-						echo ($settings['content_layout'] === 'image-bottom' && !empty($this->src)) ? '<div class="tmpcoder-animation-wrap tmpcoder-timeline-media">
-						 <img class="tmpcoder-thumbnail-image" src="'. esc_url($this->src) .'">
-						</div>' : '';
+						echo ($settings['content_layout'] === 'image-bottom' && !empty($this->src)) ? wp_kses_post('<div class="tmpcoder-animation-wrap tmpcoder-timeline-media">'.$image_html.'</div>') : '';
 
 						echo '</div>';
 	

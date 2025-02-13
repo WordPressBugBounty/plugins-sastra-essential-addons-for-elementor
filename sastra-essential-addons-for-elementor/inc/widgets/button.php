@@ -40,7 +40,7 @@ class TMPCODER_Button extends Widget_Base {
 	}
 	
 	public function get_style_depends() {
-		return [ 'tmpcoder-button-animations-css' ];
+		return [ 'tmpcoder-button-animations-css', 'tmpcoder-button' ];
 	}
 
     public function get_custom_help_url() {
@@ -536,8 +536,6 @@ class TMPCODER_Button extends Widget_Base {
 									:not(.tmpcoder-button-bounce-to-top)
 									:not(.tmpcoder-button-radial-out)
 									:not(.tmpcoder-button-rectangle-out)
-									
-
 									:not(.tmpcoder-button-sweep-to-top):hover
 							',
 			]

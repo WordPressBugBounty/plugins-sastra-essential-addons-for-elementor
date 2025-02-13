@@ -38,6 +38,10 @@ class TMPCODER_Social_Share extends Widget_Base {
 		return TMPCODER_NEED_HELP_URL;
     }
 
+    public function get_style_depends() {
+		return [ 'tmpcoder-sharing-buttons' ];
+	}
+
 	public function add_repeater_args_sharing_custom_label() {
 		return [
 			'type' => Controls_Manager::HIDDEN,

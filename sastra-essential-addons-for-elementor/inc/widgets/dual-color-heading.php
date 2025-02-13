@@ -41,6 +41,10 @@ class TMPCODER_Dual_Color_Heading extends Widget_Base {
 		return TMPCODER_NEED_HELP_URL;
     }
 
+    public function get_style_depends() {
+		return [ 'tmpcoder-dual-color-heading' ];
+	}
+
 	protected function register_controls() {
 
 		$this->start_controls_section(

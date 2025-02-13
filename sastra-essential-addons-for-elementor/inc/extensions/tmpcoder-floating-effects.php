@@ -53,8 +53,8 @@ class TMPCODER_Section_Floating_Effects {
 	 */
 	public function enqueue_scripts() {
 
-			wp_enqueue_script( 'tmpcoder-anime' );
 		if ( ! wp_script_is( 'tmpcoder-anime', 'enqueued' ) ) {
+			wp_enqueue_script( 'tmpcoder-anime' );
 		}
 
 		if ( ! wp_script_is( 'tmpcoder-feffects', 'enqueued' ) ) {
@@ -71,8 +71,6 @@ class TMPCODER_Section_Floating_Effects {
 	 * @param object $element for current element.
 	 */
 	public function register_controls( $element ) {
-
-
 
 		$element->start_controls_section(
 			'section_tmpcoder_fe',

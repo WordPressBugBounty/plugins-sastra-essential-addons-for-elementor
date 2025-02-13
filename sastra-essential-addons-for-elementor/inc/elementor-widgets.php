@@ -153,14 +153,32 @@ if ( !class_exists('TemplatesWidgetRegister') ){
               true
             );
 
+            if (function_exists('tmpcoder_is_key_expired')) {
+              $is_key_expire = tmpcoder_is_key_expired();  
+            }
+            else
+            {
+              $is_key_expire = false;  
+            }
+
             wp_localize_script( 'tmpcoder-editor-js', 'tmpcoder_config', array( 
-              'TMPCODER_PURCHASE_PRO_URL' => esc_url(TMPCODER_PURCHASE_PRO_URL),
+              'TMPCODER_PURCHASE_PRO_URL'   => esc_url(TMPCODER_PURCHASE_PRO_URL),
               'tmpcoder_registered_modules' => tmpcoder_get_registered_modules(),
-              'TMPCODER_DEMO_IMPORT_API' => esc_url(TMPCODER_DEMO_IMPORT_API)
+              'TMPCODER_DEMO_IMPORT_API'    => esc_url(TMPCODER_DEMO_IMPORT_API),
+              'is_key_expire' => $is_key_expire,
+              'renew_button_text' => esc_html('Renew Here'),
+              'expire_notice' => esc_html('Your license has expired. Please renew immediately to avoid service interruption.'),
             ));
         }
 
         public function tmpcoder_enqueue_editor_styles() {
+
+          wp_enqueue_style(
+            'widgets-editor',
+            TMPCODER_PLUGIN_URI . 'assets/css/admin/widgets-editor.min.css',
+            [],
+            tmpcoder_get_plugin_version()
+          );
 
           wp_enqueue_style(
             'tmpcoder-flipster-css',
@@ -297,7 +315,17 @@ if ( !class_exists('TemplatesWidgetRegister') ){
           );
 
           wp_register_script(
-            'tmpcoder-lottie-animations',
+            'tmpcoder-infinite-scroll',
+            TMPCODER_PLUGIN_URI . 'assets/js/lib/infinite-scroll/infinite-scroll'. tmpcoder_script_suffix() .'.js',
+            [
+              'jquery',
+            ],
+            tmpcoder_get_plugin_version(),
+            true
+          );
+
+          wp_register_script(
+            'tmpcoder-lottie-animations-lib',
             TMPCODER_PLUGIN_URI . 'assets/js/lib/lottie/lottie'.tmpcoder_script_suffix().'.js',
             [],
             tmpcoder_get_plugin_version(),
@@ -345,15 +373,80 @@ if ( !class_exists('TemplatesWidgetRegister') ){
              tmpcoder_get_plugin_version(),
              true 
           );
-          
 
+          wp_register_script( 
+            'tmpcoder-grid-widgets',
+            TMPCODER_PLUGIN_URI.'assets/js/widgets/grid-widgets'.tmpcoder_script_suffix().'.js',
+            [ 'jquery' ],
+            tmpcoder_get_plugin_version(),
+            true
+          );
+
+          wp_register_script( 
+            'tmpcoder-script-js',
+            TMPCODER_PLUGIN_URI.'assets/js/script'.tmpcoder_script_suffix().'.js',
+            [ 'jquery', 'elementor-frontend' ],
+            tmpcoder_get_plugin_version(),
+            true 
+          );
+
+          $tmpcoder_get_all_widgtes = tmpcoder_get_all_widgtes();
+
+          if (is_array($tmpcoder_get_all_widgtes) && !empty($tmpcoder_get_all_widgtes)) {
+
+            foreach ($tmpcoder_get_all_widgtes as $key => $widget) {
+
+              $slug = 'tmpcoder-element-'.$widget[0];
+              $item_status = get_option($slug, true);
+
+              if (!empty($item_status) && $item_status == 'on') {
+
+                if (isset($widget[0]) && !empty($widget[0])) {
+
+                  $css_path = TMPCODER_PLUGIN_DIR.'assets/css/widgets/'.$widget[0].tmpcoder_script_suffix().'.css';
+                  $js_path = TMPCODER_PLUGIN_DIR.'assets/js/widgets/'.$widget[0].tmpcoder_script_suffix().'.js';
+
+                  $css_url = TMPCODER_PLUGIN_URI.'assets/css/widgets/'.$widget[0].tmpcoder_script_suffix().'.css';
+                  $js_url = TMPCODER_PLUGIN_URI.'assets/js/widgets/'.$widget[0].tmpcoder_script_suffix().'.js';
+
+                  // if (file_exists($css_path)) {
+                  //   wp_register_style( 
+                  //     'tmpcoder-'.$widget[0], 
+                  //     $css_url, 
+                  //     [], 
+                  //     tmpcoder_get_plugin_version() 
+                  //   );
+                  // }
+                  
+                  if (file_exists($js_path)) {
+                    wp_register_script( 
+                      'tmpcoder-'.$widget[0],
+                      $js_url, 
+                      [], 
+                      tmpcoder_get_plugin_version(), 
+                      true 
+                    ); 
+                  }
+                }
+              }
+            }
+          }
         }
         
         public function tmpcoder_enqueue_scripts(){
             
+            if ( isset( $_GET['preview'] ) ) {
+              wp_enqueue_style(
+                'widgets-editor',
+                TMPCODER_PLUGIN_URI.'assets/css/admin/widgets-editor.min.css',
+                [],
+                tmpcoder_get_plugin_version()
+              );
+            }
+
             /* Enqueue the widgets style & script start */
 
-            wp_enqueue_style( 
+            wp_register_style( 
               'tmpcoder-text-animations-css', 
               TMPCODER_PLUGIN_URI . 'assets/css/lib/animations/text-animations'.tmpcoder_script_suffix().'.css', 
               [], 
@@ -368,6 +461,7 @@ if ( !class_exists('TemplatesWidgetRegister') ){
             );
 
             /* Post/Product Style & Script Start */
+            
             wp_enqueue_style( 'tmpcoder-woo-grid-css', TMPCODER_PLUGIN_URI . 'assets/grid-widgets/frontend'.tmpcoder_script_suffix().'.css', array('elementor-icons'), tmpcoder_get_plugin_version() );
             
             wp_register_style(
@@ -471,10 +565,10 @@ if ( !class_exists('TemplatesWidgetRegister') ){
               'nonce' => wp_create_nonce('spexo-addons'),
               'addedToCartText' => esc_html__('was added to cart', 'sastra-essential-addons-for-elementor'),
               'viewCart' => esc_html__('View Cart', 'sastra-essential-addons-for-elementor'),
-              'comparePageID' => get_option('tmpcoder_compare_page'),
-              'comparePageURL' => get_permalink(get_option('tmpcoder_compare_page')),
-              'wishlistPageID' => get_option('tmpcoder_wishlist_page'),
-              'wishlistPageURL' => get_permalink(get_option('tmpcoder_wishlist_page')),
+              'comparePageID' => tmpcoder_get_settings('tmpcoder_compare_page'),
+              'comparePageURL' => get_permalink(tmpcoder_get_settings('tmpcoder_compare_page')),
+              'wishlistPageID' => tmpcoder_get_settings('tmpcoder_wishlist_page'),
+              'wishlistPageURL' => get_permalink(tmpcoder_get_settings('tmpcoder_wishlist_page')),
               'chooseQuantityText' => esc_html__('Please select the required number of items.', 'sastra-essential-addons-for-elementor'),
               'site_key' => get_option('tmpcoder_recaptcha_v3_site_key'),
               'is_admin' => current_user_can('manage_options'),
@@ -534,7 +628,7 @@ if ( !class_exists('TemplatesWidgetRegister') ){
               'tmpcoder-premium-widgets',
               [
                 // Translators: %s is the plugin name.
-                'title' => sprintf(wp_kses_post( '%s Premium Widgets <a href="'.TMPCODER_PURCHASE_PRO_URL.'" target="_blank"><i class="eicon-upgrade-crown"></i>Upgrade</a>'), 'Spexo Addons'),
+                'title' => sprintf(wp_kses_post( '%s Premium Widgets <a class="tmpcoder-editor-upgrade-pro-icon" href="'.TMPCODER_PURCHASE_PRO_URL.'" target="_blank"><i class="eicon-upgrade-crown"></i>Upgrade</a>'), 'Spexo Addons'),
                 'icon' => 'fa fa-star',
               ]
             );

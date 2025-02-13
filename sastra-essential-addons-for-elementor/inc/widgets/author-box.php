@@ -35,6 +35,10 @@ class TMPCODER_Author_Box extends Widget_Base {
 		return [ 'author', 'box', 'post', ];
 	}
 
+	public function get_style_depends() {
+		return [ 'tmpcoder-author-box' ];
+	}
+
 	public function add_controls_group_author_name_links_to() {
 		$this->add_control(
 			'author_name_links_to',

@@ -35,12 +35,11 @@ class TMPCODER_Lottie_Animations extends Widget_Base {
 	}
 	
 	public function get_script_depends() {
-		return [ 'tmpcoder-lottie-animations' ];
+		return [ 'tmpcoder-lottie-animations-lib', 'tmpcoder-lottie-animations' ];
 	}
 
     public function get_custom_help_url() {
-    	if ( empty(get_option('tmpcoder_wl_plugin_links')) )
-        	return TMPCODER_NEED_HELP_URL;
+    	return TMPCODER_NEED_HELP_URL;
     }
 	
 	protected function register_controls() {

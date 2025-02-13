@@ -5,6 +5,7 @@ use Elementor\Group_Control_Border;
 use Elementor\Group_Control_Box_Shadow;
 use Elementor\Group_Control_Typography;
 use Elementor\Widget_Base;
+use Elementor\Group_Control_Image_Size;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
@@ -35,7 +36,21 @@ class TMPCODER_Mega_Menu extends Widget_Base {
 	}
 
 	public function get_style_depends() {
-		return [ 'tmpcoder-link-animations-css' ];
+
+		$depends = [ 'tmpcoder-link-animations-css' => true, 'tmpcoder-mega-menu' => true ];
+
+		if ( !tmpcoder_elementor()->preview->is_preview_mode() ) {
+			$settings = $this->get_settings_for_display();
+
+			if ( $settings['menu_items_pointer'] == 'none' ) {
+				unset( $depends['tmpcoder-link-animations-css'] );
+			}
+		}
+		return array_keys($depends); 
+	}
+
+	public function get_script_depends() {
+		return [ 'tmpcoder-mega-menu' ];
 	}
 
     public function get_custom_help_url() {
@@ -2294,7 +2309,13 @@ class TMPCODER_Mega_Menu extends Widget_Base {
 						if ( ! empty( $settings['mob_menu_offcanvas_logo']['url'] ) ) {
 							echo '<div class="mobile-mega-menu-logo">';
 								echo '<a href="'. esc_url(home_url()) .'">';
-									echo '<img src="'. esc_url($settings["mob_menu_offcanvas_logo"]["url"]) .'" alt="">';
+
+									// echo '<img src="'. esc_url($settings["mob_menu_offcanvas_logo"]["url"]) .'" alt="">';
+
+									$settings['layout_image_crop'] = ['id' => $settings['mob_menu_offcanvas_logo']['id']];
+									$main_thumbnail_html = Group_Control_Image_Size::get_attachment_image_html( $settings, 'layout_image_crop' );
+									echo wp_kses_post($main_thumbnail_html);
+
 								echo '</a>';
 							echo '</div>';
 						}

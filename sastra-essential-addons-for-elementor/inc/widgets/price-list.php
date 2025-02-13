@@ -44,6 +44,10 @@ class TMPCODER_Price_List extends Widget_Base {
 		return TMPCODER_NEED_HELP_URL;
     }
 
+    public function get_style_depends() {
+        return [ 'tmpcoder-price-list'];
+    }
+
 	public function add_repeater_args_prlist_image() {
 		return [
 			'type' => Controls_Manager::HIDDEN,

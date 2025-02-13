@@ -28,6 +28,10 @@ class TMPCODER_Product_Meta extends Widget_Base {
 		return [ 'woocommerce', 'product-meta', 'product', 'meta' ];
 	}
 
+	public function get_style_depends() {
+		return [ 'tmpcoder-product-meta' ];
+	}
+
 	protected function register_controls() {
 
 		// Tab: Content ==============

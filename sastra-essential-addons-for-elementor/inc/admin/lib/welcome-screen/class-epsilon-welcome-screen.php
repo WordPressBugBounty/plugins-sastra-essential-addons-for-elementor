@@ -154,30 +154,34 @@ class TMPCODER_Welcome_Screen {
 	// Register Settings
 	function tmpcoder_register_addons_settings() {
 
-		// Integrations
-	    register_setting( 'tmpcoder-settings', 'tmpcoder_mailchimp_api_key' );
+		function tmpcoder_sanitize_register_key( $input ) {
+			return sanitize_text_field( $input );
+		}
+
+	    register_setting( 'tmpcoder-settings', 'tmpcoder_mailchimp_api_key', 'tmpcoder_sanitize_register_key' );
 
 	    // WooCommerce
-	    register_setting( 'tmpcoder-settings', 'tmpcoder_add_wishlist_to_my_account' );
-	    register_setting( 'tmpcoder-settings', 'tmpcoder_wishlist_page' );
-    	register_setting( 'tmpcoder-settings', 'tmpcoder_compare_page' );
-    	register_setting( 'tmpcoder-settings', 'tmpcoder_woo_shop_ppp' );
-	    register_setting( 'tmpcoder-settings', 'tmpcoder_woo_shop_cat_ppp' );
-	    register_setting( 'tmpcoder-settings', 'tmpcoder_woo_shop_tag_ppp' );
+	    register_setting( 'tmpcoder-settings', 'tmpcoder_add_wishlist_to_my_account', 'tmpcoder_sanitize_register_key'  );
+	    register_setting( 'tmpcoder-settings', 'tmpcoder_wishlist_page', 'tmpcoder_sanitize_register_key'  );
+    	register_setting( 'tmpcoder-settings', 'tmpcoder_compare_page', 'tmpcoder_sanitize_register_key'  );
+    	register_setting( 'tmpcoder-settings', 'tmpcoder_woo_shop_ppp', 'tmpcoder_sanitize_register_key'  );
+	    register_setting( 'tmpcoder-settings', 'tmpcoder_woo_shop_cat_ppp', 'tmpcoder_sanitize_register_key'  );
+	    register_setting( 'tmpcoder-settings', 'tmpcoder_woo_shop_tag_ppp', 'tmpcoder_sanitize_register_key'  );
     	
 	    // Extensions
-        register_setting('tmpcoder-elements-settings', 'tmpcoder-particles');
-        register_setting('tmpcoder-elements-settings', 'tmpcoder-parallax-background');
-        register_setting('tmpcoder-elements-settings', 'tmpcoder-parallax-multi-layer');
-        register_setting('tmpcoder-elements-settings', 'tmpcoder-custom-css');
-        register_setting('tmpcoder-elements-settings', 'tmpcoder-sticky-section');
-        register_setting('tmpcoder-elements-settings', 'tmpcoder-floating-effects');
-        register_setting('tmpcoder-elements-settings', 'tmpcoder-scroll-effects-pro');
+        register_setting('tmpcoder-elements-settings', 'tmpcoder-particles', 'tmpcoder_sanitize_register_key');
+        register_setting('tmpcoder-elements-settings', 'tmpcoder-parallax-background', 'tmpcoder_sanitize_register_key');
+        register_setting('tmpcoder-elements-settings', 'tmpcoder-parallax-multi-layer', 'tmpcoder_sanitize_register_key');
+        register_setting('tmpcoder-elements-settings', 'tmpcoder-custom-css', 'tmpcoder_sanitize_register_key');
+        register_setting('tmpcoder-elements-settings', 'tmpcoder-sticky-section', 'tmpcoder_sanitize_register_key');
+        register_setting('tmpcoder-elements-settings', 'tmpcoder-floating-effects', 'tmpcoder_sanitize_register_key');
+        register_setting('tmpcoder-elements-settings', 'tmpcoder-scroll-effects-pro', 'tmpcoder_sanitize_register_key');
 
         // Element Toggle
         if ( false == get_option( 'tmpcoder-element-toggle-all' ) ) {
 			add_option( 'tmpcoder-element-toggle-all',"on" );
 		}
+		
 	    register_setting( 'tmpcoder-elements-settings', 'tmpcoder-element-toggle-all', [ 'default' => 'on' ]  );
 
 	    // Widgets
@@ -340,6 +344,14 @@ class TMPCODER_Welcome_Screen {
 
 		$theme = (is_object(wp_get_theme()->parent())) ? wp_get_theme()->parent() : wp_get_theme();
         $tab   = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'getting-started';// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		
+		if( defined('TMPCODER_PRO_ADDONS_ASSETS_URL') ) {
+			$headers = get_headers(TMPCODER_PRO_ADDONS_ASSETS_URL . 'images/spexo-logo-web-pro.svg');
+			$main_header_logo = ($headers && strpos($headers[0], '200')) ? TMPCODER_PRO_ADDONS_ASSETS_URL.'images/spexo-logo-web-pro.svg' : TMPCODER_ADDONS_ASSETS_URL.'images/spexo-logo-web.svg' ;
+
+	    } else {
+	        $main_header_logo = TMPCODER_ADDONS_ASSETS_URL.'images/spexo-logo-web.svg';
+	    }
 
 		?>
 		<div class="wrap tmpcoder-theme-wrap">
@@ -352,7 +364,7 @@ class TMPCODER_Welcome_Screen {
 					    <div class="row">
 					        <div class="col-xl-6">
 					            <div class="main-header-logo">
-					            	<img src="<?php echo esc_url(TMPCODER_ADDONS_ASSETS_URL.'images/logo.png'); ?>" alt="Sastra-logo">
+					            	<img src="<?php echo esc_url( $main_header_logo ); ?>" alt="Spexo-logo">
 					            </div>
 					        </div>
 					        <div class="col-xl-6">
@@ -538,16 +550,17 @@ class TMPCODER_Welcome_Screen {
 			}
 		}
 
-        $arr['license'] = array(
-            'id'    => 'license',
-            'icon'    => 'license.svg',
-            'url'   => admin_url('admin.php?page=tmpcoder-license-activation'),
-            'label' => __( 'License', 'sastra-essential-addons-for-elementor' )
-        );
+		if ( defined ('TMPCODER_PRO_PLUGIN_NAME') ) {
+			$arr['license'] = array(
+				'id'    => 'license',
+				'icon'    => 'license.svg',
+				'url'   => admin_url('admin.php?page=tmpcoder-license-activation'),
+				'label' => __( 'License', 'sastra-essential-addons-for-elementor' )
+			);
 
-		$arr = apply_filters('tmpcoder_add_options_tabs', $arr);
+			$arr = apply_filters('tmpcoder_add_options_tabs', $arr);
+		}
 
 		return $arr;
 	}
-
 }

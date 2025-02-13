@@ -35,6 +35,14 @@ class TMPCODER_OnepageNav extends Widget_Base {
 		return [ 'tmpcoder-widgets-category'];
 	}
 
+	public function get_script_depends() {
+		return [ 'tmpcoder-onepage-nav'];
+	}
+
+	public function get_style_depends() {
+		return [ 'tmpcoder-onepage-nav'];
+	}
+
 	public function get_keywords() {
 		return [ 'one page', 'onepage', 'navigation', 'one page scroll', 'scroll navigation', 'floating menu', 'sticky menu', 'page scroll' ];
 	}

@@ -35,6 +35,10 @@ class TMPCODER_Post_Comments extends Widget_Base {
 		return [ 'comments', 'post' ];
 	}
 
+	public function get_style_depends() {
+		return [ 'tmpcoder-post-comments'];
+	}
+
 	public function add_control_comments_avatar_size() {}
 
 	public function add_control_avatar_gutter() {

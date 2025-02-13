@@ -30,6 +30,14 @@ class TMPCODER_Taxonomy_List extends Widget_Base {
 		return [ 'tmpcoder-widgets-category' ];
 	}
 
+	public function get_script_depends() {
+		return [ 'tmpcoder-taxonomy-list' ];
+	}
+
+	public function get_style_depends() {
+		return [ 'tmpcoder-taxonomy-list' ];
+	}
+
 	public function get_keywords() {
 		return [ 'taxonomy-list', 'taxonomy', 'category', 'categories', 'tag', 'list'];
 	}

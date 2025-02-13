@@ -40,7 +40,11 @@ class TMPCODER_Testimonial_Carousel extends Widget_Base {
 	}
 	
 	public function get_script_depends() {
-		return [ 'imagesloaded', 'tmpcoder-slick' ];
+		return [ 'imagesloaded', 'tmpcoder-slick', 'tmpcoder-testimonial' ];
+	}
+
+	public function get_style_depends() {
+		return [ 'tmpcoder-testimonial' ];
 	}
 
 	public function get_custom_help_url() {
@@ -2699,9 +2703,13 @@ class TMPCODER_Testimonial_Carousel extends Widget_Base {
 
 	public function render_testimonial_image( $item ) {
 		$settings = $this->get_settings();
-		$image_src = Group_Control_Image_Size::get_attachment_image_src( $item['testimonial_image']['id'], 'testimonial_image_size', $settings );
 
-		if ( ! $image_src ) {
+		$settings[ 'testimonial_image_size' ] = ['id' => $item['testimonial_image']['id']];
+		$image_html = Group_Control_Image_Size::get_attachment_image_html( $settings, 'testimonial_image_size' );
+		// Update the alt attribute
+		$image_html = preg_replace( '/<img(.*?)alt="(.*?)"(.*?)>/i', '<img$1alt="'.$item['testimonial_author'].'"$3>', $image_html );
+
+		if ( ! $image_html ) {
 			$image_src = $item['testimonial_image']['url'];
 		}
 
@@ -2709,7 +2717,21 @@ class TMPCODER_Testimonial_Carousel extends Widget_Base {
 
 		<?php if ( ! empty( $item['testimonial_image']['url'] ) ) : ?>
 			<div class="tmpcoder-testimonial-image">
-				<img src="<?php echo esc_url( $image_src ); ?>" alt="<?php echo esc_attr( $item['testimonial_author'] ); ?>">
+
+				<?php 
+
+				if ( ! $image_html ) {
+				?>	
+					<img src="<?php echo esc_url( $image_src ); ?>" alt="<?php 
+					echo esc_attr( $item['testimonial_author'] ); ?>">
+				<?php
+				}
+				else {
+			 		echo wp_kses_post($image_html);
+				}
+
+			  	?>
+
 			</div>
 		<?php endif; ?>
 
@@ -2748,11 +2770,21 @@ class TMPCODER_Testimonial_Carousel extends Widget_Base {
 					if ( $item['testimonial_logo_url']['nofollow'] ) {
 						$this->add_render_attribute( 'logo_attribute'. $item_count, 'nofollow', '' );
 					}
-
 				}
 
 				echo wp_kses('<'. esc_attr( $logo_element ) .' '. $this->get_render_attribute_string( 'logo_attribute'. $item_count ) .'>', tmpcoder_wp_kses_allowed_html());
-					echo '<img src="'. esc_url(  $item['testimonial_logo_image']['url'] ) .'" alt="'. esc_attr( $item['testimonial_author'] ) .'">';
+
+					$settings[ 'testimonial_logo_image' ] = ['id' => $item['testimonial_logo_image']['id']];
+					$logo_image_html = Group_Control_Image_Size::get_attachment_image_html( $settings, 'testimonial_logo_image' );
+
+					// Update the alt attribute
+					$logo_image_html = preg_replace( '/<img(.*?)alt="(.*?)"(.*?)>/i', '<img$1alt="'.$item['testimonial_author'].'"$3>', $logo_image_html );
+
+					// Remove the title attribute
+					$logo_image_html = preg_replace( '/<img(.*?)title="(.*?)"(.*?)>/i', '<img$1$3>', $logo_image_html );
+
+					echo wp_kses_post($logo_image_html);
+
 				echo '</'. esc_attr( $logo_element ) .'>';
 
 			}

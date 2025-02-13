@@ -42,11 +42,11 @@ class TMPCODER_Advanced_Slider extends Widget_Base {
 	}
 	
 	public function get_script_depends() {
-		return [ 'imagesloaded', 'tmpcoder-slick' ];
+		return [ 'imagesloaded', 'tmpcoder-slick', 'tmpcoder-advanced-slider' ];
 	}
 
 	public function get_style_depends() {
-		return [ 'tmpcoder-animations-css' ];
+		return [ 'tmpcoder-animations-css', 'tmpcoder-advanced-slider' ];
 	}
 
     public function get_custom_help_url() {
@@ -319,7 +319,10 @@ class TMPCODER_Advanced_Slider extends Widget_Base {
 				'type' => Controls_Manager::MEDIA,
 				'dynamic' => [
 					'active' => true,
-				]
+				],
+				'selectors' => [
+					'{{WRAPPER}} {{CURRENT_ITEM}} .tmpcoder-slider-item-bg' => 'background-image: url({{URL}})',
+				],
 			]
 		);
 
@@ -337,9 +340,6 @@ class TMPCODER_Advanced_Slider extends Widget_Base {
 				'selectors' => [
 					'{{WRAPPER}} {{CURRENT_ITEM}} .tmpcoder-slider-item-bg' => 'background-size: {{VALUE}}',
 				],
-				// 'conditions' => [
-				// 	'slider_content_type' => 'custom'
-				// ]
 			]
 		);
 
@@ -564,6 +564,7 @@ class TMPCODER_Advanced_Slider extends Widget_Base {
 					'slider_item_overlay' => 'yes',
 					'slider_content_type' => 'custom'
 				],
+				'frontend_available' => true
 			]
 		);
 
@@ -3068,8 +3069,15 @@ class TMPCODER_Advanced_Slider extends Widget_Base {
 				$ken_burn_class = '';
 				if( isset($item['slider_item_bg_image']['source']) && $item['slider_item_bg_image']['source'] == 'url' ) {
 					$item_bg_image_url = $item['slider_item_bg_image']['url'];
+
+					$settings['slider_image_size'] = ['id' => $item['slider_item_bg_image']['id']];
+					$item_bg_image_html = Group_Control_Image_Size::get_attachment_image_html($settings, 'slider_image_size');
 				} else {
+
 					$item_bg_image_url = Group_Control_Image_Size::get_attachment_image_src( $item['slider_item_bg_image']['id'], 'slider_image_size', $settings );
+
+					$settings['slider_image_size'] = ['id' => $item['slider_item_bg_image']['id']];
+					$item_bg_image_html = Group_Control_Image_Size::get_attachment_image_html($settings, 'slider_image_size');
 				}
 
 				$item_video_src = $item['slider_item_video_src'];
@@ -3106,18 +3114,12 @@ class TMPCODER_Advanced_Slider extends Widget_Base {
 					$this->add_render_attribute( 'slider_item'. $item_count, 'data-video-autoplay', $item['slider_item_video_autoplay'] );
 
 					if ( $item_type === 'video-youtube' ) {
-
-						
 						preg_match('![?&]{1}v=([^&]+)!', $item_video_src, $item_video_id );
 
 						$item_bg_image_url = 'https://i.ytimg.com/vi_webp/'. $item_video_id[1] .'/maxresdefault.webp';
 						
 						if ( 'yes' === $item['slider_item_video_autoplay'] ) {
-							// GOGA - if there is no way to autoplay with api we need mute=1 for this purpose
-							// $item_video_src = 'https://www.youtube.com/embed/'. $item_video_id[1] .'?autoplay=1&enablejsapi=1';
-							// $item_video_src = 'https://www.youtube.com/embed/'. $item_video_id[1] .'?autoplay=1&mute=1';
 							$item_video_src = 'https://www.youtube.com/embed/'. $item_video_id[1] .'?autoplay=1';
-							// $item_video_src = 'https://www.youtube.com/embed/'. $item_video_id[1] .'?controls=0&autoplay=1';
 						} else {
 							$item_video_src = 'https://www.youtube.com/embed/'. $item_video_id[1] . '?enablejsapi=1';
 						}
@@ -3181,10 +3183,12 @@ class TMPCODER_Advanced_Slider extends Widget_Base {
 				$slider_html .= '<div '. $slider_item_attribute .'>';
 
 				if ( 'image' == $settings['slider_image_type'] ) {
+
 					$slider_html .= '<img class="tmpcoder-slider-img" src="'. esc_url($item_bg_image_url) .'" />';
+
 				} else {
 					// Slider Background Image
-					$slider_html .= '<div class="tmpcoder-slider-item-bg '. esc_attr($ken_burn_class) .'" style="background-image: url('. esc_url($item_bg_image_url) .')"></div>';
+					$slider_html .= '<div class="tmpcoder-slider-item-bg '. esc_attr($ken_burn_class) .'"></div>';
 				}
 
 				if ( 'slide_vertical' === $settings['slider_effect'] ) {
@@ -3196,7 +3200,8 @@ class TMPCODER_Advanced_Slider extends Widget_Base {
 				// Slider Overlay
 				$slider_overlay_html = '';
 				if ( $item['slider_item_overlay'] === 'yes' ) {
-					if ( $slider_amount === 1 || $item['slider_item_blend_mode'] !== 'normal' ) {	
+					// if ( $slider_amount === 1 || $item['slider_item_blend_mode'] !== 'normal' ) {
+					if ( $slider_amount === 1 || (isset($item['slider_item_blend_mode']) && $item['slider_item_blend_mode'] !== 'normal') ) { 	
 						$slider_html .= '<div class="tmpcoder-slider-item-overlay"></div>';
 					} else {
 						$slider_overlay_html = '<div class="tmpcoder-slider-item-overlay"></div>';

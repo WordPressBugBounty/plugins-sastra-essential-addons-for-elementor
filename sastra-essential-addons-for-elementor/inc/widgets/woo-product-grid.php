@@ -21,6 +21,7 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 	
 	public $my_upsells;
 	public $crossell_ids;
+
 	public function get_name() {
 		return 'tmpcoder-woo-grid';
 	}
@@ -42,15 +43,54 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 	}
 
 	public function get_script_depends() {
-		return [ 'tmpcoder-isotope', 'tmpcoder-slick', 'tmpcoder-lightgallery' ];
+
+		$depends = [ 'tmpcoder-isotope' => true, 'tmpcoder-slick' => true, 'tmpcoder-lightgallery' => true, 'tmpcoder-grid-widgets' => true ];
+
+		if ( ! tmpcoder_elementor()->preview->is_preview_mode() ) {
+			$settings = $this->get_settings_for_display();
+
+			if ( $settings['layout_select'] != 'slider' ) {
+				unset( $depends['tmpcoder-slick'] );
+			}if ( $settings['layout_select'] != 'masonry' && $settings['layout_select'] != 'fitRows' && $settings['layout_select'] != 'list' ) {
+				unset( $depends['tmpcoder-isotope'] );
+			}
+
+			$filtered = array_filter($settings['grid_elements'], function($element) {
+			    return isset($element['element_select']) && $element['element_select'] === 'lightbox';
+			});
+
+			if (!$filtered) {
+				unset( $depends['tmpcoder-lightgallery'] );	
+			}
+		}
+
+		return array_keys($depends);
 	}
 
 	public function get_style_depends() {
-		return [ 'tmpcoder-animations-css', 'tmpcoder-link-animations-css', 'tmpcoder-button-animations-css', 'tmpcoder-loading-animations-css', 'tmpcoder-lightgallery-css' ];
+
+		$depends = [ 'tmpcoder-animations-css' => true, 'tmpcoder-link-animations-css' => true, 'tmpcoder-button-animations-css' => true, 'tmpcoder-loading-animations-css' => true, 'tmpcoder-lightgallery-css' => true, 'tmpcoder-grid-widgets' => true ];
+
+		if ( !tmpcoder_elementor()->preview->is_preview_mode() ) {
+
+			$settings = $this->get_settings_for_display();
+			$filtered = array_filter($settings['grid_elements'], function($element) {
+			    return isset($element['element_select']) && $element['element_select'] === 'lightbox';
+			});
+
+			if ($settings['layout_pagination'] != 'yes') {
+				unset( $depends['tmpcoder-loading-animations-css'] );	
+			}
+
+			if (!$filtered) {
+				unset( $depends['tmpcoder-lightgallery-css'] );	
+			}
+		}
+
+		return array_keys($depends);
 	}
 
     public function get_custom_help_url() {
-    	
 		return TMPCODER_NEED_HELP_URL;
     }
 
@@ -1202,6 +1242,7 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 					'{{WRAPPER}} .tmpcoder-grid-slider-arrow' => 'display:{{VALUE}} !important;',
 				],
 				'separator' => 'before',
+				'frontend_available' => true,
 				'condition' => [
 					'layout_select' => 'slider',
 				]
@@ -8895,21 +8936,40 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 
 	// Render Post Thumbnail
 	public function render_product_thumbnail( $settings ) {
-		$id = get_post_thumbnail_id();
+		$id  = get_post_thumbnail_id();
+
 		$src = Group_Control_Image_Size::get_attachment_image_src( $id, 'layout_image_crop', $settings );
-		$alt = '' === wp_get_attachment_caption( $id ) ? get_the_title() : wp_get_attachment_caption( $id );
+
+		$settings['layout_image_crop'] = ['id' => $id];
+		$product_image_html = Group_Control_Image_Size::get_attachment_image_html($settings,'layout_image_crop');
+
+		$image_original_class = 'wp-image-'.$id;
+		$custom_image_class = $image_original_class.' tmpcoder-anim-timing-'.$settings[ 'image_effects_animation_timing'];
+		$product_image_html = str_replace($image_original_class, $custom_image_class, $product_image_html);
+
+		if ('' === get_post_meta( $id, '_wp_attachment_image_alt', true )) {
+			$product_image_html = preg_replace( '/<img(.*?)alt="(.*?)"(.*?)>/i', '<img$1alt="'.get_the_title().'"$3>', $product_image_html );
+		}
 		
 		if ( get_post_meta(get_the_ID(), 'tmpcoder_secondary_image_id') && !empty(get_post_meta(get_the_ID(), 'tmpcoder_secondary_image_id')) ) {
+
 			$src2 = Group_Control_Image_Size::get_attachment_image_src( get_post_meta(get_the_ID(), 'tmpcoder_secondary_image_id')[0], 'layout_image_crop', $settings );
+
+			$settings['layout_image_crop'] = ['id' => get_post_meta(get_the_ID(), 'tmpcoder_secondary_image_id', true)];
+			$second_image_html = Group_Control_Image_Size::get_attachment_image_html($settings,'layout_image_crop');
+
+			$second_original_class = 'wp-image-'.get_post_meta(get_the_ID(), 'tmpcoder_secondary_image_id', true);
+			$second_image_class = $second_original_class.' tmpcoder-anim-timing-'.$settings[ 'image_effects_animation_timing'];
+			$product_image_html = str_replace($second_original_class, $second_image_class.' tmpcoder-hidden-img', $product_image_html);
 		} else {
 			$src2 = '';
 		}
 
 		if ( has_post_thumbnail() ) {
 			echo '<div class="tmpcoder-grid-image-wrap" data-src="'. esc_url( $src ) .'"  data-img-on-hover="'. esc_attr($settings['secondary_img_on_hover']) .'" data-src-secondary="'. esc_url( $src2 ) .'">';
-				echo '<img src="'. esc_url( $src ) .'" alt="'. esc_attr( $alt ) .'" class="tmpcoder-anim-timing-'. esc_attr($settings[ 'image_effects_animation_timing']) .'">';
+				echo wp_kses_post($product_image_html); 
 				if ( 'yes' == $settings['secondary_img_on_hover'] && !empty($src2)) {
-					echo '<img src="'. esc_url( $src2 ) . '" alt="'. esc_attr( $alt ) .'" class="tmpcoder-hidden-img tmpcoder-anim-timing-'. esc_attr($settings[ 'image_effects_animation_timing']) .'">';
+					echo wp_kses_post($second_image_html);
 				}
 			echo '</div>';
 		}
@@ -8921,10 +8981,10 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 
 			if ( tmpcoder_is_availble() ) {
 				if ( '' !== $settings['overlay_image']['url'] ) {
-					echo '<img src="'. esc_url( $settings['overlay_image']['url'] ) .'">';
+					$overlay_image = Group_Control_Image_Size::get_attachment_image_html( $settings, 'thumbnail', 'overlay_image' );
+					echo wp_kses_post($overlay_image);
 				}
 			}
-
 		echo '</div>';
 	}
 
@@ -9447,10 +9507,12 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 
 		$popup_notification_animation = isset($this->get_settings_for_display()['popup_notification_animation']) ? $this->get_settings_for_display()['popup_notification_animation'] : '';
 		$popup_notification_fade_out_in = isset($this->get_settings_for_display()['popup_notification_fade_out_in']) ? $this->get_settings_for_display()['popup_notification_fade_out_in'] : '';
-		$popup_notification_animation_duration = isset($this->get_settings_for_display()['popup_notification_animation_duration']) ? $this->get_settings_for_display()['popup_notification_animation_duration'] : '';
+		// $popup_notification_animation_duration = isset($this->get_settings_for_display()['popup_notification_animation_duration']) ? $this->get_settings_for_display()['popup_notification_animation_duration'] : '';
+		$popup_notification_animation_duration = isset($settings['popup_notification_animation_duration']) ? $settings['popup_notification_animation_duration'] : ' ';
 
 		$compare_attributes = [
-			'data-compare-url' => get_option('tmpcoder_compare_page') ? get_option('tmpcoder_compare_page') : '',
+			// 'data-compare-url' => get_option('tmpcoder_compare_page') ? get_option('tmpcoder_compare_page') : '',
+			'data-compare-url' => tmpcoder_get_settings('tmpcoder_compare_page') ? tmpcoder_get_settings('tmpcoder_compare_page') : ' ',
 			'data-atcompare-popup='. $settings['element_show_added_to_compare_popup']  .'',
 			'data-atcompare-animation='. $popup_notification_animation  .'',
 			'data-atcompare-fade-out-in='. $popup_notification_fade_out_in  .'',
@@ -10473,8 +10535,6 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 				echo '<div class="tmpcoder-grid-slider-dots"></div>';
 			}
 		}	
-		
-
 
 		// Pagination
 		$this->render_grid_pagination( $settings );
@@ -10488,5 +10548,4 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 		// Loop: End
 		endif;
 	}
-	
 }

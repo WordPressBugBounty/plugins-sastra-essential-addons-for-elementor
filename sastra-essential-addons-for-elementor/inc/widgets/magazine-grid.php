@@ -36,15 +36,27 @@ class TMPCODER_Magazine_Grid extends Widget_Base {
 	}
 
 	public function get_keywords() {
-		return [ 'blog', 'magazin grid', 'magazin slider', 'isotope', 'post tiles', 'posts tiles' ];
+		return [ 'spexo', 'blog', 'magazin grid', 'magazin slider', 'isotope', 'post tiles', 'posts tiles' ];
 	}
 
 	public function get_script_depends() {
-		return [ 'tmpcoder-isotope', 'tmpcoder-slick' ];
+
+		$depends = ['tmpcoder-slick' => true, 'tmpcoder-magazine-grid' => true ];
+		// $depends = [ 'tmpcoder-isotope' => true, 'tmpcoder-slick' => true, 'tmpcoder-magazine-grid' => true ];
+
+		if ( ! tmpcoder_elementor()->preview->is_preview_mode() ) {
+			$settings = $this->get_settings_for_display();
+
+			if ( isset($settings['slider_enable']) && $settings['slider_enable'] != 'yes' ) {
+				unset( $depends['tmpcoder-slick'] );
+			}
+		}
+
+		return array_keys($depends); 
 	}
 
 	public function get_style_depends() {
-		return [ 'tmpcoder-animations-css', 'tmpcoder-link-animations-css', 'tmpcoder-button-animations-css', 'tmpcoder-loading-animations-css' ];
+		return [ 'tmpcoder-animations-css', 'tmpcoder-link-animations-css', 'tmpcoder-button-animations-css', 'tmpcoder-loading-animations-css', 'tmpcoder-magazine-grid' ];
 	}
 
     public function get_custom_help_url() {
@@ -5222,7 +5234,9 @@ class TMPCODER_Magazine_Grid extends Widget_Base {
 
 			if ( tmpcoder_is_availble() ) {
 				if ( '' !== $settings['overlay_image']['url'] ) {
-					echo '<img src="'. esc_url( $settings['overlay_image']['url'] ) .'">';
+					$settings['overlay_image'] = ['id' => $settings['overlay_image']['id']];
+					$image_html = Group_Control_Image_Size::get_attachment_image_html( $settings, 'overlay_image' );
+					echo wp_kses_post($image_html);
 				}
 			}
 

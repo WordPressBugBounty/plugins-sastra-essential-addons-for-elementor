@@ -38,7 +38,21 @@ class TMPCODER_Data_Table extends Widget_Base {
 	}
 
 	public function get_script_depends() {
-		return ['tmpcoder-table-to-excel-js'];
+		
+		$depends = [ 'tmpcoder-table-to-excel-js' => true, 'tmpcoder-data-table' => true ];
+
+		if ( !tmpcoder_elementor()->preview->is_preview_mode() ) {
+			$settings = $this->get_settings_for_display();
+
+			if ( $settings['enable_table_export'] != 'yes' ) {
+				unset( $depends['tmpcoder-table-to-excel-js'] );
+			}
+		}
+		return array_keys($depends); 
+	}
+
+	public function get_style_depends() {
+		return ['tmpcoder-data-table'];
 	}
 
     public function get_custom_help_url() {
@@ -1828,13 +1842,9 @@ class TMPCODER_Data_Table extends Widget_Base {
 		}
 
 		if( $item['header_icon'] == 'yes' && $item['header_icon_type'] == 'image' ) {
-			$this->add_render_attribute('tmpcoder_table_th_img'. $i, [
-				'src'	=> esc_url( $item['header_col_img']['url'] ),
-				'class'	=> 'tmpcoder-data-table-th-img',
-				'alt'	=> esc_attr(get_post_meta($item['header_col_img']['id'], '_wp_attachment_image_alt', true))
-			]);
-
-			$header_icon = '<img'.' '. $this->get_render_attribute_string('tmpcoder_table_th_img'. $i) . '>';
+			$settings['tmpcoder_table_th_img'.$i] = ['id' => $item['header_col_img']['id']];
+			$header_icon = Group_Control_Image_Size::get_attachment_image_html( $settings, 'tmpcoder_table_th_img'.$i);
+			$header_icon = str_replace( '<img', '<img class="tmpcoder-data-table-th-img"', $header_icon );
 		}
 
         echo wp_kses( $header_icon, tmpcoder_wp_kses_allowed_html() );
@@ -1852,15 +1862,10 @@ class TMPCODER_Data_Table extends Widget_Base {
 		}
 
 		if ( $table_td[$j]['icon'] == 'yes' && $table_td[$j]['icon_type'] == 'image' ) { 
-            $this->add_render_attribute('tmpcoder_table_td_img'. esc_attr($j), [
-                'src'	=> esc_url( $table_td[$j]['col_img']['url'] ),
-                'class'	=> 'tmpcoder-data-table-th-img',
-                'alt'	=> esc_attr(get_post_meta($table_td[$j]['col_img']['id'], '_wp_attachment_image_alt', true))
-            ]);
-
-			$tbody_icon = '<img' . ' ' . $this->get_render_attribute_string('tmpcoder_table_td_img'. esc_attr($j)) . '>';
+            $settings['tmpcoder_table_td_img'.$j] = ['id' => $table_td[$j]['col_img']['id']];
+			$tbody_icon = Group_Control_Image_Size::get_attachment_image_html( $settings, 'tmpcoder_table_td_img'.$j);
+			$tbody_icon = str_replace( '<img', '<img class="tmpcoder-data-table-th-img"', $tbody_icon );
 		}
-
 		echo wp_kses_post($tbody_icon);
 	}
 

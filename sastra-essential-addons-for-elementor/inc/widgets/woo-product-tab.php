@@ -48,6 +48,10 @@ class TMPCODER_Product_Tabs extends Widget_Base {
 		return [ 'wc-single-product', 'tmpcoder-product-script'];
 	}
 	
+	public function get_style_depends() {
+		return [ 'tmpcoder-product-tabs' ];
+	}
+
 	public function add_control_tabs_position() {
 		$this->add_control(
 			'tabs_position',

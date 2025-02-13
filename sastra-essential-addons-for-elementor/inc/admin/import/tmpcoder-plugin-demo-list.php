@@ -17,13 +17,21 @@ function tmpcoder_import_demo_list(){
     $registration_link = admin_url('admin.php?page='.TMPCODER_THEME.'-welcome&tab=registration');
     $current_active_demo = get_option('tmpcoder_current_active_demo');
 
+    if( defined('TMPCODER_PRO_ADDONS_ASSETS_URL') ) {
+        $headers = get_headers(TMPCODER_PRO_ADDONS_ASSETS_URL . 'images/spexo-logo-web-pro.svg');
+        $import_header_logo = ($headers && strpos($headers[0], '200')) ? TMPCODER_PRO_ADDONS_ASSETS_URL.'images/spexo-logo-web-pro.svg' : TMPCODER_ADDONS_ASSETS_URL.'images/spexo-logo-web.svg' ;
+
+    } else {
+        $import_header_logo = TMPCODER_ADDONS_ASSETS_URL.'images/spexo-logo-web.svg';
+    }
+
     ?>
 
     <div class="tmpcoder-import-demo-page">
         <header>
             <div class="tmpcoder-import-demo-left">
                 <div class="tmpcoder-import-demo-logo">
-                    <div class="import-header-logo"><img src="<?php echo esc_url(TMPCODER_ADDONS_ASSETS_URL .'images/logo.png'); ?>">
+                    <div class="import-header-logo"><img src="<?php echo esc_url( $import_header_logo ); ?>">
                     </div>
                     <h1><?php esc_html_e('Prebuilt Websites', 'sastra-essential-addons-for-elementor'); ?></h1>
                 </div>

@@ -41,7 +41,11 @@ class TMPCODER_Woo_Add_To_Cart extends Widget_Base {
 	}
 
 	public function get_script_depends() {
-		return ['wc-add-to-cart', 'wc-add-to-cart-variation', 'wc-single-product'];
+		return ['wc-add-to-cart', 'wc-add-to-cart-variation', 'wc-single-product', 'tmpcoder-product-add-to-cart'];
+	}
+
+	public function get_style_depends() {
+		return ['tmpcoder-product-add-to-cart'];
 	}
 
 

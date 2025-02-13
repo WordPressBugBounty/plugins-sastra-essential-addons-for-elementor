@@ -40,7 +40,7 @@ class TMPCODER_Dual_Button extends Widget_Base {
 	}
 	
 	public function get_style_depends() {
-		return [ 'tmpcoder-button-animations-css' ];
+		return [ 'tmpcoder-button-animations-css', 'tmpcoder-dual-button' ];
 	}
 
     public function get_custom_help_url() {

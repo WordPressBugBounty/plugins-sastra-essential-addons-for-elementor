@@ -34,7 +34,11 @@ class TMPCODER_Product_Mini_Cart extends Widget_Base {
 	}
 
 	public function get_script_depends() {
-		return ['tmpcoder-perfect-scroll-js'];
+		return ['tmpcoder-product-mini-cart'];
+	}
+
+	public function get_style_depends() {
+		return ['tmpcoder-product-mini-cart'];
 	}
 
 	public function add_control_mini_cart_style() {
@@ -640,6 +644,11 @@ class TMPCODER_Product_Mini_Cart extends Widget_Base {
 	public static function render_mini_cart($settings) {}
     
     protected function render() {
+
+		if ( ! class_exists( 'WooCommerce' ) ) {
+			echo '<h4>'. esc_html__( 'WooCommerce is NOT active!', 'sastra-essential-addons-for-elementor' ) .'</h4>';
+			return;
+		}
     	
 		$settings = $this->get_settings_for_display();
 
@@ -659,4 +668,4 @@ class TMPCODER_Product_Mini_Cart extends Widget_Base {
 			echo '</span>';
         echo '</div>';
     }    
-}        
+}

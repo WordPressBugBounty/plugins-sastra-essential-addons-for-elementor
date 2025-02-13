@@ -95,6 +95,7 @@
 
 #elementor-panel-category-tmpcoder-widgets-category .elementor-panel-heading-title,
 #elementor-panel-category-tmpcoder-premium-widgets .elementor-panel-heading-title,
+#elementor-panel-category-tmpcoder-hide-premium-widgets .elementor-panel-heading-title,
 #elementor-panel-category-tmpcoder-theme-builder-widgets .elementor-panel-heading-title,
 #elementor-panel-category-tmpcoder-woocommerce-builder-widgets .elementor-panel-heading-title {
   width: calc(100% - 10px);
@@ -105,6 +106,7 @@
 
 #elementor-panel-category-tmpcoder-widgets-category .elementor-panel-heading-title i,
 #elementor-panel-category-tmpcoder-premium-widgets .elementor-panel-heading-title i,
+#elementor-panel-category-tmpcoder-hide-premium-widgets .elementor-panel-heading-title i,
 #elementor-panel-category-tmpcoder-theme-builder-widgets .elementor-panel-heading-title i,
 #elementor-panel-category-tmpcoder-woocommerce-builder-widgets .elementor-panel-heading-title i {
   margin-inline-end: 4px;
@@ -113,6 +115,7 @@
 
 #elementor-panel-category-tmpcoder-widgets-category .elementor-panel-heading-title a,
 #elementor-panel-category-tmpcoder-premium-widgets .elementor-panel-heading-title a,
+#elementor-panel-category-tmpcoder-hide-premium-widgets .elementor-panel-heading-title a,
 #elementor-panel-category-tmpcoder-theme-builder-widgets .elementor-panel-heading-title a,
 #elementor-panel-category-tmpcoder-woocommerce-builder-widgets .elementor-panel-heading-title a {
   color: #5729d9;

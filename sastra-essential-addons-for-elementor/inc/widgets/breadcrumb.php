@@ -236,7 +236,7 @@ class TMPCODER_Breadcrumb  extends Widget_Base{
                 'global' => [
                     'default' => Global_Typography::TYPOGRAPHY_TEXT,
                 ],
-                'selector' => '{{WRAPPER}} .page-banner label a,{{WRAPPER}} .page-banner label, {{WRAPPER}} .page-banner .woocommerce-breadcrumb span, {{WRAPPER}}.page-banner .current-item-name, {{WRAPPER}} .woocommerce-breadcrumb',
+                'selector' => '{{WRAPPER}} .page-banner label a,{{WRAPPER}} .page-banner label, {{WRAPPER}} .page-banner .woocommerce-breadcrumb span, {{WRAPPER}}.page-banner .current-item-name, {{WRAPPER}} .woocommerce-breadcrumb, {{WRAPPER}} .page-banner .custom-delimiter',
             ]
         );
 
@@ -272,10 +272,14 @@ class TMPCODER_Breadcrumb  extends Widget_Base{
             <div class="col-md-12">
                 <div class="page-banner">
                     <?php if ( is_404() ){ 
-                        
-                        echo '<'. esc_attr( tmpcoder_validate_html_tag($settings['post_title_tag']) ) .' class="sub-banner-title '.esc_attr($show_title).'">';
-                        echo esc_html( __('404', 'sastra-essential-addons-for-elementor' ) ); 
-                        echo '</'. esc_attr( tmpcoder_validate_html_tag($settings['post_title_tag']) ) .'>';
+                     
+                            if ($settings['show_title'] == 'yes') {
+
+                                echo '<'. esc_attr( tmpcoder_validate_html_tag($settings['post_title_tag']) ) .' class="sub-banner-title '.esc_attr($show_title).'">';
+                            }   
+
+                            echo esc_html( __('404', 'sastra-essential-addons-for-elementor' ) ); 
+                            echo '</'. esc_attr( tmpcoder_validate_html_tag($settings['post_title_tag']) ) .'>';
                         
                         }else{
 
@@ -332,21 +336,28 @@ class TMPCODER_Breadcrumb  extends Widget_Base{
 
                             if (is_search()) {
 
-                                echo '<'. esc_attr( tmpcoder_validate_html_tag($settings['post_title_tag']) ) .' class="sub-banner-title '.esc_attr($show_title).'">';
+                                if ($settings['show_title'] == 'yes') {
+
+                                    echo '<'. esc_attr( tmpcoder_validate_html_tag($settings['post_title_tag']) ) .' class="sub-banner-title '.esc_attr($show_title).'">';
+                                }
+
                                 echo 'Search results for: '. get_search_query(); 
                                 echo '</'. esc_attr( tmpcoder_validate_html_tag($settings['post_title_tag']) ) .'>';
                              
                             }else{
-                                echo '<'. esc_attr( tmpcoder_validate_html_tag($settings['post_title_tag']) ) .' class="sub-banner-title '.esc_attr($show_title).'">';                                                      
-                                echo wp_kses($page_title,['span','label','a']);    
-                                echo '</'. esc_attr( tmpcoder_validate_html_tag($settings['post_title_tag']) ) .'>';
+                                if ($settings['show_title'] == 'yes') {
+                                    echo '<'. esc_attr( tmpcoder_validate_html_tag($settings['post_title_tag']) ) .' class="sub-banner-title '.esc_attr($show_title).'">';                                                      
+                                    echo wp_kses($page_title,['span','label','a']);    
+                                    echo '</'. esc_attr( tmpcoder_validate_html_tag($settings['post_title_tag']) ) .'>';
+                                }
                             }
                             
                         }else{
 
                             $page_title = get_the_archive_title();
-
-                            echo '<'. esc_attr( tmpcoder_validate_html_tag($settings['post_title_tag']) ) .' class="sub-banner-title '.esc_attr($show_title).'">';                                                      
+                            if ($settings['show_title'] == 'yes') {
+                                echo '<'. esc_attr( tmpcoder_validate_html_tag($settings['post_title_tag']) ) .' class="sub-banner-title '.esc_attr($show_title).'">';                              
+                            }
                             echo wp_kses($page_title,['span','label','a']);    
                             echo '</'. esc_attr( tmpcoder_validate_html_tag($settings['post_title_tag']) ) .'>';
 

@@ -1,5 +1,6 @@
 <?php
 
+use Elementor\Core\Files\CSS\Post as Post_CSS;
 use Elementor\Utils;
 use Elementor\Group_Control_Image_Size;
 
@@ -1392,7 +1393,7 @@ if (!function_exists('tmpcoder_get_registered_modules')) {
 	function tmpcoder_get_registered_modules(){
 		return [
 			// ------ Array Value name ------
-			// 'widget name' => ['widget-slug', 'live demo link', 'docs link', 'tag','file name','widget class','widget icon'],
+			// 'widget name' => ['widget-slug', 'live demo link', 'docs link', 'tag','file name','widget class','widget icon','js-file-name','css-file-name'], css and js file should be same as widget-slug name 
 
 			'Post Grid/Slider/Carousel' => ['post-grid', 'post-grid-slider-carousel', 'post-grid-slider-carousel', 'new','post-grid.php','TMPCODER_Post_Grid','post-grid.svg'],
 			'Image Grid/Slider/Carousel' => ['media-grid', 'image-grid-slider-carousel', 'image-grid-slider-carousel', 'new','media-grid.php','TMPCODER_Media_Grid','img-grid.svg'],
@@ -2142,7 +2143,6 @@ if (!function_exists('tmpcoder_get_settings')) {
 	} 
 }
 
-
 if (!function_exists('tmpcoder_post_type_video_popup')) {
 	
 	function tmpcoder_post_type_video_popup() {
@@ -2194,5 +2194,80 @@ if (!function_exists('tmpcoder_get_plugin_info_by_slug')) {
 	        }
 	    }
 	    return null; // Return null if not found
+	}
+}
+
+/**
+ * Get elementor instance
+ *
+ * @return \Elementor\Plugin
+ */
+
+if (! function_exists('tmpcoder_elementor')) {
+	
+	function tmpcoder_elementor() {
+		return \Elementor\Plugin::instance();
+	}
+}
+
+if (!function_exists('tmpcoder_is_on_demand_cache_enabled')) {
+	
+	function tmpcoder_is_on_demand_cache_enabled(){
+
+		return apply_filters('tmpcoder_is_on_demand_cache_enabled', true);
+	}
+}
+
+add_action('wp_enqueue_scripts', 'tmpcoder_frontend_enqueue', 998);
+
+if (!function_exists('tmpcoder_frontend_enqueue')) {
+
+	function tmpcoder_frontend_enqueue(){
+		
+		if (!is_singular()) {
+			return;
+		}
+
+		$post_id = get_the_ID();		
+
+		if (\Spexo_Addons\Elementor\Cache_Manager::should_enqueue($post_id)) {
+			\Spexo_Addons\Elementor\Cache_Manager::enqueue($post_id);
+		}
+	}
+} 
+
+/**
+ * Handle exception cases where regular enqueue won't work
+ *
+ * @param Post_CSS $file
+ *
+ * @return void
+ */
+
+add_action('elementor/css-file/post/enqueue', 'tmpcoder_frontend_enqueue_exceptions');
+
+if (!function_exists('tmpcoder_frontend_enqueue_exceptions')) {
+	function tmpcoder_frontend_enqueue_exceptions(Post_CSS $file) {
+		$post_id = $file->get_post_id();
+
+		if (get_queried_object_id() === $post_id) {
+			return;
+		}
+
+		$template_type = get_post_meta($post_id, '_elementor_template_type', true);
+
+		if ($template_type === 'kit') {
+			return;
+		}
+
+		if (\Spexo_Addons\Elementor\Cache_Manager::should_enqueue($post_id)) {
+			\Spexo_Addons\Elementor\Cache_Manager::enqueue($post_id);
+		}
+	}
+}
+
+if (!function_exists('tmpcoder_get_dashboard_link')) {
+	function tmpcoder_get_dashboard_link($suffix = '') {
+		return add_query_arg(['page' => 'spexo-welcome' . $suffix], admin_url('admin.php'));
 	}
 }
