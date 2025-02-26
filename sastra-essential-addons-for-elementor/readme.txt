@@ -1,7 +1,7 @@
 === Spexo Addons for Elementor - Free Elementor Addons, Widgets and Templates ===
 Contributors: templatescoderthemes, skywebtech
 Tags: elementor, elementor addons, elementor templates, elementor widgets, woocommerce elementor, widgets for elementor
-Stable tag: 1.0.17
+Stable tag: 1.0.18
 Requires at least: 5.0
 Tested up to: 6.7
 Requires PHP: 7.4
@@ -303,6 +303,15 @@ Feel free to contact us anytime via [Support](https://templatescoder.com/support
 
 
 == Changelog ==
+
+= v1.0.18 - 2025-02-25 =
+
+* Added : A new "Tools" menu tab in the admin dashboard.
+	- Created the "Regenerate Global Assets" tool under the Tools menu.
+	- The "Regenerate Global Assets" tool allows administrators to remove global assets and clear cache files from the uploads folder.
+* Added : A new alignment setting has been added to the Page List widget. Users can now customize the alignment of the list items.
+* Fixed : Elementor class not found warning in frontend after elementor plugin deactivate
+* Improved: Enhanced admin bar usability by adding direct access to key site building tools and options (Prebuilt Website, Prebuilt Blocks & Site Builder). 
 
 = v1.0.17 - 2025-02-13 =
 

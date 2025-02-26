@@ -329,9 +329,9 @@ class TMPCODER_Welcome_Screen {
 			$title .= '<span class="badge-action-count">' . esc_html( $this->actions_count ) . '</span>';
 		}
 		
-		if (did_action( 'elementor/loaded' )) {
+		// if (did_action( 'elementor/loaded' )) {
 			add_menu_page('Spexo Addons', 'Spexo Addons', 'manage_options', 'spexo-welcome',[$this,'render_welcome_screen'],TMPCODER_ADDONS_ASSETS_URL.'images/logo-icon.svg', 30 );
-		}
+		// }
 	}
 
 	/**
@@ -527,6 +527,13 @@ class TMPCODER_Welcome_Screen {
 				'url'   => $this->tmpcoder_generate_admin_url( 'system-info' ),
 				'label' => __( 'System Info', 'sastra-essential-addons-for-elementor' ),
 				'path'  => TMPCODER_PLUGIN_DIR . '/inc/admin/lib/welcome-screen/sections/system-status.php',
+			),
+			'tools' => array(
+				'id'    => 'tools',
+				'icon'    => 'tools-icon-3.svg',
+				'url'   => $this->tmpcoder_generate_admin_url( 'tools' ),
+				'label' => __( 'Tools', 'sastra-essential-addons-for-elementor' ),
+				'path'  => TMPCODER_PLUGIN_DIR . '/inc/admin/lib/welcome-screen/sections/tools.php',
 			),
 		);
 

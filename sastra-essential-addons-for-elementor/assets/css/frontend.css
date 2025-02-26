@@ -145,7 +145,7 @@ form.woocommerce-ordering {
 
 /* Animated Image Widget Css Start */
 
-/*.rotate-image {
+.rotate-image {
     margin-bottom: 0 !important;
     text-align: center;
 }
@@ -250,7 +250,7 @@ form.woocommerce-ordering {
         position: relative;
         top: 0;
     }
-}*/
+}
 
 /* Sticky Section Start */
 

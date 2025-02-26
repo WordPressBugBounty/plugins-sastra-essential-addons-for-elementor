@@ -32,7 +32,11 @@ class TMPCODER_Admin_Bar {
 			$assets_cache->delete();
 		} elseif ( $type === 'all' ) {
 			$assets_cache->delete_all();
+			if (tmpcoder_is_elementor_editor()) {
+				\Elementor\Plugin::$instance->files_manager->clear_cache();
+		 	} 
 		}
+		
 		wp_send_json_success();
 	}
 
@@ -47,6 +51,15 @@ class TMPCODER_Admin_Bar {
 		    height: 18px;
 		    vertical-align: text-bottom;
 		    display: inline-block;
+		}
+
+		.tmpcoder-admin-bar-image {
+			width: 10px !important;
+		    height: 10px !important;
+		    display: inline-block;
+		    margin-right: 5px !important;
+		    // filter: brightness(0);
+    		// opacity: 0.6;
 		}
 
 		#wp-admin-bar-spexo-addons .ab-item .dashicons {
@@ -106,7 +119,7 @@ class TMPCODER_Admin_Bar {
 
 		wp_enqueue_script(
 			'spexo-elementor-addons-admin',
-			TMPCODER_PLUGIN_URI . 'assets/js/admin/admin.min.js',
+			TMPCODER_PLUGIN_URI . 'assets/js/admin/admin'.tmpcoder_script_suffix().'.js',
 			['jquery'],
 			TMPCODER_PLUGIN_VER,
 			true
@@ -129,35 +142,56 @@ class TMPCODER_Admin_Bar {
 		}
 
 		$icon = '<i class="dashicons dashicons-update-alt"></i> ';
+		$websites_icon = sprintf( '<img class="tmpcoder-admin-bar-image" src="%s">', TMPCODER_ADDONS_ASSETS_URL .'images/prebuilt-websites-admin-bar.svg' );
+		$blocks_icon = sprintf( '<img class="tmpcoder-admin-bar-image" src="%s">', TMPCODER_ADDONS_ASSETS_URL .'images/prebuilt-block-admin-bar.svg' ); 
+		$builder_icon = sprintf( '<img class="tmpcoder-admin-bar-image" src="%s">', TMPCODER_ADDONS_ASSETS_URL .'images/site-builder-admin-bar.svg' ); 
 
 		$admin_bar->add_menu( [
 			'id'    => 'spexo-addons',
-			'title' => sprintf( '<img src="%s">', TMPCODER_ADDONS_ASSETS_URL .'images/logo-40x40.svg' ),
+			'title' => sprintf( '<img src="%s"> Spexo addons', TMPCODER_ADDONS_ASSETS_URL .'images/logo-40x40.svg' ),
 			'href'  => tmpcoder_get_dashboard_link(),
 			'meta'  => [
-				'title' => __( 'SpexoAddons', 'sastra-essential-addons-for-elementor' ),
+				'title' => __( 'Spexo addons', 'sastra-essential-addons-for-elementor' ),
 			]
 		] );
-
-		if ( is_singular() ) {
-			$admin_bar->add_menu( [
-				'id'     => 'tmpcoder-clear-page-cache',
-				'parent' => 'spexo-addons',
-				'title'  => $icon . __( 'Page: Renew On Demand Assets', 'sastra-essential-addons-for-elementor' ),
-				'href'   => '#',
-				'meta'   => [
-					'class' => 'tmpcoderjs-clear-cache tmpcoder-clear-page-cache',
-				]
-			] );
-		}
 
 		$admin_bar->add_menu( [
 			'id'     => 'tmpcoder-clear-all-cache',
 			'parent' => 'spexo-addons',
-			'title'  => $icon . __( 'Global: Renew On Demand Assets', 'sastra-essential-addons-for-elementor' ),
+			'title'  => $icon . __( 'Regenerate Cache', 'sastra-essential-addons-for-elementor' ),
 			'href'   => '#',
 			'meta'   => [
 				'class' => 'tmpcoderjs-clear-cache tmpcoder-clear-all-cache',
+			]
+		] );
+
+		$admin_bar->add_menu( [
+			'id'     => 'tmpcoder-prebuilt-websites',
+			'parent' => 'spexo-addons',
+			'title'  => $websites_icon . __( 'Prebuilt websites', 'sastra-essential-addons-for-elementor' ),
+			'href'   => admin_url('admin.php?page=tmpcoder-import-demo'),
+			'meta'   => [
+				'class' => '',
+			]
+		] );
+
+		$admin_bar->add_menu( [
+			'id'     => 'tmpcoder-prebuilt-blocks',
+			'parent' => 'spexo-addons',
+			'title'  => $blocks_icon . __( 'Prebuilt Blocks', 'sastra-essential-addons-for-elementor' ),
+			'href'   => admin_url('admin.php?page=spexo-welcome&tab=prebuilt-blocks'),
+			'meta'   => [
+				'class' => '',
+			]
+		] );
+
+		$admin_bar->add_menu( [
+			'id'     => 'tmpcoder-site-builder',
+			'parent' => 'spexo-addons',
+			'title'  => $builder_icon . __( 'Site Builder', 'sastra-essential-addons-for-elementor' ),
+			'href'   => admin_url('admin.php?page=spexo-welcome&tab=site-builder'),
+			'meta'   => [
+				'class' => '',
 			]
 		] );
 	}

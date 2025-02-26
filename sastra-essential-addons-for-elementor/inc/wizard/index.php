@@ -1,6 +1,6 @@
 <?php
 
-if ( ! defined( 'ABSPATH' ) ) {	exit; } // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 require_once TMPCODER_PLUGIN_DIR . 'inc/wizard/wizard-functions.php';
 require_once TMPCODER_PLUGIN_DIR . 'inc/wizard/wizard-ajax-api.php';
@@ -44,20 +44,20 @@ function tmpcoder_enqueue_wizard_script(){
 class Theme_Setup_Wizard_Class {
 
     /**
-	 * @var Theme_Setup_Wizard_Class
-	 */
-	private static $_instance;
+     * @var Theme_Setup_Wizard_Class
+     */
+    private static $_instance;
 
     /**
-	 * @return Theme_Setup_Wizard_Class
-	 */
-	public static function instance() {
-		if ( is_null( self::$_instance ) ) {
-			self::$_instance = new self();
-		}
+     * @return Theme_Setup_Wizard_Class
+     */
+    public static function instance() {
+        if ( is_null( self::$_instance ) ) {
+            self::$_instance = new self();
+        }
 
-		return self::$_instance;
-	}
+        return self::$_instance;
+    }
 
     function __construct(){
         add_action( 'admin_menu', [$this, 'register_newpage'] );
@@ -65,11 +65,11 @@ class Theme_Setup_Wizard_Class {
     }
 
     public static function script_suffix() {
-		return defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-	}
+        return defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+    }
 
     function wizard_admin_notice_success() {
-        if ( isset($_GET['saved']) && $_GET['saved'] == "plugin-wizard" ){ // phpcs:ignore WordPress.Security.NonceVerification.Recommended	
+        if ( isset($_GET['saved']) && $_GET['saved'] == "plugin-wizard" ){ // phpcs:ignore WordPress.Security.NonceVerification.Recommended 
             delete_option(TMPCODER_PLUGIN_KEY.'_wizard_step');
             update_option(TMPCODER_PLUGIN_KEY.'_wizard_done', 1);
             ?>
@@ -91,8 +91,8 @@ class Theme_Setup_Wizard_Class {
         
         // WP Active Color
         global $_wp_admin_css_colors;
-	    $current_color_scheme = get_user_option( 'admin_color' );
-	    $colors = $_wp_admin_css_colors[$current_color_scheme];
+        $current_color_scheme = get_user_option( 'admin_color' );
+        $colors = $_wp_admin_css_colors[$current_color_scheme];
         $colors = $colors->colors;
         $active_color = $colors[2];
 
@@ -116,33 +116,48 @@ class Theme_Setup_Wizard_Class {
         <div class="wrap tmpcoder-container">
             <hr class="wp-header-end">            
             <header class="tmpcoder-license-activation-header">
-	            <div>
-	                <div class="tmpcoder-license-activation-logo">
-	                    <div class="license-activation-header-logo"><img src="<?php echo esc_url( TMPCODER_ADDONS_ASSETS_URL.'images/spexo-logo-web.svg' ); ?>">
+                <div>
+                    <div class="tmpcoder-license-activation-logo">
+                        <div class="license-activation-header-logo"><img src="<?php echo esc_url( TMPCODER_ADDONS_ASSETS_URL.'images/spexo-logo-web.svg' ); ?>">
                         </div>
                         <span class="wizard-header">
-	                    <h1><?php echo esc_html( sprintf(
+                        <h1><?php echo esc_html( sprintf(
                             /* translators: %s is User Name. */
                          apply_filters( 'theme_admin_welcome_title', __( 'Welcome To Plugin Setup Wizard, %s!', 'sastra-essential-addons-for-elementor' ) ), ucfirst( $display_name ) ) ); ?></h1>
                         <p class="theme-welcome-text"><?php echo esc_html( sprintf( 
                             /* translators: %s is Plugin Name. */
                             apply_filters( 'theme_admin_setup_welcome_text', __( 'We recommend making use of the %s Setup Wizard to create your website. the easiest way to get started.', 'sastra-essential-addons-for-elementor' ) ) , TMPCODER_PLUGIN_NAME) ); ?></p>
                         </span>
-	                </div>
-	            </div>
-	        </header>
+                    </div>
+                </div>
+            </header>
 
             <div class="theme-wizard-main">
                 <ul class="nav-tab-wrapper theme-wizard-nav wp-clearfix">
-                    <li class="nav-tab theme-installation" data-tab="theme-installation">
-                        <span class="step-number">1</span><?php esc_html_e('Install Theme', 'sastra-essential-addons-for-elementor'); ?>
-                    </li>
-                    <li class="nav-tab install-plugins disabled" data-tab="install-plugins">
-                        <span class="step-number">2</span><?php esc_html_e('Install Required Plugins', 'sastra-essential-addons-for-elementor'); ?>
-                    </li>
-                    <li class="nav-tab license-registration disabled" data-tab="license-registration">
-                        <span class="step-number">3</span><?php esc_html_e('Get Spexo Addons Pro', 'sastra-essential-addons-for-elementor'); ?>
-                    </li>                  
+                    <?php 
+                    $wizard_steps = array();
+                    $wizard_steps[1] = '<li class="nav-tab theme-installation" data-tab="theme-installation">
+                        <span class="step-number">1</span>'.esc_html('Install Theme', 'sastra-essential-addons-for-elementor').'
+                    </li>';                    
+
+                    // $wizard_steps[2] = '<li class="nav-tab select-editor disabled" data-tab="select-editor">
+                    // <span class="step-number">2</span>'.esc_html('Select Page Builder', 'sastra-essential-addons-for-elementor').'
+                    // </li>';       
+
+                    $wizard_steps[3] = '<li class="nav-tab install-plugins disabled" data-tab="install-plugins">
+                        <span class="step-number">3</span>'.esc_html('Install Required Plugins', 'sastra-essential-addons-for-elementor').'
+                    </li>';
+
+                    $wizard_steps[4] = '<li class="nav-tab license-registration disabled" data-tab="license-registration">
+                        <span class="step-number">4</span>'.esc_html('Get Spexo Addons Pro', 'sastra-essential-addons-for-elementor').
+                    '</li>';
+
+                    foreach ($wizard_steps as $wizard_key => $wizard_value) {
+                        echo wp_kses_post($wizard_value);
+                    }
+
+                    ?>
+                                    
                 </ul>
                 <div id="theme-installation" class="tab-content tab-content-theme-installation">
                 

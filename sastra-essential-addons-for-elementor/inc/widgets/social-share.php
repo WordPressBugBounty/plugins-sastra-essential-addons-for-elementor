@@ -99,7 +99,7 @@ class TMPCODER_Social_Share extends Widget_Base {
 				'type' => Controls_Manager::SELECT,
 				'options' => [
 					'fab fa-facebook-f' => 'Facebook',
-					'fab fa-twitter' => 'Twitter',
+					'fab fa-x-twitter' => 'Twitter',
 					'fab fa-linkedin-in' => 'Linkedin',
 					'fab fa-pinterest-p' => 'Pinterest',
 					'fab fa-reddit' => 'Reddit',
@@ -155,7 +155,7 @@ class TMPCODER_Social_Share extends Widget_Base {
 						'sharing_icon' => 'fab fa-facebook-f',
 					],
 					[
-						'sharing_icon' => 'fab fa-twitter',
+						'sharing_icon' => 'fab fa-x-twitter',
 					],
 					[
 						'sharing_icon' => 'fab fa-linkedin-in',

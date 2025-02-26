@@ -693,7 +693,7 @@ function tmpcoder_get_post_sharing_icon( $args = [] ) {
 	if ( 'facebook-f' === $args['network'] ) {
 		$sharing_url = 'https://www.facebook.com/sharer.php?u='. $args['url'];
 		$network_title = esc_html__( 'Facebook', 'sastra-essential-addons-for-elementor' );
-	} elseif ( 'twitter' === $args['network'] ) {
+	} elseif ( 'x-twitter' === $args['network'] ) {
 		$sharing_url = 'https://twitter.com/intent/tweet?url='. $args['url'];
 		$network_title = esc_html__( 'Twitter', 'sastra-essential-addons-for-elementor' );
 	} elseif ( 'linkedin-in' === $args['network'] ) {
@@ -2230,8 +2230,11 @@ if (!function_exists('tmpcoder_frontend_enqueue')) {
 
 		$post_id = get_the_ID();		
 
-		if (\Spexo_Addons\Elementor\Cache_Manager::should_enqueue($post_id)) {
-			\Spexo_Addons\Elementor\Cache_Manager::enqueue($post_id);
+		if (class_exists('\Spexo_Addons\Elementor\Cache_Manager')) {
+			
+			if (\Spexo_Addons\Elementor\Cache_Manager::should_enqueue($post_id)) {
+				\Spexo_Addons\Elementor\Cache_Manager::enqueue($post_id);
+			}
 		}
 	}
 } 
@@ -2259,9 +2262,10 @@ if (!function_exists('tmpcoder_frontend_enqueue_exceptions')) {
 		if ($template_type === 'kit') {
 			return;
 		}
-
-		if (\Spexo_Addons\Elementor\Cache_Manager::should_enqueue($post_id)) {
-			\Spexo_Addons\Elementor\Cache_Manager::enqueue($post_id);
+		if (class_exists('\Elementor\Plugin')) {
+			if (\Spexo_Addons\Elementor\Cache_Manager::should_enqueue($post_id)) {
+				\Spexo_Addons\Elementor\Cache_Manager::enqueue($post_id);
+			}
 		}
 	}
 }
@@ -2269,5 +2273,28 @@ if (!function_exists('tmpcoder_frontend_enqueue_exceptions')) {
 if (!function_exists('tmpcoder_get_dashboard_link')) {
 	function tmpcoder_get_dashboard_link($suffix = '') {
 		return add_query_arg(['page' => 'spexo-welcome' . $suffix], admin_url('admin.php'));
+	}
+}
+
+/* Function to regenerate Spexo Addons CSS */
+
+if (!function_exists('tmpcoder_regenerate_elementor_css_on_update')) {
+	function tmpcoder_regenerate_elementor_css_on_update() {
+	    if (tmpcoder_is_elementor_editor()) {
+		 	require_once TMPCODER_PLUGIN_DIR.'inc/classes/assets-cache.php';
+			$assets_cache = new \Spexo_Addons\Elementor\Assets_Cache(0);
+			$assets_cache->delete_all();
+	    }
+	}
+}
+
+add_filter( 'wp_sitemaps_post_types', 'tmpcoder_exclude_custom_post_type_from_sitemap' );
+
+if (!function_exists('tmpcoder_exclude_custom_post_type_from_sitemap')) {
+	
+	function tmpcoder_exclude_custom_post_type_from_sitemap( $post_types ) {
+	    unset( $post_types[TMPCODER_THEME_ADVANCED_HOOKS_POST_TYPE] );
+	    unset( $post_types['tmpcoder_mega_menu'] );
+	    return $post_types;
 	}
 }

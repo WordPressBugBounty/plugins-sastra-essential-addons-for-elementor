@@ -21,7 +21,7 @@ function tmpcoder_theme_install_func(){
     $theme_slug = 'spexo';
     $current_theme = (is_object(wp_get_theme()->parent())) ? wp_get_theme()->parent() : wp_get_theme();
 
-    if ( !wp_get_theme($theme_slug)->exists()  ) {
+    if ( !wp_get_theme($theme_slug)->exists() ) {
 
         $theme_info = tmpcoder_get_theme_info($theme_slug);
 

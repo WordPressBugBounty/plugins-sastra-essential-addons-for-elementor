@@ -82,8 +82,12 @@
 
                     addRightSign('theme-installation');
                     $('[data-tab="theme-installation"]').addClass('disabled');
+
                     $('[data-tab="install-plugins"]').removeClass('disabled');
                     $('[data-tab="install-plugins"]').trigger('click');
+                    
+                    // $('[data-tab="select-editor"]').removeClass('disabled');
+                    // $('[data-tab="select-editor"]').trigger('click');
 
                 }else{
                     if ( resp?.data?.message != "" ){
@@ -229,6 +233,84 @@
         });
     }
 
+    function tmpcoder_get_page_builder_data(){
+        $('.process-loader').removeClass('hide');
+        $('.process-loader .loader-text').text(tmpcoderMessages.getting_required_plugins);
+
+        var js_exist = $('#templatescoder-core-import-demos-js-extra').length;
+        if ( $('#select-demo #templatescoder-core-import-demos-js-extra').length == 1 ) {
+            js_exist = 0;
+        }
+
+        $.ajax({
+            url: ajaxurl,
+            type: 'POST',
+            data: {
+                'action':'tmpcoder_get_page_builder_data_func',
+                'js_exist': js_exist,
+                'nonce': tmpcoderMessages.get_plugin_nonce,
+            },
+            // dataType: 'json',
+            beforeSend: function () {
+                //Before sending, like showing a loading animation
+            },
+            success: function(resp){
+
+                $('.process-loader').addClass('hide');
+                $('.process-loader .loader-text').text('');
+
+                if( resp.success ){
+                    
+                    if ( resp?.data?.plugins ){
+                        
+                        var plg_html = '<div class="feature-section recommended-plugins three-col demo-import-boxed">';
+                        if ( resp.data.plugins.length > 0 ){
+                            resp.data.plugins.forEach(pluginRow => {
+                                plg_html += '<div class="col plugin_box"><div class="theme-grid-box">';
+                                plg_html += '<a target="_blank" title="'+ pluginRow.name +'" href="'+ pluginRow.link +'"><img src="'+ pluginRow.image +'" alt="plugin box image" class="demo-preview plugin-preview" loading="lazy"></a>';
+
+                                plg_html += '<div class="action_bar "><span class="plugin_name">'+ pluginRow.name +'</span>';
+                                plg_html += '<span class="plugin-card-plugin action_button active">';
+                                if ( pluginRow.activated ){
+                                    plg_html += '<label>'+ tmpcoderMessages.installed_and_activated +'</label>';
+                                }else if ( pluginRow.installed ){
+                                    plg_html += '<input type="checkbox" class="plugin-checkbox" name="plugins['+ pluginRow.slug +']" value="1" checked readonly /><label>'+ tmpcoderMessages.installed_and_activate +'</label>';
+                                }else{
+                                    plg_html += '<input type="checkbox" class="plugin-checkbox" name="plugins['+ pluginRow.slug +']" value="1" checked readonly /><label>'+ tmpcoderMessages.install_and_activate +'</label>';
+                                }
+                                plg_html += '</span>';
+                                plg_html += '</div>';
+
+                                plg_html += '</div></div>';
+                            });
+                        }
+                        plg_html += '</div>';
+
+                        plg_html += tmpcoderMessages.form_nonce; // nonce passing.
+                        
+                        plg_html += '<div class="next-step-action"><input type="hidden" name="action" value="tmpcoder_install_required_plugins_func" />';
+
+                        if ( resp.data.next_step ){
+                            plg_html += '<button type="submit" class="button button-primary next-step-btn">'+ resp.data.next_step +'</button>';
+                        }else{
+                            plg_html += '<button type="submit" class="button button-primary next-step-btn">'+ tmpcoderMessages.next_step_btn +'</button>';
+                        }
+                        plg_html += '</div>';
+
+                        plg_html = '<h2 class="wizard-heading">'+ tmpcoderMessages.install_required_plugins +'</h2><p class="wizard-title-text">'+ tmpcoderMessages.install_required_plugins_text +'</p><form class="install-plugins-form" method="POST">'+ plg_html +'</form>';
+
+                        $('#install-plugins .tmpcoder-message-box').html(plg_html);
+                    }
+                }else{
+                }
+            },
+            error: function(err) {
+                $('.process-loader').addClass('hide');
+                $('.process-loader .loader-text').text('');
+            },
+        });    
+    }
+
     var getlicenseinfo = 0;
     function tmpcoder_wizard_pro_addons_info(){
 
@@ -289,6 +371,10 @@
         $('.tab-content').removeClass('active');
         $(this).addClass('nav-tab-active');
         $('#'+ tab_id).addClass('active');
+
+        if ( tab_id == 'select-editor' ){
+            tmpcoder_get_page_builder_data();
+        }
 
         if ( tab_id == 'install-plugins' ){
             tmpcoder_get_required_plugins_func();

@@ -80,6 +80,10 @@
 .tmpcoder-sharing-official .tmpcoder-sharing-twitter span {
 	background-color: #1da1f2;
 }
+.tmpcoder-sharing-official .tmpcoder-sharing-x-twitter i,
+.tmpcoder-sharing-official .tmpcoder-sharing-x-twitter span {
+	background-color: #000;
+}
 
 .tmpcoder-sharing-official .tmpcoder-sharing-linkedin-in i,
 .tmpcoder-sharing-official .tmpcoder-sharing-linkedin-in span {
@@ -156,7 +160,7 @@
 }
 
 .tmpcoder-sharing-official .tmpcoder-sharing-twitter {
-	border-color: #1da1f2;
+	border-color: #000;
 }
 
 .tmpcoder-sharing-official .tmpcoder-sharing-linkedin-in {
@@ -223,7 +227,12 @@
 
 .tmpcoder-sharing-official.tmpcoder-sharing-icon-tr .tmpcoder-sharing-twitter i,
 .tmpcoder-sharing-official.tmpcoder-sharing-label-tr .tmpcoder-sharing-twitter span {
-	color: #1da1f2;
+	color: #fff;
+	background-color: transparent;
+}
+.tmpcoder-sharing-official.tmpcoder-sharing-icon-tr .tmpcoder-sharing-x-twitter i,
+.tmpcoder-sharing-official.tmpcoder-sharing-label-tr .tmpcoder-sharing-x-twitter span {
+	color: #fff;
 	background-color: transparent;
 }
 

@@ -435,7 +435,7 @@ if ( !class_exists('TemplatesWidgetRegister') ){
         
         public function tmpcoder_enqueue_scripts(){
             
-            if ( isset( $_GET['preview'] ) ) {
+            if ( isset( $_GET['preview'] ) && $_GET['preview'] === true  ) {
               wp_enqueue_style(
                 'widgets-editor',
                 TMPCODER_PLUGIN_URI.'assets/css/admin/widgets-editor.min.css',

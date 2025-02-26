@@ -286,6 +286,35 @@ class TMPCODER_Page_List extends Widget_Base {
 		);
 
 		$this->add_responsive_control(
+            'content_align',
+            [
+                'label' => esc_html__( 'Alignment', 'sastra-essential-addons-for-elementor' ),
+                'type' => Controls_Manager::CHOOSE,
+                'label_block' => false,
+                'default' => 'start',
+                'options' => [
+                    'start' => [
+                        'title' => esc_html__( 'Left', 'sastra-essential-addons-for-elementor' ),
+                        'icon' => 'eicon-h-align-left',
+                    ],
+                    'center' => [
+                        'title' => esc_html__( 'Center', 'sastra-essential-addons-for-elementor' ),
+                        'icon' => 'eicon-h-align-center',
+                    ],
+                    'end' => [
+                        'title' => esc_html__( 'Right', 'sastra-essential-addons-for-elementor' ),
+                        'icon' => 'eicon-h-align-right',
+                    ]
+                ],
+				'selectors' => [
+					'{{WRAPPER}} .tmpcoder-page-list-wrap .tmpcoder-page-list' => 'justify-content: {{VALUE}}',
+					'{{WRAPPER}} .tmpcoder-page-list-wrap .tmpcoder-page-list .tmpcoder-page-list-item' => 'justify-content: {{VALUE}}',
+				],
+				'separator' => 'after'
+            ]
+        );
+
+		$this->add_responsive_control(
 			'page_list_item_padding',
 			[
 				'label' => esc_html__( 'Padding', 'sastra-essential-addons-for-elementor' ),

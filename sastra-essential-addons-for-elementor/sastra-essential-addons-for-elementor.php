@@ -3,10 +3,10 @@
  * Plugin Name: Spexo Addons for Elementor
  * Plugin URI: http://spexoaddons.com/
  * Description: Spexo Addons for Elementor is all in one solution for complete starter sites, single page templates, blocks & images. This plugin offers additional features needed by our theme.
- * Version: 1.0.17
+ * Version: 1.0.18
  * Author: TemplatesCoder
  * Author URI:  https://templatescoder.com/
- * Elementor tested up to: 3.26.0
+ * Elementor tested up to: 3.27.6
  * Text Domain: sastra-essential-addons-for-elementor
  * License: GPLv3
  *
@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 $theme = (is_object(wp_get_theme()->parent())) ? wp_get_theme()->parent() : wp_get_theme();
 
 if ( ! defined( 'TMPCODER_PLUGIN_VER' ) ) {
-    define( 'TMPCODER_PLUGIN_VER', '1.0.17' );
+    define( 'TMPCODER_PLUGIN_VER', '1.0.18' );
 }
 
 if ( ! defined( 'TMPCODER_PLUGIN_NAME' ) ) {
@@ -137,10 +137,12 @@ if ( ! function_exists( 'tmpcoder_setup' ) ) :
 		require_once TMPCODER_PLUGIN_DIR . 'inc/classes/functions.php';
 		require_once TMPCODER_PLUGIN_DIR . 'inc/admin/import/classes/class-tmpcoder-plugin.php';
 
-		include_once TMPCODER_PLUGIN_DIR . 'inc/classes/widgets-cache.php';
-		include_once TMPCODER_PLUGIN_DIR . 'inc/classes/assets-cache.php';
-		include_once TMPCODER_PLUGIN_DIR . 'inc/classes/cache-manager.php';
-		include_once TMPCODER_PLUGIN_DIR . 'inc/classes/admin-bar.php';
+		if (class_exists('\Elementor\Plugin')) {
+			include_once TMPCODER_PLUGIN_DIR . 'inc/classes/widgets-cache.php';
+			include_once TMPCODER_PLUGIN_DIR . 'inc/classes/assets-cache.php';
+			include_once TMPCODER_PLUGIN_DIR . 'inc/classes/cache-manager.php';
+			include_once TMPCODER_PLUGIN_DIR . 'inc/classes/admin-bar.php';
+		}
 
 		if ( get_option('tmpcoder_spexo_addons_version') != TMPCODER_PLUGIN_VER ){
 		    update_option('tmpcoder_spexo_addons_version', TMPCODER_PLUGIN_VER);
@@ -152,7 +154,7 @@ if ( ! function_exists( 'tmpcoder_setup' ) ) :
                     update_option(TMPCODER_THEME_OPTION_NAME, $theme_setting);
                 }
             }
-		    
+            tmpcoder_regenerate_elementor_css_on_update();
 		}
 	}
 	add_action( 'plugins_loaded', 'tmpcoder_setup' );
@@ -285,17 +287,18 @@ function tmpcoder_addons_load_plugin() {
 		    /* upgrade to PRO version notice [END] */
     }, 99 );
 	
-	// echo did_action( 'elementor/loaded' );
-
 	if ( ! did_action( 'elementor/loaded' ) ) {
 		add_action( 'admin_notices', 'tmpcoder_addons_fail_load' );
 		return;
 	}
-
-	$elementor_version_required = '2.0.0';
-	if ( ! version_compare( ELEMENTOR_VERSION, $elementor_version_required, '>=' ) ) {
-		add_action( 'admin_notices', 'tmpcoder_addon_fail_load_out_of_date' );
-		return;
+	
+	if (class_exists('\Elementor\Plugin')) {
+		
+		$elementor_version_required = '2.0.0';
+		if ( ! version_compare( ELEMENTOR_VERSION, $elementor_version_required, '>=' ) ) {
+			add_action( 'admin_notices', 'tmpcoder_addon_fail_load_out_of_date' );
+			return;
+		}
 	}
 
 	require TMPCODER_PLUGIN_DIR.'inc/admin/notice/notice.php';

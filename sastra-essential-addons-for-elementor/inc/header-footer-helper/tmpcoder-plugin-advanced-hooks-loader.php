@@ -151,7 +151,6 @@ if ( ! class_exists( 'TMPCODER_Advanced_Hooks_Loader' ) ) {
                     'show_ui'             => true,
                     'can_export'          => true,
                     'show_in_nav_menus'   => false,
-                    'show_in_admin_bar'   => true,
                     'exclude_from_search' => true,
                     'capability_type'     => 'post',
                     'hierarchical'        => false,
@@ -206,6 +205,14 @@ if ( ! class_exists( 'TMPCODER_Advanced_Hooks_Loader' ) ) {
                     __( 'Integrations', 'sastra-essential-addons-for-elementor' ),
                     'manage_options',
                     'admin.php?page='.TMPCODER_THEME.'-welcome&tab=settings'
+                );
+
+                add_submenu_page(
+                    TMPCODER_THEME.'-welcome',
+                    __( 'Tools', 'sastra-essential-addons-for-elementor' ),
+                    __( 'Tools', 'sastra-essential-addons-for-elementor' ),
+                    'manage_options',
+                    'admin.php?page='.TMPCODER_THEME.'-welcome&tab=tools'
                 );
             }
         }
