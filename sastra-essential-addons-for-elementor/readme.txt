@@ -1,7 +1,7 @@
 === Spexo Addons for Elementor - Free Elementor Addons, Widgets and Templates ===
 Contributors: templatescoderthemes, skywebtech
 Tags: elementor, elementor addons, elementor templates, elementor widgets, woocommerce elementor, widgets for elementor
-Stable tag: 1.0.18
+Stable tag: 1.0.19
 Requires at least: 5.0
 Tested up to: 6.7
 Requires PHP: 7.4
@@ -303,6 +303,13 @@ Feel free to contact us anytime via [Support](https://templatescoder.com/support
 
 
 == Changelog ==
+
+= v1.0.19 - 2025-03-04 =
+
+* Added : 'Edit' button on hover for Header, Footer, Single Post, and Single Product layouts in Elementor editor, redirecting the user to the corresponding layout's editing screen upon clicking the button.
+* Improved : Elementor editor preview to properly reflect the single post layout as it appears on the frontend when editing a specific blog post.
+* Tweak : Removed single post layout display when editing the header & Footer builder in Elementor editor to avoid layout conflicts.
+* Fixed : Removed unwanted content when printing single blog content on the frontend.
 
 = v1.0.18 - 2025-02-25 =
 

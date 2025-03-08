@@ -675,6 +675,8 @@
                     //  img.attr( 'src', secondaryImg );
                     // }
 
+                    $(this).find('.tmpcoder-grid-image-wrap').css('position','relative');
+
                     if ($(this).find('img:nth-of-type(2)').attr('src') !== undefined && $(this).find('img:nth-of-type(2)').attr('src') !== '') {
                         // $(this).find('img:first-of-type').fadeOut(0).addClass('tmpcoder-hidden-img');
                         // $(this).find('img:nth-of-type(2)').fadeIn(500).removeClass('tmpcoder-hidden-img');

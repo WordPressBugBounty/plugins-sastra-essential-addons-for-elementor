@@ -8701,7 +8701,26 @@ class TMPCODER_Post_Grid extends Widget_Base {
 
 		$custom_image_class = $image_original_class.' grid-main-image tmpcoder-anim-timing-'.$settings[ 'image_effects_animation_timing'];
 
-		$main_thumbnail_html = str_replace($image_original_class, $custom_image_class, $main_thumbnail_html);
+		if (strpos($main_thumbnail_html, 'class=') === false) {
+
+		    if ($src) {
+		        $image_info = getimagesize($src);
+		        if ($image_info) {
+		            $width = $image_info[0];
+		            $height = $image_info[1];
+		        }
+		    }
+
+		    if ($width && $height) {
+			    $main_thumbnail_html = str_replace('<img ', "<img width='" . esc_attr($width) . "' height='" . esc_attr($height) . "' ", $main_thumbnail_html);
+			}
+		}
+
+		if (strpos($main_thumbnail_html, 'class=') !== false) {
+	        $main_thumbnail_html = preg_replace("/class='(.*?)'/", "class='" . esc_attr('$1 ' . $custom_image_class) . "'", $main_thumbnail_html);
+	    } else {
+	        $main_thumbnail_html = str_replace('<img ', "<img class='" . esc_attr($custom_image_class) . "' ", $main_thumbnail_html);
+	    }
 		
 		if ( get_post_meta(get_the_ID(), 'tmpcoder_secondary_image_id') && !empty(get_post_meta(get_the_ID(), 'tmpcoder_secondary_image_id')) ) {
 			$src2 = Group_Control_Image_Size::get_attachment_image_src( get_post_meta(get_the_ID(), 'tmpcoder_secondary_image_id')[0], 'layout_image_crop', $settings );
@@ -8732,7 +8751,13 @@ class TMPCODER_Post_Grid extends Widget_Base {
 					echo '<img data-no-lazy="1" src="'. esc_url(TMPCODER_ADDONS_ASSETS_URL) . 'images/icon-256x256.png" alt="'. esc_attr( $alt ) .'" class="grid-main-image tmpcoder-hidden-image tmpcoder-anim-timing-'. esc_attr($settings[ 'image_effects_animation_timing']) .'">';
 
 					if ( 'yes' == $settings['secondary_img_on_hover'] ) {
-						$secondory_thumbnail_html = str_replace($second_image_original_class, $custom_image_class.' tmpcoder-hidden-img secondary-image ', $secondory_thumbnail_html);
+
+						if (strpos($secondory_thumbnail_html, 'class=') !== false) {
+					        $secondory_thumbnail_html = preg_replace("/class='(.*?)'/", " class='" . esc_attr('$1 ' . $custom_image_class.' tmpcoder-hidden-img secondary-image ') . "'", $secondory_thumbnail_html);
+					    } else {
+					        $secondory_thumbnail_html = str_replace('<img ', "<img class='" . esc_attr($custom_image_class.' tmpcoder-hidden-img secondary-image ') . "' ", $secondory_thumbnail_html);
+					    }
+
 						echo wp_kses_post($secondory_thumbnail_html);
 					}
 					
@@ -8741,7 +8766,13 @@ class TMPCODER_Post_Grid extends Widget_Base {
 					echo wp_kses_post($main_thumbnail_html);
 					
 					if ( 'yes' == $settings['secondary_img_on_hover'] ) {
-						$secondory_thumbnail_html = str_replace($second_image_original_class, $custom_image_class.' tmpcoder-hidden-img secondary-image ', $secondory_thumbnail_html);
+						
+						if (strpos($secondory_thumbnail_html, 'class=') !== false) {
+					        $secondory_thumbnail_html = preg_replace("/class='(.*?)'/", " class='" . esc_attr('$1 ' . $custom_image_class.' tmpcoder-hidden-img secondary-image ') . "'", $secondory_thumbnail_html);
+					    } else {
+					        $secondory_thumbnail_html = str_replace('<img ', "<img class='" . esc_attr($custom_image_class.' tmpcoder-hidden-img secondary-image ') . "' ", $secondory_thumbnail_html);
+					    }
+
 						echo wp_kses_post($secondory_thumbnail_html);
 					}
 				}

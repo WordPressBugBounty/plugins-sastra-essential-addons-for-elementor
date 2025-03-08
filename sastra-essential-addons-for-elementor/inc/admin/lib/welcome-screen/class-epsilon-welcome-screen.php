@@ -329,9 +329,9 @@ class TMPCODER_Welcome_Screen {
 			$title .= '<span class="badge-action-count">' . esc_html( $this->actions_count ) . '</span>';
 		}
 		
-		// if (did_action( 'elementor/loaded' )) {
+		if (did_action( 'elementor/loaded' )) {
 			add_menu_page('Spexo Addons', 'Spexo Addons', 'manage_options', 'spexo-welcome',[$this,'render_welcome_screen'],TMPCODER_ADDONS_ASSETS_URL.'images/logo-icon.svg', 30 );
-		// }
+		}
 	}
 
 	/**

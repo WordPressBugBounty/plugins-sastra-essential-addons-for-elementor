@@ -274,13 +274,14 @@ class TMPCODER_Theme_Layouts_Base {
 
 	public function convert_to_canvas( $template ) {
     	$is_theme_builder_edit = \Elementor\Plugin::$instance->preview->is_preview_mode() && tmpcoder_is_theme_builder_template() ? true : false;
+
     	$_wp_page_template = get_post_meta(get_the_ID(), '_wp_page_template', true);
 
         if ( $this->tmpcoder_is_template_available('content') || $is_theme_builder_edit ) {
     		if ( (is_page() || is_single()) && 'elementor_canvas' === $_wp_page_template && !$is_theme_builder_edit ) {
     			return $template;
     		} else {
-                return WP_PLUGIN_DIR . '/elementor/modules/page-templates/templates/canvas.php';
+                return TMPCODER_PLUGIN_DIR . 'inc/admin/templates/tmpcoder-canvas.php';
     		}
     	} else {
     		return $template;
@@ -326,6 +327,8 @@ class TMPCODER_Theme_Layouts_Base {
 			remove_all_actions( 'wp_head' ); // Avoid running wp_head hooks again.
 
 			ob_start();
+			?>
+			<?php
 			locate_template( $templates, true );
 			ob_get_clean();
 	    }
@@ -337,8 +340,13 @@ class TMPCODER_Theme_Layouts_Base {
 			// Render Tmpcoder Header
 
 			do_action( 'tmpcoder_wp_body_open' );
-
+			if (\Elementor\Plugin::$instance->preview->is_preview_mode()) {
+				echo "<div class='tmpcoder-before-header-content-editor'>";
+			}
 			TMPCODER_Header_Footer_Elements::get_header_content();
+			if (\Elementor\Plugin::$instance->preview->is_preview_mode()) {
+				echo "</div>";
+			}
 		}  
     }
 
@@ -373,7 +381,13 @@ class TMPCODER_Theme_Layouts_Base {
   		
   		if ( tmpcoder_footer_enabled() ) {
   			// Render Tmpcoder Footer
+  			if (\Elementor\Plugin::$instance->preview->is_preview_mode()) {
+				echo "<div class='tmpcoder-before-footer-content-editor'>";
+			}
 			TMPCODER_Header_Footer_Elements::get_footer_content();
+			if (\Elementor\Plugin::$instance->preview->is_preview_mode()) {
+				echo "</div>";
+			}
 		}
     }
 
@@ -385,7 +399,14 @@ class TMPCODER_Theme_Layouts_Base {
 		// Display Template
 		$templates = $this->canvas_page_content_display_conditions();
 		if ($templates) {
+			if (\Elementor\Plugin::$instance->preview->is_preview_mode() && ($templates == 'type_single_post' || $templates == 'type_single_product')) {
+
+				echo "<div class='tmpcoder-before-single-post-content-editor'>";
+			}
 			TMPCODER_Header_Footer_Elements::get_dynamic_content($templates);
+			if (\Elementor\Plugin::$instance->preview->is_preview_mode() && ($templates == 'type_single_post' || $templates == 'type_single_product')) {
+				echo "</div>";
+			}
 		}
 	}
 

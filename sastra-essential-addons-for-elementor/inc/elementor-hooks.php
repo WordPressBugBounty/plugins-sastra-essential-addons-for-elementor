@@ -10,11 +10,6 @@ if ( !class_exists('TMPCODER_Elementor_Hooks') ){
 
         public function __construct()
         {
-            add_filter( 'body_class', [$this, 'tmpcoder_body_class']);
-
-            add_action( 'elementor/page_templates/canvas/before_content', [$this, 'tmpcoder_print_contents_before'], 999);
-
-            add_action( 'elementor/page_templates/canvas/after_content', [$this, 'tmpcoder_print_contents'], -10);
 
             add_action( 'elementor/element/column/layout/before_section_end', [$this, 'column_addons_controls'], 10, 2);
 
@@ -49,16 +44,6 @@ if ( !class_exists('TMPCODER_Elementor_Hooks') ){
 
         }
 
-        public function tmpcoder_body_class($classes){
-            $is_preview_mode = \Elementor\Plugin::$instance->preview->is_preview_mode();
-
-            if ( $is_preview_mode && class_exists( 'WooCommerce' ) ){
-                return array_merge( $classes, array('woocommerce', 'woocommerce-page') );
-            }
-
-            return $classes;
-        }
-
         public function tmpcoder_layout_conditions(){
 
             $templates = TMPCODER_Theme_Layouts_Base::instance();
@@ -66,34 +51,7 @@ if ( !class_exists('TMPCODER_Elementor_Hooks') ){
 
             return ( $is_layout_on != '' && (is_home() || is_tax() || is_singular() || is_category() || is_search() || is_tag() || is_year() || is_month() || is_author() || (function_exists('is_product_category') && is_product_category()) || (function_exists('is_shop') && is_shop()) ) );
         }
-
-        public function tmpcoder_print_contents_before(){
-            $is_preview_mode = \Elementor\Plugin::$instance->preview->is_preview_mode();
-
-            if ( $this->tmpcoder_layout_conditions() && ! $is_preview_mode ){  
-                $default_layout_class = 'tmpcoder-default-layout-hide';
-                echo '<div class="' . esc_attr( $default_layout_class ) . '" style="display:none">';
-            }
-        }
-
-        public function tmpcoder_print_contents(){
-
-            if (( \Elementor\Plugin::$instance->preview->is_preview_mode() && tmpcoder_is_theme_builder_template()) || is_singular('tmpcoder_mega_menu') ) {
-                \Elementor\Plugin::$instance->modules_manager->get_modules( 'page-templates' )->print_content();
-
-           } else {
-
-                $is_preview_mode = \Elementor\Plugin::$instance->preview->is_preview_mode();
-                
-                if ( $this->tmpcoder_layout_conditions() && ! $is_preview_mode ){
-                    echo '</div>';
-                }
-
-               // Theme Layout Content
-               do_action( 'tmpcoder_elementor/page_templates/canvas/tmpcoder_print_content' );
-           }
-        }
-
+        
         public function tmpcoder_document_wrapper_attributes($attributes, $document){
             // $attributes, $this
             if ( isset($attributes['class']) ){

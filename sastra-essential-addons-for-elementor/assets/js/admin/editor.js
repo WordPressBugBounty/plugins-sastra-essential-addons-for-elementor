@@ -163,8 +163,7 @@
 
 			dialogButton.text('Upgrade Elementor');
 			dialogButton.after('<div class="tmpcoder-upgrade-dynamic-content"><div style="margin:8px 0 20px;">OR</div><a href="'+ url +'" target="_blank" style="display:block; margin-bottom: 10px; padding:9px 22px;background: #046bd2;" class="dialog-button elementor-button elementor-button-success">Upgrade Spexo Addons for Elementor Pro</a></div>');
-			dialogButton.next('a').css('display','block');
-
+			dialogButton.next('a').css('display', 'block');
 		});
 	});
 
@@ -477,3 +476,124 @@
 	$( window ).on( 'elementor:init', TmpcoderMegaMenuEditor.init );
 	window.TmpcoderMegaMenuEditor = TmpcoderMegaMenuEditor;
 }( jQuery ) );
+
+jQuery(document).ready(function($) {
+    const iframe = $('iframe');
+    if (iframe.length) {
+        iframe.on('load', function() {
+            const header = iframe.contents().find('.tmpcoder-before-header-content-editor [data-elementor-type="wp-post"]');
+            const footer = iframe.contents().find('.tmpcoder-before-footer-content-editor [data-elementor-type="wp-post"]');
+            
+            if (header.length) {
+				const headerId = header.data('elementor-id');
+				header.css('border', '1px solid transparent');
+                const editHeaderButton = $('<button class="tmpcoder-edit-header-layout-btn" title="'+tmpcoder_config.header_editor_btn_text_title+'"><i class="fas fa-pencil-alt"></i> '+tmpcoder_config.header_editor_btn_text+'</button>');
+                editHeaderButton.css({
+                	position: 'absolute',
+                    top: '0',
+                    fontSize:'12px',
+                    fontFamily:'Roboto, Arial, Helvetica, Verdana, sans-serif',
+                    left: '50%',
+                    transform:'translateX(-50%)',
+                    padding: '3px 8px',
+                    border: 'none',
+                    background:'#fcb92c', 
+                    color:'#fff',
+                    borderRadius: '0px 0px 3px 3px',
+                    cursor: 'pointer',
+                    zIndex: '99999',
+                    display: 'none',
+                });
+                header.on('mouseenter', function() {
+                    editHeaderButton.show();
+					header.css('border', '1px solid #fcb92c');
+                }).on('mouseleave', function() {
+					editHeaderButton.hide();
+					header.css('border', '1px solid transparent');
+                });
+
+                editHeaderButton.on('click', function() {
+                    window.open('post.php?post='+headerId+'&action=elementor', '_blank');
+                });
+
+                header.css('position', 'relative').append(editHeaderButton);
+            }
+
+			if (footer.length) {
+				footer.css('border', '1px solid transparent');
+        	 	const footerId = footer.data('elementor-id');
+                const editFooterButton = $('<button class="tmpcoder-edit-header-layout-btn" title="'+tmpcoder_config.footer_editor_btn_text_title+'"><i class="fas fa-pencil-alt"></i> '+tmpcoder_config.footer_editor_btn_text+'</button>').css({
+                    position: 'absolute',
+                    top: '0',
+                    fontSize:'12px',
+                    fontFamily:'Roboto, Arial, Helvetica, Verdana, sans-serif',
+                    left: '50%',
+                    transform:'translateX(-50%)',
+                    padding: '3px 8px',
+                    border: 'none',
+                    background:'#fcb92c', 
+                    color:'#fff',
+                    borderRadius: '0px 0px 3px 3px',
+                    cursor: 'pointer',
+                    zIndex: '99999',
+                    display: 'none',
+                });
+
+                footer.on('mouseenter', function() {
+					editFooterButton.show();
+					footer.css('border', '1px solid #fcb92c');
+				}).on('mouseleave', function () {
+					footer.css('border', '1px solid transparent');
+                    editFooterButton.hide();
+                });
+
+                editFooterButton.on('click', function() {
+                    window.open('post.php?post='+footerId+'&action=elementor', '_blank');
+                });
+
+                footer.css('position', 'relative').append(editFooterButton);
+            }
+
+            const single_layout = iframe.contents().find('.tmpcoder-before-single-post-content-editor [data-elementor-type="wp-post"]:first');
+
+            if (single_layout.length) {
+				single_layout.css('border', '1px solid transparent');
+        	 	const single_layout_id = single_layout.data('elementor-id');
+        	 	if (single_layout.hasClass('product')) {
+        	 		tmpcoder_config.single_editor_btn_text = tmpcoder_config.single_product_editor_btn_text;
+        	 		tmpcoder_config.single_editor_btn_text_title = tmpcoder_config.single_product_editor_btn_text_title;
+        	 	}
+
+                const editSingleButton = $('<button class="tmpcoder-edit-single-layout-btn" title="'+tmpcoder_config.single_editor_btn_text_title+'"><i class="fas fa-pencil-alt"></i> '+tmpcoder_config.single_editor_btn_text+'</button>').css({
+                    position: 'absolute',
+                    top: '0',
+                    fontSize:'12px',
+                    fontFamily:'Roboto, Arial, Helvetica, Verdana, sans-serif',
+                    left: '50%',
+                    transform:'translateX(-50%)',
+                    padding: '3px 8px',
+                    border: 'none',
+                    background:'#fcb92c', 
+                    color:'#fff',
+                    borderRadius: '0px 0px 3px 3px',
+                    cursor: 'pointer',
+                    zIndex: '99999',
+                    display: 'none',
+                });
+                single_layout.on('mouseenter', function() {
+					single_layout.find('.tmpcoder-edit-single-layout-btn').show();
+					single_layout.css('border', '1px solid #fcb92c');
+                }).on('mouseleave', function() {
+					single_layout.find('.tmpcoder-edit-single-layout-btn').hide();
+					single_layout.css('border', '1px solid transparent');
+                });
+
+                editSingleButton.on('click', function() {
+                    window.open('post.php?post='+single_layout_id+'&action=elementor', '_blank');
+                });
+
+                single_layout.css('position', 'relative').append(editSingleButton);
+            }
+        });
+    }
+});

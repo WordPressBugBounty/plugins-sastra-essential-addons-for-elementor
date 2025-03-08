@@ -63,7 +63,7 @@ if ( !class_exists('TemplatesWidgetRegister') ){
         }
 
         public function __construct(){
-        
+          
             add_action('elementor/widgets/register', [$this, 'tmpcoder_register_widgets'], 99);
 
             add_action( 'wp_enqueue_scripts', [$this, 'tmpcoder_enqueue_scripts'], 998 );
@@ -167,6 +167,14 @@ if ( !class_exists('TemplatesWidgetRegister') ){
               'TMPCODER_DEMO_IMPORT_API'    => esc_url(TMPCODER_DEMO_IMPORT_API),
               'is_key_expire' => $is_key_expire,
               'renew_button_text' => esc_html('Renew Here'),
+              'header_editor_btn_text' => esc_html('Edit Header'),
+              'header_editor_btn_text_title' => esc_html('Redirect to Header Layout Editor'),
+              'footer_editor_btn_text' => esc_html('Edit Footer'),
+              'footer_editor_btn_text_title' => esc_html('Redirect to Footer Layout Editor'),
+              'single_editor_btn_text' => esc_html('Edit Single Post Layout'),
+              'single_editor_btn_text_title' => esc_html('Redirect to Single Post Layout Editor'),
+              'single_product_editor_btn_text' => esc_html('Edit Single Product Layout'),
+              'single_product_editor_btn_text_title' => esc_html('Redirect to Single Product Layout Editor'),
               'expire_notice' => esc_html('Your license has expired. Please renew immediately to avoid service interruption.'),
             ));
         }
@@ -435,7 +443,7 @@ if ( !class_exists('TemplatesWidgetRegister') ){
         
         public function tmpcoder_enqueue_scripts(){
             
-            if ( isset( $_GET['preview'] ) && $_GET['preview'] === true  ) {
+            if ( isset( $_GET['preview'] ) && $_GET['preview'] === 'true' ) {
               wp_enqueue_style(
                 'widgets-editor',
                 TMPCODER_PLUGIN_URI.'assets/css/admin/widgets-editor.min.css',

@@ -1153,20 +1153,6 @@ if (!function_exists('tmpcoder_get_template_id')) {
 	}
 }
 
-// if (!function_exists('tmpcoder_is_theme_builder_template')) {
-	
-// 	function tmpcoder_is_theme_builder_template(){
-
-// 		$current_page = get_post(get_the_ID());
-
-// 		if ( $current_page ) {
-// 			return strpos($current_page->post_name, 'user-archive') !== false || strpos($current_page->post_name, 'user-single') !== false || strpos($current_page->post_name, 'user-product') !== false;
-// 		} else {
-// 			return false;
-// 		}
-// 	} 
-// }
-
 add_action( 'wp_enqueue_scripts', 'tmpcoder_redirect_upgrade_page_script');
 add_action( 'admin_enqueue_scripts', 'tmpcoder_redirect_upgrade_page_script');
 function tmpcoder_redirect_upgrade_page_script() {
@@ -2296,5 +2282,31 @@ if (!function_exists('tmpcoder_exclude_custom_post_type_from_sitemap')) {
 	    unset( $post_types[TMPCODER_THEME_ADVANCED_HOOKS_POST_TYPE] );
 	    unset( $post_types['tmpcoder_mega_menu'] );
 	    return $post_types;
+	}
+}
+
+/* Update all post templaes type as Elementor Full With */	
+
+if (!function_exists('tmpcoder_update_post_templates_type')) {
+	
+	function tmpcoder_update_post_templates_type() {
+	    $current_version = get_option('tmpcoder_spexo_addons_version');
+
+	    if (version_compare($current_version, '1.0.19', '<')) {
+	        
+	        $posts = get_posts([
+	            'post_type'      => 'post',
+	            'post_status'    => 'any',
+	            'numberposts'    => -1,
+	            'meta_key'       => '_wp_page_template',
+	            'meta_value'     => 'elementor_canvas'
+	        ]);
+
+	        if (!empty($posts)) {
+	            foreach ($posts as $post) {
+	                update_post_meta($post->ID, '_wp_page_template', 'elementor_header_footer');
+	            }
+	        }
+	    }
 	}
 }
