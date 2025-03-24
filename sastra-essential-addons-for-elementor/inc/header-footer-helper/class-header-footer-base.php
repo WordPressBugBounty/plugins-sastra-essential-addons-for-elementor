@@ -1,5 +1,8 @@
 <?php 
 
+use Elementor\Core\Base\Elements_Iteration_Actions\Assets;
+use Elementor\Core\Files\CSS\Post as Post_CSS;
+
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 require_once 'header-footer-elements.php';
@@ -221,6 +224,13 @@ class TMPCODER_Theme_Layouts_Base {
 	private static $instance;
 
 	/**
+	** Instance of Elemenntor Frontend class.
+	*
+	** @var \Elementor\Frontend()
+	*/
+	private static $elementor_instance;
+
+	/**
 	** Get Current Theme.
 	*/
 	public $current_theme;
@@ -235,6 +245,9 @@ class TMPCODER_Theme_Layouts_Base {
 	*/
 
 	public function __construct( $only_hf = false ) {
+
+		// Elementor Frontend
+		self::$elementor_instance = \Elementor\Plugin::instance();
 
 		// Ative Theme
 		$this->current_theme = get_template();
@@ -552,6 +565,18 @@ class TMPCODER_Theme_Layouts_Base {
 		$header_template_id = !empty(tmpcoder_get_header_id()) ? tmpcoder_get_header_id() : false;
 
 		if ( false !== $header_template_id ) {
+
+			// Load Header Template Assets (Elementor Widget)
+			if ( ! self::$elementor_instance->preview->is_preview_mode() ) {
+				$page_assets = get_post_meta( $header_template_id, Assets::ASSETS_META_KEY, true );
+				if ( ! empty( $page_assets ) ) {
+					self::$elementor_instance->assets_loader->enable_assets( $page_assets );
+				}
+
+				$css_file = Post_CSS::create( get_the_ID() );
+				$css_file->enqueue();
+			}
+
 			if ( class_exists( '\Elementor\Core\Files\CSS\Post' ) ) {
 				$header_css_file = new \Elementor\Core\Files\CSS\Post( $header_template_id );
 			} elseif ( class_exists( '\Elementor\Post_CSS_File' ) ) {
@@ -564,6 +589,18 @@ class TMPCODER_Theme_Layouts_Base {
 		$footer_template_id = !empty(tmpcoder_get_footer_id()) ?  tmpcoder_get_footer_id() : false;
 
 		if ( false !== $footer_template_id ) {
+
+			// Load Footer Template Assets (Elementor Widget)
+			if ( ! self::$elementor_instance->preview->is_preview_mode() ) {
+				$page_assets = get_post_meta( $footer_template_id, Assets::ASSETS_META_KEY, true );
+				if ( ! empty( $page_assets ) ) {
+					self::$elementor_instance->assets_loader->enable_assets( $page_assets );
+				}
+
+				$css_file = Post_CSS::create( get_the_ID() );
+				$css_file->enqueue();
+			}
+
 			if ( class_exists( '\Elementor\Core\Files\CSS\Post' ) ) {
 				$footer_css_file = new \Elementor\Core\Files\CSS\Post( $footer_template_id );
 			} elseif ( class_exists( '\Elementor\Post_CSS_File' ) ) {
@@ -578,6 +615,7 @@ class TMPCODER_Theme_Layouts_Base {
 		$canvas_template_id = !empty($canvas_conditions) ? $this->get_dynamic_content_id($canvas_conditions) : false;
 
 		if ( false !== $canvas_template_id ) {
+			
 			if ( class_exists( '\Elementor\Core\Files\CSS\Post' ) ) {
 				$canvas_css_file = new \Elementor\Core\Files\CSS\Post( $canvas_template_id );
 			} elseif ( class_exists( '\Elementor\Post_CSS_File' ) ) {
@@ -590,4 +628,3 @@ class TMPCODER_Theme_Layouts_Base {
 }
 
 TMPCODER_Theme_Layouts_Base::instance();
-

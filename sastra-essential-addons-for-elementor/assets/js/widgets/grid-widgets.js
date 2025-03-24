@@ -1762,6 +1762,18 @@
 
             }
         }
+
+        /* Image not load after load more post when W3 Total lazy load enabled */
+
+        $scope.find('.tmpcoder-grid').on('load.infiniteScroll', function() {
+            
+            // Find all images with data-src from the newly loaded content
+            $scope.find('.tmpcoder-grid img[data-src]').each(function() {
+                if (!this.src || this.src.includes('data:image/svg+xml')) {
+                    this.src = this.dataset.src;
+                }
+            });
+        });
     }
     
     $(window).on('elementor/frontend/init', function () {

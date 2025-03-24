@@ -8717,7 +8717,7 @@ class TMPCODER_Post_Grid extends Widget_Base {
 		}
 
 		if (strpos($main_thumbnail_html, 'class=') !== false) {
-	        $main_thumbnail_html = preg_replace("/class='(.*?)'/", "class='" . esc_attr('$1 ' . $custom_image_class) . "'", $main_thumbnail_html);
+	        $main_thumbnail_html = str_replace($image_original_class, $custom_image_class, $main_thumbnail_html);
 	    } else {
 	        $main_thumbnail_html = str_replace('<img ', "<img class='" . esc_attr($custom_image_class) . "' ", $main_thumbnail_html);
 	    }

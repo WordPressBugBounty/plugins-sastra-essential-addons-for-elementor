@@ -1,7 +1,7 @@
 === Spexo Addons for Elementor - Free Elementor Addons, Widgets and Templates ===
 Contributors: templatescoderthemes, skywebtech
 Tags: elementor, elementor addons, elementor templates, elementor widgets, woocommerce elementor, widgets for elementor
-Stable tag: 1.0.19
+Stable tag: 1.0.20
 Requires at least: 5.0
 Tested up to: 6.7
 Requires PHP: 7.4
@@ -31,45 +31,45 @@ Spexo comes with 100+ best elementor addons and elementor template kit. All star
 
 ### Spexo Elementor Widget List:
 
-- [Elementor Mega Menu Widget](https://spexoaddons.com/widgets/elementor-mega-menu-widget/) with Off-Canvas mobile menu
+- [Elementor Mega Menu Widget](https://spexoaddons.com/widgets/elementor-mega-menu-builder/) with Off-Canvas mobile menu
 - [Elementor Post Grid, Slider & Carousel Widget](https://spexoaddons.com/widgets/elementor-post-grid-slider-carousel-widget/): Post Grid / Post Slider / Post Carousel
 - [Elementor Product Grid, Slider & Carousel Widget](https://spexoaddons.com/widgets/elementor-woo-commerce-product-grid-slider-carousel-widget/): Product Grid / Product Carousel / Product Slider
 - [Elementor Image Grid - Image Slider / Image Carousel](https://spexoaddons.com/widgets/elementor-image-grid-slider-carousel/)
-- [Magazine Grid / Slider](https://spexoaddons.com/widgets/magazine-grid-slider/)
-- [Advanced Slider / Carousel](https://spexoaddons.com/widgets/advanced-slider/)
-- [Testimonial Slider](https://spexoaddons.com/widgets/testimonial/)
-- [Nav Menu](https://spexoaddons.com/widgets/nav-menu/)
-- [Onepage Navigation](https://spexoaddons.com/widgets/onepage-nav/)
+- [Magazine Grid / Slider](https://spexoaddons.com/widgets/elementor-magazine-grid-slider/)
+- [Advanced Slider / Carousel](https://spexoaddons.com/widgets/elementor-advanced-slider/)
+- [Testimonial Slider](https://spexoaddons.com/widgets/elementor-testimonial/)
+- [Nav Menu](https://spexoaddons.com/widgets/elementor-navigation-menu/)
+- [Onepage Navigation](https://spexoaddons.com/widgets/elementor-onepage-navigation/)
 - [Pricing Table](https://spexoaddons.com/widgets/elementor-pricing-table/)
-- [Elementor Countdown Widget](https://spexoaddons.com/widgets/elementor-countdown-widget/): Countdown Timer
-- [Progress Bar](https://spexoaddons.com/widgets/progress-bar/)
-- [Advanced Text - Animated Text](https://spexoaddons.com/widgets/advanced-text/)
-- [Flip Box](https://spexoaddons.com/widgets/flip-box/)
-- [Promo Box](https://spexoaddons.com/widgets/promo-box/)
-- [Before After Image Comparison Slider](https://spexoaddons.com/widgets/before-after/)
-- [Image Hotspots](https://spexoaddons.com/widgets/image-hotspots/)
+- [Elementor Countdown Widget](https://spexoaddons.com/widgets/elementor-countdown-timer/): Countdown Timer
+- [Progress Bar](https://spexoaddons.com/widgets/elementor-progress-bar/)
+- [Advanced Text - Animated Text](https://spexoaddons.com/widgets/elementor-advanced-text/)
+- [Flip Box](https://spexoaddons.com/widgets/elementor-flip-box/)
+- [Promo Box](https://spexoaddons.com/widgets/elementor-promo-box/)
+- [Before After Image Comparison Slider](https://spexoaddons.com/widgets/elementor-before-after-slider/)
+- [Image Hotspots](https://spexoaddons.com/widgets/elementor-hotspot/)
 - [Elementor Forms Styler](https://spexoaddons.com/widgets/elementor-form-styler/) (Support: Contact Form 7, WP forms, Ninja Forms, Caldera Forms)
-- [Content Ticker](https://spexoaddons.com/widgets/content-ticker/)
-- [Button](https://spexoaddons.com/widgets/button/)
-- [Dual Button](https://spexoaddons.com/widgets/dual-button/)
-- [Team Member](https://spexoaddons.com/widgets/team-member/)
+- [Content Ticker](https://spexoaddons.com/widgets/elementor-content-ticker/)
+- [Button](https://spexoaddons.com/widgets/elementor-button-widget/)
+- [Dual Button](https://spexoaddons.com/widgets/elementor-dual-button/)
+- [Team Member](https://spexoaddons.com/widgets/elementor-team-member/)
 - [Elementor Price List](https://spexoaddons.com/widgets/elementor-price-list/)
-- [Business Hours](https://spexoaddons.com/widgets/business-hours/)
-- [Sharing Buttons](https://spexoaddons.com/widgets/sharing-buttons/)
-- [Search Form](https://spexoaddons.com/widgets/search-form/)
-- [Back to Top Button](https://spexoaddons.com/widgets/back-to-top-button/)
-- [Phone Call Button](https://spexoaddons.com/widgets/phone-call-button/)
+- [Business Hours](https://spexoaddons.com/widgets/elementor-business-hours-widget/)
+- [Sharing Buttons](https://spexoaddons.com/widgets/elementor-sharing-buttons/)
+- [Search Form](https://spexoaddons.com/widgets/elementor-search-form/)
+- [Back to Top Button](https://spexoaddons.com/widgets/elementor-back-to-top-button/)
+- [Phone Call Button](https://spexoaddons.com/widgets/elementor-phone-call-button/)
 - [Lottie Animation](https://spexoaddons.com/widgets/elementor-lottie-animation/)
-- [Post/Story Timeline Widget](https://spexoaddons.com/widgets/posts-story-timeline/)
-- [Flip Carousel](https://spexoaddons.com/widgets/flip-carousel/)
-- [Features List](https://spexoaddons.com/widgets/feature-list/)
-- [Dual Color Heading](https://spexoaddons.com/widgets/dual-color-heading/)
+- [Post/Story Timeline Widget](https://spexoaddons.com/widgets/elementor-posts-story-timeline/)
+- [Flip Carousel](https://spexoaddons.com/widgets/elementor-flip-carousel/)
+- [Features List](https://spexoaddons.com/widgets/elementor-feature-list/)
+- [Dual Color Heading](https://spexoaddons.com/widgets/elementor-dual-color-heading/)
 - [Advanced Accordion](https://spexoaddons.com/widgets/elementor-advanced-accordion/)
-- [Image Accordion](https://spexoaddons.com/widgets/image-accordion/)
-- [Page List for Mega Menu](https://spexoaddons.com/widgets/page-list/)
-- [Data Table](https://spexoaddons.com/widgets/data-table/)
-- [Reading Progress Bar](https://spexoaddons.com/widgets/reading-progress-bar-widget/)
-- [Offcanvas Content (Sidebar menu)](https://spexoaddons.com/widgets/off-canvas-content/)
+- [Image Accordion](https://spexoaddons.com/widgets/elementor-image-accordion/)
+- [Page List for Mega Menu](https://spexoaddons.com/widgets/elementor-page-list/)
+- [Data Table](https://spexoaddons.com/widgets/elementor-data-table/)
+- [Reading Progress Bar](https://spexoaddons.com/widgets/elementor-reading-progress-bar-widget/)
+- [Offcanvas Content (Sidebar menu)](https://spexoaddons.com/widgets/elementor-off-canvas-content/)
 
 
 
@@ -98,7 +98,7 @@ Spexo comes with 100+ best elementor addons and elementor template kit. All star
 - Elementor Theme Builder & [Woocommerce Builder](https://spexoaddons.com/widgets/woocommerce-elementor-addons/)
 Header Footer Builder, Post & Product Archive builder, Single Post & Product builder, Single Page, Search, category, tags, 404, author, data page template builder.
 
-- [Mega Menu Builder](https://spexoaddons.com/widgets/elementor-mega-menu-widget/)
+- [Mega Menu Builder](https://spexoaddons.com/widgets/elementor-mega-menu-builder/)
 Build any type of WordPress mega menu with Menu Badges and Icons, use any elementor widgets in Mega menu content, and support Ajax loading of mega menu items for maximum page loading speed. Off-Canvas Mobile and Desktop Menus support.
 - Advanced Sticky Menu - Create eye-catching Sticky Header Effects
 - Parallax Scrolling (Parallax effect extension)
@@ -303,6 +303,13 @@ Feel free to contact us anytime via [Support](https://templatescoder.com/support
 
 
 == Changelog ==
+
+= v1.0.20 - 2025-03-22 =
+
+* Enhanced : Dynamic CSS generation method to resolve issues caused by permission restrictions, ensuring more reliable stylesheet rendering.
+* Enhanced : Priority for enqueueing header CSS to prevent header content from flickering or blanking after page load.
+* Fixed : Issue where images wouldn't load after clicking "Load More Posts" when W3 Total Cache's lazy load feature was enabled.
+
 
 = v1.0.19 - 2025-03-04 =
 

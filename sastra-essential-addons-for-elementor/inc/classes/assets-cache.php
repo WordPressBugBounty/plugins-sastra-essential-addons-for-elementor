@@ -150,6 +150,7 @@ class Assets_Cache {
 
 	protected function get_css( $files_name, $is_pro = false ) {
 		$css = '';
+		$file_content = '';
 
 		if ($files_name == 'post-grid' || $files_name == 'media-grid' || $files_name == 'woo-grid' || $files_name == 'woo-category-grid-pro' || $files_name == 'category-grid-pro' || $files_name == 'magazine-grid' ) {
 			$files_name = 'grid-widgets';
@@ -169,12 +170,8 @@ class Assets_Cache {
 		$file_url  = TMPCODER_PLUGIN_URI."assets/css/widgets/{$files_name}.css";
 
 		if ( file_exists($file_path) && is_readable( $file_path ) ) {
-			
-			$response = wp_remote_get( $file_url );
-			if ( is_wp_error( $response ) ) {
-	            return $response->get_error_message(); // Error occurred
-	        }
-			$css .= wp_remote_retrieve_body( $response );
+			$file_content .= file_get_contents($file_path);
+			$css .= $file_content;
 		};
 
 		return $css;
