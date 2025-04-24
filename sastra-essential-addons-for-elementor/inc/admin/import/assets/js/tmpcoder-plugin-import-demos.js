@@ -5,6 +5,9 @@ var w = 0;
 
 jQuery(document).on('click','.import-demo-content', function(e){
 
+    e.preventDefault();
+    import_demo_confirm_popup_open();
+
     window.requiredPlugins = false; 
     window.requiredTheme = false; 
     window.requiredFiles = false; 
@@ -34,31 +37,7 @@ jQuery(document).on('click','.import-demo-content', function(e){
     window.theme_demo_name = jQuery(this).closest('.plugin_box').find('.plugin_name').text();
     window.set_demo_name = jQuery('.demo-name').text('"'+theme_demo_name+'"');
     window.theme_demo_url = jQuery(this).closest('.plugin_box').find('.demo-preview-btn').attr('href');
-
-    var confirmImport = confirm('For the best results, it is recommended to temporarily deactivate All other Active plugins Except Elementor and Spexo Addons for Elementor.\n\nElementor Header, Footer, Pages, Media Files, Menus and some required plugins will be installed on your website.');
-
-    message_text.text(tmpcoder_ajax_object.start_import_message);
-
-    e.preventDefault();
-
-    if (confirmImport){
-
-        message_text.text(tmpcoder_ajax_object.start_import_message);
-
-        import_required_files();
-        import_process_popup_open();
-        install_require_plugins();
-        tmpcoder_fix_plugin_compatibility(requiredPlugins);
-
-        var installPlugins = setInterval(function() {
-
-            if ( Object.values(requiredPlugins).every(Boolean) && requiredTheme && requiredFiles ) {
-                reset_posts();
-                clearInterval( installPlugins );
-            }
-        // Clear
-        }, 1000);   
-    }
+       
 });
 
 /**
@@ -785,6 +764,30 @@ jQuery(document).on('click','.popup-close', function(){
     jQuery('.tmpcoder-import-popup-wrap').fadeOut();
 })
 
+function import_demo_confirm_popup_open() {
+    jQuery('#import-demo-confirm-popup').fadeIn();
+    jQuery('.tmpcoder-import-popup-wrap').fadeIn();
+    jQuery('.tmpcoder-admin-popup').fadeIn();
+}
+
+function import_demo_content_start() {
+    message_text.text(tmpcoder_ajax_object.start_import_message);
+
+    import_required_files();
+    import_process_popup_open();
+    install_require_plugins();
+    tmpcoder_fix_plugin_compatibility(requiredPlugins);
+
+    var installPlugins = setInterval(function() {
+
+        if ( Object.values(requiredPlugins).every(Boolean) && requiredTheme && requiredFiles ) {
+            reset_posts();
+            clearInterval( installPlugins );
+        }
+    // Clear
+    }, 1000);  
+}
+
 function uninstall_confirm_popup_open() {
     jQuery('#import-demo-uninstall-popup').fadeIn();
     jQuery('.tmpcoder-import-popup-wrap').fadeIn();
@@ -842,7 +845,13 @@ const uninstall_demo = function()
         console.log(error);
         window.onbeforeunload = null;
     })    
-} 
+}
+
+jQuery(document).on('click','.import-demo-confirm-button', function(e){
+    e.preventDefault();
+    jQuery('#import-demo-confirm-popup').remove();
+    import_demo_content_start();
+})
 
 jQuery(document).on('click', '.uninstall-button', function(e){
     e.preventDefault();
@@ -1091,7 +1100,6 @@ jQuery(document).on('click','.tmpcoder-retry-import', function(e){
     tmpcoder_wxr_import(retry_url);
     jQuery(this).parent().css('display','none');    
 });
-
 
 // installPluginViaAjax('revslider');
 // return;

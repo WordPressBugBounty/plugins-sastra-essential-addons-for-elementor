@@ -58,6 +58,8 @@ class TMPCODER_Page_List extends Widget_Base {
 			]
 		);
 
+		tmpcoder_library_buttons( $this, Controls_Manager::RAW_HTML );
+
 		$this->add_control(
 			'taxonomy_list_layout',
 			[

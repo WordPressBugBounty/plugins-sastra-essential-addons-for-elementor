@@ -117,6 +117,7 @@ class TMPCODER_Breadcrumb  extends Widget_Base{
 					'p' => 'p'
 				],
 				'default' => 'h1',
+                'condition' => ['show_title' => 'yes']
 			]
 		);
 
@@ -128,6 +129,7 @@ class TMPCODER_Breadcrumb  extends Widget_Base{
                 'selectors' => [
                     '{{WRAPPER}} .sub-banner-title,{{WRAPPER}} .page-banner .sub-banner-title span' => 'color: {{VALUE}}',
                 ],
+                'condition' => ['show_title' => 'yes']
             ]
         );
 
@@ -140,6 +142,7 @@ class TMPCODER_Breadcrumb  extends Widget_Base{
                     'default' => Global_Typography::TYPOGRAPHY_TEXT,
                 ],
                 'selector' => '{{WRAPPER}} .sub-banner-title,{{WRAPPER}} .sub-banner-title span',
+                'condition' => ['show_title' => 'yes']
             ]
         );
 
@@ -161,6 +164,7 @@ class TMPCODER_Breadcrumb  extends Widget_Base{
                 'selectors' => [
                     '{{WRAPPER}} .sub-banner-title' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
                 ],
+                'condition' => ['show_title' => 'yes']
             ]
         );
 
@@ -173,6 +177,7 @@ class TMPCODER_Breadcrumb  extends Widget_Base{
                 'selectors' => [
                     '{{WRAPPER}} .sub-banner-title' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
                 ],
+                'condition' => ['show_title' => 'yes']
             ]
         );
 
@@ -181,10 +186,22 @@ class TMPCODER_Breadcrumb  extends Widget_Base{
         $this->start_controls_section(
             'link_section',
             [
-                'label' => esc_html__( 'Link', 'sastra-essential-addons-for-elementor' ),
+                'label' => esc_html__( 'Link (Breadcrumb)', 'sastra-essential-addons-for-elementor' ),
                 'tab' => \Elementor\Controls_Manager::TAB_STYLE,
             ]
         );
+
+        $this->add_control(
+            'show_link',
+            [
+                'label' => esc_html__( 'Show Breadcrumb', 'sastra-essential-addons-for-elementor'  ),
+                'type' => \Elementor\Controls_Manager::SWITCHER,
+                'label_on' => esc_html__( 'Show', 'sastra-essential-addons-for-elementor'  ),
+                'label_off' => esc_html__( 'Hide', 'sastra-essential-addons-for-elementor'  ),
+                'return_value' => 'yes',
+                'default' => 'yes',
+            ]
+        );        
 
         $this->add_control(
             'link_color',
@@ -200,6 +217,7 @@ class TMPCODER_Breadcrumb  extends Widget_Base{
                     '{{WRAPPER}} .woocommerce-breadcrumb' => 'color: {{VALUE}}',
 
                 ],
+                'condition' => ['show_link' => 'yes']
             ]
         );
 
@@ -212,6 +230,7 @@ class TMPCODER_Breadcrumb  extends Widget_Base{
                     '{{WRAPPER}} .page-banner label a:hover' => 'color: {{VALUE}}',
                     '{{WRAPPER}} .woocommerce-breadcrumb span a:hover' => 'color: {{VALUE}}!important',
                 ],
+                'condition' => ['show_link' => 'yes']
             ]
         );
 
@@ -225,6 +244,7 @@ class TMPCODER_Breadcrumb  extends Widget_Base{
                     '{{WRAPPER}} .page-banner span' => 'color: {{VALUE}}',
                     '{{WRAPPER}} .woocommerce-breadcrumb span' => 'color: {{VALUE}}',
                 ],
+                'condition' => ['show_link' => 'yes']
             ]
         );
 
@@ -237,6 +257,7 @@ class TMPCODER_Breadcrumb  extends Widget_Base{
                     'default' => Global_Typography::TYPOGRAPHY_TEXT,
                 ],
                 'selector' => '{{WRAPPER}} .page-banner label a,{{WRAPPER}} .page-banner label, {{WRAPPER}} .page-banner .woocommerce-breadcrumb span, {{WRAPPER}}.page-banner .current-item-name, {{WRAPPER}} .woocommerce-breadcrumb, {{WRAPPER}} .page-banner .custom-delimiter',
+                'condition' => ['show_link' => 'yes']
             ]
         );
 
@@ -255,6 +276,7 @@ class TMPCODER_Breadcrumb  extends Widget_Base{
                 'selectors' => [
                     '{{WRAPPER}} .page-banner label , {{WRAPPER}} .woocommerce-breadcrumb span' => 'padding-right: {{SIZE}}{{UNIT}} !important; padding-left:{{SIZE}}{{UNIT}}!important;',
                 ],
+                'condition' => ['show_link' => 'yes']
             ]
         );
 
@@ -382,14 +404,16 @@ class TMPCODER_Breadcrumb  extends Widget_Base{
                         }
                     }
 
-                    tmpcoder_breadcrumb(); 
+                    if (isset($settings['show_link']) && $settings['show_link'] == 'yes') {
+                        tmpcoder_breadcrumb(); 
+                    }
 
                     ?>
-
                 </div>
             </div>
         </div>
 
         <?php
+
     }    
 }

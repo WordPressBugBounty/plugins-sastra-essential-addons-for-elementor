@@ -48,10 +48,7 @@ class TMPCODER_Particles {
 			'tmpcoder_section_particles',
 			[
 				'tab'   => Controls_Manager::TAB_STYLE,
-				'label' =>  sprintf(
-                    /* translators: %s is the plugin name.  */
-                    esc_html__('Particles - %s', 'sastra-essential-addons-for-elementor'), esc_html( defined( 'TMPCODER_PLUGIN_NAME' ) ? TMPCODER_PLUGIN_NAME : '' ) 
-                ),
+				'label' => esc_html('Particles - Spexo Addons'),
 			]
 		);
 

@@ -354,7 +354,7 @@ class TMPCODER_Offcanvas extends Widget_Base {
 
 		$this->add_control_offcanvas_button_icon();
 
-		// GOGA - hide if no text
+		// TMPCODER INFO -  hide if no text
 		$this->add_responsive_control(
 			'offcanvas_button_icon_distance',
 			[

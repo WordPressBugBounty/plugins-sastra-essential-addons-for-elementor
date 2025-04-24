@@ -186,7 +186,7 @@
                 },
                 success: function (response) {
 
-                    // GOGA - remove later
+                    // TMPCODER INFO -  remove later
                     if (response.notices && response.notices.length > 0) {
 
                         // The selected variation is low in stock, display a warning message

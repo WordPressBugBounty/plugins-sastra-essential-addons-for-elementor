@@ -3,10 +3,10 @@
  * Plugin Name: Spexo Addons for Elementor
  * Plugin URI: http://spexoaddons.com/
  * Description: Spexo Addons for Elementor is all in one solution for complete starter sites, single page templates, blocks & images. This plugin offers additional features needed by our theme.
- * Version: 1.0.20
+ * Version: 1.0.21
  * Author: TemplatesCoder
  * Author URI:  https://templatescoder.com/
- * Elementor tested up to: 3.27.6
+ * Elementor tested up to: 3.28.3
  * Text Domain: sastra-essential-addons-for-elementor
  * License: GPLv3
  *
@@ -22,11 +22,11 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 $theme = (is_object(wp_get_theme()->parent())) ? wp_get_theme()->parent() : wp_get_theme();
 
 if ( ! defined( 'TMPCODER_PLUGIN_VER' ) ) {
-    define( 'TMPCODER_PLUGIN_VER', '1.0.20');
+    define( 'TMPCODER_PLUGIN_VER', '1.0.21' );
 }
 
 if ( ! defined( 'TMPCODER_PLUGIN_NAME' ) ) {
-	define( 'TMPCODER_PLUGIN_NAME', __( 'Spexo Addons for Elementor', 'sastra-essential-addons-for-elementor' ) );
+	define( 'TMPCODER_PLUGIN_NAME', 'Spexo Addons for Elementor' );
 }
 
 if ( ! defined( 'TMPCODER_PURCHASE_PRO_URL' ) ) {
@@ -144,8 +144,12 @@ if ( ! function_exists( 'tmpcoder_setup' ) ) :
 			include_once TMPCODER_PLUGIN_DIR . 'inc/classes/admin-bar.php';
 		}
 
-		if ( get_option('tmpcoder_spexo_addons_version') != TMPCODER_PLUGIN_VER ){
+		$tmpcoder_current_version = get_option('tmpcoder_spexo_addons_version');
 
+		if ( $tmpcoder_current_version != TMPCODER_PLUGIN_VER ){
+
+			/* Update all post templaes type as Elementor Full With */	
+			
 			tmpcoder_update_post_templates_type();
 
 		    update_option('tmpcoder_spexo_addons_version', TMPCODER_PLUGIN_VER);
@@ -158,6 +162,14 @@ if ( ! function_exists( 'tmpcoder_setup' ) ) :
                 }
             }
 
+            // Default widgets settings
+            
+			add_action('init', function() use ($tmpcoder_current_version) {
+				if (version_compare($tmpcoder_current_version, '1.0.21', '<')) {
+					tmpcoder_widgets_migrate_settings();
+				}
+			});
+            
             tmpcoder_regenerate_elementor_css_on_update();
 		}
 	}
@@ -177,7 +189,6 @@ add_action('init',function(){
 		require_once (TMPCODER_PLUGIN_DIR . 'inc/modules/ajax-search.php');
 
 	    /* Elementor Custom Controls */
-
 	    require_once (TMPCODER_PLUGIN_DIR . 'inc/elementor-controls.php');
 	    require_once (TMPCODER_PLUGIN_DIR . 'inc/header-footer-helper/tmpcoder-plugin-advanced-hooks-loader.php');
 	}
@@ -195,6 +206,13 @@ function tmpcoder_addons_load_plugin() {
 	load_plugin_textdomain( 'sastra-essential-addons-for-elementor' );
 
 	add_action( 'admin_notices', function(){
+
+		$tmpcoder_notice_excluded_pages = array( 'tmpcoder-setup-wizard', 'tmpcoder-theme-wizard', 'tmpcoder-plugin-wizard' );
+
+		if ( isset($_GET['page']) && in_array($_GET['page'], $tmpcoder_notice_excluded_pages, true) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			return;
+		}
+
 		$notice_banner_api = TMPCODER_Remote_Api::get_latest_updates_notice_banner();
 		$tmpcoder_notice_banner = isset($notice_banner_api['data']) ? $notice_banner_api['data']:'';
 		if ( !empty($tmpcoder_notice_banner) ){
@@ -212,7 +230,9 @@ function tmpcoder_addons_load_plugin() {
 
     add_action( 'admin_notices', function(){
 
-    	if ( isset($_GET['page']) && $_GET['page'] == 'tmpcoder-setup-wizard' ){ // phpcs:ignore WordPress.Security.NonceVerification.Recommended	
+		$tmpcoder_notice_excluded_pages = array( 'tmpcoder-setup-wizard', 'tmpcoder-theme-wizard', 'tmpcoder-plugin-wizard' );
+
+		if ( isset($_GET['page']) && in_array($_GET['page'], $tmpcoder_notice_excluded_pages, true) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			return;
 		}
 		
@@ -320,6 +340,12 @@ function tmpcoder_addons_fail_load() {
 
 	$screen = get_current_screen();
 	if ( isset( $screen->parent_file ) && 'plugins.php' === $screen->parent_file && 'update' === $screen->id || $screen->parent_file == 'tmpcoder-setup-wizard') {
+		return;
+	}
+
+	$tmpcoder_notice_excluded_pages = array( 'tmpcoder-setup-wizard', 'tmpcoder-theme-wizard', 'tmpcoder-plugin-wizard' );
+
+	if ( isset($_GET['page']) && in_array($_GET['page'], $tmpcoder_notice_excluded_pages, true) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		return;
 	}
 	

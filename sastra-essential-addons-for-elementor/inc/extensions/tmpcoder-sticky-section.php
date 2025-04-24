@@ -53,10 +53,7 @@ class TMPCODER_Sticky_Section {
 				'tmpcoder_section_sticky_section',
 				[
 					'tab'   => Controls_Manager::TAB_ADVANCED,
-					'label' =>  sprintf(
-                        /* translators: %s is the plugin name. */
-                        esc_html__('Sticky Section - %s', 'sastra-essential-addons-for-elementor'), esc_html( defined( 'TMPCODER_PLUGIN_NAME' ) ? TMPCODER_PLUGIN_NAME : '' ) 
-                    ),
+                    'label' => esc_html('Sticky Section - Spexo Addons'),
 				]
 			);
 

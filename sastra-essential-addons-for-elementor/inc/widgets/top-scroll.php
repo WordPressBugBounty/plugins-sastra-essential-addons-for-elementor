@@ -56,6 +56,8 @@ class TMPCODER_Back_To_Top extends Widget_Base {
 		]
 	);
 
+	tmpcoder_library_buttons( $this, Controls_Manager::RAW_HTML );
+
 	$this->add_control(
 		'button_position',
 		[

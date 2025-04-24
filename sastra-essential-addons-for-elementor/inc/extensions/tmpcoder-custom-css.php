@@ -25,9 +25,7 @@ class TMPCODER_Custom_CSS {
 		$widget->start_controls_section(
 			'tmpcoder_section_custom_css',
 			[
-				'label' =>  sprintf(
-                    /* Translators: %s is the plugin name.  */
-                    esc_html__('Custom CSS - %s', 'sastra-essential-addons-for-elementor'), esc_html( defined( 'TMPCODER_PLUGIN_NAME' ) ? TMPCODER_PLUGIN_NAME : '' ) ),
+				'label' => esc_html('Custom CSS - Spexo Addons'),
 				'tab' => Controls_Manager::TAB_ADVANCED
 			]
 		);

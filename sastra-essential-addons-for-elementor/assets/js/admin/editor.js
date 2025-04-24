@@ -293,7 +293,7 @@
 			} );
 		});
 
-		// GOGA - Render Layout Select (Remove If extra)
+		// TMPCODER INFO -  Render Layout Select (Remove If extra)
 		panel.$el.find('#elementor-controls').on( 'DOMNodeInserted ', '.elementor-control-layout_select', function(){
 			disableListLocation( $(this).find( 'select' ).val() );
 
@@ -419,17 +419,50 @@
 	for (const [key, value] of Object.entries(tmpcoder_config.tmpcoder_registered_modules)) {
 		elementor.hooks.addAction( 'panel/open_editor/widget/tmpcoder-'+ value[0], function( panel, model, view ) {
 			openPedefinedStyles( panel.$el, view.$el, value[0], value[1], value[2] );
+			console.log('tmpcoder-'+ value[0]);
 		} );
 	}
 
 	function openPedefinedStyles( panel, preview, widget, url, filter ) {
-		panel.on( 'click', '.elementor-control-tmpcoder_library_buttons .elementor-control-raw-html div a:first-child', function() {
-			var theme = $(this).data('theme');
-			$(this).attr('href', url +'?ref=tmpcoder-plugin-panel-'+ widget +'-utmtr'+ theme.slice(0,3) +'nkbs'+ theme.slice(3,theme.length) +'-preview'+ filter);
+		panel.on( 'click', '.elementor-control-tmpcoder_library_buttons .elementor-control-raw-html div a:first-child', function(e) {
+			// e.preventDefault();
+			var prefix = 'elementor-'; 
+			if (widget == 'offcanvas'){
+				widget =  'off-canvas';
+			}if (widget == 'lottie-animations'){
+				widget =  'lottie-animation';
+			}
+			if (widget == 'nav-menu'){
+				widget =  'navigation-menu';
+			}
+			if (widget == 'image-hotspots'){
+				widget =  'hotspot';
+			}
+			if (widget == 'forms'){
+				widget =  'contact-form-7-styler-elementor';
+				prefix = '';
+			}if (widget == 'woo-grid'){
+				widget =  'woo-commerce-product-grid-slider-carousel-widget';
+			}
+
+			var previewUrl = 'https://spexoaddons.com/widgets/'+prefix+widget+'?ref=tmpcoder-plugin-panel-'+widget;
+
+			$(this).attr('href', previewUrl);
 		});
 
-		panel.on( 'click', '.elementor-control-tmpcoder_library_buttons .elementor-control-raw-html div a:last-child', function() {
-			preview.closest('body').find('#tmpcoder-library-btn').attr('data-filter', widget);
+		panel.on( 'click', '.elementor-control-tmpcoder_library_buttons .elementor-control-raw-html div a:last-child', function(e) {
+			// e.preventDefault();
+
+			if (widget == 'magazine-grid'){
+				widget = 'magazine-grid-slider';
+			}if (widget == 'post-grid'){
+				widget = 'post-grid-slider-carousel';
+			}if (widget == 'search'){
+				widget = 'search-form';
+			}
+
+			// preview.closest('body').find('#tmpcoder-library-btn').attr('data-filter', widget);
+			preview.closest('body').find('#tmpcoder-library-btn').attr('data-filter', url);
 			preview.closest('body').find('#tmpcoder-library-btn').trigger('click');
 		});
 	}
@@ -481,7 +514,7 @@ jQuery(document).ready(function($) {
     const iframe = $('iframe');
     if (iframe.length) {
         iframe.on('load', function() {
-            const header = iframe.contents().find('.tmpcoder-before-header-content-editor [data-elementor-type="wp-post"]');
+            const header = iframe.contents().find('.tmpcoder-before-header-content-editor [data-elementor-type="wp-post"]').first();
             const footer = iframe.contents().find('.tmpcoder-before-footer-content-editor [data-elementor-type="wp-post"]');
             
             if (header.length) {

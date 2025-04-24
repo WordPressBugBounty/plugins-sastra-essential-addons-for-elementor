@@ -992,8 +992,6 @@ if (!function_exists('tmpcoder_library_buttons')) {
 	
 	function tmpcoder_library_buttons( $module, $controls_manager, $tutorial_url = '' ) {
 
-		return false;
-
 		if ( empty(get_option('tmpcoder_wl_plugin_links')) ) {
 			if ( '' !== $tutorial_url ) {
 				$tutorial_link = '<a href="'. esc_url($tutorial_url) .'" target="_blank">'. esc_html__( 'Watch Video Tutorial ', 'sastra-essential-addons-for-elementor' ) .'<span class="dashicons dashicons-video-alt3"></span></a>';
@@ -1363,6 +1361,7 @@ if (!function_exists('tmpcoder_get_theme_builder_modules')) {
 			// 'widget name' => ['widget-slug', 'live demo link', 'docs link', 'tag','file name','widget class','widget icon'],
 
 			'Post Title' => ['post-title', '', 'post-title', 'new','post-title.php','TMPCODER_Post_Title','post-title.svg'],
+			'Archive Title' => ['archive-title', '', 'archive-title', 'new','archive-title.php','TMPCODER_Archive_Title','post-title.svg'],
 			'Post Thumbnail' => ['post-thumbnail', '', 'post-thumbnail', 'new','post-thumbnail.php','TMPCODER_Post_Thumbnail','post-thumbnail.svg'],
 			'Post Content' => ['post-content', '', 'post-content', 'new','post-content.php','TMPCODER_Post_Content','post-content.svg'],
 			'Post Meta' => ['post-info', '', 'post-meta', 'new','post-info.php','TMPCODER_Post_Info','post-meta.svg'],
@@ -1424,7 +1423,7 @@ if (!function_exists('tmpcoder_get_registered_modules')) {
 			'Reading Progress Bar' => ['reading-progress-bar', 'reading-progress-bar-widget', 'reading-progress-bar', 'new','reading-progress-bar.php','TMPCODER_Reading_Progress_Bar','reading-progress-bar.svg'],
 			'Breadcrumb' => ['Breadcrumb', '', 'breadcrumb', 'new','breadcrumb.php','TMPCODER_Breadcrumb','breadcrumb.svg'],
 			'Archive List' => ['archive-list', '', 'archive-list', 'new','archive-list.php','TMPCODER_Archive_List','page-list.svg'],
-            'Recent Post List' => ['recent-post-list', '', 'recent-post-list', 'new','recent-post-list.php','TMPCODER_Post_List','page-list.svg'],
+            'Recent Post List' => ['recent-post-list', 'recent-post-list', 'recent-post-list', 'new','recent-post-list.php','TMPCODER_Post_List','page-list.svg'],
 		];
 	}
 }
@@ -1942,6 +1941,14 @@ function tmpcoder_set_global_fonts(){
         $old_meta_value = $post_id['meta_value'];
         $new_meta_value = preg_replace( '/,"\b\w+_font_family":"+[a-zA-Z+\s]+"/' , '', $old_meta_value);
 
+        if (is_serialized($new_meta_value)) {
+			$new_meta_value = unserialize($new_meta_value);
+		}else{
+            if ( is_string( $new_meta_value ) ) {
+                $new_meta_value = json_decode( $new_meta_value, true );
+            }
+        }
+
         $set_global_font = update_post_meta( $post_id['post_id'], '_elementor_data', $new_meta_value);
     }
 
@@ -2014,6 +2021,22 @@ function tmpcoder_add_global_option($data){
                 </div>
             	<?php } ?>
             </div>  
+			
+			<div class="tmpcoder-set-global-fonts-confirm-popup-wrap tmpcoder-admin-popup-wrap">
+				<div class="tmpcoder-set-global-fonts-popup tmpcoder-admin-popup">
+					<div id="tmpcoder-set-global-fonts-confirm-popup">
+						<header>
+							<h2><?php esc_html_e( 'Ready to Apply Global Fonts to All Widgets?', 'sastra-essential-addons-for-elementor' ); ?></h2>
+							<p><?php echo wp_kses_post(__( 'Use the <strong>Global Options</strong> to set and apply <strong>selected fonts globally</strong> across all widgets.', 'sastra-essential-addons-for-elementor' )); ?></p>
+						</header>
+						<div class="popup-action">
+							<a class="button button-primary tmpcoder-set-global-fonts-confirm-button"><?php esc_html_e('Set Global Fonts', 'sastra-essential-addons-for-elementor') ?></a>
+							<a class="button button-secondary popup-close"><?php esc_html_e('Cancel', 'sastra-essential-addons-for-elementor') ?></a>
+						</div>
+					</div>
+				</div>
+			</div>
+			
             <div class="tmpcoder-condition-popup-wrap tmpcoder-admin-popup-wrap">
                 <div class="tmpcoder-condition-popup tmpcoder-admin-popup">
                     <header>
@@ -2308,5 +2331,680 @@ if (!function_exists('tmpcoder_update_post_templates_type')) {
 	            }
 	        }
 	    }
+	}
+}
+
+/**
+** HTML Tags Whitelist
+*/
+
+function tmpcoder_validate_html_tags_wl( $setting, $default, $tags_whitelist ) {
+	$value = $setting;
+
+	if ( ! in_array($value, $tags_whitelist) ) {
+		$value = $default;
+	}
+
+	return $value;
+}
+
+// tmpcoder_elementor_global_colors('primary_color'),
+function tmpcoder_elementor_global_colors($option_key=""){
+    if ( $option_key == 'primary_color' ){
+        return "#5729D9";
+    }
+}
+
+// Recursive function to update tmpcoder-post-grid widget
+function update_widget_settings(&$elements) {
+    foreach ($elements as &$element) {
+        if (isset($element['widgetType']) && $element['widgetType'] === 'tmpcoder-post-grid') {
+            // Define default values
+            $defaults = [
+                // 'layout_select' => 'fitRows',
+                "media_overlay_on_off"=> "yes",
+                'title_color_hr' => '#54595F',
+                'excerpt_margin' => [
+                    'unit' => 'px',
+                    'top' => '0',
+                    'right' => '0',
+                    'bottom' => '0',
+                    'left' => '0',
+                    'isLinked' => true
+                ],
+                'read_more_border_color' => '#E8E8E8',
+                'read_more_bg_color_hr_background' => '',
+                'read_more_bg_color_hr_color' => '#434900',
+                'read_more_color_hr' => '#045CB4',
+                'read_more_border_color_hr' => '#E8E8E8',
+                'read_more_border_type' => 'none',
+                'read_more_padding' => [
+                    'unit' => 'px',
+                    'top' => '0',
+                    'right' => '0',
+                    'bottom' => '0',
+                    'left' => '0',
+                    'isLinked' => true
+                ],
+                'read_more_margin' => [
+                    'unit' => 'px',
+                    'top' => '0',
+                    'right' => '0',
+                    'bottom' => '0',
+                    'left' => '0',
+                    'isLinked' => true
+                ],
+                'read_more_radius' => [
+                    'unit' => 'px',
+                    'top' => '0',
+                    'right' => '0',
+                    'bottom' => '0',
+                    'left' => '0',
+                    'isLinked' => true
+                ],
+                'pagination_border_color'=> '#E8E8E8',
+                'pagination_color_hr'=> '#FFFFFF',
+                'pagination_bg_color_hr'=> '#045CB4',
+                'pagination_border_color_hr'=> '#E8E8E8',
+                'pagination_border_type'=> 'none',
+            ];
+            
+            // Apply defaults if keys are missing
+            foreach ($defaults as $key => $value) {
+                if (!isset($element['settings'][$key]) && ( !isset($element['settings']['__globals__']) || (isset($element['settings']['__globals__']) && !isset($element['settings']['__globals__'][$key]) ) ) ) {
+                    $element['settings'][$key] = $value;
+                }
+            }
+            
+            // Check if global settings exist
+            /* if (isset($element['settings']['__globals__']['read_more_color']) && !empty($element['settings']['__globals__']['read_more_color'])) {
+                $element['settings']['read_more_color'] = $element['settings']['__globals__']['read_more_color'];
+            } */
+            
+            // Update grid_elements to add style options
+            if (isset($element['settings']['grid_elements']) && is_array($element['settings']['grid_elements'])) {
+                foreach ($element['settings']['grid_elements'] as &$grid_element) {
+                    if (!isset($grid_element['element_select']) && !isset($grid_element['element_title_tag'])) {
+                        $grid_element['element_title_tag'] = 'h2';
+                    }
+                }
+            }
+        }
+        else if (isset($element['widgetType']) && $element['widgetType'] === 'tmpcoder-woo-grid') {
+            // Define default values
+            $defaults = [
+                'media_overlay_on_off' => 'yes',
+                'title_color_hr' => '#54595f',
+                'title_margin' =>  [
+                    'unit' => 'px',
+                    'top' => '0',
+                    'right' => '0',
+                    'bottom' => '0',
+                    'left' => '0',
+                    'isLinked' => true
+                ],
+                'categories_color' => '#9C9C9C',
+                'categories_margin' =>  [
+                    'unit' => 'px',
+                    'top' => '0',
+                    'right' => '0',
+                    'bottom' => '0',
+                    'left' => '0',
+                    'isLinked' => true
+                ],
+                'product_rating_unmarked_color' => '#D2CDCD',
+                'product_price_color' => '#9C9C9C',
+                'product_price_old_color' => '#9C9C9C',
+                'product_price_margin' =>  [
+                    'unit' => 'px',
+                    'top' => '0',
+                    'right' => '0',
+                    'bottom' => '0',
+                    'left' => '0',
+                    'isLinked' => true,
+                ],
+                'add_to_cart_color' => '#333333',
+                'add_to_cart_border_color' => '#E8E8E8',
+                'add_to_cart_color_hr' => '#5729d9',
+                'add_to_cart_bg_color_hr' => '',
+                'add_to_cart_transition_duration' => 0.1,
+                'add_to_cart_border_width' =>  [
+                    'unit' => 'px',
+                    'top' => '2',
+                    'right' => '2',
+                    'bottom' => '2',
+                    'left' => '2',
+                    'isLinked' => true,
+                ],
+                'add_to_cart_padding' =>  [
+                    'unit' => 'px',
+                    'top' => '5',
+                    'right' => '15',
+                    'bottom' => '5',
+                    'left' => '15',
+                    'isLinked' => true,
+                ],
+                'add_to_cart_margin' =>  [
+                    'unit' => 'px',
+                    'top' => '15',
+                    'right' => '0',
+                    'bottom' => '0',
+                    'left' => '0',
+                    'isLinked' => true,
+                ],
+                'add_to_cart_radius' =>  [
+                    'unit' => 'px',
+                    'top' => '2',
+                    'right' => '2',
+                    'bottom' => '2',
+                    'left' => '2',
+                    'isLinked' => true,
+                ],
+                'pagination_border_color'=> '#E8E8E8',
+                'pagination_color_hr'=> '#FFFFFF',
+                'pagination_bg_color_hr'=> '#5729d9',
+                'pagination_border_color_hr'=> '#E8E8E8',
+                'pagination_border_type'=> 'none',
+            ];
+            
+            // Apply defaults if keys are missing
+            foreach ($defaults as $key => $value) {
+                if (!isset($element['settings'][$key]) && ( !isset($element['settings']['__globals__']) || (isset($element['settings']['__globals__']) && !isset($element['settings']['__globals__'][$key]) ) ) ) {
+                    $element['settings'][$key] = $value;
+                }
+            }
+            
+            // Check if global settings exist
+            /* if (isset($element['settings']['__globals__']['read_more_color']) && !empty($element['settings']['__globals__']['read_more_color'])) {
+                $element['settings']['read_more_color'] = $element['settings']['__globals__']['read_more_color'];
+            } */
+            
+            // Update grid_elements to add style options
+            if (isset($element['settings']['grid_elements']) && is_array($element['settings']['grid_elements'])) {
+                foreach ($element['settings']['grid_elements'] as &$grid_element) {
+                    if (!isset($grid_element['element_select']) && !isset($grid_element['element_title_tag'])) {
+                        $grid_element['element_title_tag'] = 'h2';
+                    }
+                }
+            }
+        }
+        else if (isset($element['widgetType']) && $element['widgetType'] === 'tmpcoder-media-grid') {
+            // Define default values
+            $defaults = [
+                'query_posts_per_page' => 10,
+                'image_effects' => 'none',
+                'image_effects_duration' => 0.3,
+                'overlay_color_background' => 'classic',
+                'overlay_color_color' => 'rgba(0, 0, 0, 0.25)',
+                'pagination_border_color'=> '#E8E8E8',
+                'pagination_color_hr'=> '#FFFFFF',
+                'pagination_bg_color_hr'=> '#5729d9',
+                'pagination_border_color_hr'=> '#E8E8E8',
+                'pagination_border_type'=> 'none',
+            ];
+            
+            // Apply defaults if keys are missing
+            foreach ($defaults as $key => $value) {
+                if (!isset($element['settings'][$key]) && ( !isset($element['settings']['__globals__']) || (isset($element['settings']['__globals__']) && !isset($element['settings']['__globals__'][$key]) ) ) ) {
+                    $element['settings'][$key] = $value;
+                }
+            }
+            
+            // Update grid_elements to add style options
+            if (isset($element['settings']['grid_elements']) && is_array($element['settings']['grid_elements'])) {
+                foreach ($element['settings']['grid_elements'] as &$grid_element) {
+                    if (!isset($grid_element['element_select']) && !isset($grid_element['element_title_tag'])) {
+                        $grid_element['element_title_tag'] = 'h2';
+                    }
+                    // Unset element_extra_icon if it exists
+                    if ( !isset($grid_element['element_extra_icon']) && isset($grid_element['element_select']) && $grid_element['element_select'] == 'lightbox' ) {
+                        $grid_element['element_extra_icon'] = [
+                            'value' => 'fas fa-search',
+                            'library' => 'fa-solid'
+                        ];
+                    }
+                }
+            }
+        }
+        else if (isset($element['widgetType']) && $element['widgetType'] === 'tmpcoder-magazine-grid') {
+            // Define default values
+            $defaults = [
+                'query_exclude_no_images' => '',
+                'layout_gutter_hr' => [
+                    "unit"=> "px",
+                    "size"=> 4,
+                    "sizes"=> []
+                ],
+                'layout_gutter_vr' => [
+                    "unit"=> "px",
+                    "size"=> 4,
+                    "sizes"=> []
+                ],
+                'overlay_animation' => 'fade-out',
+                'overlay_color_color_stop' => [
+                    "unit"=> "%",
+                    "size"=> 46,
+                    "sizes"=> []
+                ],
+                'overlay_color_color_b' => 'rgba(91, 229, 206, 0.8705882352941177)',
+                'title_margin' =>  [
+                    'unit' => 'px',
+                    'top' => '0',
+                    'right' => '0',
+                    'bottom' => '5',
+                    'left' => '20',
+                    'isLinked' => true
+                ],
+                'date_margin' =>  [
+                    'unit' => 'px',
+                    'top' => '0',
+                    'right' => '0',
+                    'bottom' => '20',
+                    'left' => '10',
+                    'isLinked' => true
+                ],
+                'tax1_margin' =>  [
+                    'unit' => 'px',
+                    'top' => '0',
+                    'right' => '0',
+                    'bottom' => '0',
+                    'left' => '22',
+                    'isLinked' => true
+                ],
+                'tax2_color_hr' => '#ffffff',
+                'tax2_bg_color_hr' => '#045CB4',
+                'tax2_padding' =>  [
+                    'unit' => 'px',
+                    'top' => '2',
+                    'right' => '5',
+                    'bottom' => '2',
+                    'left' => '5',
+                    'isLinked' => true
+                ],
+                'tax2_margin' =>  [
+                    'unit' => 'px',
+                    'top' => '0',
+                    'right' => '0',
+                    'bottom' => '0',
+                    'left' => '20',
+                    'isLinked' => true
+                ],
+            ];
+            
+            // Apply defaults if keys are missing
+            foreach ($defaults as $key => $value) {
+                if (!isset($element['settings'][$key]) && ( !isset($element['settings']['__globals__']) || (isset($element['settings']['__globals__']) && !isset($element['settings']['__globals__'][$key]) ) ) ) {
+                    $element['settings'][$key] = $value;
+                }
+            }
+            
+            // Update grid_elements to add style options
+            if (isset($element['settings']['grid_elements']) && is_array($element['settings']['grid_elements'])) {
+                foreach ($element['settings']['grid_elements'] as &$grid_element) {
+                    if (!isset($grid_element['element_select']) && !isset($grid_element['element_title_tag'])) {
+                        $grid_element['element_title_tag'] = 'h2';
+                    }
+                    // Unset element_extra_icon if it exists
+                    if ( !isset($grid_element['element_tax_style']) && isset($grid_element['element_select']) && $grid_element['element_select'] == 'category' ) {
+                        $grid_element['element_tax_style'] = 'tmpcoder-grid-tax-style-1';
+                    }
+                }
+            }
+        }
+        else if (isset($element['widgetType']) && $element['widgetType'] === 'tmpcoder-button') {
+            // Define default values
+            $defaults = [
+                'button_hover_anim_duration' => 0.4,
+                'icon_distance' => [
+                    "unit"=> "px",
+                    "size"=> 12,
+                    "sizes"=> []
+                ],
+                'button_hover_bg_color_color' => '#045CB4',
+                'button_hover_color' => '#ffffff',
+                'button_hover_border_color' => '#E8E8E8',
+                'button_padding' =>  [
+                    'unit' => 'px',
+                    'top' => '10',
+                    'right' => '10',
+                    'bottom' => '10',
+                    'left' => '10',
+                    'isLinked' => true
+                ],
+                'button_border_type' => 'none',
+                'button_border_width' => [
+                    'unit' => 'px',
+                    'top' => '2',
+                    'right' => '2',
+                    'bottom' => '2',
+                    'left' => '2',
+                    'isLinked' => true
+                ],
+                'button_border_radius' => [
+                    'unit' => 'px',
+                    'top' => '2',
+                    'right' => '2',
+                    'bottom' => '2',
+                    'left' => '2',
+                    'isLinked' => true
+                ],
+            ];
+            
+            // Apply defaults if keys are missing
+            foreach ($defaults as $key => $value) {
+                if (!isset($element['settings'][$key]) && ( !isset($element['settings']['__globals__']) || (isset($element['settings']['__globals__']) && !isset($element['settings']['__globals__'][$key]) ) ) ) {
+                    $element['settings'][$key] = $value;
+                }
+            }
+            
+        }else if (isset($element['widgetType']) && $element['widgetType'] === 'tmpcoder-dual-button') {
+            // Define default values
+            $defaults = [
+                'button_a_width' => [
+                    "unit"=> "px",
+                    "size"=> 140,
+                    "sizes"=> []
+                ],
+                'button_b_width' => [
+                    "unit"=> "px",
+                    "size"=> 140,
+                    "sizes"=> []
+                ],
+                'button_a_bg_color_background' => '',
+                'button_a_bg_color_color' => '#5729d9',
+                'button_a_color' => '#ffffff',
+                'button_a_hover_bg_color_background' => '',
+                'button_a_hover_bg_color_color' => '#045CB4',
+                'button_a_border_width'=> [
+                    'unit'=> 'px',
+                    'top'=> '0',
+                    'right'=> '1',
+                    'bottom'=> '0',
+                    'left'=> '0',
+                    'isLinked'=> true
+                ],
+                'button_a_border_color'=> '#E8E8E8',
+                'button_a_border_radius' => [
+                    'unit'=> 'px',
+                    'top'=> "3",
+                    'right'=> "0",
+                    'bottom'=> "0",
+                    'left'=> "3",
+                    'isLinked'=> true,
+                ],
+                'button_b_bg_color_background' => '',
+                'button_b_bg_color_color' => '#5729d9',
+                'button_b_color' => '#ffffff',
+                'button_b_hover_bg_color_background' => '',
+                'button_b_hover_bg_color_color' => '#045CB4',
+                'button_b_border_border' => '',
+                'button_b_border_width' => [
+                    'unit'=> 'px',
+                    'top'=> "",
+                    'right'=> "",
+                    'bottom'=> "",
+                    'left'=> "",
+                    'isLinked'=> true,
+                ],
+                'button_b_border_color' => '#E8E8E8',
+                'button_b_border_radius' => [
+                    'unit'=> 'px',
+                    'top' => 0,
+					'right' => 3,
+					'bottom' => 3,
+					'left' => 0,
+                    'isLinked'=> true,
+                ],
+                
+            ];
+            
+            // Apply defaults if keys are missing
+            foreach ($defaults as $key => $value) {
+                if (!isset($element['settings'][$key]) && ( !isset($element['settings']['__globals__']) || (isset($element['settings']['__globals__']) && !isset($element['settings']['__globals__'][$key]) ) ) ) {
+                    $element['settings'][$key] = $value;
+                }
+            }
+            
+        }
+        // Recursively update nested elements
+        if (isset($element['elements']) && is_array($element['elements'])) {
+            update_widget_settings($element['elements']);
+        }
+    }
+}
+
+function tmpcoder_widgets_migrate_settings(){
+
+    global $wpdb;
+    
+    // Get all Elementor post meta for all posts
+    $results = $wpdb->get_results("SELECT post_id, meta_value FROM {$wpdb->postmeta} WHERE meta_key = '_elementor_data' ");
+
+    foreach ($results as $row) {
+        $post_id = $row->post_id;
+        //$data = json_decode($row->meta_value, true);
+        $data = $row->meta_value;
+        if (is_serialized($data)) {
+			$data = unserialize($data);
+		}else{
+            if ( is_string( $data ) ) {
+                $data = json_decode( $data, true );
+            }
+        }
+        $updated = false;
+        
+        if (is_array($data)) {
+            update_widget_settings($data);
+            $updated = true;
+        }
+        
+        if ($updated) {
+        	$json = wp_json_encode($data);
+            update_post_meta($post_id, '_elementor_data', wp_slash($json));
+        }
+    }
+  	if ( class_exists( '\Elementor\Plugin' ) ) {
+        \Elementor\Plugin::instance()->files_manager->clear_cache();
+    }
+
+}
+
+/**
+ * Generate url for the backend section tabs
+ *
+ * @param string $id Id of the backend tab.
+ *
+ * @return string
+ */
+if ( ! function_exists( 'tmpcoder_generate_admin_url' ) ) {
+
+	function tmpcoder_generate_admin_url( $id = '' ) {
+		$url = 'admin.php?page=%1$s-welcome&tab=%2$s';
+	
+		return admin_url( sprintf( $url, TMPCODER_THEME, $id ) );
+	}
+}
+
+/**
+ * Render the admin welcome screen header.
+ *
+ * @param string $header_logo Header logo URL.
+ * @param string $active_tab  Currently active tab.
+ */
+if ( ! function_exists( 'tmpcoder_render_admin_header' ) ) {
+
+	function tmpcoder_render_admin_header( $header_logo, $active_tab = 'getting-started' ) {
+
+		// Get admin header tabs
+		if ( function_exists( 'tmpcoder_get_admin_header_tabs' ) ) {
+			$arr = tmpcoder_get_admin_header_tabs();
+		}
+	
+		?>
+		<div class="wrap tmpcoder-theme-wrap">
+			<hr class="wp-header-end">
+			
+			<div class="about-wrap epsilon-wrap tmpcoder-theme-welcome">
+	
+				<div class="top-header-main common-box-shadow">
+					<div class="main-header-part">
+						<div class="row">
+							<div class="col-xl-6">
+								<div class="main-header-logo">
+									<img src="<?php echo esc_url( $header_logo ); ?>" alt="Spexo-logo">
+								</div>
+							</div>
+							<div class="col-xl-6">
+								<div class="btn-group-main">
+									<ul>
+										<?php if ( !defined( 'TMPCODER_ADDONS_PRO_VERSION' ) ) { ?>
+											<li class="tmpcoder-upgrade-now-button">
+												<a target="_blank" href="<?php echo esc_url( TMPCODER_PURCHASE_PRO_URL . '?ref=tmpcoder-welcome-screen' ); ?>" class="btn-link">
+													<img src="<?php echo esc_url( TMPCODER_ADDONS_ASSETS_URL . 'images/pro-icon.svg' ); ?>">
+													<span><?php echo esc_html__( 'Get Pro Now', 'sastra-essential-addons-for-elementor' ); ?></span>
+												</a>
+											</li>
+										<?php } ?>
+										<li>
+											<a target="_blank" href="<?php echo esc_url( TMPCODER_SUPPORT_URL ); ?>" class="btn-link">
+												<img src="<?php echo esc_url( TMPCODER_ADDONS_ASSETS_URL . 'images/support.svg' ); ?>">
+												<span><?php echo esc_html__( 'Support', 'sastra-essential-addons-for-elementor' ); ?></span>
+											</a>
+										</li>
+										<li>
+											<a target="_blank" href="<?php echo esc_url( TMPCODER_DOCUMENTATION_URL ); ?>" class="btn-link">
+												<img src="<?php echo esc_url( TMPCODER_ADDONS_ASSETS_URL . 'images/documentation.svg' ); ?>">
+												<span><?php echo esc_html__( 'Documentation', 'sastra-essential-addons-for-elementor' ); ?></span>
+											</a>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+	
+					<h2 class="nav-tab-wrapper wp-clearfix">
+						<?php foreach ( $arr as $id => $section ) {
+							if ( $id === 'system-info' ) {
+								continue;
+							}
+							$class = ( $id === $active_tab ) ? 'nav-tab-active' : '';
+							?>
+							<a class="nav-tab <?php echo esc_attr( $class ); ?>" href="<?php echo esc_url( $section['url'] ); ?>">
+								<img src="<?php echo esc_url( TMPCODER_ADDONS_ASSETS_URL . 'images/' . $section['icon'] ); ?>">
+								<span><?php echo wp_kses_post( $section['label'] ); ?></span>
+							</a>
+						<?php } ?>
+					</h2>
+				</div>
+	
+				<?php
+				if ( isset( $arr[ $active_tab ]['path'] ) && ! empty( $arr[ $active_tab ]['path'] ) ) {
+					require_once $arr[ $active_tab ]['path'];
+				}
+				?>
+	
+			</div>
+		</div>
+		<?php
+	}
+}
+
+/**
+ * Get admin header tabs for welcome screen.
+ *
+ * @return array
+ */
+if ( ! function_exists( 'tmpcoder_get_admin_header_tabs' ) ) {
+
+	function tmpcoder_get_admin_header_tabs() {
+
+		$tabs = array(
+			'getting-started' => array(
+				'id'    => 'getting-started',
+				'icon'  => 'getting-start-tab.svg',
+				'url'   => tmpcoder_generate_admin_url( 'getting-started' ),
+				'label' => __( 'Getting Started', 'sastra-essential-addons-for-elementor' ),
+				'path'  => TMPCODER_PLUGIN_DIR . '/inc/admin/lib/welcome-screen/sections/getting-started.php',
+			),
+			'prebuilt-blocks' => array(
+				'id'    => 'prebuilt-blocks',
+				'icon'  => 'prebuilt-block-tab.svg',
+				'url'   => tmpcoder_generate_admin_url( 'prebuilt-blocks' ),
+				'label' => __( 'Prebuilt Blocks', 'sastra-essential-addons-for-elementor' ),
+				'path'  => TMPCODER_PLUGIN_DIR . '/inc/admin/lib/welcome-screen/sections/prebuilt-blocks.php',
+			),
+			'prebuilt-demos' => array(
+				'id'    => 'prebuilt-demos',
+				'icon'  => 'prebuilt-websites-tab.svg',
+				'url'   => admin_url( 'admin.php?page=tmpcoder-import-demo' ),
+				'label' => __( 'Prebuilt Websites', 'sastra-essential-addons-for-elementor' ),
+			),
+			'site-builder' => array(
+				'id'    => 'site-builder',
+				'icon'  => 'site-builder-tab.svg',
+				'url'   => tmpcoder_generate_admin_url( 'site-builder' ),
+				'label' => __( 'Site Builder', 'sastra-essential-addons-for-elementor' ),
+				'path'  => TMPCODER_PLUGIN_DIR . '/inc/admin/lib/welcome-screen/sections/site-builder.php',
+			),
+			'widgets' => array(
+				'id'    => 'widgets',
+				'icon'  => 'widget-setting-tab.svg',
+				'url'   => tmpcoder_generate_admin_url( 'widgets' ),
+				'label' => __( 'Widget Settings', 'sastra-essential-addons-for-elementor' ),
+				'path'  => TMPCODER_PLUGIN_DIR . '/inc/admin/lib/welcome-screen/sections/widgets.php',
+			),
+			'global-options' => array(
+				'id'    => 'global-options',
+				'icon'  => 'global-setting-tab.svg',
+				'url'   => admin_url( 'admin.php?page=' . TMPCODER_THEME . '_addons_global_settings' ),
+				'label' => __( 'Global Options', 'sastra-essential-addons-for-elementor' ),
+			),
+			'settings' => array(
+				'id'    => 'settings',
+				'icon'  => 'intigrations-tab.svg',
+				'url'   => tmpcoder_generate_admin_url( 'settings' ),
+				'label' => __( 'Integrations', 'sastra-essential-addons-for-elementor' ),
+				'path'  => TMPCODER_PLUGIN_DIR . '/inc/admin/lib/welcome-screen/sections/settings.php',
+			),
+			'system-info' => array(
+				'id'    => 'system-info',
+				'icon'  => 'system-info-tab.svg',
+				'url'   => tmpcoder_generate_admin_url( 'system-info' ),
+				'label' => __( 'System Info', 'sastra-essential-addons-for-elementor' ),
+				'path'  => TMPCODER_PLUGIN_DIR . '/inc/admin/lib/welcome-screen/sections/system-status.php',
+			),
+			'tools' => array(
+				'id'    => 'tools',
+				'icon'  => 'tools-icon-3.svg',
+				'url'   => tmpcoder_generate_admin_url( 'tools' ),
+				'label' => __( 'Tools', 'sastra-essential-addons-for-elementor' ),
+				'path'  => TMPCODER_PLUGIN_DIR . '/inc/admin/lib/welcome-screen/sections/tools.php',
+			),
+		);
+	
+		// Remove tabs if not SastraWP or Spexo
+		if (defined('TMPCODER_CURRENT_THEME_NAME') && !in_array(TMPCODER_CURRENT_THEME_NAME, array('SastraWP', 'Spexo'))) { 
+			unset($tabs['global-options']);
+			unset($tabs['prebuilt-demos']);
+		}
+	
+		// Remove Global Options if Redux not active
+		if (!class_exists('ReduxFramework')) {
+			unset($tabs['global-options']);
+		}
+	
+		// Add License tab if Pro plugin is active
+		if (defined('TMPCODER_PRO_PLUGIN_NAME')) {
+			$tabs['license'] = array(
+				'id'    => 'license',
+				'icon'  => 'license.svg',
+				'url'   => admin_url('admin.php?page=tmpcoder-license-activation'),
+				'label' => __( 'License', 'sastra-essential-addons-for-elementor' ),
+			);
+			$tabs = apply_filters('tmpcoder_add_options_tabs', $tabs);
+		}
+	
+		return $tabs;
 	}
 }

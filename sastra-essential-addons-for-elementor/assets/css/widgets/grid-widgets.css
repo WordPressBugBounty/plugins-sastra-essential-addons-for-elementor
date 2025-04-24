@@ -2742,3 +2742,12 @@ article .tmpcoder-grid-media-wrap .tmpcoder-grid-media-link {
 }
 
 /* Magazine grid css - end */
+
+/* Css for even (same height image) in media grid widget - start */
+
+.tmpcoder-media-grid-even-layout-yes .tmpcoder-grid-image-wrap img {
+	height: 100%;
+	object-fit: cover;
+}
+
+/* Css for even (same height image) in media grid widget - end */

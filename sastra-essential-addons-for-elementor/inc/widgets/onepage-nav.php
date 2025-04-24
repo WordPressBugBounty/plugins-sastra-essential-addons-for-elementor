@@ -475,7 +475,7 @@ class TMPCODER_OnepageNav extends Widget_Base {
 				'default' => '#ffffff',
 				'selectors' => [
 					'{{WRAPPER}} .tmpcoder-onepage-nav-item i' => 'color: {{VALUE}};',
-					'{{WRAPPER}} .tmpcoder-onepage-nav-item svg' => 'fill: {{VALUE}};', // GOGA - shesacvlelia mgoni
+					'{{WRAPPER}} .tmpcoder-onepage-nav-item svg' => 'fill: {{VALUE}};', // TMPCODER INFO -  shesacvlelia mgoni
 				],
 			]
 		);

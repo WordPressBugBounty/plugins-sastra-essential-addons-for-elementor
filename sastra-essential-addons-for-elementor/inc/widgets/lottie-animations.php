@@ -473,7 +473,9 @@ class TMPCODER_Lottie_Animations extends Widget_Base {
 		// Get Settings
 		$settings = $this->get_settings_for_display();
 		$lottie_json = 'url' === $settings['source'] ? esc_url($settings['json_url']) : $settings['json_file']['url'];
-		$lottie_link = 'url' === $settings['link_selection'] ? $settings['link']['url'] : get_permalink(get_page_by_path($settings['existing_link']));
+		$lottie_link = 'url' === $settings['link_selection'] ? $settings['link']['url'] : get_permalink(get_page_by_path(isset($settings['existing_link']) ? $settings['existing_link'] : '#' ));
+
+		
 
 		if ( '' === $lottie_json ) {
 			$lottie_json = TMPCODER_PLUGIN_URI .'assets/default.json';

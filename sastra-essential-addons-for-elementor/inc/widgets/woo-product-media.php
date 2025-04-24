@@ -191,10 +191,6 @@ class TMPCODER_Product_Media extends Widget_Base {
 				'selectors' => [
 					'{{WRAPPER}} .tmpcoder-gallery-slider-arrow' => 'display:{{VALUE}} !important;',
 				],
-				'condition' => [
-                    'gallery_slider_thumbs' => 'yes',
-					'gallery_slider_thumbs_type' => ['slider'],
-                ],
                 'frontend_available' => true,
 			]
 		);

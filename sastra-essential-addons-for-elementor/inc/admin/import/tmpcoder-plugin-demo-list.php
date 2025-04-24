@@ -24,6 +24,10 @@ function tmpcoder_import_demo_list(){
     } else {
         $import_header_logo = TMPCODER_ADDONS_ASSETS_URL.'images/spexo-logo-web.svg';
     }
+    
+    if ( function_exists( 'tmpcoder_render_admin_header' ) ) {
+        tmpcoder_render_admin_header( $import_header_logo, 'prebuilt-demos' );
+    }
 
     ?>
 
@@ -31,8 +35,6 @@ function tmpcoder_import_demo_list(){
         <header>
             <div class="tmpcoder-import-demo-left">
                 <div class="tmpcoder-import-demo-logo">
-                    <div class="import-header-logo"><img src="<?php echo esc_url( $import_header_logo ); ?>">
-                    </div>
                     <h1><?php esc_html_e('Prebuilt Websites', 'sastra-essential-addons-for-elementor'); ?></h1>
                 </div>
             </div>
@@ -302,7 +304,7 @@ function tmpcoder_import_demo_list(){
                     </div>
                 </div>
 
-                <div id="import-demo-uninstall-popup" class="white-popup mfp-hide">
+                <div id="import-demo-uninstall-popup" class="white-popup-1 mfp-hide">
                     <h2 class="popup-heading"><span class="dashicons dashicons-editor-help"></span> <?php esc_html_e('Warning', 'sastra-essential-addons-for-elementor') ?> </h2>
                     <div class="popup-content">
                         <h3 class="content-title"><?php esc_html_e('Are you sure want to uninstall this demo?', 'sastra-essential-addons-for-elementor') ?></h3>
@@ -311,6 +313,17 @@ function tmpcoder_import_demo_list(){
                         <a class="button button-secondary popup-close"><?php esc_html_e('Cancel', 'sastra-essential-addons-for-elementor') ?></a>
                     </div>
                 </div>
+
+                <div id="import-demo-confirm-popup" class="mfp-hide">
+                    <h2 class="popup-heading"> <?php esc_html_e('Ready to Import the Prebuilt Website?', 'sastra-essential-addons-for-elementor') ?> </h2>
+                    <div class="popup-content">
+                        <p class="popup-message"><?php echo wp_kses_post(__('It is <strong>recommended</strong> to deactivate other plugins except <strong>Elementor</strong> and <strong>Spexo Addons</strong>.', 'sastra-essential-addons-for-elementor')); ?></p>
+                        <p class="popup-message"><?php esc_html_e('This will import Elementor templates, media, menus, and required plugins.', 'sastra-essential-addons-for-elementor') ?></p>
+                        <a class="button button-primary import-demo-confirm-button"><?php esc_html_e('Start Import', 'sastra-essential-addons-for-elementor') ?></a>
+                        <a class="button button-secondary popup-close"><?php esc_html_e('Cancel', 'sastra-essential-addons-for-elementor') ?></a>
+                    </div>
+                </div>
+
             </div>
         </div>
 

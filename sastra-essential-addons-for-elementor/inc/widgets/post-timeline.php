@@ -1378,6 +1378,124 @@ class TMPCODER_Posts_Timeline extends Widget_Base {
 		// Get Available Taxonomies
 		$post_taxonomies = tmpcoder_get_custom_types_of( 'tax', false );
 
+
+		$this->start_controls_section(
+			'pagination_section',
+			[
+				'label' => __( 'Pagination', 'sastra-essential-addons-for-elementor' ),
+				'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
+				'condition' => [
+					'timeline_content' => 'dynamic',
+					'timeline_layout' => ['centered', 'one-sided', 'one-sided-left'],
+					'show_pagination' => 'yes'
+				]
+			]
+		);
+	
+		$this->add_control(
+			'pagination_type',
+			[
+				'label' => __( 'Pagination Type', 'sastra-essential-addons-for-elementor' ),
+				'type' => \Elementor\Controls_Manager::SELECT,
+				'render_type' => 'template',
+				'default' => 'load-more',
+				'options'=>[
+					'load-more' => __('Load More', 'sastra-essential-addons-for-elementor'),
+					'infinite-scroll' => __('Infinite Scroll', 'sastra-essential-addons-for-elementor')
+				],
+				'condition' => [
+					'show_pagination' => 'yes',
+				]
+			]
+		);
+
+		$this->add_control(
+			'pagination_load_more_text',
+			[
+				'label' => esc_html__( 'Load More Text', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::TEXT,
+				'dynamic' => [
+					'active' => true,
+				],
+				'default' => esc_html__('Load More', 'sastra-essential-addons-for-elementor'),
+				'condition' => [
+					'pagination_type' => 'load-more',
+				]
+			]
+		);
+
+		$this->add_control(
+			'pagination_finish_text',
+			[
+				'label' => esc_html__( 'Finish Text', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::TEXT,
+				'dynamic' => [
+					'active' => true,
+				],
+				'default' => 'No more items.',
+				'condition' => [
+					'pagination_type' => [ 'load-more', 'infinite-scroll' ],
+				]
+			]
+		);
+
+		$this->add_control(
+			'pagination_animation',
+			[
+				'label' => esc_html__( 'Select Animation', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::SELECT,
+				'default' => 'loader-1',
+				'options' => [
+					'none' => esc_html__( 'None', 'sastra-essential-addons-for-elementor' ),
+					'loader-1' => esc_html__( 'Loader 1', 'sastra-essential-addons-for-elementor' ),
+					'loader-2' => esc_html__( 'Loader 2', 'sastra-essential-addons-for-elementor' ),
+					'loader-3' => esc_html__( 'Loader 3', 'sastra-essential-addons-for-elementor' ),
+					'loader-4' => esc_html__( 'Loader 4', 'sastra-essential-addons-for-elementor' ),
+					'loader-5' => esc_html__( 'Loader 5', 'sastra-essential-addons-for-elementor' ),
+					'loader-6' => esc_html__( 'Loader 6', 'sastra-essential-addons-for-elementor' ),
+				],
+				'condition' => [
+					'pagination_type' => [ 'load-more', 'infinite-scroll' ],
+					'timeline_layout' => ['centered', 'one-sided', 'one-sided-left']
+				],
+			]
+		);
+		
+		$this->add_responsive_control(
+			'pagination_alignment',
+			[
+				'label' => esc_html__( 'Align', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::CHOOSE,
+				'label_block' => false,
+				'default' => 'center',
+				'options' => [
+					'left' => [
+						'title' => esc_html__( 'Left', 'sastra-essential-addons-for-elementor' ),
+						'icon' => 'eicon-text-align-left',
+					],
+					'center' => [
+						'title' => esc_html__( 'Center', 'sastra-essential-addons-for-elementor' ),
+						'icon' => 'eicon-text-align-center',
+					],
+					'right' => [
+						'title' => esc_html__( 'Right', 'sastra-essential-addons-for-elementor' ),
+						'icon' => 'eicon-text-align-right',
+					],
+				],
+                'selectors' => [
+					'{{WRAPPER}} .tmpcoder-grid-pagination' => 'text-align: {{VALUE}};',
+					'{{WRAPPER}} .tmpcoder-pagination-loading' => 'text-align: {{VALUE}};',
+				],
+				'condition' => [
+					'timeline_content' => ['dynamic'],
+					'timeline_layout' => ['centered', 'one-sided']
+				]
+			]
+		);
+		
+		$this->end_controls_section();
+		
+
         $this->start_controls_section(
             'query_section',
             [
@@ -2155,121 +2273,11 @@ class TMPCODER_Posts_Timeline extends Widget_Base {
 
 		$this->end_controls_section();
 
-		$this->start_controls_section(
-			'pagination_section',
-			[
-				'label' => __( 'Pagination', 'sastra-essential-addons-for-elementor' ),
-				'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
-				'condition' => [
-					'timeline_content' => 'dynamic',
-					'timeline_layout' => ['centered', 'one-sided', 'one-sided-left'],
-					'show_pagination' => 'yes'
-				]
-			]
-		);
-	
-		$this->add_control(
-			'pagination_type',
-			[
-				'label' => __( 'Pagination Type', 'sastra-essential-addons-for-elementor' ),
-				'type' => \Elementor\Controls_Manager::SELECT,
-				'render_type' => 'template',
-				'default' => 'load-more',
-				'options'=>[
-					'load-more' => __('Load More', 'sastra-essential-addons-for-elementor'),
-					'infinite-scroll' => __('Infinite Scroll', 'sastra-essential-addons-for-elementor')
-				],
-				'condition' => [
-					'show_pagination' => 'yes',
-				]
-			]
-		);
 
-		$this->add_control(
-			'pagination_load_more_text',
-			[
-				'label' => esc_html__( 'Load More Text', 'sastra-essential-addons-for-elementor' ),
-				'type' => Controls_Manager::TEXT,
-				'dynamic' => [
-					'active' => true,
-				],
-				'default' => esc_html__('Load More', 'sastra-essential-addons-for-elementor'),
-				'condition' => [
-					'pagination_type' => 'load-more',
-				]
-			]
-		);
 
-		$this->add_control(
-			'pagination_finish_text',
-			[
-				'label' => esc_html__( 'Finish Text', 'sastra-essential-addons-for-elementor' ),
-				'type' => Controls_Manager::TEXT,
-				'dynamic' => [
-					'active' => true,
-				],
-				'default' => 'No more items.',
-				'condition' => [
-					'pagination_type' => [ 'load-more', 'infinite-scroll' ],
-				]
-			]
-		);
-
-		$this->add_control(
-			'pagination_animation',
-			[
-				'label' => esc_html__( 'Select Animation', 'sastra-essential-addons-for-elementor' ),
-				'type' => Controls_Manager::SELECT,
-				'default' => 'loader-1',
-				'options' => [
-					'none' => esc_html__( 'None', 'sastra-essential-addons-for-elementor' ),
-					'loader-1' => esc_html__( 'Loader 1', 'sastra-essential-addons-for-elementor' ),
-					'loader-2' => esc_html__( 'Loader 2', 'sastra-essential-addons-for-elementor' ),
-					'loader-3' => esc_html__( 'Loader 3', 'sastra-essential-addons-for-elementor' ),
-					'loader-4' => esc_html__( 'Loader 4', 'sastra-essential-addons-for-elementor' ),
-					'loader-5' => esc_html__( 'Loader 5', 'sastra-essential-addons-for-elementor' ),
-					'loader-6' => esc_html__( 'Loader 6', 'sastra-essential-addons-for-elementor' ),
-				],
-				'condition' => [
-					'pagination_type' => [ 'load-more', 'infinite-scroll' ],
-					'timeline_layout' => ['centered', 'one-sided', 'one-sided-left']
-				],
-			]
-		);
 		
-		$this->add_responsive_control(
-			'pagination_alignment',
-			[
-				'label' => esc_html__( 'Align', 'sastra-essential-addons-for-elementor' ),
-				'type' => Controls_Manager::CHOOSE,
-				'label_block' => false,
-				'default' => 'center',
-				'options' => [
-					'left' => [
-						'title' => esc_html__( 'Left', 'sastra-essential-addons-for-elementor' ),
-						'icon' => 'eicon-text-align-left',
-					],
-					'center' => [
-						'title' => esc_html__( 'Center', 'sastra-essential-addons-for-elementor' ),
-						'icon' => 'eicon-text-align-center',
-					],
-					'right' => [
-						'title' => esc_html__( 'Right', 'sastra-essential-addons-for-elementor' ),
-						'icon' => 'eicon-text-align-right',
-					],
-				],
-                'selectors' => [
-					'{{WRAPPER}} .tmpcoder-grid-pagination' => 'text-align: {{VALUE}};',
-					'{{WRAPPER}} .tmpcoder-pagination-loading' => 'text-align: {{VALUE}};',
-				],
-				'condition' => [
-					'timeline_content' => ['dynamic'],
-					'timeline_layout' => ['centered', 'one-sided']
-				]
-			]
-		);
-		
-		$this->end_controls_section();
+
+
 
 		// Section: Request New Feature
 		tmpcoder_add_section_request_feature( $this, Controls_Manager::RAW_HTML, '' );
@@ -4990,11 +4998,17 @@ class TMPCODER_Posts_Timeline extends Widget_Base {
 		$tax_query = [];
 
 		if ( 'related' === $settings[ 'timeline_post_types' ] ) {
+
+			$current_post_id = get_the_ID();
+			if (tmpcoder_is_elementor_editor_mode()) {
+				$current_post_id = tmpcoder_get_last_post_id();
+			}
+
 			$tax_query = [
 				[
 					'taxonomy' => $settings['query_tax_selection'],
 					'field' => 'term_id',
-					'terms' => wp_get_object_terms( get_the_ID(), $settings['query_tax_selection'], array( 'fields' => 'ids' ) ),
+					'terms' => wp_get_object_terms($current_post_id, $settings['query_tax_selection'], array( 'fields' => 'ids' ) ),
 				]
 			];
 		} else {
@@ -5490,6 +5504,7 @@ class TMPCODER_Posts_Timeline extends Widget_Base {
 			echo'</div>';  
 			echo '</div>';
 
+
 			// Pagination
 			if(!($settings['posts_per_page'] >= wp_count_posts($settings['timeline_post_types'])->publish)) {
 				$this->render_pagination($settings, $paged);
@@ -5713,8 +5728,8 @@ class TMPCODER_Posts_Timeline extends Widget_Base {
 			}
 		}
 
-		$post_types['current'] = esc_html__( 'Current Query', 'sastra-essential-addons-for-elementor' );
-		$post_types['pro-rl'] = esc_html__( 'Related Query (Pro)', 'sastra-essential-addons-for-elementor' );
+		// $post_types['current'] = esc_html__( 'Current Query', 'sastra-essential-addons-for-elementor' );
+		// $post_types['pro-rl'] = esc_html__( 'Related Query (Pro)', 'sastra-essential-addons-for-elementor' );
 		
 		return $post_types;
 	}

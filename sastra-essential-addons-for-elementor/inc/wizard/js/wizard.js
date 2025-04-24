@@ -21,6 +21,27 @@
 
     activeThemeTab();
 
+    if ($('.theme-wizard-nav').hasClass('theme-active')){
+        console.log('theme-wizard-nav');
+        $('[data-tab="install-plugins"]').removeClass('disabled');
+        $('[data-tab="install-plugins"]').trigger('click');
+    }
+
+    if ( tmpcoderMessages.theme_active == true ){
+
+        addRightSign('theme-installation');
+        $('[data-tab="theme-installation"]').addClass('disabled');
+
+        setTimeout(() => {
+            console.log('install-plugins');
+            console.log($('[data-tab="install-plugins"]').length);
+            console.log($('[data-tab="theme-installation"]').length);
+
+            $('[data-tab="install-plugins"]').removeClass('disabled');
+            $('[data-tab="install-plugins"]').trigger('click');
+        }, 100);
+    }
+
     if ( tmpcoderMessages.wizard_step == '' ){
         $('[data-tab="theme-installation"]').addClass('nav-tab-active');
         $('#theme-installation').addClass('active');
@@ -183,6 +204,12 @@
 
                 if( resp.success ){
                     
+                    if (resp.data.skip_this){
+                        $('.license-registration').removeClass('disabled');
+                        $('.license-registration').trigger('click');
+                        addRightSign('install-plugins');
+                    }  
+
                     if ( resp?.data?.plugins ){
                         
                         var plg_html = '<div class="feature-section recommended-plugins three-col demo-import-boxed">';
@@ -391,12 +418,37 @@
     //     return false;
     // });
 
-    jQuery(document).on('click', '.tmpcoder-skip-wizard-link', function(){
-        console.log("skip-theme-wizard");
-        if ( confirm("Head’s up. This action is non reversible and you won’t be able to see this wizard again. Proceed?") ){
-            var tmpcoder_admin_url = $(this).data('url');
-            window.location.href = tmpcoder_admin_url;
-        }
+    /* ----------- skip wizard with confirmation - [START] -----------*/
+
+    jQuery(document).on('click', '.tmpcoder-skip-wizard-link', function(e) {
+        e.preventDefault();    
+        tmpcoder_skip_wizard_confirm_popup_open();
     });
+    
+    jQuery(document).on('click', '.tmpcoder-skip-wizard-confirm-button', function(e) {
+        e.preventDefault();
+        jQuery('.tmpcoder-skip-wizard-popup-wrap').fadeOut();
+        
+        var skipLink = jQuery('.tmpcoder-skip-wizard-link').first();
+        tmpcoder_skip_setup_wizard(skipLink);
+    });
+
+    jQuery(document).on('click','.popup-close', function(){
+        jQuery('#tmpcoder-skip-wizard-confirm-popup').fadeOut();
+        // jQuery('.tmpcoder-admin-popup').fadeOut();
+        jQuery('.tmpcoder-skip-wizard-popup-wrap').fadeOut();
+    })
+    
+    function tmpcoder_skip_wizard_confirm_popup_open() {
+        jQuery('#tmpcoder-skip-wizard-confirm-popup').fadeIn();
+        jQuery('.tmpcoder-skip-wizard-popup-wrap').fadeIn();
+        jQuery('.tmpcoder-admin-popup').fadeIn();
+    }
+    
+    function tmpcoder_skip_setup_wizard(element) {
+        var tmpcoder_admin_url = element.data('url');
+        window.location.href = tmpcoder_admin_url;
+    }
+    /* ----------- skip wizard with confirmation - [END] -----------*/
 
 })(jQuery)

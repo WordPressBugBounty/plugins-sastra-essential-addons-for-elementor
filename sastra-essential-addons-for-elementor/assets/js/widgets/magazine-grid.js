@@ -35,7 +35,7 @@
 
                     itemUrl = TmpcodersanitizeURL(itemUrl);
 
-                    // GOGA - leave if necessary
+                    // TMPCODER INFO -  leave if necessary
                     if (iGrid.find('.tmpcoder-grid-item-title a').length) {
                         if ('_blank' === iGrid.find('.tmpcoder-grid-item-title a').attr('target')) {
                             window.open(itemUrl, '_blank').focus();

@@ -25,12 +25,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 do_action( 'tmpcoder_wp_body_open' );
 
-// Sastra themes compatibility
+// Spexo themes compatibility
 echo '<div id="page-wrap">';
 
 // Render Tmpcoder Header
 
 TMPCODER_Header_Footer_Elements::get_header_content();
 
-// Sastra themes compatibility
+// Spexo themes compatibility
 echo '<div class="page-content">';

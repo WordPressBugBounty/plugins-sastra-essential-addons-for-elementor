@@ -411,8 +411,6 @@ if ( ! class_exists( 'TMPCODER_Importer' ) ) {
 
 			$ext = pathinfo( $filename, PATHINFO_EXTENSION );
 			
-			TMPCODER_Importer_Log::add('im here - '.$ext);
-
 		  	if ( 'svg' === $ext ) {
 
 				TMPCODER_Importer_Log::add($ext);
@@ -866,6 +864,17 @@ if ( ! class_exists( 'TMPCODER_Importer' ) ) {
 
 		    $elementor_pages = new WP_Query ( $args );
 
+		    /* Replace parallax image url - start */
+
+			$upload_dir = wp_upload_dir();
+			$current_upload_url = trailingslashit($upload_dir['baseurl']); // dynamic media folder
+			$current_upload_url_escaped = str_replace('/', '\\/', $current_upload_url);
+
+			$old_prefix_raw = $demo_site_raw_url . 'wp-content/uploads/';
+			$old_prefix_raw = str_replace('/', '\\/', $old_prefix_raw);
+
+			/* Replace parallax image url - end */
+
 		    // Check that we have query results.
 		    if ( $elementor_pages->have_posts() ) {
 		     
@@ -883,6 +892,7 @@ if ( ! class_exists( 'TMPCODER_Importer' ) ) {
 
 		            if ( ! empty( $data ) ) {
 		                $data = preg_replace('/\\\{1}\/sites\\\{1}\/\d+/', '', $data);
+		                $data = str_replace( $old_prefix_raw, $current_upload_url_escaped, $data );
 		                $data = str_replace( $demo_site_url, $site_url, $data );
 		                $data = str_replace( $demo_import_url, $site_url, $data );
 		                $data = str_replace( $demo_import_url2, $site_url_raw, $data );
@@ -997,7 +1007,7 @@ if ( ! class_exists( 'TMPCODER_Importer' ) ) {
 		public function clear_related_cache() {
 
 			// Flush permalinks.
-			flush_rewrite_rules(); 
+			flush_rewrite_rules();
 		}
 	}
 

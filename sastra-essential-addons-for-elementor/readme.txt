@@ -1,9 +1,9 @@
 === Spexo Addons for Elementor - Free Elementor Addons, Widgets and Templates ===
 Contributors: templatescoderthemes, skywebtech
-Tags: elementor, elementor addons, elementor templates, elementor widgets, woocommerce elementor, widgets for elementor
-Stable tag: 1.0.20
+Tags: elementor, elementor addons, elementor templates, elementor widgets, woocommerce elementor
+Stable tag: 1.0.21
 Requires at least: 5.0
-Tested up to: 6.7
+Tested up to: 6.8
 Requires PHP: 7.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -169,7 +169,7 @@ This plugin works best with [Spexo Theme](https://spexoaddons.com/spexo-elemento
 Spexo is a popular Elementor addon with ready templates, advanced widgets, template kits & WooCommerce builders. Spexo Addons for Elementor offers powerful tools. These tools simplify building websites. Users can create without coding. The features help both developers and non-developers. Spexo Addons plugin works like ElementsKit, Essential Addons for Elementor, Royal Elementor Addons, Premium Addons, Happy Addons, PowerPack Addons, Unlimited Elements, Qi Addons, Ultimate Addons for Elementor, Spectra etc. Spexo plugin works with multiple WordPress themes like Spexo Theme, Astra, Storefront, OceanWP, Royal Theme and GeneratePress.
 
 ### Elementor mega menu widget
-[Elementor Mega Menu Widget](https://spexoaddons.com/widgets/elementor-mega-menu-widget/) builds customizable menus. It supports off-canvas mobile menus. The Nav Menu Widget customizes WordPress menus. It changes the look and feel without code. You can create mobile menus and dropdowns. It also supports hamburger menus and hover effects. This widget makes your menu responsive and unique. It’s a powerful tool for modern websites.
+[Elementor Mega Menu Widget](https://spexoaddons.com/widgets/elementor-mega-menu-builder/) builds customizable menus. It supports off-canvas mobile menus. The Nav Menu Widget customizes WordPress menus. It changes the look and feel without code. You can create mobile menus and dropdowns. It also supports hamburger menus and hover effects. This widget makes your menu responsive and unique. It’s a powerful tool for modern websites.
 ### Elementor Pricing Table widget
 [Elementor Pricing Table Widget](https://spexoaddons.com/widgets/elementor-pricing-table/) displays pricing plans. It allows toggling between options. Tooltips explain features in more detail. The Pricing Table Widget helps create comparison tables. It displays costs and features with unique styles. You can use it for regular pricing or plans with toggle options. There is button to switch between monthly, yearly, or lifetime plans. This widget makes comparing pricing simple and effective for users.
 ### Elementor Countdown Timer widget
@@ -304,6 +304,20 @@ Feel free to contact us anytime via [Support](https://templatescoder.com/support
 
 == Changelog ==
 
+= v1.0.21 - 2025-04-24 =
+
+* Added : 'Even' option in "Image Grid/Slider Widget" for display all images in same height
+* Added : New Widget Archive Title/Description for site archive layout. This widget allows users to easily display customized titles and descriptions for archive pages, enhancing the content presentation on category, tag, and custom archive pages.
+* Improved : Post Grid, Woo Product Grid, Image Grid, Magazine Grid - Design and UI / UX
+* Improved : Tweaked WP admin dashboard design, including header and confirmation box, for a smoother experience.
+* Improved : Magazine Grid/Slider and Post Grid/Slider/Carousel widgets now display correct previews when editing Archive Layouts and Single Post Layouts in Elementor.
+* Improved : Woo Grid/Slider/Carousel widget now renders proper previews of Related Products when editing Single Product Layouts in Elementor.
+* Improved : Remove extra notices from plugin wizard setup page.
+* Fixed : Notice textdomain was triggered too early. 
+* Fixed : Site bulider layout editor not open without fluse rewrite rules.
+* Fixed : Parallax background images not visible in frontend after import in multisite wordpress setup.
+
+
 = v1.0.20 - 2025-03-22 =
 
 * Enhanced : Dynamic CSS generation method to resolve issues caused by permission restrictions, ensuring more reliable stylesheet rendering.
@@ -311,12 +325,13 @@ Feel free to contact us anytime via [Support](https://templatescoder.com/support
 * Fixed : Issue where images wouldn't load after clicking "Load More Posts" when W3 Total Cache's lazy load feature was enabled.
 
 
-= v1.0.19 - 2025-03-04 =
+= v1.0.19 - 2025-03-06 =
 
 * Added : 'Edit' button on hover for Header, Footer, Single Post, and Single Product layouts in Elementor editor, redirecting the user to the corresponding layout's editing screen upon clicking the button.
 * Improved : Elementor editor preview to properly reflect the single post layout as it appears on the frontend when editing a specific blog post.
 * Tweak : Removed single post layout display when editing the header & Footer builder in Elementor editor to avoid layout conflicts.
 * Fixed : Removed unwanted content when printing single blog content on the frontend.
+
 
 = v1.0.18 - 2025-02-25 =
 
@@ -343,41 +358,5 @@ Feel free to contact us anytime via [Support](https://templatescoder.com/support
 * Improved: Image render process for optimize images using lazy load feture
 * Fixed: Output Escap related errors in "Post Timeline" widget  
 * Fixed: Errors in Woocommerce widget that occurs after deactive woocommerce plugin   
-
-= v1.0.15 - 2025-01-23 =
-
-* Security Enhancements: Improved wizard process security.
-* Improved: Enhanced compatibility with Elementor v3.27.0.
-
-= v1.0.14 - 2025-01-02 =
-
-* Added: Smart Watch Elementor Template - [Smart Watch](https://spexoaddons.com/preview/smart-watch-elementor-template/)
-* Added: Drone Elementor Template - [Drone](https://spexoaddons.com/preview/drone-elementor-template/)
-* Improved: Enhanced the parallax background zoom effects for smoother transitions and improved visual impact.
-* Fixed: The responsiveness of the product grid to ensure better performance and compatibility across various screen sizes.
-
-= v1.0.13 - 2024-12-31 =
-
-* Added: Craft Beer Elementor Template - [Craft Beer](https://spexoaddons.com/preview/craft-beer-elementor-template/)
-* Added: Furniture Shop Elementor Template - [Furniture Shop](https://spexoaddons.com/preview/furniture-shop-elementor-template/)
-* Added: Freelancer Portfolio Elementor Template - [Freelancer Portfolio](https://spexoaddons.com/preview/freelancer-portfolio-elementor-template/)
-* Added: Restaurant Elementor Template - [Restaurant](https://spexoaddons.com/preview/restaurant-elementor-template/)
-* Added: Tech Company Elementor Template - [Tech Company](https://spexoaddons.com/preview/tech-company-elementor-template/)
-* Added: Spa Elementor Template - [Spa](https://spexoaddons.com/preview/spa-elementor-template/)
-* Added: Photography Portfolio Elementor Template - [Photography Portfolio](https://spexoaddons.com/preview/photography-portfolio-elementor-template/)
-* Added: Mega Store Elementor Template - [Mega Store](https://spexoaddons.com/preview/mega-store-elementor-template/)
-* Added: Personal Blog Elementor Template - [Personal Blog](https://spexoaddons.com/preview/personal-blog-elementor-template/)
-* Fixed: Gutter did not work for the pagination layout in the Post Grid/Slider/Carousel without Spexo Addons PRO.
-* Fixed: The icon color in the Recent Post List not changing on hover.
-
-= v1.0.12 - 2024-12-30 =
-
-* Added: New Prebuilt demo "Personal Blog"
-* Improved: Optimized the demo import process upload svg file support
-
-= v1.0.11 - 2024-12-18 =
-
-* Fixed: ElementorPro Plugin enqueue_styles function removed.
-* Improved: Enhanced compatibility with Elementor v3.26.0.
 
 [See changelog for all versions.](https://spexoaddons.com/changelog/)

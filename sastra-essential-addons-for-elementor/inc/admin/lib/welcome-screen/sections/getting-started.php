@@ -16,7 +16,7 @@ if ( ! defined( 'WPINC' ) ) {
 */
 
 $theme_option_url = admin_url('admin.php?page=sastra-theme-builder');
-$count          = $this->count_actions();
+// $count          = $this->count_actions();
 
 $installationStepList = array();
 $featuredList = array();

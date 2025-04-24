@@ -954,3 +954,67 @@ body .next-step-action .next-step-btn:focus{
     padding-left: 12px;
     margin-left: 10px;
 }
+
+/*============= skip wizard confirm popup - [START] =============*/
+
+.tmpcoder-skip-wizard-popup-wrap.tmpcoder-admin-popup-wrap {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    background-color: rgba(0, 0, 0, 0.6);
+    width: 100%;
+    height: 100%;
+}
+
+.tmpcoder-skip-wizard-popup.tmpcoder-admin-popup {
+    display: flex;
+    -ms-flex-pack: distribute;
+    justify-content: space-around;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+    width: 80%;
+    max-width: 550px;
+    background-color: #FFF;
+}
+
+.tmpcoder-skip-wizard-popup .button {
+    background: #562ad5;
+    border-color: #562ad5;
+    color: #fff;
+    transition-duration: 0.3s;
+}
+
+.tmpcoder-skip-wizard-popup .button.button-secondary {
+    background: transparent;
+    border-color: #562ad5;
+    color: #562ad5;
+    transition-duration: 0.3s;
+}
+
+.tmpcoder-skip-wizard-popup .button:hover {
+    background: transparent;
+    border-color: #562ad5;
+    color: #562ad5;
+}
+
+.tmpcoder-skip-wizard-popup .button.button-secondary:hover {
+    background: #562ad5;
+    border-color: #562ad5;
+    color: #fff;
+    transition-duration: 0.3s;
+}
+
+/*============= skip wizard confirm popup - [END] =============*/

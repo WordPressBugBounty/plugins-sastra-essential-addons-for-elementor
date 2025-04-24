@@ -60,6 +60,8 @@ class TMPCODER_Post_List extends Widget_Base {
 			]
 		);
 
+		tmpcoder_library_buttons( $this, Controls_Manager::RAW_HTML );
+
 		$this->add_control(
 			'post_type',
 			[

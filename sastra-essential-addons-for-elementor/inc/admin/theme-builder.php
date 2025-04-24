@@ -40,6 +40,8 @@ function tmpcoder_addons_theme_builder_page() {
             <!-- Create Templte Popup -->
             <?php TMPCODER_Templates_Loop::render_create_template_popup(); ?>
 
+            <?php TMPCODER_Templates_Loop::render_delete_template_confirm_popup(); ?>
+
             <!-- Tabs -->
             <div class="site-builder-main common-box-shadow tmpcoder-layout-tabs">
             <div class="nav-tab-wrapper tmpcoder-nav-tab-wrapper">

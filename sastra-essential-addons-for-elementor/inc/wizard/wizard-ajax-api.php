@@ -144,6 +144,7 @@ function tmpcoder_get_required_plugins_func(){
     $tgmpaClass = $GLOBALS['tgmpa'];
     $plugins = array();
     $next_step = __('Next', 'sastra-essential-addons-for-elementor');
+    $activated_plugin = [];
 
     if ( is_object($tgmpaClass) ){
         if ( empty($tgmpaClass->plugins) ){
@@ -186,6 +187,10 @@ function tmpcoder_get_required_plugins_func(){
                 $plugin_slug = $plugin['slug'];
                 $plugin_file_path = $plugin['file_path'];
                 
+                if (is_plugin_active($plugin_file_path)) {
+                    array_push($activated_plugin, $plugin_slug);
+                }
+
                 if ( is_plugin_installed( $plugin_file_path ) && in_array($plugin_file_path, apply_filters('active_plugins', get_option('active_plugins'))) ){
                     $plugin['activated'] = true;
                 }else if ( is_plugin_installed( $plugin_file_path ) ) {
@@ -197,15 +202,22 @@ function tmpcoder_get_required_plugins_func(){
 
                 array_push($plugins, $plugin);
             }
+
+            $skip_this = false;
+            if (count($activated_plugin) == 2) {
+                $skip_this = true;
+                update_option(TMPCODER_PRO_PLUGIN_KEY.'_wizard_step', '2');
+            }
         }
     }
 
     if ( !empty($plugins) ){
         wp_send_json_success(
             array(
-                'plugins'=> $plugins,
-                'message'=> __('Plugins getting successfully.','sastra-essential-addons-for-elementor'),
-                'next_step'=> $next_step,
+                'plugins' => $plugins,
+                'message' => __('Plugins getting successfully.','sastra-essential-addons-for-elementor'),
+                'next_step' => $next_step,
+                'skip_this' => $skip_this
             )
         );
     }else{

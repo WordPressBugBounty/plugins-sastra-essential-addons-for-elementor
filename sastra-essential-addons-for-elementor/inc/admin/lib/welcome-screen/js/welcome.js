@@ -1,60 +1,12 @@
 var welcomeScreenFunctions = {
 
-  desabledUnusedWidget: function(){
+    desabledUnusedWidget: function(){
 
-    jQuery('.tmpcoder-btn-unused').click( function() {
+        jQuery('.tmpcoder-btn-unused').click( function() {
 
-      var action = 'tmpcoder_get_elementor_pages';
-      var _nonce_key = welcomeScreen.ajax_nonce
+        var action = 'tmpcoder_get_elementor_pages';
+        var _nonce_key = welcomeScreen.ajax_nonce
 
-      jQuery.ajax({
-          url:welcomeScreen.ajax_url,
-          method:'POST',
-          data: 
-          {
-              action: action,
-              _ajax_nonce: _nonce_key,
-          },
-          beforeSend: function() {
-            jQuery('.welcome-backend-loader').fadeIn();
-            jQuery('.tmpcoder-theme-welcome').css('opacity','0.5');
-          }
-      })
-      .done( function( response ) {
-
-          if (response.success == true)
-          {
-
-            var currentURL = window.location.href;
-            window.location.href = TmpcodersanitizeURL(currentURL);
-            jQuery('.welcome-backend-loader').fadeOut();
-            jQuery('.tmpcoder-theme-welcome').css('opacity','1');   
-          }
-          else
-          {
-            var currentURL = window.location.href;
-            window.location.href = TmpcodersanitizeURL(currentURL);
-            jQuery('.welcome-backend-loader').fadeOut();
-            jQuery('.tmpcoder-theme-welcome').css('opacity','1');     
-          }
-      })
-      .fail( function( error ) {
-          console.log(error);
-      })
-    })
-  },
-
-  setGlobalFonts: function(){
-
-    jQuery('.set-global-fonts-btn').click( function(e) {
-
-      var action = 'tmpcoder_set_global_fonts';
-      var _nonce_key = welcomeScreen.ajax_nonce
-
-      var confirmReset = confirm('Are you sure ?.\n Use the Global Options to set and apply selected fonts globally across all widgets.');
-
-      if (confirmReset)
-      {
         jQuery.ajax({
             url:welcomeScreen.ajax_url,
             method:'POST',
@@ -64,34 +16,91 @@ var welcomeScreenFunctions = {
                 _ajax_nonce: _nonce_key,
             },
             beforeSend: function() {
-              jQuery('.set-global-fonts-popup').fadeIn();
-              jQuery('.tmpcoder-condition-popup-wrap').fadeIn();     
-              jQuery('.set-global-loader').css('display','flex');
-              jQuery('.set-global-font-success').css('display','none');
+                jQuery('.welcome-backend-loader').fadeIn();
+                jQuery('.tmpcoder-theme-welcome').css('opacity','0.5');
             }
         })
         .done( function( response ) {
 
             if (response.success == true)
             {
-              jQuery('.set-global-loader').css('display','none');
-              jQuery('.set-global-font-success').css('display','flex');
 
-              setTimeout(function() {
-                  jQuery('.tmpcoder-condition-popup-wrap').fadeOut();
-              }, 1700);
+                var currentURL = window.location.href;
+                window.location.href = TmpcodersanitizeURL(currentURL);
+                jQuery('.welcome-backend-loader').fadeOut();
+                jQuery('.tmpcoder-theme-welcome').css('opacity','1');   
             }
             else
             {
-              jQuery('.tmpcoder-condition-popup-wrap').fadeOut();     
+                var currentURL = window.location.href;
+                window.location.href = TmpcodersanitizeURL(currentURL);
+                jQuery('.welcome-backend-loader').fadeOut();
+                jQuery('.tmpcoder-theme-welcome').css('opacity','1');     
             }
         })
-        .fail( function( error ) {
-            console.log(error);
+            .fail( function( error ) {
+                console.log(error);
+            })
         })
-      }
-    });
-  },
+    },
+
+    setGlobalFonts: function() {
+        jQuery('.set-global-fonts-btn').click(function(e) {
+            e.preventDefault();
+            jQuery('.tmpcoder-set-global-fonts-confirm-popup-wrap').fadeIn();
+            jQuery('#tmpcoder-set-global-fonts-confirm-popup').fadeIn();
+            jQuery('.tmpcoder-admin-popup').fadeIn();
+
+        });
+  
+        jQuery(document).on('click', '.tmpcoder-set-global-fonts-confirm-popup-wrap .popup-close', function(e) {
+            e.preventDefault();
+            jQuery('.tmpcoder-set-global-fonts-confirm-popup-wrap').fadeOut();
+            jQuery('#tmpcoder-set-global-fonts-confirm-popup').fadeOut();
+            jQuery('.tmpcoder-admin-popup').fadeOut();
+        });
+    
+        jQuery(document).on('click', '.tmpcoder-set-global-fonts-confirm-button', function(e) {
+            e.preventDefault();
+    
+            var action = 'tmpcoder_set_global_fonts';
+            var _nonce_key = welcomeScreen.ajax_nonce;
+    
+            jQuery.ajax({
+                url: welcomeScreen.ajax_url,
+                method: 'POST',
+                data: {
+                action: action,
+                _ajax_nonce: _nonce_key,
+                },
+                beforeSend: function() {
+                    jQuery('.tmpcoder-set-global-fonts-confirm-popup-wrap').fadeOut();
+                    jQuery('#tmpcoder-set-global-fonts-confirm-popup').fadeOut();
+
+                    jQuery('.set-global-fonts-popup').fadeIn();
+                    jQuery('.tmpcoder-condition-popup-wrap').fadeIn();
+                    jQuery('.set-global-loader').css('display', 'flex');
+                    jQuery('.set-global-font-success').css('display', 'none');
+                }
+            })
+            .done(function(response) {
+                if (response.success == true) {
+                    jQuery('.set-global-loader').css('display', 'none');
+                    jQuery('.set-global-font-success').css('display', 'flex');
+            
+                    setTimeout(function() {
+                        jQuery('.tmpcoder-condition-popup-wrap').fadeOut();
+                    }, 1700);
+                } else {
+                    jQuery('.tmpcoder-condition-popup-wrap').fadeOut();
+                }
+            })
+            .fail(function(error) {
+                console.log(error);
+            });
+        });
+    },
+  
 
   upgradeProNotice: function(){
     jQuery('.tmpcoder-upgrade-pro-notice .tmpcoder-upgrade-pro-notice-dismiss').click( function(e) {
@@ -135,9 +144,9 @@ var welcomeScreenFunctions = {
 };
 
 jQuery( document ).ready( function() {
-  welcomeScreenFunctions.desabledUnusedWidget();
-  welcomeScreenFunctions.setGlobalFonts();
-  welcomeScreenFunctions.upgradeProNotice();
+    welcomeScreenFunctions.desabledUnusedWidget();
+    welcomeScreenFunctions.setGlobalFonts();
+    welcomeScreenFunctions.upgradeProNotice();
 
     // var pluginMenuRef = jQuery('#adminmenuwrap #toplevel_page_spexo-welcome');
     // console.log('pluginMenuRef', pluginMenuRef);
@@ -160,4 +169,23 @@ jQuery( document ).ready( function() {
     //     $elementToMove.insertBefore($siblingElement);
     // }
 
+});
+
+
+jQuery(document).ready(function () {
+    const $header = jQuery('.tmpcoder-import-demo-page > header');
+
+    if ($header.length === 0) return;
+
+    const checkSticky = () => {
+        const rect = $header[0].getBoundingClientRect();
+        if (rect.top <= 32) {
+        $header.addClass('tmpcoder-prebuilt-websites-header-sticky');
+        } else {
+        $header.removeClass('tmpcoder-prebuilt-websites-header-sticky');
+        }
+    };
+
+    jQuery(window).on('scroll', checkSticky);
+    checkSticky(); // initial check
 });

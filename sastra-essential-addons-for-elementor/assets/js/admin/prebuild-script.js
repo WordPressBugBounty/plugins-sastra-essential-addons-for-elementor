@@ -75,14 +75,18 @@
 				} else*/
 				if ( 'wp-post' === window.elementor.config.document.type && undefined === previewIframe.find('#tmpcoder-library-btn').attr('data-filter') ) {
 					TmpcoderLibraryTmpls.renderPopupContent( previewIframe, 'sections' );
+					
 				} else if ( undefined !== previewIframe.find('#tmpcoder-library-btn').attr('data-filter') ) {
 					previewIframe.find('.tmpcoder-tplib-header').find('li').removeClass( 'tmpcoder-tplib-active-tab' );
 					previewIframe.find('.tmpcoder-tplib-header').find('li[data-tab="blocks"]').addClass( 'tmpcoder-tplib-active-tab' );
 					TmpcoderLibraryTmpls.renderPopupContent( previewIframe, 'blocks' );
+				
 				} 
 				else {
 					//TmpcoderLibraryTmpls.renderPopupContent( previewIframe, 'pages' );
-					TmpcoderLibraryTmpls.renderPopupContent( previewIframe, 'sections' );
+					TmpcoderLibraryTmpls.renderPopupContent( previewIframe, 'blocks' );
+					previewIframe.find('.tmpcoder-tplib-header').find('li[data-tab="blocks"]').trigger('click');
+					previewIframe.find('.tmpcoder-tplib-header').find('li[data-tab="blocks"]').addClass( 'tmpcoder-tplib-active-tab' );
 				}
 
 				// Filter Content
@@ -99,6 +103,8 @@
 			if ( previewIframe.find( '.tmpcoder-tplib-popup' ).length == 0 ) {
 				var headerNavigation  = '';
 
+				headerNavigation += '<li data-tab="blocks">Blocks</li>';
+
 				if ( 'wp-post' === window.elementor.config.document.type ) {
 					// headerNavigation += '<li data-tab="pages">Pages</li>';
 					headerNavigation += '<li data-tab="sections" class="tmpcoder-tplib-active-tab">Sections</li>';
@@ -106,8 +112,6 @@
 					// headerNavigation += '<li data-tab="pages" class="tmpcoder-tplib-active-tab">Pages</li>';
 					headerNavigation += '<li data-tab="sections" class="tmpcoder-tplib-active-tab">Sections</li>';
 				}
-
-				headerNavigation += '<li data-tab="blocks">Blocks</li>';
 
 				if ( 'tmpcoder-popups' === window.elementor.config.document.type ) {
 					if ( undefined === previewIframe.find('#tmpcoder-library-btn').attr('data-filter') ) {

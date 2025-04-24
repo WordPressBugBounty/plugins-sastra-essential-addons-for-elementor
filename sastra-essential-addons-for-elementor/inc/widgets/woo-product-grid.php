@@ -12,6 +12,7 @@ use Elementor\Core\Kits\Documents\Tabs\Global_Typography;
 use Elementor\Repeater;
 use Elementor\Group_Control_Image_Size;
 use TMPCODER\Modules\TMPCODER_Post_Likes;
+use Elementor\Utils;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
@@ -661,6 +662,535 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 
 	}
 
+	public function tmpcoder_pagination_tab_content(){
+			
+		// Tab: Content ==============
+		// Section: Pagination -------
+		$this->start_controls_section(
+			'section_grid_pagination',
+			[
+				'label' => esc_html__( 'Pagination', 'sastra-essential-addons-for-elementor' ),
+				'tab' => Controls_Manager::TAB_CONTENT,
+				'condition' => [
+					'layout_select!' => 'slider',
+					'layout_pagination' => 'yes',
+				],
+			]
+		);
+
+        $this->add_control(
+			'section_grid_pagination_notice',
+			[
+				'type' => Controls_Manager::RAW_HTML,
+				'raw' => 
+             		'<strong>Note:</strong> This widget pagination not worked in Site Builder > Post/Product Single Layouts.',
+				'content_classes' => 'elementor-panel-alert elementor-panel-alert-info',
+			]
+		);
+
+		$this->add_control_pagination_type();
+
+		// Upgrade to Pro Notice
+		tmpcoder_upgrade_pro_notice( $this, Controls_Manager::RAW_HTML, 'woo-grid', 'pagination_type', ['pro-is'] );
+
+		$this->add_control(
+			'pagination_older_text',
+			[
+				'label' => esc_html__( 'Older Posts Text', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::TEXT,
+				'dynamic' => [
+					'active' => true,
+				],
+				'default' => 'Older Posts',
+				'condition' => [
+					'pagination_type' => 'default',
+				],
+			]
+		);
+
+		$this->add_control(
+			'pagination_newer_text',
+			[
+				'label' => esc_html__( 'Newer Posts Text', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::TEXT,
+				'dynamic' => [
+					'active' => true,
+				],
+				'default' => 'Newer Posts',
+				'condition' => [
+					'pagination_type' => 'default',
+				]
+			]
+		);
+
+		$this->add_control(
+			'pagination_on_icon',
+			[
+				'label' => esc_html__( 'Select Icon', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::SELECT,
+				'default' => 'fas fa-angle',
+				'options' => tmpcoder_get_svg_icons_array( 'arrows', [
+					'fas fa-angle' => esc_html__( 'Angle', 'sastra-essential-addons-for-elementor' ),
+					'fas fa-angle-double' => esc_html__( 'Angle Double', 'sastra-essential-addons-for-elementor' ),
+					'fas fa-arrow' => esc_html__( 'Arrow', 'sastra-essential-addons-for-elementor' ),
+					'fas fa-arrow-alt-circle' => esc_html__( 'Arrow Circle', 'sastra-essential-addons-for-elementor' ),
+					'far fa-arrow-alt-circle' => esc_html__( 'Arrow Circle Alt', 'sastra-essential-addons-for-elementor' ),
+					'fas fa-long-arrow-alt' => esc_html__( 'Long Arrow', 'sastra-essential-addons-for-elementor' ),
+					'fas fa-chevron' => esc_html__( 'Chevron', 'sastra-essential-addons-for-elementor' ),
+					'svg-icons' => esc_html__( 'SVG Icons -----', 'sastra-essential-addons-for-elementor' ),
+				] ),
+				'condition' => [
+					'pagination_type' => 'default'
+				],
+			]
+		);
+
+		$this->add_control(
+			'pagination_prev_next',
+			[
+				'label' => esc_html__( 'Previous & Next Buttons', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::SWITCHER,
+				'default' => 'no',
+				'return_value' => 'yes',
+				'condition' => [
+					'pagination_type' => 'numbered',
+				],
+			]
+		);
+
+		$this->add_control(
+			'pagination_prev_text',
+			[
+				'label' => esc_html__( 'Prev Page Text', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::TEXT,
+				'dynamic' => [
+					'active' => true,
+				],
+				'default' => 'Previous Page',
+				'condition' => [
+					'pagination_type' => 'numbered',
+					'pagination_prev_next' => 'yes',
+				],
+			]
+		);
+
+		$this->add_control(
+			'pagination_next_text',
+			[
+				'label' => esc_html__( 'Next Page Text', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::TEXT,
+				'dynamic' => [
+					'active' => true,
+				],
+				'default' => 'Next Page',
+				'condition' => [
+					'pagination_type' => 'numbered',
+					'pagination_prev_next' => 'yes',
+				]
+			]
+		);
+
+		$this->add_control(
+			'pagination_pn_icon',
+			[
+				'label' => esc_html__( 'Select Icon', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::SELECT,
+				'default' => 'fas fa-angle',
+				'options' => tmpcoder_get_svg_icons_array( 'arrows', [
+					'fas fa-angle' => esc_html__( 'Angle', 'sastra-essential-addons-for-elementor' ),
+					'fas fa-angle-double' => esc_html__( 'Angle Double', 'sastra-essential-addons-for-elementor' ),
+					'fas fa-arrow' => esc_html__( 'Arrow', 'sastra-essential-addons-for-elementor' ),
+					'fas fa-arrow-alt-circle' => esc_html__( 'Arrow Circle', 'sastra-essential-addons-for-elementor' ),
+					'far fa-arrow-alt-circle' => esc_html__( 'Arrow Circle Alt', 'sastra-essential-addons-for-elementor' ),
+					'fas fa-long-arrow-alt' => esc_html__( 'Long Arrow', 'sastra-essential-addons-for-elementor' ),
+					'fas fa-chevron' => esc_html__( 'Chevron', 'sastra-essential-addons-for-elementor' ),
+					'svg-icons' => esc_html__( 'SVG Icons -----', 'sastra-essential-addons-for-elementor' ),
+				] ),
+				'condition' => [
+					'pagination_type' => 'numbered',
+					'pagination_prev_next' => 'yes'
+				],
+			]
+		);
+
+		$this->add_control(
+			'pagination_first_last',
+			[
+				'label' => esc_html__( 'First & Last Buttons', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::SWITCHER,
+				'default' => 'no',
+				'return_value' => 'yes',
+				'condition' => [
+					'pagination_type' => 'numbered',
+				],
+			]
+		);
+
+		$this->add_control(
+			'pagination_first_text',
+			[
+				'label' => esc_html__( 'First Page Text', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::TEXT,
+				'dynamic' => [
+					'active' => true,
+				],
+				'default' => 'First Page',
+				'condition' => [
+					'pagination_type' => 'numbered',
+					'pagination_first_last' => 'yes',
+				],
+			]
+		);
+
+		$this->add_control(
+			'pagination_last_text',
+			[
+				'label' => esc_html__( 'Last Page Text', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::TEXT,
+				'dynamic' => [
+					'active' => true,
+				],
+				'default' => 'Last Page',
+				'condition' => [
+					'pagination_type' => 'numbered',
+					'pagination_first_last' => 'yes',
+				]
+			]
+		);
+
+		$this->add_control(
+			'pagination_fl_icon',
+			[
+				'label' => esc_html__( 'Select Icon', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::SELECT,
+				'default' => 'fas fa-angle',
+				'options' => tmpcoder_get_svg_icons_array( 'arrows', [
+					'fas fa-angle' => esc_html__( 'Angle', 'sastra-essential-addons-for-elementor' ),
+					'fas fa-angle-double' => esc_html__( 'Angle Double', 'sastra-essential-addons-for-elementor' ),
+					'fas fa-arrow' => esc_html__( 'Arrow', 'sastra-essential-addons-for-elementor' ),
+					'fas fa-arrow-alt-circle' => esc_html__( 'Arrow Circle', 'sastra-essential-addons-for-elementor' ),
+					'far fa-arrow-alt-circle' => esc_html__( 'Arrow Circle Alt', 'sastra-essential-addons-for-elementor' ),
+					'fas fa-long-arrow-alt' => esc_html__( 'Long Arrow', 'sastra-essential-addons-for-elementor' ),
+					'fas fa-chevron' => esc_html__( 'Chevron', 'sastra-essential-addons-for-elementor' ),
+					'svg-icons' => esc_html__( 'SVG Icons -----', 'sastra-essential-addons-for-elementor' ),
+				] ),
+				'condition' => [
+					'pagination_type' => 'numbered',
+					'pagination_first_last' => 'yes'
+				],
+			]
+		);
+
+		$this->add_control(
+			'pagination_disabled_arrows',
+			[
+				'label' => esc_html__( 'Show Disabled Buttons', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::SWITCHER,
+				'return_value' => 'yes',
+				'condition' => [
+					'pagination_type' => [ 'default', 'numbered' ],
+				],
+			]
+		);
+
+		$this->add_control(
+			'pagination_range',
+			[
+				'label' => esc_html__( 'Range', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::NUMBER,
+				'default' => 2,
+				'min' => 1,
+				'condition' => [
+					'pagination_type' => 'numbered',
+				]
+			]
+		);
+
+		$this->add_control(
+			'pagination_load_more_text',
+			[
+				'label' => esc_html__( 'Load More Text', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::TEXT,
+				'dynamic' => [
+					'active' => true,
+				],
+				'default' => 'Load More',
+				'condition' => [
+					'pagination_type' => 'load-more',
+				]
+			]
+		);
+
+		$this->add_control(
+			'pagination_finish_text',
+			[
+				'label' => esc_html__( 'Finish Text', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::TEXT,
+				'dynamic' => [
+					'active' => true,
+				],
+				'default' => 'No more items.',
+				'condition' => [
+					'pagination_type' => [ 'load-more', 'infinite-scroll' ],
+				]
+			]
+		);
+
+		$this->add_control(
+			'pagination_animation',
+			[
+				'label' => esc_html__( 'Select Animation', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::SELECT,
+				'default' => 'loader-1',
+				'options' => [
+					'none' => esc_html__( 'None', 'sastra-essential-addons-for-elementor' ),
+					'loader-1' => esc_html__( 'Loader 1', 'sastra-essential-addons-for-elementor' ),
+					'loader-2' => esc_html__( 'Loader 2', 'sastra-essential-addons-for-elementor' ),
+					'loader-3' => esc_html__( 'Loader 3', 'sastra-essential-addons-for-elementor' ),
+					'loader-4' => esc_html__( 'Loader 4', 'sastra-essential-addons-for-elementor' ),
+					'loader-5' => esc_html__( 'Loader 5', 'sastra-essential-addons-for-elementor' ),
+					'loader-6' => esc_html__( 'Loader 6', 'sastra-essential-addons-for-elementor' ),
+				],
+				'condition' => [
+					'pagination_type' => [ 'load-more', 'infinite-scroll' ],
+				]
+			]
+		);
+
+		$this->add_control(
+			'pagination_align',
+			[
+				'label' => esc_html__( 'Alignment', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::CHOOSE,
+				'options' => [
+					'left'    => [
+						'title' => esc_html__( 'Left', 'sastra-essential-addons-for-elementor' ),
+						'icon' => 'eicon-text-align-left',
+					],
+					'center' => [
+						'title' => esc_html__( 'Center', 'sastra-essential-addons-for-elementor' ),
+						'icon' => 'eicon-text-align-center',
+					],
+					'right' => [
+						'title' => esc_html__( 'Right', 'sastra-essential-addons-for-elementor' ),
+						'icon' => 'eicon-text-align-right',
+					],
+					'justify' => [
+						'title' => esc_html__( 'Justified', 'sastra-essential-addons-for-elementor' ),
+						'icon' => 'eicon-text-align-justify',
+					],
+				],
+				'default' => 'center',
+				'prefix_class' => 'tmpcoder-grid-pagination-',
+				'render_type' => 'template',
+				'separator' => 'before',
+				'condition' => [
+					'pagination_type!' => 'infinite-scroll',
+				]
+			]
+		);
+
+		$this->end_controls_section(); // End Controls Section
+	}
+
+	public function tmpcoder_section_filter_options(){
+
+		// Tab: Content ==============
+		// Section: Filters ----------
+		$this->start_controls_section(
+			'section_grid_filters',
+			[
+				'label' => esc_html__( 'Filters', 'sastra-essential-addons-for-elementor' ),
+				'tab' => Controls_Manager::TAB_CONTENT,
+				'condition' => [
+					'layout_select!' => 'slider',
+					'layout_filters' => 'yes',
+				],
+			]
+		);
+
+		$this->add_control(
+			'filters_select',
+			[
+				'label' => esc_html__( 'Select Taxonomy', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::SELECT,
+				'options' => [
+					'product_cat' => esc_html__( 'Categories', 'sastra-essential-addons-for-elementor' ),
+					'product_tag' => esc_html__( 'Tags', 'sastra-essential-addons-for-elementor' ),
+				],
+				'default' => 'product_cat',
+				'separator' => 'after',
+			]
+		);
+
+		$this->add_control(
+			'filters_linkable',
+			[
+				'label' => esc_html__( 'Set Linkable Filters', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::SWITCHER,
+				'default' => 'no',
+				'return_value' => 'yes',
+			]
+		);
+
+		$this->add_control(
+			'filters_hide_empty',
+			[
+				'label' => esc_html__( 'Hide Empty Filters', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::SWITCHER,
+				'default' => 'no',
+				'return_value' => 'yes',
+				'condition' => [
+					'filters_linkable!' => 'yes',
+				],
+			]
+		);
+
+		$this->add_control_filters_deeplinking();
+
+		$this->add_control(
+			'filters_all',
+			[
+				'label' => esc_html__( 'Show "All" Filter', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::SWITCHER,
+				'default' => 'yes',
+				'return_value' => 'yes',
+				'condition' => [
+					'filters_linkable!' => 'yes',
+				],
+			]
+		);
+
+		$this->add_control(
+			'filters_all_text',
+			[
+				'label' => esc_html__( '"All" Filter Text', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::TEXT,
+				'dynamic' => [
+					'active' => true,
+				],
+				'default' => 'All',
+				'condition' => [
+					'filters_all' => 'yes',
+					'filters_linkable!' => 'yes',
+				],
+			]
+		);
+
+		$this->add_control_filters_count();
+
+		$this->add_control_filters_count_superscript();
+
+		$this->add_control_filters_count_brackets();
+
+		$this->add_control_filters_default_filter();
+
+		$this->add_control_filters_icon();
+
+		$this->add_control_filters_icon_align();
+
+		$this->add_control(
+			'filters_separator',
+			[
+				'label' => esc_html__( 'Separator', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::TEXT,
+				'dynamic' => [
+					'active' => true,
+				],
+				'default' => '',
+				'separator' => 'before',
+			]
+		);
+
+		$this->add_control(
+			'filters_separator_align',
+			[
+				'label' => esc_html__( 'Separator Position', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::CHOOSE,
+				'label_block' => false,
+				'default' => 'right',
+				'options' => [
+					'left' => [
+						'title' => esc_html__( 'Left', 'sastra-essential-addons-for-elementor' ),
+						'icon' => 'eicon-h-align-left',
+					],
+					'right' => [
+						'title' => esc_html__( 'Right', 'sastra-essential-addons-for-elementor' ),
+						'icon' => 'eicon-h-align-right',
+					]
+				],
+				'condition' => [
+					'filters_separator!' => '',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'filters_align',
+			[
+				'label' => esc_html__( 'Align', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::CHOOSE,
+				'label_block' => false,
+				'default' => 'center',
+				'options' => [
+					'left' => [
+						'title' => esc_html__( 'Left', 'sastra-essential-addons-for-elementor' ),
+						'icon' => 'eicon-h-align-left',
+					],
+					'center' => [
+						'title' => esc_html__( 'Center', 'sastra-essential-addons-for-elementor' ),
+						'icon' => 'eicon-h-align-center',
+					],
+					'right' => [
+						'title' => esc_html__( 'Right', 'sastra-essential-addons-for-elementor' ),
+						'icon' => 'eicon-h-align-right',
+					]
+				],
+				'selectors' => [
+					'{{WRAPPER}} .tmpcoder-grid-filters' => 'text-align: {{VALUE}}',
+				],
+				'separator' => 'before',
+			]
+		);
+
+		$this->add_control_filters_animation();
+
+		// Upgrade to Pro Notice
+		tmpcoder_upgrade_pro_notice( $this, Controls_Manager::RAW_HTML, 'woo-grid', 'filters_animation', ['pro-fd', 'pro-fs'] );
+
+		$this->add_control(
+			'filters_animation_duration',
+			[
+				'label' => esc_html__( 'Animation Duration', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::NUMBER,
+				'default' => 0.3,
+				'min' => 0,
+				'max' => 5,
+				'step' => 0.1,
+				'condition' => [
+					'filters_animation!' => 'default',
+				],
+			]
+		);
+
+		$this->add_control(
+			'filters_animation_delay',
+			[
+				'label' => esc_html__( 'Animation Delay', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::NUMBER,
+				'default' => 0.1,
+				'min' => 0,
+				'max' => 5,
+				'step' => 0.05,
+				'condition' => [
+					'filters_animation!' => 'default'
+				],
+			]
+		);
+
+		$this->end_controls_section(); // End Controls Section
+	}
+
 	protected function register_controls() {
 
 		// Tab: Content ==============
@@ -917,6 +1447,36 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 				'separator' => 'after'
             ]
         );
+
+		$this->add_control(
+			'tmpcoder_fallback_image_switch',
+			[
+				'label' => esc_html__( 'Show Fallback Image', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::SWITCHER,
+				'default' => 'yes',
+				'return_value' => 'yes',
+				'render_type' => 'template',
+				'separator' => 'before',
+			]
+		);
+
+		$this->add_control(
+			'tmpcoder_fallback_image',
+			[
+				'label' => esc_html__( 'Fallback Image', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::MEDIA,
+				'separator' => 'after',
+				'dynamic' => [
+					'active' => true,
+				],
+				'default' => [
+					'url' => TMPCODER_ADDONS_ASSETS_URL.'images/woo-placeholder.png',
+				],
+				'condition' => [
+					'tmpcoder_fallback_image_switch' => 'yes',
+				]
+			]
+		);
 
 		$this->add_group_control(
 			Group_Control_Image_Size::get_type(),
@@ -1412,6 +1972,12 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 
 		$this->end_controls_section(); // End Controls Section
 
+		$this->add_section_grid_sorting();
+
+		$this->tmpcoder_section_filter_options();
+
+		$this->tmpcoder_pagination_tab_content();
+
 		// Tab: Content ==============
 		// Section: Elements ---------
 		$this->start_controls_section(
@@ -1581,7 +2147,7 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 					'span' => 'span',
 					'P' => 'p'
 				],
-				'default' => 'h2',
+				'default' => 'h3',
 				'condition' => [
 					'element_select' => 'title',
 				]
@@ -2382,30 +2948,31 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 				'type' => Controls_Manager::REPEATER,
 				'fields' => $repeater->get_controls(),
 				'default' => [
-					[
+					/* [
 						'element_select' => 'status',
 						'element_location' => 'over',
 						'element_align_vr' => 'middle',
 						'element_align_hr' => 'middle',
 						'element_animation' => 'fade-in',
-					],
+					], */
+                    [
+                        'element_select' => 'title',
+                    ],
 					[
 						'element_select' => 'product_cat',
 					],
 					[
-						'element_select' => 'title',
+                        'element_select' => 'price',
 					],
-					[
-						'element_select' => 'rating',
-					],
-					[
-						'element_select' => 'price',
-					],
+                    [
+                        'element_select' => 'rating',
+                    ],
 					[
 						'element_select' => 'add-to-cart',
 					],
 				],
 				'title_field' => '{{{ element_select.charAt(0).toUpperCase() + element_select.slice(1) }}}',
+				'prevent_empty' => false,
 			]
 		);
 
@@ -2420,6 +2987,16 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 				'tab' => Controls_Manager::TAB_CONTENT,
 			]
 		);
+
+		$this->add_control(
+			'media_overlay_on_off',
+			[
+				'label' => esc_html__( 'Media Overlay', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::SWITCHER,
+				'default' => '',
+				'return_value' => 'yes',
+			]
+		);	
 
 		$this->add_responsive_control(
 			'overlay_width',
@@ -2448,6 +3025,7 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 					'{{WRAPPER}} .tmpcoder-grid-media-hover-bg[class*="-right"]' => 'top:calc((100% - {{overlay_hegiht.SIZE}}{{overlay_hegiht.UNIT}})/2);right:calc((100% - {{SIZE}}{{UNIT}})/2);',
 					'{{WRAPPER}} .tmpcoder-grid-media-hover-bg[class*="-left"]' => 'top:calc((100% - {{overlay_hegiht.SIZE}}{{overlay_hegiht.UNIT}})/2);left:calc((100% - {{SIZE}}{{UNIT}})/2);',
 				],
+				'condition' => ['media_overlay_on_off' => 'yes']
 			]
 		);
 
@@ -2479,6 +3057,7 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 					'{{WRAPPER}} .tmpcoder-grid-media-hover-bg[class*="-left"]' => 'top:calc((100% - {{SIZE}}{{UNIT}})/2);left:calc((100% - {{overlay_width.SIZE}}{{overlay_width.UNIT}})/2);',
 				],
 				'separator' => 'after',
+				'condition' => ['media_overlay_on_off' => 'yes']
 			]
 		);
 
@@ -2490,6 +3069,7 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 				'default' => 'yes',
 				'return_value' => 'yes',
 				'separator' => 'after',
+				// 'condition' => ['media_overlay_on_off' => 'yes']
 			]
 		);
 
@@ -2499,6 +3079,7 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 				'label' => esc_html__( 'Select Animation', 'sastra-essential-addons-for-elementor' ),
 				'type' => 'tmpcoder-animations-alt',
 				'default' => 'fade-in',
+				'condition' => ['media_overlay_on_off' => 'yes']
 			]
 		);
 
@@ -2519,6 +3100,7 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 				],
 				'condition' => [
 					'overlay_animation!' => 'none',
+					'media_overlay_on_off' => 'yes'
 				],
 			]
 		);
@@ -2537,6 +3119,7 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 				],
 				'condition' => [
 					'overlay_animation!' => 'none',
+					'media_overlay_on_off' => 'yes'
 				],
 			]
 		);
@@ -2550,6 +3133,7 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 				'default' => 'ease-default',
 				'condition' => [
 					'overlay_animation!' => 'none',
+					'media_overlay_on_off' => 'yes'
 				],
 			]
 		);
@@ -2570,6 +3154,7 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 				'default' => 'large',
 				'condition' => [
 					'overlay_animation!' => 'none',
+					'media_overlay_on_off' => 'yes'
 				],
 			]
 		);
@@ -2583,6 +3168,7 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 				'return_value' => 'yes',
 				'condition' => [
 					'overlay_animation!' => 'none',
+					'media_overlay_on_off' => 'yes'
 				],
 			]
 		);
@@ -2818,530 +3404,8 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 
 		$this->end_controls_section(); // End Controls Section
 
-		$this->add_section_grid_sorting();
+		// $this->add_section_grid_sorting();
 
-		// Tab: Content ==============
-		// Section: Filters ----------
-		$this->start_controls_section(
-			'section_grid_filters',
-			[
-				'label' => esc_html__( 'Filters', 'sastra-essential-addons-for-elementor' ),
-				'tab' => Controls_Manager::TAB_CONTENT,
-				'condition' => [
-					'layout_select!' => 'slider',
-					'layout_filters' => 'yes',
-				],
-			]
-		);
-
-		$this->add_control(
-			'filters_select',
-			[
-				'label' => esc_html__( 'Select Taxonomy', 'sastra-essential-addons-for-elementor' ),
-				'type' => Controls_Manager::SELECT,
-				'options' => [
-					'product_cat' => esc_html__( 'Categories', 'sastra-essential-addons-for-elementor' ),
-					'product_tag' => esc_html__( 'Tags', 'sastra-essential-addons-for-elementor' ),
-				],
-				'default' => 'product_cat',
-				'separator' => 'after',
-			]
-		);
-
-		$this->add_control(
-			'filters_linkable',
-			[
-				'label' => esc_html__( 'Set Linkable Filters', 'sastra-essential-addons-for-elementor' ),
-				'type' => Controls_Manager::SWITCHER,
-				'default' => 'no',
-				'return_value' => 'yes',
-			]
-		);
-
-		$this->add_control(
-			'filters_hide_empty',
-			[
-				'label' => esc_html__( 'Hide Empty Filters', 'sastra-essential-addons-for-elementor' ),
-				'type' => Controls_Manager::SWITCHER,
-				'default' => 'no',
-				'return_value' => 'yes',
-				'condition' => [
-					'filters_linkable!' => 'yes',
-				],
-			]
-		);
-
-		$this->add_control_filters_deeplinking();
-
-		$this->add_control(
-			'filters_all',
-			[
-				'label' => esc_html__( 'Show "All" Filter', 'sastra-essential-addons-for-elementor' ),
-				'type' => Controls_Manager::SWITCHER,
-				'default' => 'yes',
-				'return_value' => 'yes',
-				'condition' => [
-					'filters_linkable!' => 'yes',
-				],
-			]
-		);
-
-		$this->add_control(
-			'filters_all_text',
-			[
-				'label' => esc_html__( '"All" Filter Text', 'sastra-essential-addons-for-elementor' ),
-				'type' => Controls_Manager::TEXT,
-				'dynamic' => [
-					'active' => true,
-				],
-				'default' => 'All',
-				'condition' => [
-					'filters_all' => 'yes',
-					'filters_linkable!' => 'yes',
-				],
-			]
-		);
-
-		$this->add_control_filters_count();
-
-		$this->add_control_filters_count_superscript();
-
-		$this->add_control_filters_count_brackets();
-
-		$this->add_control_filters_default_filter();
-
-		$this->add_control_filters_icon();
-
-		$this->add_control_filters_icon_align();
-
-		$this->add_control(
-			'filters_separator',
-			[
-				'label' => esc_html__( 'Separator', 'sastra-essential-addons-for-elementor' ),
-				'type' => Controls_Manager::TEXT,
-				'dynamic' => [
-					'active' => true,
-				],
-				'default' => '',
-				'separator' => 'before',
-			]
-		);
-
-		$this->add_control(
-			'filters_separator_align',
-			[
-				'label' => esc_html__( 'Separator Position', 'sastra-essential-addons-for-elementor' ),
-				'type' => Controls_Manager::CHOOSE,
-				'label_block' => false,
-				'default' => 'right',
-				'options' => [
-					'left' => [
-						'title' => esc_html__( 'Left', 'sastra-essential-addons-for-elementor' ),
-						'icon' => 'eicon-h-align-left',
-					],
-					'right' => [
-						'title' => esc_html__( 'Right', 'sastra-essential-addons-for-elementor' ),
-						'icon' => 'eicon-h-align-right',
-					]
-				],
-				'condition' => [
-					'filters_separator!' => '',
-				],
-			]
-		);
-
-		$this->add_responsive_control(
-			'filters_align',
-			[
-				'label' => esc_html__( 'Align', 'sastra-essential-addons-for-elementor' ),
-				'type' => Controls_Manager::CHOOSE,
-				'label_block' => false,
-				'default' => 'center',
-				'options' => [
-					'left' => [
-						'title' => esc_html__( 'Left', 'sastra-essential-addons-for-elementor' ),
-						'icon' => 'eicon-h-align-left',
-					],
-					'center' => [
-						'title' => esc_html__( 'Center', 'sastra-essential-addons-for-elementor' ),
-						'icon' => 'eicon-h-align-center',
-					],
-					'right' => [
-						'title' => esc_html__( 'Right', 'sastra-essential-addons-for-elementor' ),
-						'icon' => 'eicon-h-align-right',
-					]
-				],
-				'selectors' => [
-					'{{WRAPPER}} .tmpcoder-grid-filters' => 'text-align: {{VALUE}}',
-				],
-				'separator' => 'before',
-			]
-		);
-
-		$this->add_control_filters_animation();
-
-		// Upgrade to Pro Notice
-		tmpcoder_upgrade_pro_notice( $this, Controls_Manager::RAW_HTML, 'woo-grid', 'filters_animation', ['pro-fd', 'pro-fs'] );
-
-		$this->add_control(
-			'filters_animation_duration',
-			[
-				'label' => esc_html__( 'Animation Duration', 'sastra-essential-addons-for-elementor' ),
-				'type' => Controls_Manager::NUMBER,
-				'default' => 0.3,
-				'min' => 0,
-				'max' => 5,
-				'step' => 0.1,
-				'condition' => [
-					'filters_animation!' => 'default',
-				],
-			]
-		);
-
-		$this->add_control(
-			'filters_animation_delay',
-			[
-				'label' => esc_html__( 'Animation Delay', 'sastra-essential-addons-for-elementor' ),
-				'type' => Controls_Manager::NUMBER,
-				'default' => 0.1,
-				'min' => 0,
-				'max' => 5,
-				'step' => 0.05,
-				'condition' => [
-					'filters_animation!' => 'default'
-				],
-			]
-		);
-
-		$this->end_controls_section(); // End Controls Section
-
-		// Tab: Content ==============
-		// Section: Pagination -------
-		$this->start_controls_section(
-			'section_grid_pagination',
-			[
-				'label' => esc_html__( 'Pagination', 'sastra-essential-addons-for-elementor' ),
-				'tab' => Controls_Manager::TAB_CONTENT,
-				'condition' => [
-					'layout_select!' => 'slider',
-					'layout_pagination' => 'yes',
-				],
-			]
-		);
-
-        $this->add_control(
-			'section_grid_pagination_notice',
-			[
-				'type' => Controls_Manager::RAW_HTML,
-				'raw' => 
-             		'<strong>Note:</strong> This widget pagination not worked in Site Builder > Post/Product Single Layouts.',
-				'content_classes' => 'elementor-panel-alert elementor-panel-alert-info',
-			]
-		);
-
-		$this->add_control_pagination_type();
-
-		// Upgrade to Pro Notice
-		tmpcoder_upgrade_pro_notice( $this, Controls_Manager::RAW_HTML, 'woo-grid', 'pagination_type', ['pro-is'] );
-
-		$this->add_control(
-			'pagination_older_text',
-			[
-				'label' => esc_html__( 'Older Posts Text', 'sastra-essential-addons-for-elementor' ),
-				'type' => Controls_Manager::TEXT,
-				'dynamic' => [
-					'active' => true,
-				],
-				'default' => 'Older Posts',
-				'condition' => [
-					'pagination_type' => 'default',
-				],
-			]
-		);
-
-		$this->add_control(
-			'pagination_newer_text',
-			[
-				'label' => esc_html__( 'Newer Posts Text', 'sastra-essential-addons-for-elementor' ),
-				'type' => Controls_Manager::TEXT,
-				'dynamic' => [
-					'active' => true,
-				],
-				'default' => 'Newer Posts',
-				'condition' => [
-					'pagination_type' => 'default',
-				]
-			]
-		);
-
-		$this->add_control(
-			'pagination_on_icon',
-			[
-				'label' => esc_html__( 'Select Icon', 'sastra-essential-addons-for-elementor' ),
-				'type' => Controls_Manager::SELECT,
-				'default' => 'fas fa-angle',
-				'options' => tmpcoder_get_svg_icons_array( 'arrows', [
-					'fas fa-angle' => esc_html__( 'Angle', 'sastra-essential-addons-for-elementor' ),
-					'fas fa-angle-double' => esc_html__( 'Angle Double', 'sastra-essential-addons-for-elementor' ),
-					'fas fa-arrow' => esc_html__( 'Arrow', 'sastra-essential-addons-for-elementor' ),
-					'fas fa-arrow-alt-circle' => esc_html__( 'Arrow Circle', 'sastra-essential-addons-for-elementor' ),
-					'far fa-arrow-alt-circle' => esc_html__( 'Arrow Circle Alt', 'sastra-essential-addons-for-elementor' ),
-					'fas fa-long-arrow-alt' => esc_html__( 'Long Arrow', 'sastra-essential-addons-for-elementor' ),
-					'fas fa-chevron' => esc_html__( 'Chevron', 'sastra-essential-addons-for-elementor' ),
-					'svg-icons' => esc_html__( 'SVG Icons -----', 'sastra-essential-addons-for-elementor' ),
-				] ),
-				'condition' => [
-					'pagination_type' => 'default'
-				],
-			]
-		);
-
-		$this->add_control(
-			'pagination_prev_next',
-			[
-				'label' => esc_html__( 'Previous & Next Buttons', 'sastra-essential-addons-for-elementor' ),
-				'type' => Controls_Manager::SWITCHER,
-				'default' => 'no',
-				'return_value' => 'yes',
-				'condition' => [
-					'pagination_type' => 'numbered',
-				],
-			]
-		);
-
-		$this->add_control(
-			'pagination_prev_text',
-			[
-				'label' => esc_html__( 'Prev Page Text', 'sastra-essential-addons-for-elementor' ),
-				'type' => Controls_Manager::TEXT,
-				'dynamic' => [
-					'active' => true,
-				],
-				'default' => 'Previous Page',
-				'condition' => [
-					'pagination_type' => 'numbered',
-					'pagination_prev_next' => 'yes',
-				],
-			]
-		);
-
-		$this->add_control(
-			'pagination_next_text',
-			[
-				'label' => esc_html__( 'Next Page Text', 'sastra-essential-addons-for-elementor' ),
-				'type' => Controls_Manager::TEXT,
-				'dynamic' => [
-					'active' => true,
-				],
-				'default' => 'Next Page',
-				'condition' => [
-					'pagination_type' => 'numbered',
-					'pagination_prev_next' => 'yes',
-				]
-			]
-		);
-
-		$this->add_control(
-			'pagination_pn_icon',
-			[
-				'label' => esc_html__( 'Select Icon', 'sastra-essential-addons-for-elementor' ),
-				'type' => Controls_Manager::SELECT,
-				'default' => 'fas fa-angle',
-				'options' => tmpcoder_get_svg_icons_array( 'arrows', [
-					'fas fa-angle' => esc_html__( 'Angle', 'sastra-essential-addons-for-elementor' ),
-					'fas fa-angle-double' => esc_html__( 'Angle Double', 'sastra-essential-addons-for-elementor' ),
-					'fas fa-arrow' => esc_html__( 'Arrow', 'sastra-essential-addons-for-elementor' ),
-					'fas fa-arrow-alt-circle' => esc_html__( 'Arrow Circle', 'sastra-essential-addons-for-elementor' ),
-					'far fa-arrow-alt-circle' => esc_html__( 'Arrow Circle Alt', 'sastra-essential-addons-for-elementor' ),
-					'fas fa-long-arrow-alt' => esc_html__( 'Long Arrow', 'sastra-essential-addons-for-elementor' ),
-					'fas fa-chevron' => esc_html__( 'Chevron', 'sastra-essential-addons-for-elementor' ),
-					'svg-icons' => esc_html__( 'SVG Icons -----', 'sastra-essential-addons-for-elementor' ),
-				] ),
-				'condition' => [
-					'pagination_type' => 'numbered',
-					'pagination_prev_next' => 'yes'
-				],
-			]
-		);
-
-		$this->add_control(
-			'pagination_first_last',
-			[
-				'label' => esc_html__( 'First & Last Buttons', 'sastra-essential-addons-for-elementor' ),
-				'type' => Controls_Manager::SWITCHER,
-				'default' => 'no',
-				'return_value' => 'yes',
-				'condition' => [
-					'pagination_type' => 'numbered',
-				],
-			]
-		);
-
-		$this->add_control(
-			'pagination_first_text',
-			[
-				'label' => esc_html__( 'First Page Text', 'sastra-essential-addons-for-elementor' ),
-				'type' => Controls_Manager::TEXT,
-				'dynamic' => [
-					'active' => true,
-				],
-				'default' => 'First Page',
-				'condition' => [
-					'pagination_type' => 'numbered',
-					'pagination_first_last' => 'yes',
-				],
-			]
-		);
-
-		$this->add_control(
-			'pagination_last_text',
-			[
-				'label' => esc_html__( 'Last Page Text', 'sastra-essential-addons-for-elementor' ),
-				'type' => Controls_Manager::TEXT,
-				'dynamic' => [
-					'active' => true,
-				],
-				'default' => 'Last Page',
-				'condition' => [
-					'pagination_type' => 'numbered',
-					'pagination_first_last' => 'yes',
-				]
-			]
-		);
-
-		$this->add_control(
-			'pagination_fl_icon',
-			[
-				'label' => esc_html__( 'Select Icon', 'sastra-essential-addons-for-elementor' ),
-				'type' => Controls_Manager::SELECT,
-				'default' => 'fas fa-angle',
-				'options' => tmpcoder_get_svg_icons_array( 'arrows', [
-					'fas fa-angle' => esc_html__( 'Angle', 'sastra-essential-addons-for-elementor' ),
-					'fas fa-angle-double' => esc_html__( 'Angle Double', 'sastra-essential-addons-for-elementor' ),
-					'fas fa-arrow' => esc_html__( 'Arrow', 'sastra-essential-addons-for-elementor' ),
-					'fas fa-arrow-alt-circle' => esc_html__( 'Arrow Circle', 'sastra-essential-addons-for-elementor' ),
-					'far fa-arrow-alt-circle' => esc_html__( 'Arrow Circle Alt', 'sastra-essential-addons-for-elementor' ),
-					'fas fa-long-arrow-alt' => esc_html__( 'Long Arrow', 'sastra-essential-addons-for-elementor' ),
-					'fas fa-chevron' => esc_html__( 'Chevron', 'sastra-essential-addons-for-elementor' ),
-					'svg-icons' => esc_html__( 'SVG Icons -----', 'sastra-essential-addons-for-elementor' ),
-				] ),
-				'condition' => [
-					'pagination_type' => 'numbered',
-					'pagination_first_last' => 'yes'
-				],
-			]
-		);
-
-		$this->add_control(
-			'pagination_disabled_arrows',
-			[
-				'label' => esc_html__( 'Show Disabled Buttons', 'sastra-essential-addons-for-elementor' ),
-				'type' => Controls_Manager::SWITCHER,
-				'return_value' => 'yes',
-				'condition' => [
-					'pagination_type' => [ 'default', 'numbered' ],
-				],
-			]
-		);
-
-		$this->add_control(
-			'pagination_range',
-			[
-				'label' => esc_html__( 'Range', 'sastra-essential-addons-for-elementor' ),
-				'type' => Controls_Manager::NUMBER,
-				'default' => 2,
-				'min' => 1,
-				'condition' => [
-					'pagination_type' => 'numbered',
-				]
-			]
-		);
-
-		$this->add_control(
-			'pagination_load_more_text',
-			[
-				'label' => esc_html__( 'Load More Text', 'sastra-essential-addons-for-elementor' ),
-				'type' => Controls_Manager::TEXT,
-				'dynamic' => [
-					'active' => true,
-				],
-				'default' => 'Load More',
-				'condition' => [
-					'pagination_type' => 'load-more',
-				]
-			]
-		);
-
-		$this->add_control(
-			'pagination_finish_text',
-			[
-				'label' => esc_html__( 'Finish Text', 'sastra-essential-addons-for-elementor' ),
-				'type' => Controls_Manager::TEXT,
-				'dynamic' => [
-					'active' => true,
-				],
-				'default' => 'No more items.',
-				'condition' => [
-					'pagination_type' => [ 'load-more', 'infinite-scroll' ],
-				]
-			]
-		);
-
-		$this->add_control(
-			'pagination_animation',
-			[
-				'label' => esc_html__( 'Select Animation', 'sastra-essential-addons-for-elementor' ),
-				'type' => Controls_Manager::SELECT,
-				'default' => 'loader-1',
-				'options' => [
-					'none' => esc_html__( 'None', 'sastra-essential-addons-for-elementor' ),
-					'loader-1' => esc_html__( 'Loader 1', 'sastra-essential-addons-for-elementor' ),
-					'loader-2' => esc_html__( 'Loader 2', 'sastra-essential-addons-for-elementor' ),
-					'loader-3' => esc_html__( 'Loader 3', 'sastra-essential-addons-for-elementor' ),
-					'loader-4' => esc_html__( 'Loader 4', 'sastra-essential-addons-for-elementor' ),
-					'loader-5' => esc_html__( 'Loader 5', 'sastra-essential-addons-for-elementor' ),
-					'loader-6' => esc_html__( 'Loader 6', 'sastra-essential-addons-for-elementor' ),
-				],
-				'condition' => [
-					'pagination_type' => [ 'load-more', 'infinite-scroll' ],
-				]
-			]
-		);
-
-		$this->add_control(
-			'pagination_align',
-			[
-				'label' => esc_html__( 'Alignment', 'sastra-essential-addons-for-elementor' ),
-				'type' => Controls_Manager::CHOOSE,
-				'options' => [
-					'left'    => [
-						'title' => esc_html__( 'Left', 'sastra-essential-addons-for-elementor' ),
-						'icon' => 'eicon-text-align-left',
-					],
-					'center' => [
-						'title' => esc_html__( 'Center', 'sastra-essential-addons-for-elementor' ),
-						'icon' => 'eicon-text-align-center',
-					],
-					'right' => [
-						'title' => esc_html__( 'Right', 'sastra-essential-addons-for-elementor' ),
-						'icon' => 'eicon-text-align-right',
-					],
-					'justify' => [
-						'title' => esc_html__( 'Justified', 'sastra-essential-addons-for-elementor' ),
-						'icon' => 'eicon-text-align-justify',
-					],
-				],
-				'default' => 'center',
-				'prefix_class' => 'tmpcoder-grid-pagination-',
-				'render_type' => 'template',
-				'separator' => 'before',
-				'condition' => [
-					'pagination_type!' => 'infinite-scroll',
-				]
-			]
-		);
-
-		$this->end_controls_section(); // End Controls Section
 
 		// Section: Request New Feature
 		tmpcoder_add_section_request_feature( $this, Controls_Manager::RAW_HTML, '' );
@@ -3625,6 +3689,7 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 				'label' => esc_html__( 'Media Overlay', 'sastra-essential-addons-for-elementor' ),
 				'tab' => Controls_Manager::TAB_STYLE,
 				'show_label' => false,
+				'condition' => ['media_overlay_on_off' => 'yes']
 			]
 		);
 		
@@ -3729,7 +3794,7 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 			[
 				'label'  => esc_html__( 'Color', 'sastra-essential-addons-for-elementor' ),
 				'type' => Controls_Manager::COLOR,
-				'default' => '#54595f',
+				'default' => tmpcoder_elementor_global_colors('primary_color'),
 				'selectors' => [
 					'{{WRAPPER}} .tmpcoder-grid-item-title .inner-block a:hover' => 'color: {{VALUE}}',
 				],
@@ -3870,8 +3935,9 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 				'default' => [
 					'top' => 0,
 					'right' => 0,
-					'bottom' => 0,
+					'bottom' => 8,
 					'left' => 0,
+                    'isLinked' => false,
 				],
 				'selectors' => [
 					'{{WRAPPER}} .tmpcoder-grid-item-title .inner-block' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
@@ -4070,7 +4136,7 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 			[
 				'label'  => esc_html__( 'Color', 'sastra-essential-addons-for-elementor' ),
 				'type' => Controls_Manager::COLOR,
-				'default' => '#9C9C9C',
+				'default' => '#333333',
 				'selectors' => [
 					'{{WRAPPER}} .tmpcoder-grid-product-categories .inner-block a' => 'color: {{VALUE}}',
 				],
@@ -4354,8 +4420,9 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 				'default' => [
 					'top' => 0,
 					'right' => 0,
-					'bottom' => 0,
+					'bottom' => 8,
 					'left' => 0,
+                    'isLinked' => false,
 				],
 				'selectors' => [
 					'{{WRAPPER}} .tmpcoder-grid-product-categories .inner-block' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
@@ -4752,7 +4819,7 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 			[
 				'label' => esc_html__( 'Unmarked Color', 'sastra-essential-addons-for-elementor' ),
 				'type' => Controls_Manager::COLOR,
-				'default' => '#D2CDCD',
+				'default' => '#333333',
 				'selectors' => [
 					'{{WRAPPER}} .tmpcoder-woo-rating i' => 'color: {{VALUE}};',
 					'{{WRAPPER}} .tmpcoder-woo-rating svg' => 'fill: {{VALUE}};'
@@ -5106,7 +5173,7 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 			[
 				'label'  => esc_html__( 'Color', 'sastra-essential-addons-for-elementor' ),
 				'type' => Controls_Manager::COLOR,
-				'default' => '#9C9C9C',
+				'default' => '#333333',
 				'selectors' => [
 					'{{WRAPPER}} .tmpcoder-grid-item-price .inner-block > span' => 'color: {{VALUE}}',
 				],
@@ -5118,7 +5185,7 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 			[
 				'label'  => esc_html__( 'Old Price Color', 'sastra-essential-addons-for-elementor' ),
 				'type' => Controls_Manager::COLOR,
-				'default' => '#9C9C9C',
+				'default' => '#33333399',
 				'selectors' => [
 					'{{WRAPPER}} .tmpcoder-grid-item-price .inner-block > span del' => 'color: {{VALUE}}',
 				],
@@ -5253,8 +5320,9 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 				'default' => [
 					'top' => 0,
 					'right' => 0,
-					'bottom' => 0,
+					'bottom' => 8,
 					'left' => 0,
+                    'isLinked' => false,
 				],
 				'selectors' => [
 					'{{WRAPPER}} .tmpcoder-grid-item-price .inner-block > span' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
@@ -5488,7 +5556,7 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 			[
 				'label'  => esc_html__( 'Color', 'sastra-essential-addons-for-elementor' ),
 				'type' => Controls_Manager::COLOR,
-				'default' => '#333333',
+				'default' => tmpcoder_elementor_global_colors('primary_color'),
 				'selectors' => [
 					'{{WRAPPER}} .tmpcoder-grid-item-add-to-cart .inner-block a' => 'color: {{VALUE}}',
 				],
@@ -5511,7 +5579,7 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 			[
 				'label'  => esc_html__( 'Border Color', 'sastra-essential-addons-for-elementor' ),
 				'type' => Controls_Manager::COLOR,
-				'default' => '#E8E8E8',
+				'default' => tmpcoder_elementor_global_colors('primary_color'),
 				'selectors' => [
 					'{{WRAPPER}} .tmpcoder-grid-item-add-to-cart .inner-block a' => 'border-color: {{VALUE}}',
 				],
@@ -5540,7 +5608,7 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 			[
 				'label'  => esc_html__( 'Color', 'sastra-essential-addons-for-elementor' ),
 				'type' => Controls_Manager::COLOR,
-				'default' => '#5729d9',
+				'default' => '#FFFFFF',
 				'selectors' => [
 					'{{WRAPPER}} .tmpcoder-grid-item-add-to-cart .inner-block a:hover' => 'color: {{VALUE}}',
 				],
@@ -5552,6 +5620,7 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 			[
 				'label'  => esc_html__( 'Background Color', 'sastra-essential-addons-for-elementor' ),
 				'type' => Controls_Manager::COLOR,
+                'default' => tmpcoder_elementor_global_colors('primary_color'),
 				'selectors' => [
 					'{{WRAPPER}} .tmpcoder-grid-item-add-to-cart .inner-block a.tmpcoder-button-none:hover' => 'background-color: {{VALUE}}',
 					'{{WRAPPER}} .tmpcoder-grid-item-add-to-cart .inner-block a.added_to_cart:hover' => 'background-color: {{VALUE}}',
@@ -5566,7 +5635,7 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 			[
 				'label'  => esc_html__( 'Border Color', 'sastra-essential-addons-for-elementor' ),
 				'type' => Controls_Manager::COLOR,
-				'default' => '#5729d9',
+				'default' => tmpcoder_elementor_global_colors('primary_color'),
 				'selectors' => [
 					'{{WRAPPER}} .tmpcoder-grid-item-add-to-cart .inner-block a:hover' => 'border-color: {{VALUE}}',
 				]
@@ -5600,7 +5669,7 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 			[
 				'label' => esc_html__( 'Transition Duration', 'sastra-essential-addons-for-elementor' ),
 				'type' => Controls_Manager::NUMBER,
-				'default' => 0.1,
+				'default' => 0.3,
 				'min' => 0,
 				'max' => 5,
 				'step' => 0.1,
@@ -5683,10 +5752,11 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px' ],
 				'default' => [
-					'top' => 2,
-					'right' => 2,
-					'bottom' => 2,
-					'left' => 2,
+					'top' => 1,
+					'right' => 1,
+					'bottom' => 1,
+					'left' => 1,
+                    'isLinked' => true,
 				],
 				'selectors' => [
 					'{{WRAPPER}} .tmpcoder-grid-item-add-to-cart .inner-block a' => 'border-width: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
@@ -5705,10 +5775,11 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', '%' ],
 				'default' => [
-					'top' => 5,
-					'right' => 15,
-					'bottom' => 5,
-					'left' => 15,
+					'top' => 8,
+					'right' => 25,
+					'bottom' => 8,
+					'left' => 25,
+                    'isLinked' => false,
 				],
 				'selectors' => [
 					'{{WRAPPER}} .tmpcoder-grid-item-add-to-cart .inner-block a' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
@@ -5724,10 +5795,11 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', '%' ],
 				'default' => [
-					'top' => 15,
+					'top' => 8,
 					'right' => 0,
 					'bottom' => 0,
 					'left' => 0,
+                    'isLinked' => false,
 				],
 				'selectors' => [
 					'{{WRAPPER}} .tmpcoder-grid-item-add-to-cart .inner-block' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
@@ -5743,10 +5815,11 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', '%' ],
 				'default' => [
-					'top' => 2,
-					'right' => 2,
-					'bottom' => 2,
-					'left' => 2,
+					'top' => 3,
+					'right' => 3,
+					'bottom' => 3,
+					'left' => 3,
+                    'isLinked' => true,
 				],
 				'selectors' => [
 					'{{WRAPPER}} .tmpcoder-grid-item-add-to-cart .inner-block a' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
@@ -7950,7 +8023,7 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 			[
 				'label'  => esc_html__( 'Border Color', 'sastra-essential-addons-for-elementor' ),
 				'type' => Controls_Manager::COLOR,
-				'default' => '#E8E8E8',
+				'default' => tmpcoder_elementor_global_colors('primary_color'),
 				'selectors' => [
 					'{{WRAPPER}} .tmpcoder-grid-pagination a' => 'border-color: {{VALUE}}',
 					'{{WRAPPER}} .tmpcoder-grid-pagination > div > span' => 'border-color: {{VALUE}}',
@@ -8013,7 +8086,7 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 			[
 				'label'  => esc_html__( 'Color', 'sastra-essential-addons-for-elementor' ),
 				'type' => Controls_Manager::COLOR,
-				'default' => '#FFFFFF',
+				'default' => tmpcoder_elementor_global_colors('primary_color'),
 				'selectors' => [
 					'{{WRAPPER}} .tmpcoder-grid-pagination a:hover' => 'color: {{VALUE}}',
 					'{{WRAPPER}} .tmpcoder-grid-pagination a:hover svg' => 'fill: {{VALUE}}',
@@ -8028,7 +8101,7 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 			[
 				'label'  => esc_html__( 'Background Color', 'sastra-essential-addons-for-elementor' ),
 				'type' => Controls_Manager::COLOR,
-				'default' => '#5729d9',
+				'default' => '#FFFFFF',
 				'selectors' => [
 					'{{WRAPPER}} .tmpcoder-grid-pagination a:hover' => 'background-color: {{VALUE}}',
 					'{{WRAPPER}} .tmpcoder-grid-pagination > div > span:not(.tmpcoder-disabled-arrow):hover' => 'background-color: {{VALUE}}',
@@ -8042,7 +8115,7 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 			[
 				'label'  => esc_html__( 'Border Color', 'sastra-essential-addons-for-elementor' ),
 				'type' => Controls_Manager::COLOR,
-				'default' => '#E8E8E8',
+				'default' => tmpcoder_elementor_global_colors('primary_color'),
 				'selectors' => [
 					'{{WRAPPER}} .tmpcoder-grid-pagination a:hover' => 'border-color: {{VALUE}}',
 					'{{WRAPPER}} .tmpcoder-grid-pagination > div > span:not(.tmpcoder-disabled-arrow):hover' => 'border-color: {{VALUE}}',
@@ -8126,7 +8199,7 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 					'dashed' => esc_html__( 'Dashed', 'sastra-essential-addons-for-elementor' ),
 					'groove' => esc_html__( 'Groove', 'sastra-essential-addons-for-elementor' ),
 				],
-				'default' => 'none',
+				'default' => 'solid',
 				'selectors' => [
 					'{{WRAPPER}} .tmpcoder-grid-pagination a' => 'border-style: {{VALUE}};',
 					'{{WRAPPER}} .tmpcoder-grid-pagination > div > span' => 'border-style: {{VALUE}};',
@@ -8513,15 +8586,22 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 			
 		}
 		if ( 'related-product' === $settings['query_selection'] ) {
+
 			// Get Product cat id 
-			global $product;
-			if ( ! $product ) {
-				return;
+			if (tmpcoder_is_elementor_editor_mode()) {
+				$current_product_id = tmpcoder_get_last_product_id();
 			}
-			$current_product_id = $product->get_id();
+			else
+			{
+				global $product;
+				if ( ! $product ) {
+					return;
+				}
+				$current_product_id = $product->get_id();
+			}
 
 			$cats_array = array();
-			$terms = wp_get_post_terms( $product->get_id(), 'product_cat' );
+			$terms = wp_get_post_terms( $current_product_id, 'product_cat' );
 			foreach ( $terms as $term ) {
 				$children = get_term_children( $term->term_id, 'product_cat' );
 				if ( !sizeof( $children ) )
@@ -8965,14 +9045,24 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 			$src2 = '';
 		}
 
-		if ( has_post_thumbnail() ) {
+		// if ( has_post_thumbnail() ) {
 			echo '<div class="tmpcoder-grid-image-wrap" data-src="'. esc_url( $src ) .'"  data-img-on-hover="'. esc_attr($settings['secondary_img_on_hover']) .'" data-src-secondary="'. esc_url( $src2 ) .'">';
+
+				if (!has_post_thumbnail() && isset($settings['tmpcoder_fallback_image_switch']) && $settings['tmpcoder_fallback_image_switch'] == 'yes') {
+						
+					if (isset($settings['tmpcoder_fallback_image']['url']) && $settings['tmpcoder_fallback_image']['url'] != '') {
+						$product_image_html = '<img src="'.esc_url($settings['tmpcoder_fallback_image']['url']).'" width="366" height="366" alt="'.esc_attr(get_the_title()).'">';
+						$src = $settings['tmpcoder_fallback_image']['url'];
+					}
+				}
+
 				echo wp_kses_post($product_image_html); 
+
 				if ( 'yes' == $settings['secondary_img_on_hover'] && !empty($src2)) {
 					echo wp_kses_post($second_image_html);
 				}
 			echo '</div>';
-		}
+		// }
 	}
 
 	// Render Media Overlay

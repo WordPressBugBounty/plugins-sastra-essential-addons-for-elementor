@@ -985,3 +985,43 @@ body .select2-container .select2-selection--single .select2-selection__arrow {
 /* Add css for update elementor motion effects length - end */
 
 .notshow{display: none!important;}
+
+
+/* Post Content Custom Css - Start */
+
+.single-post .tmpcoder-post-content > p {
+    margin-top: 28px;
+    margin-bottom: 28px;
+}
+.single-post .tmpcoder-post-content > p:first-child {
+    margin-top: 0;
+}
+.single-post .tmpcoder-post-content > h1,
+.single-post .tmpcoder-post-content > h2,
+.single-post .tmpcoder-post-content > h3,
+.single-post .tmpcoder-post-content > h4,
+.single-post .tmpcoder-post-content > h5,
+.single-post .tmpcoder-post-content > h6 {
+    margin-top: 28px;
+    margin-bottom: 14px;
+}
+.single-post .tmpcoder-post-content > h1 + p,
+.single-post .tmpcoder-post-content > h2 + p,
+.single-post .tmpcoder-post-content > h3 + p,
+.single-post .tmpcoder-post-content > h4 + p,
+.single-post .tmpcoder-post-content > h5 + p,
+.single-post .tmpcoder-post-content > h6 + p{
+    margin-top: 14px;
+}
+.single-post .tmpcoder-post-content > p:has(+ul) {
+    margin-bottom: 0;
+}
+.single-post .tmpcoder-post-content > ul {
+    margin-top: 14px;
+    margin-bottom: 28px;
+}
+.single-post .tmpcoder-post-content > img {
+    border-radius: var(--button-border-radius);
+}
+
+/* Post Content Custom Css - end */

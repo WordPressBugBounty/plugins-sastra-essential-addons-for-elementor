@@ -208,6 +208,8 @@ class TMPCODER_Templates_Actions {
 			// Send ID to JS
 			echo absint($template_id);
 		}
+
+		flush_rewrite_rules();
 	}
 }
 

@@ -15227,6 +15227,11 @@ a.tmpcoder-ajax-img-wrap {
 	background-color: #1da1f2
 }
 
+.tmpcoder-sharing-official .tmpcoder-sharing-x-twitter i,
+.tmpcoder-sharing-official .tmpcoder-sharing-x-twitter span {
+	background-color: #000;
+}
+
 .tmpcoder-sharing-official .tmpcoder-sharing-linkedin-in i,
 .tmpcoder-sharing-official .tmpcoder-sharing-linkedin-in span {
 	background-color: #0077b5
@@ -15371,6 +15376,12 @@ a.tmpcoder-ajax-img-wrap {
 .tmpcoder-sharing-official.tmpcoder-sharing-label-tr .tmpcoder-sharing-twitter span {
 	color: #1da1f2;
 	background-color: #fff0
+}
+
+.tmpcoder-sharing-official.tmpcoder-sharing-icon-tr .tmpcoder-sharing-x-twitter i,
+.tmpcoder-sharing-official.tmpcoder-sharing-label-tr .tmpcoder-sharing-x-twitter span {
+	color: #fff;
+	background-color: transparent;
 }
 
 .tmpcoder-sharing-official.tmpcoder-sharing-icon-tr .tmpcoder-sharing-linkedin-in i,
@@ -16549,3 +16560,12 @@ body:not(.rtl) .tmpcoder-product-qty-align-both .tmpcoder-quantity-wrapper i:las
 	width: 100%;
 	font-weight: 400
 }
+
+/* Css for even (same height image) in media grid widget - start */
+
+.tmpcoder-media-grid-even-layout-yes .tmpcoder-grid-image-wrap img {
+	height: 100%;
+	object-fit: cover;
+}
+
+/* Css for even (same height image) in media grid widget - end */

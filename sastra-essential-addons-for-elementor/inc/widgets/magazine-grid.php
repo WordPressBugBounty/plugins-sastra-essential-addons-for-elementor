@@ -602,6 +602,7 @@ class TMPCODER_Magazine_Grid extends Widget_Base {
 			[
 				'label' => esc_html__( 'Exclude Items without Thumbnail', 'sastra-essential-addons-for-elementor' ),
 				'type' => Controls_Manager::SWITCHER,
+                'default' => 'yes',
 				'return_value' => 'yes',
 				'label_block' => false
 			]
@@ -699,7 +700,7 @@ class TMPCODER_Magazine_Grid extends Widget_Base {
 
 		$this->add_control_force_responsive_one_column();
 
-		// GOGA - better location
+		// TMPCODER INFO -  better location
 		$this->add_control_open_links_in_new_tab();
 
 		$this->add_group_control(
@@ -793,7 +794,7 @@ class TMPCODER_Magazine_Grid extends Widget_Base {
 				'label' => esc_html__( 'Horizontal Gutter', 'sastra-essential-addons-for-elementor' ),
 				'type' => Controls_Manager::SLIDER,
 				'default' => [
-					'size' => 4,
+					'size' => 10,
 				],
 				'widescreen_default' => [
 					'size' => 4,
@@ -832,7 +833,7 @@ class TMPCODER_Magazine_Grid extends Widget_Base {
 				'label' => esc_html__( 'Vertical Gutter', 'sastra-essential-addons-for-elementor' ),
 				'type' => Controls_Manager::SLIDER,
 				'default' => [
-					'size' => 4,
+					'size' => 10,
 				],
 				'widescreen_default' => [
 					'size' => 4,
@@ -1031,7 +1032,7 @@ class TMPCODER_Magazine_Grid extends Widget_Base {
 					'span' => 'span',
 					'P' => 'p'
 				],
-				'default' => 'h2',
+				'default' => 'h3',
 				'condition' => [
 					'element_select' => 'title',
                 ],
@@ -1179,7 +1180,7 @@ class TMPCODER_Magazine_Grid extends Widget_Base {
 			[
 				'label' => esc_html__( 'Select Styling', 'sastra-essential-addons-for-elementor' ),
 				'type' => Controls_Manager::SELECT,
-				'default' => 'tmpcoder-grid-tax-style-1',
+				'default' => 'tmpcoder-grid-tax-style-2',
 				'options' => [
 					'tmpcoder-grid-tax-style-1' => esc_html__( 'Taxonomy Style 1', 'sastra-essential-addons-for-elementor' ),
 					'tmpcoder-grid-tax-style-2' => esc_html__( 'Taxonomy Style 2', 'sastra-essential-addons-for-elementor' ),
@@ -1542,26 +1543,27 @@ class TMPCODER_Magazine_Grid extends Widget_Base {
 						'element_align_vr' => 'bottom',
 						'element_align_hr' => 'left',
 					],
+                    [
+                        'element_select' => 'date',
+                        'element_align_vr' => 'bottom',
+                        'element_display' => 'inline',
+                        'element_align_hr' => 'left',
+                    ],
 					[
-						'element_select' => 'author',
+                        'element_select' => 'separator',
 						'element_align_vr' => 'bottom',
 						'element_display' => 'inline',
 						'element_align_hr' => 'left',
 					],
-					[
-						'element_select' => 'separator',
-						'element_align_vr' => 'bottom',
-						'element_display' => 'inline',
-						'element_align_hr' => 'left',
-					],
-					[
-						'element_select' => 'date',
-						'element_align_vr' => 'bottom',
-						'element_display' => 'inline',
-						'element_align_hr' => 'left',
-					],
+                    [
+                        'element_select' => 'author',
+                        'element_align_vr' => 'bottom',
+                        'element_display' => 'inline',
+                        'element_align_hr' => 'left',
+                    ],
 				],
 				'title_field' => '{{{ element_select.charAt(0).toUpperCase() + element_select.slice(1) }}}',
+				'prevent_empty' => false,
 			]
 		);
 
@@ -1580,6 +1582,16 @@ class TMPCODER_Magazine_Grid extends Widget_Base {
 				'tab' => Controls_Manager::TAB_CONTENT,
 			]
 		);
+
+		$this->add_control(
+			'media_overlay_on_off',
+			[
+				'label' => esc_html__( 'Media Overlay', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::SWITCHER,
+				'default' => 'yes',
+				'return_value' => 'yes',
+			]
+		);	
 
 		$this->add_control(
 			'overlay_width',
@@ -1608,6 +1620,7 @@ class TMPCODER_Magazine_Grid extends Widget_Base {
 					'{{WRAPPER}} .tmpcoder-grid-media-hover-bg[class*="-right"]' => 'top:calc((100% - {{overlay_hegiht.SIZE}}{{overlay_hegiht.UNIT}})/2);right:calc((100% - {{SIZE}}{{UNIT}})/2);',
 					'{{WRAPPER}} .tmpcoder-grid-media-hover-bg[class*="-left"]' => 'top:calc((100% - {{overlay_hegiht.SIZE}}{{overlay_hegiht.UNIT}})/2);left:calc((100% - {{SIZE}}{{UNIT}})/2);',
 				],
+				'condition' => ['media_overlay_on_off' => 'yes']
 			]
 		);
 
@@ -1639,6 +1652,7 @@ class TMPCODER_Magazine_Grid extends Widget_Base {
 					'{{WRAPPER}} .tmpcoder-grid-media-hover-bg[class*="-left"]' => 'top:calc((100% - {{SIZE}}{{UNIT}})/2);left:calc((100% - {{overlay_width.SIZE}}{{overlay_width.UNIT}})/2);',
 				],
 				'separator' => 'after',
+				'condition' => ['media_overlay_on_off' => 'yes']
 			]
 		);
 
@@ -1650,6 +1664,7 @@ class TMPCODER_Magazine_Grid extends Widget_Base {
 				'default' => 'yes',
 				'return_value' => 'yes',
 				'separator' => 'after',
+				// 'condition' => ['media_overlay_on_off' => 'yes']
 			]
 		);
 
@@ -1658,7 +1673,8 @@ class TMPCODER_Magazine_Grid extends Widget_Base {
 			[
 				'label' => esc_html__( 'Select Animation', 'sastra-essential-addons-for-elementor' ),
 				'type' => 'tmpcoder-animations-alt',
-				'default' => 'fade-out',
+				'default' => 'fade-in',
+				'condition' => ['media_overlay_on_off' => 'yes']
 			]
 		);
 
@@ -1679,6 +1695,7 @@ class TMPCODER_Magazine_Grid extends Widget_Base {
 				],
 				'condition' => [
 					'overlay_animation!' => 'none',
+					'media_overlay_on_off' => 'yes'
 				],
 			]
 		);
@@ -1697,6 +1714,7 @@ class TMPCODER_Magazine_Grid extends Widget_Base {
 				],
 				'condition' => [
 					'overlay_animation!' => 'none',
+					'media_overlay_on_off' => 'yes'
 				],
 			]
 		);
@@ -1710,6 +1728,7 @@ class TMPCODER_Magazine_Grid extends Widget_Base {
 				'default' => 'ease-default',
 				'condition' => [
 					'overlay_animation!' => 'none',
+					'media_overlay_on_off' => 'yes'
 				],
 			]
 		);
@@ -1730,6 +1749,7 @@ class TMPCODER_Magazine_Grid extends Widget_Base {
 				'default' => 'medium',
 				'condition' => [
 					'overlay_animation!' => 'none',
+					'media_overlay_on_off' => 'yes'
 				],
 			]
 		);
@@ -1744,6 +1764,7 @@ class TMPCODER_Magazine_Grid extends Widget_Base {
 				'separator' => 'after',
 				'condition' => [
 					'overlay_animation!' => 'none',
+					'media_overlay_on_off' => 'yes'
 				],
 			]
 		);
@@ -1871,6 +1892,9 @@ class TMPCODER_Magazine_Grid extends Widget_Base {
 				'label' => esc_html__( 'Media Overlay', 'sastra-essential-addons-for-elementor' ),
 				'tab' => Controls_Manager::TAB_STYLE,
 				'show_label' => false,
+				'condition' => [
+					'media_overlay_on_off' => 'yes'
+				],
 			]
 		);
 		
@@ -1890,11 +1914,11 @@ class TMPCODER_Magazine_Grid extends Widget_Base {
 					'color_stop' => [
 						'default' => [
 							'unit' => '%',
-							'size' => 46,
+							'size' => 55,
 						]
 					],
 					'color_b' => [
-						'default' => 'rgba(91, 229, 206, 0.8705882352941177)',
+						'default' => '#5729D999',
 					]
 				],
 				'selector' => '{{WRAPPER}} .tmpcoder-grid-media-hover-bg'
@@ -2241,9 +2265,10 @@ class TMPCODER_Magazine_Grid extends Widget_Base {
 				'size_units' => [ 'px', '%' ],
 				'default' => [
 					'top' => 0,
-					'right' => 0,
-					'bottom' => 5,
-					'left' => 20,
+					'right' => 10,
+					'bottom' => 10,
+					'left' => 15,
+                    'isLinked' => false,
 				],
 				'selectors' => [
 					'{{WRAPPER}} .tmpcoder-grid-item-title .inner-block' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
@@ -2821,9 +2846,10 @@ class TMPCODER_Magazine_Grid extends Widget_Base {
 				'size_units' => [ 'px', '%' ],
 				'default' => [
 					'top' => 0,
-					'right' => 0,
+					'right' => 10,
 					'bottom' => 20,
-					'left' => 10,
+					'left' => 15,
+                    'isLinked' => false,
 				],
 				'render_type' => 'template',
 				'selectors' => [
@@ -4540,7 +4566,8 @@ class TMPCODER_Magazine_Grid extends Widget_Base {
 					'top' => 0,
 					'right' => 0,
 					'bottom' => 0,
-					'left' => 22,
+					'left' => 15,
+                    'isLinked' => false,
 				],
 				'selectors' => [
 					'{{WRAPPER}} .tmpcoder-grid-tax-style-1 .inner-block' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
@@ -4641,7 +4668,7 @@ class TMPCODER_Magazine_Grid extends Widget_Base {
 			[
 				'label'  => esc_html__( 'Color', 'sastra-essential-addons-for-elementor' ),
 				'type' => Controls_Manager::COLOR,
-				'default' => '#ffffff',
+				'default' => '',
 				'selectors' => [
 					'{{WRAPPER}} .tmpcoder-grid-tax-style-2 .inner-block a:hover' => 'color: {{VALUE}}',
 					'{{WRAPPER}} .tmpcoder-grid-tax-style-2 .tmpcoder-pointer-item:before' => 'background-color: {{VALUE}}',
@@ -4655,7 +4682,7 @@ class TMPCODER_Magazine_Grid extends Widget_Base {
 			[
 				'label'  => esc_html__( 'Background Color', 'sastra-essential-addons-for-elementor' ),
 				'type' => Controls_Manager::COLOR,
-				'default' => '#045CB4',
+				'default' => '',
 				'selectors' => [
 					'{{WRAPPER}} .tmpcoder-grid-tax-style-2 .inner-block a:hover' => 'background-color: {{VALUE}}',
 				]
@@ -4834,10 +4861,11 @@ class TMPCODER_Magazine_Grid extends Widget_Base {
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', '%' ],
 				'default' => [
-					'top' => 2,
+					'top' => 0,
 					'right' => 5,
-					'bottom' => 2,
+					'bottom' => 0,
 					'left' => 5,
+                    'isLinked' => false,
 				],
 				'selectors' => [
 					'{{WRAPPER}} .tmpcoder-grid-tax-style-2 .inner-block a' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
@@ -4855,8 +4883,9 @@ class TMPCODER_Magazine_Grid extends Widget_Base {
 				'default' => [
 					'top' => 0,
 					'right' => 0,
-					'bottom' => 0,
-					'left' => 20,
+					'bottom' => 10,
+					'left' => 15,
+                    'isLinked' => false,
 				],
 				'selectors' => [
 					'{{WRAPPER}} .tmpcoder-grid-tax-style-2 .inner-block' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
@@ -5092,19 +5121,43 @@ class TMPCODER_Magazine_Grid extends Widget_Base {
 		if ( 'current' === $settings[ 'query_source' ] ) {
 			global $wp_query;
 
-			// GOGA - offset
+			// TMPCODER INFO -  offset
 			$args = $wp_query->query_vars;
 			$args['posts_per_page'] = $query_posts_per_page;
 			$args['orderby'] = $query_order_by;
 			$args['offset'] = ( $paged - 1 ) * $query_posts_per_page + intval($settings[ 'query_offset' ]);
+
+
+			if (tmpcoder_is_elementor_editor_mode()) {
+				$args = [
+					'post_type' => 'post',
+					'orderby' => $query_order_by,
+					'paged' => $paged,
+					'offset' => ( $paged - 1 ) * $query_posts_per_page + intval($settings[ 'query_offset' ])
+				];
+
+				// Exclude Items without F/Image
+				if ( 'yes' === $settings['query_exclude_no_images'] ) {
+					$args['meta_key'] = '_thumbnail_id';
+				}
+			}
+
 		}
 
 		// Related
 		if ( 'related' === $settings[ 'query_source' ] ) {
+
+			if (tmpcoder_is_elementor_editor_mode()) {
+				$current_post_id = tmpcoder_get_last_post_id();
+			}
+			else{
+				$current_post_id = get_the_ID();
+			}
+
 			$args = [
-				'post_type' => get_post_type( get_the_ID() ),
+				'post_type' => get_post_type( $current_post_id ),
 				'tax_query' => $this->get_tax_query_args(),
-				'post__not_in' => [ get_the_ID() ],
+				'post__not_in' => [ $current_post_id ],
 				'ignore_sticky_posts' => 1,
 				'posts_per_page' => $query_posts_per_page,
 				'orderby' => $query_order_by,
@@ -5125,11 +5178,19 @@ class TMPCODER_Magazine_Grid extends Widget_Base {
 		$tax_query = [];
 
 		if ( 'related' === $settings[ 'query_source' ] ) {
+
+			if (tmpcoder_is_elementor_editor_mode()) {
+				$current_post_id = tmpcoder_get_last_post_id();
+			}
+			else{
+				$current_post_id = get_the_ID();
+			}
+			
 			$tax_query = [
 				[
 					'taxonomy' => $settings['query_tax_selection'],
 					'field' => 'term_id',
-					'terms' => wp_get_object_terms( get_the_ID(), $settings['query_tax_selection'], array( 'fields' => 'ids' ) ),
+					'terms' => wp_get_object_terms( $current_post_id, $settings['query_tax_selection'], array( 'fields' => 'ids' ) ),
 				]
 			];
 		} else {

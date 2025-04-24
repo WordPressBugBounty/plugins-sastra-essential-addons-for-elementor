@@ -108,7 +108,7 @@
             // }
             // });
 
-            // GOGA - needs condition check if there are any images
+            // TMPCODER INFO -  needs condition check if there are any images
             if ($scope.find('.tmpcoder-slider-img').length !== 0) {
                 $scope.find('.tmpcoder-advanced-slider').css('height', $scope.find('.slick-current').outerHeight());
 
@@ -241,7 +241,7 @@
                         $advancedSlider.find('video').attr('height', $scope.find('.tmpcoder-slider-item').height());
                     }
 
-                    // GOGA - remove condition if not necessary
+                    // TMPCODER INFO -  remove condition if not necessary
                     if ($(this).find('.tmpcoder-slider-content')) {
                         $(this).find('.tmpcoder-slider-content').fadeOut(300);
                     }

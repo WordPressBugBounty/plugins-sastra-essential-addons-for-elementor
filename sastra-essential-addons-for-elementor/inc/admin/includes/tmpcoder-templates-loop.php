@@ -227,6 +227,29 @@ class TMPCODER_Templates_Loop {
 	}
 
 	/**
+	** Render Create Template Popup
+	*/
+	public static function render_delete_template_confirm_popup() {
+		?>
+		<div class="tmpcoder-delete-template-confirm-popup-wrap tmpcoder-admin-popup-wrap">
+            <div class="tmpcoder-delete-template-popup tmpcoder-admin-popup">
+                <div id="tmpcoder-delete-template-confirm-popup">
+					<header>
+						<h2><?php esc_html_e( 'Are you sure you want to delete this template?', 'sastra-essential-addons-for-elementor' ); ?></h2>
+						<p><?php echo wp_kses_post(__( 'This template and its settings will be <strong>permanently removed</strong> from your site. You <strong>won’t be able to recover it</strong> later.', 'sastra-essential-addons-for-elementor' )); ?></p>
+					</header>
+                    <div class="popup-action">
+						<a class="button button-primary tmpcoder-delete-template-confirm-button"><?php esc_html_e('Delete Template', 'sastra-essential-addons-for-elementor') ?></a>
+                        <a class="button button-secondary tmpcoder-delete-template-confirm-popup-close"><?php esc_html_e('Cancel', 'sastra-essential-addons-for-elementor') ?></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+		<?php
+	}
+	
+
+	/**
 	** Check if Library Template Exists
 	*/
 	public static function template_exists( $slug ) {

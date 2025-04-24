@@ -146,12 +146,13 @@ class TMPCODER_Content_Ticker extends Widget_Base {
 
 	public function add_section_ticker_items() {}
 
-	private array $post_types = [];
+	// private array $post_types = [];
+	public $post_types;
 
-	public function add_control_query_source () {
+	public function add_control_query_source() {
 
 		// Get Available Post Types
-		// $this->post_types = [];
+		$this->post_types = [];
 		$this->post_types['post'] = esc_html__( 'Posts', 'sastra-essential-addons-for-elementor' );
 		$this->post_types['page'] = esc_html__( 'Pages', 'sastra-essential-addons-for-elementor' );
 
@@ -161,11 +162,11 @@ class TMPCODER_Content_Ticker extends Widget_Base {
 				continue;
 			}
 
-			/*if ( ! tmpcoder_is_availble() ) {
-				$this->post_types['pro-'. substr($slug, 0, 2)] = esc_html( $title ) .' (Expert)';
+			if ( ! tmpcoder_is_availble() ) {
+				$this->post_types['pro-'. substr($slug, 0, 2)] = esc_html( $title ) .' (Pro)';
 			} else {
 				$this->post_types[$slug] = esc_html( $title );
-			}*/
+			}
 		}
 
 		$this->post_types['pro-pd'] = 'Products (Pro)';
@@ -338,6 +339,7 @@ class TMPCODER_Content_Ticker extends Widget_Base {
 
 		// Manual Selection
 		foreach ( $this->post_types as $slug => $title ) {
+
 			$this->add_control(
 				'query_manual_'. $slug,
 				[

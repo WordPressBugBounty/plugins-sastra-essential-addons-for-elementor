@@ -235,7 +235,7 @@ class TMPCODER_Dual_Button extends Widget_Base {
 				'dynamic' => [
 					'active' => true,
 				],
-				'default' => 'Go 1',
+				'default' => 'Go',
 				'condition' => [
 					'button_a_hover_animation' => ['tmpcoder-button-winona','tmpcoder-button-rayen-left','tmpcoder-button-rayen-right']
 				],
@@ -260,7 +260,7 @@ class TMPCODER_Dual_Button extends Widget_Base {
 				'size_units' => [ '%', 'px' ],
 				'default' => [
 					'unit' => 'px',
-					'size' => 140,
+					'size' => 180,
 				],
 				'selectors' => [
 					'{{WRAPPER}} .tmpcoder-button-a-wrap' => 'max-width: {{SIZE}}{{UNIT}};',
@@ -546,7 +546,7 @@ class TMPCODER_Dual_Button extends Widget_Base {
 				'size_units' => [ '%', 'px' ],
 				'default' => [
 					'unit' => 'px',
-					'size' => 140,
+					'size' => 180,
 				],
 				'selectors' => [
 					'{{WRAPPER}} .tmpcoder-button-b-wrap' => 'max-width: {{SIZE}}{{UNIT}};',
@@ -783,8 +783,11 @@ class TMPCODER_Dual_Button extends Widget_Base {
 				'name' => 'button_a_bg_color',
 				'types' => [ 'classic', 'gradient' ],
 				'fields_options' => [
+                    'background' => [
+                        'default' => 'classic',
+                    ],
 					'color' => [
-						'default' => '#5729d9',
+						'default' => '#FFFFFF',
 					],
 				],
 				'selector' => '{{WRAPPER}} .tmpcoder-button-a'
@@ -796,7 +799,7 @@ class TMPCODER_Dual_Button extends Widget_Base {
 			[
 				'label' => esc_html__( 'Text Color', 'sastra-essential-addons-for-elementor' ),
 				'type' => Controls_Manager::COLOR,
-				'default' => '#ffffff',
+				'default' => tmpcoder_elementor_global_colors('primary_color'),
 				'selectors' => [
 					'{{WRAPPER}} .tmpcoder-button-text-a' => 'color: {{VALUE}}',
 					'{{WRAPPER}} .tmpcoder-button-icon-a' => 'color: {{VALUE}}',
@@ -828,8 +831,11 @@ class TMPCODER_Dual_Button extends Widget_Base {
 				'name' => 'button_a_hover_bg_color',
 				'types' => [ 'classic', 'gradient' ],
 				'fields_options' => [
+                    'background' => [
+                        'default' => 'classic',
+                    ],
 					'color' => [
-						'default' => '#045CB4',
+						'default' => tmpcoder_elementor_global_colors('primary_color'),
 					],
 				],
 				'selector' => '	{{WRAPPER}} .tmpcoder-button-a[class*="elementor-animation"]:hover,
@@ -876,15 +882,15 @@ class TMPCODER_Dual_Button extends Widget_Base {
 					],
 					'width' => [
 						'default' => [
-							'top' => '0',
+							'top' => '1',
 							'right' => '1',
-							'bottom' => '0',
-							'left' => '0',
+							'bottom' => '1',
+							'left' => '1',
 							'isLinked' => true,
 						],
 					],
 					'color' => [
-						'default' => '#E8E8E8',
+						'default' => tmpcoder_elementor_global_colors('primary_color'),
 					],
 				],
 				'selector' => '{{WRAPPER}} .tmpcoder-button-a',
@@ -899,10 +905,11 @@ class TMPCODER_Dual_Button extends Widget_Base {
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', '%' ],
 				'default' => [
-					'top' => 3,
+					'top' => 5,
 					'right' => 0,
 					'bottom' => 0,
-					'left' => 3,
+					'left' => 5,
+                    'isLinked' => false,
 				],
 				'selectors' => [
 					'{{WRAPPER}} .tmpcoder-button-a' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
@@ -938,8 +945,11 @@ class TMPCODER_Dual_Button extends Widget_Base {
 				'name' => 'button_b_bg_color',
 				'types' => [ 'classic', 'gradient' ],
 				'fields_options' => [
+                    'background' => [
+                        'default' => 'classic',
+                    ],
 					'color' => [
-						'default' => '#5729d9',
+						'default' => '#FFFFFF',
 					],
 				],
 				'selector' => '{{WRAPPER}} .tmpcoder-button-b'
@@ -951,7 +961,7 @@ class TMPCODER_Dual_Button extends Widget_Base {
 			[
 				'label' => esc_html__( 'Text Color', 'sastra-essential-addons-for-elementor' ),
 				'type' => Controls_Manager::COLOR,
-				'default' => '#ffffff',
+				'default' => tmpcoder_elementor_global_colors('primary_color'),
 				'selectors' => [
 					'{{WRAPPER}} .tmpcoder-button-text-b' => 'color: {{VALUE}}',
 					'{{WRAPPER}} .tmpcoder-button-icon-b' => 'color: {{VALUE}}',
@@ -983,8 +993,11 @@ class TMPCODER_Dual_Button extends Widget_Base {
 				'name' => 'button_b_hover_bg_color',
 				'types' => [ 'classic', 'gradient' ],
 				'fields_options' => [
+                    'background' => [
+                        'default' => 'classic',
+                    ],
 					'color' => [
-						'default' => '#045CB4',
+						'default' => tmpcoder_elementor_global_colors('primary_color'),
 					],
 				],
 				'selector' => '	{{WRAPPER}} .tmpcoder-button-b[class*="elementor-animation"]:hover,
@@ -1026,8 +1039,20 @@ class TMPCODER_Dual_Button extends Widget_Base {
 				'name' => 'button_b_border',
 				'label' => esc_html__( 'Border', 'sastra-essential-addons-for-elementor' ),
 				'fields_options' => [
-					'color' => [
-						'default' => '#E8E8E8',
+                    'border' => [ // Border type
+                        'default' => 'solid',
+                    ],
+                    'width' => [
+                        'default' => [
+                            'top' => 1,
+                            'right' => 1,
+                            'bottom' => 1,
+                            'left' => 0,
+                            'isLinked' => false,
+                        ],
+                    ],
+                    'color' => [
+						'default' => tmpcoder_elementor_global_colors('primary_color'),
 					],
 				],
 				'selector' => '{{WRAPPER}} .tmpcoder-button-b',

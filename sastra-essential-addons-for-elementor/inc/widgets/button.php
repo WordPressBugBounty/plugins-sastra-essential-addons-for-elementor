@@ -131,7 +131,7 @@ class TMPCODER_Button extends Widget_Base {
 			[
 				'label' => esc_html__( 'Effect Duration', 'sastra-essential-addons-for-elementor' ),
 				'type' => Controls_Manager::NUMBER,
-				'default' => 0.4,
+				'default' => 0.7,
 				'min' => 0,
 				'max' => 5,
 				'step' => 0.1,
@@ -394,7 +394,7 @@ class TMPCODER_Button extends Widget_Base {
 				],
 				'default' => [
 					'unit' => 'px',
-					'size' => 12,
+					'size' => 8,
 				],
 				'selectors' => [
 					'{{WRAPPER}}.tmpcoder-button-icon-position-left .tmpcoder-button-icon' => 'margin-right: {{SIZE}}{{UNIT}};',
@@ -511,13 +511,14 @@ class TMPCODER_Button extends Widget_Base {
 				'name' => 'button_hover_bg_color',
 				'types' => [ 'classic', 'gradient' ],
 				'fields_options' => [
-					'color' => [
-						'default' => '#045CB4',
+                    'color' => [
+						'default' => '#FFFFFF',
 					],
 				],
 				'selector' => '	{{WRAPPER}} [class*="elementor-animation"]:hover,
 								{{WRAPPER}} .tmpcoder-button::before,
 								{{WRAPPER}} .tmpcoder-button::after,
+								{{WRAPPER}} .tmpcoder-button:hover,
 								{{WRAPPER}} .tmpcoder-button
 									:not(.tmpcoder-button-aylen)
 									:not(.tmpcoder-button-rayen-left)
@@ -546,7 +547,7 @@ class TMPCODER_Button extends Widget_Base {
 			[
 				'label' => esc_html__( 'Text Color', 'sastra-essential-addons-for-elementor' ),
 				'type' => Controls_Manager::COLOR,
-				'default' => '#ffffff',
+				'default' => tmpcoder_elementor_global_colors('primary_color'),
 				'selectors' => [
 					'{{WRAPPER}} .tmpcoder-button:hover .tmpcoder-button-text' => 'color: {{VALUE}}',
 					'{{WRAPPER}} .tmpcoder-button::after' => 'color: {{VALUE}}',
@@ -561,7 +562,7 @@ class TMPCODER_Button extends Widget_Base {
 			[
 				'label' => esc_html__( 'Border Color', 'sastra-essential-addons-for-elementor' ),
 				'type' => Controls_Manager::COLOR,
-				'default' => '#E8E8E8',
+				'default' => tmpcoder_elementor_global_colors('primary_color'),
 				'selectors' => [
 					'{{WRAPPER}} .tmpcoder-button:hover' => 'border-color: {{VALUE}}',
 				],
@@ -587,10 +588,11 @@ class TMPCODER_Button extends Widget_Base {
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px' ],
 				'default' => [
-					'top' => 10,
-					'right' => 10,
-					'bottom' => 10,
-					'left' => 10,
+					'top' => 12,
+					'right' => 24,
+					'bottom' => 12,
+					'left' => 24,
+                    'isLinked' => false,
 				],
 				'selectors' => [
 					'{{WRAPPER}}.tmpcoder-button-icon-style-inline .tmpcoder-button' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
@@ -615,7 +617,7 @@ class TMPCODER_Button extends Widget_Base {
 					'dashed' => esc_html__( 'Dashed', 'sastra-essential-addons-for-elementor' ),
 					'groove' => esc_html__( 'Groove', 'sastra-essential-addons-for-elementor' ),
 				],
-				'default' => 'none',
+				'default' => 'solid',
 				'selectors' => [
 					'{{WRAPPER}} .tmpcoder-button' => 'border-style: {{VALUE}};',
 				],
@@ -630,10 +632,10 @@ class TMPCODER_Button extends Widget_Base {
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', '%' ],
 				'default' => [
-					'top' => 2,
-					'right' => 2,
-					'bottom' => 2,
-					'left' => 2,
+					'top' => 1,
+					'right' => 1,
+					'bottom' => 1,
+					'left' => 1,
 				],
 				'selectors' => [
 					'{{WRAPPER}} .tmpcoder-button' => 'border-width: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
@@ -651,10 +653,10 @@ class TMPCODER_Button extends Widget_Base {
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', '%' ],
 				'default' => [
-					'top' => 2,
-					'right' => 2,
-					'bottom' => 2,
-					'left' => 2,
+					'top' => 3,
+					'right' => 3,
+					'bottom' => 3,
+					'left' => 3,
 				],
 				'selectors' => [
 					'{{WRAPPER}} .tmpcoder-button' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',

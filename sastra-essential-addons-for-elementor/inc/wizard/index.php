@@ -14,10 +14,13 @@ function tmpcoder_enqueue_wizard_script(){
 
         wp_enqueue_script( 'tmpcoder-wizard-admin-js', TMPCODER_PLUGIN_URI .'/inc/wizard/js/wizard'.Theme_Setup_Wizard_Class::script_suffix().'.js', ['jquery'], tmpcoder_get_plugin_version(), true );
 
+        $current_theme = (is_object(wp_get_theme()->parent())) ? wp_get_theme()->parent() : wp_get_theme();
+
         wp_localize_script(
             'tmpcoder-wizard-admin-js',
             'tmpcoderMessages',
             array(
+                'theme_active' => wp_get_theme('spexo')->exists() && $current_theme->get_stylesheet() == 'spexo' ? true : false,
                 'wizard_step' => get_option(TMPCODER_PLUGIN_KEY.'_wizard_step'),
                 'form_nonce'  => wp_nonce_field( 'tmpcoder_install_plugins'),
                 'get_plugin_nonce'  => wp_create_nonce( 'tmpcoder_get_plugins'),
@@ -133,7 +136,7 @@ class Theme_Setup_Wizard_Class {
             </header>
 
             <div class="theme-wizard-main">
-                <ul class="nav-tab-wrapper theme-wizard-nav wp-clearfix">
+                <ul class="nav-tab-wrapper theme-wizard-nav wp-clearfix <?php echo $theme_activated ? 'theme-active':'' ?> ">
                     <?php 
                     $wizard_steps = array();
                     $wizard_steps[1] = '<li class="nav-tab theme-installation" data-tab="theme-installation">
@@ -145,11 +148,11 @@ class Theme_Setup_Wizard_Class {
                     // </li>';       
 
                     $wizard_steps[3] = '<li class="nav-tab install-plugins disabled" data-tab="install-plugins">
-                        <span class="step-number">3</span>'.esc_html('Install Required Plugins', 'sastra-essential-addons-for-elementor').'
+                        <span class="step-number">2</span>'.esc_html('Install Required Plugins', 'sastra-essential-addons-for-elementor').'
                     </li>';
 
                     $wizard_steps[4] = '<li class="nav-tab license-registration disabled" data-tab="license-registration">
-                        <span class="step-number">4</span>'.esc_html('Get Spexo Addons Pro', 'sastra-essential-addons-for-elementor').
+                        <span class="step-number">3</span>'.esc_html('Get Spexo Addons Pro', 'sastra-essential-addons-for-elementor').
                     '</li>';
 
                     foreach ($wizard_steps as $wizard_key => $wizard_value) {
@@ -224,7 +227,20 @@ class Theme_Setup_Wizard_Class {
                 </div>
             </div>
         </div>
-        
+
+        <div class="tmpcoder-skip-wizard-popup-wrap tmpcoder-admin-popup-wrap">
+            <div class="tmpcoder-skip-wizard-popup tmpcoder-admin-popup">
+                <div id="tmpcoder-skip-wizard-confirm-popup" class="mfp-hide">
+                    <h2 class="popup-heading"> <?php esc_html_e('Skip the Setup Wizard?','sastra-essential-addons-for-elementor') ?> </h2>
+                    <div class="popup-content">
+                        <p class="popup-message"><?php echo wp_kses_post(__('Heads up! <strong>This action is non-reversible</strong> and you won’t be able to access the setup wizard again. Are you sure you want to skip setup wizard?', 'sastra-essential-addons-for-elementor')); ?></p>
+                        <a class="button button-primary popup-close"><?php esc_html_e('Continue Setup', 'sastra-essential-addons-for-elementor') ?></a>
+                        <a class="button button-secondary tmpcoder-skip-wizard-confirm-button"><?php esc_html_e('Yes, Skip', 'sastra-essential-addons-for-elementor') ?></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <?php 
     }    
 }

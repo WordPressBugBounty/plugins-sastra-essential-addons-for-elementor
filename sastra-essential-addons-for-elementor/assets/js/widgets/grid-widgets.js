@@ -302,7 +302,7 @@
                 sliderSlidesToScroll = settings.sliderSlidesToScroll;
 
 
-            // GOGA - add rows control and vertical gutter maybe
+            // TMPCODER INFO -  add rows control and vertical gutter maybe
             iGrid.slick({
                 appendDots: $scope.find('.tmpcoder-grid-slider-dots'),
                 rows: sliderRows,
@@ -1541,7 +1541,7 @@
                             $(document).trigger('added_to_compare');
 
                             if ('sidebar' === event_target.data('atcompare-popup')) {
-                                // GOGA - configure after adding compare dropdown functinality
+                                // TMPCODER INFO -  configure after adding compare dropdown functinality
                                 if ($('.tmpcoder-compare-toggle-btn').length) {
                                     $('.tmpcoder-compare-toggle-btn').each(function () {
                                         if ('none' === $(this).next('.tmpcoder-compare').css('display')) {
@@ -1663,7 +1663,7 @@
                             $(document).trigger('added_to_wishlist');
 
                             if ('sidebar' === event_target.data('atw-popup')) {
-                                // GOGA - configure after adding wishlist dropdown functinality
+                                // TMPCODER INFO -  configure after adding wishlist dropdown functinality
                                 if ($('.tmpcoder-wishlist-toggle-btn').length) {
                                     $('.tmpcoder-wishlist-toggle-btn').each(function () {
                                         if ('none' === $(this).next('.tmpcoder-wishlist').css('display')) {

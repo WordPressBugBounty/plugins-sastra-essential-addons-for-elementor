@@ -74,7 +74,7 @@ class TMPCODER_Team_Member extends Widget_Base {
 					'active' => true,
 				],
 				'default' => [
-					'url' => Utils::get_placeholder_image_src(),
+					'url' => TMPCODER_ADDONS_ASSETS_URL.'images/team-member.jpg',
 				],
 			]
 		);
@@ -1898,6 +1898,9 @@ class TMPCODER_Team_Member extends Widget_Base {
 		
 		<?php if ( '' !== $settings['member_image']['url'] ) : ?>
 			<?php 
+
+				$src = $settings['member_image']['url'];
+
 				$settings[ 'image_size' ] = ['id' => $settings['member_image']['id']];
 				$image_html = Group_Control_Image_Size::get_attachment_image_html( $settings, 'image_size' );
 				// Update the alt attribute
@@ -1906,7 +1909,15 @@ class TMPCODER_Team_Member extends Widget_Base {
 
 			<div class="tmpcoder-member-media">
 				<div class="tmpcoder-member-image">
-					<?php echo wp_kses_post($image_html) ?>
+					<?php 
+						if ($image_html) {
+							echo wp_kses_post($image_html); 
+						}
+						else
+						{
+							echo "<img src='".esc_url($src)."'>";
+						}
+					?>
 				</div>
 				<?php $this->team_member_overlay(); ?>
 			</div>

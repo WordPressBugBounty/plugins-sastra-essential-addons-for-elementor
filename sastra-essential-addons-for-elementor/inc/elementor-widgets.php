@@ -163,7 +163,7 @@ if ( !class_exists('TemplatesWidgetRegister') ){
 
             wp_localize_script( 'tmpcoder-editor-js', 'tmpcoder_config', array( 
               'TMPCODER_PURCHASE_PRO_URL'   => esc_url(TMPCODER_PURCHASE_PRO_URL),
-              'tmpcoder_registered_modules' => tmpcoder_get_registered_modules(),
+              'tmpcoder_registered_modules' => tmpcoder_get_all_widgtes(),
               'TMPCODER_DEMO_IMPORT_API'    => esc_url(TMPCODER_DEMO_IMPORT_API),
               'is_key_expire' => $is_key_expire,
               'renew_button_text' => esc_html('Renew Here'),
@@ -443,7 +443,7 @@ if ( !class_exists('TemplatesWidgetRegister') ){
         
         public function tmpcoder_enqueue_scripts(){
             
-            if ( isset( $_GET['preview'] ) && $_GET['preview'] === 'true' ) {
+            if ( isset( $_GET['preview'] ) && $_GET['preview'] === 'true' ) {// phpcs:ignore WordPress.Security.NonceVerification.Recommended
               wp_enqueue_style(
                 'widgets-editor',
                 TMPCODER_PLUGIN_URI.'assets/css/admin/widgets-editor.min.css',
@@ -707,7 +707,7 @@ if ( !class_exists('TemplatesWidgetRegister') ){
                 [
                   'name' => 'tmpcoder-compare-button',
                   'title' => __('Compare Button', 'sastra-essential-addons-for-elementor'),
-                  'icon' => 'tmpcoder-icon eicon-exchange', // GOGA - new icon needed for compare
+                  'icon' => 'tmpcoder-icon eicon-exchange', // TMPCODER INFO -  new icon needed for compare
                   'categories' => '["'. $category .'"]',
                 ],
                 [

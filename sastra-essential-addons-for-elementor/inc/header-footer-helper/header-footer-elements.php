@@ -93,7 +93,16 @@ if ( ! class_exists('TMPCODER_Header_Footer_Elements') ){
          */
         public static function get_header_content() {
 
+            do_action( 'tmpcoder_wp_body_open' );
+            if (\Elementor\Plugin::$instance->preview->is_preview_mode()) {
+                echo "<div class='tmpcoder-before-header-content-editor'>";
+            }
+
             self::show_builder_content( self::$elementor_instance->frontend->get_builder_content_for_display( tmpcoder_get_header_id() ) );
+
+            if (\Elementor\Plugin::$instance->preview->is_preview_mode()) {
+                echo "</div>";
+            }
         }
 
         /**
@@ -127,9 +136,19 @@ if ( ! class_exists('TMPCODER_Header_Footer_Elements') ){
          * Prints the Footer content.
          */
         public static function get_footer_content() {
+
+            if (\Elementor\Plugin::$instance->preview->is_preview_mode()) {
+                echo "<div class='tmpcoder-before-footer-content-editor'>";
+            }
+
             echo "<div class='footer-width-fixer'>";
             self::show_builder_content( self::$elementor_instance->frontend->get_builder_content_for_display( tmpcoder_get_footer_id() ) );
             echo '</div>';
+
+            if (\Elementor\Plugin::$instance->preview->is_preview_mode()) {
+                echo "</div>";
+            }
+
         }
 
         /**

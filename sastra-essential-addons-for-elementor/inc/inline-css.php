@@ -328,8 +328,9 @@ if (!function_exists('tmpcoder_add_dynamic_styles')) {
 	  	wp_dequeue_style('elementor-global');
 	  	wp_deregister_style('elementor-global');
 
-	 	wp_dequeue_style( 'global-styles' );
-		wp_deregister_style( 'global-styles' );
+		// Stopped because the pattern design was not proper.
+	 	// wp_dequeue_style( 'global-styles' );
+		// wp_deregister_style( 'global-styles' );
 	}
 
 	function tmpcoder_trim_css( $css = '' ) {

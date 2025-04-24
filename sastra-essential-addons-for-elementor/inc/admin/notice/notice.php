@@ -26,6 +26,12 @@ add_action( 'admin_notices', function(){
     $theme = get_option('stylesheet');
 
     if ( ! in_array($theme, array('sastrawp','sastrawp-child','spexo','spexo-child') ) ) {
+
+		$tmpcoder_notice_excluded_pages = array( 'tmpcoder-setup-wizard', 'tmpcoder-theme-wizard', 'tmpcoder-plugin-wizard' );
+
+		if ( isset($_GET['page']) && in_array($_GET['page'], $tmpcoder_notice_excluded_pages, true) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			return;
+		}
      	
     	if (get_transient('tmpcoder_activate_theme_dismissed_' . get_current_user_id())) {
 	        return;

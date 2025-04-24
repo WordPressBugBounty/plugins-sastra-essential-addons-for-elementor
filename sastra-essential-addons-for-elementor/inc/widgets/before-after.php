@@ -119,7 +119,7 @@ class TMPCODER_Before_After extends Widget_Base {
 					'active' => true,
 				],
 				'default' => [
-					'url' => Utils::get_placeholder_image_src(),
+					'url' => TMPCODER_ADDONS_ASSETS_URL.'images/before.jpg' ,
 				],
 			]
 		);
@@ -133,7 +133,7 @@ class TMPCODER_Before_After extends Widget_Base {
 					'active' => true,
 				],
 				'default' => [
-					'url' => Utils::get_placeholder_image_src(),
+					'url' => TMPCODER_ADDONS_ASSETS_URL.'images/after.jpg' ,
 				],
 			]
 		);
@@ -739,22 +739,34 @@ class TMPCODER_Before_After extends Widget_Base {
 			
 			// Defaults
 			if ( '' !== $settings['image_upload_1']['url'] ) {
-				$settings[ 'image_upload_1' ] = ['id' => $settings['image_upload_1']['id']];
-				$image_upload_1 = Group_Control_Image_Size::get_attachment_image_html( $settings, 'image_upload_1' );
+				$settings[ 'image_upload_1_1' ] = ['id' => $settings['image_upload_1']['id']];
+				$image_upload_1 = Group_Control_Image_Size::get_attachment_image_html( $settings, 'image_upload_1_1' );
 			}
 			if ( '' !== $settings['image_upload_2']['url'] ) {
-				$settings[ 'image_upload_2' ] = ['id' => $settings['image_upload_2']['id']];
-				$image_upload_2 = Group_Control_Image_Size::get_attachment_image_html( $settings, 'image_upload_2' );
+				$settings[ 'image_upload_2_2' ] = ['id' => $settings['image_upload_2']['id']];
+				$image_upload_2 = Group_Control_Image_Size::get_attachment_image_html( $settings, 'image_upload_2_2' );
 			}
 
 			// Image 1
 			echo '<div class="tmpcoder-ba-image-1">';
-				echo wp_kses_post($image_upload_1);
+				if ($image_upload_1) {
+					echo wp_kses_post($image_upload_1);
+				}
+				else
+				{
+					echo "<img src='".esc_url($settings['image_upload_1']['url'])."'>";
+				}
 			echo '</div>';
 			
 			// Image 2
 			echo '<div class="tmpcoder-ba-image-2">';
-				echo wp_kses_post($image_upload_2);
+				if ($image_upload_2) {
+					echo wp_kses_post($image_upload_2);
+				}
+				else
+				{
+					echo "<img src='".esc_url($settings['image_upload_2']['url'])."'>";
+				}
 			echo '</div>';
 
 			// Divider

@@ -1023,6 +1023,7 @@ class TMPCODER_Image_Accordion extends Widget_Base {
 					],
 				],
 				'title_field' => '{{{ element_select.charAt(0).toUpperCase() + element_select.slice(1) }}}',
+				'prevent_empty' => false,
 			]
 		);
 
@@ -1037,6 +1038,16 @@ class TMPCODER_Image_Accordion extends Widget_Base {
 				'tab' => Controls_Manager::TAB_CONTENT,
 			]
 		);
+
+		$this->add_control(
+			'media_overlay_on_off',
+			[
+				'label' => esc_html__( 'Media Overlay', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::SWITCHER,
+				'default' => 'yes',
+				'return_value' => 'yes',
+			]
+		);	
 
 		$this->add_responsive_control(
 			'overlay_width',
@@ -1065,6 +1076,7 @@ class TMPCODER_Image_Accordion extends Widget_Base {
 					'{{WRAPPER}} .tmpcoder-img-accordion-hover-bg[class*="-right"]' => 'top:calc((100% - {{overlay_height.SIZE}}{{overlay_height.UNIT}})/2);right:calc((100% - {{SIZE}}{{UNIT}})/2);',
 					'{{WRAPPER}} .tmpcoder-img-accordion-hover-bg[class*="-left"]' => 'top:calc((100% - {{overlay_height.SIZE}}{{overlay_height.UNIT}})/2);left:calc((100% - {{SIZE}}{{UNIT}})/2);',
 				],
+				'condition' => ['media_overlay_on_off' => 'yes']
 			]
 		);
 
@@ -1096,6 +1108,7 @@ class TMPCODER_Image_Accordion extends Widget_Base {
 					'{{WRAPPER}} .tmpcoder-img-accordion-hover-bg[class*="-left"]' => 'top:calc((100% - {{SIZE}}{{UNIT}})/2);left:calc((100% - {{overlay_width.SIZE}}{{overlay_width.UNIT}})/2);',
 				],
 				'separator' => 'after',
+				'condition' => ['media_overlay_on_off' => 'yes']
 			]
 		);
 
@@ -1105,6 +1118,7 @@ class TMPCODER_Image_Accordion extends Widget_Base {
 				'label' => esc_html__( 'Select Animation', 'sastra-essential-addons-for-elementor' ),
 				'type' => 'tmpcoder-animations-alt',
 				'default' => 'fade-in',
+				'condition' => ['media_overlay_on_off' => 'yes']
 			]
 		);
 
@@ -1125,6 +1139,7 @@ class TMPCODER_Image_Accordion extends Widget_Base {
 				],
 				'condition' => [
 					'overlay_animation!' => 'none',
+					'media_overlay_on_off' => 'yes'
 				],
 			]
 		);
@@ -1143,6 +1158,7 @@ class TMPCODER_Image_Accordion extends Widget_Base {
 				],
 				'condition' => [
 					'overlay_animation!' => 'none',
+					'media_overlay_on_off' => 'yes'
 				],
 			]
 		);
@@ -1156,6 +1172,7 @@ class TMPCODER_Image_Accordion extends Widget_Base {
 				'default' => 'ease-default',
 				'condition' => [
 					'overlay_animation!' => 'none',
+					'media_overlay_on_off' => 'yes'
 				],
 			]
 		);
@@ -1176,6 +1193,7 @@ class TMPCODER_Image_Accordion extends Widget_Base {
 				'default' => 'large',
 				'condition' => [
 					'overlay_animation!' => 'none',
+					'media_overlay_on_off' => 'yes'
 				],
 			]
 		);
@@ -1189,6 +1207,7 @@ class TMPCODER_Image_Accordion extends Widget_Base {
 				'return_value' => 'yes',
 				'condition' => [
 					'overlay_animation!' => 'none',
+					'media_overlay_on_off' => 'yes'
 				],
 			]
 		);
@@ -1325,6 +1344,7 @@ class TMPCODER_Image_Accordion extends Widget_Base {
 				'label' => esc_html__( 'Media Overlay', 'sastra-essential-addons-for-elementor' ),
 				'tab' => Controls_Manager::TAB_STYLE,
 				'show_label' => false,
+				'condition' => ['media_overlay_on_off' => 'yes']
 			]
 		);
 		

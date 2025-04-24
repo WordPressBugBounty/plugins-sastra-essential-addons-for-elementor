@@ -602,20 +602,14 @@
 == Widget Preview and Library buttons
 --------------------------------------------------------------*/
 
-.elementor-control-tmpcoder_library_buttons .tmpcoder-forms a:last-child,
-.elementor-control-tmpcoder_library_buttons .tmpcoder-phone-call a:last-child,
-.elementor-control-tmpcoder_library_buttons .tmpcoder-back-to-top a:last-child,
-.elementor-control-tmpcoder_library_buttons .tmpcoder-lottie-animations a:last-child,
-.elementor-control-tmpcoder_library_buttons .tmpcoder-feature-list a:last-child,
-.elementor-control-tmpcoder_library_buttons .tmpcoder-reading-progress-bar a:last-child,
-.elementor-control-tmpcoder_library_buttons .tmpcoder-dual-color-heading a:last-child,
-.elementor-control-tmpcoder_library_buttons .tmpcoder-flip-carousel a:last-child,
-.elementor-control-tmpcoder_library_buttons .tmpcoder-advanced-accordion a:last-child,
-.elementor-control-tmpcoder_library_buttons .tmpcoder-image-accordion a:last-child,
 .elementor-control-tmpcoder_library_buttons .tmpcoder-mega-menu a:last-child,
-.elementor-control-tmpcoder_library_buttons .tmpcoder-charts a:last-child,
-.elementor-control-tmpcoder_library_buttons .tmpcoder-offcanvas a:last-child,
-.elementor-control-tmpcoder_library_buttons .tmpcoder-twitter-feed a:last-child {
+.elementor-control-tmpcoder_library_buttons .tmpcoder-forms a:last-child
+{
+  display: none;
+}
+
+.elementor-control-tmpcoder_library_buttons .tmpcoder-recent-post-list a:first-child
+{
   display: none;
 }
 
@@ -652,13 +646,24 @@
   text-align: center;
 }
 .elementor-control-tmpcoder_library_buttons .elementor-control-raw-html div a:first-child {
-  background-color: #1CB4E4;
-  color: #fff;
+  /*background-color: #5729d9;*/
+  color: #bf1864;
   margin-right: 3px;
+  border: 1px solid #bf1864;
+}
+.elementor-control-tmpcoder_library_buttons .elementor-control-raw-html div a:first-child:hover {
+  background-color: #bf1864;
+  color: #fff;
+  border: 1px solid #bf1864;
 }
 .elementor-control-tmpcoder_library_buttons .elementor-control-raw-html div a:last-child {
   margin-left: 3px;
-  background-color: #046bd2;
+  background-image: linear-gradient(120deg, #5729d9 0%, #bf1864 100%);
+  color: #fff;
+  border: 1px solid #e8e8e8;
+}
+.elementor-control-tmpcoder_library_buttons .elementor-control-raw-html div a:last-child:hover {
+  background-image: linear-gradient(120deg, #bf1864 0%, #5729d9 100%);
   color: #fff;
 }
 

@@ -134,9 +134,9 @@ class TMPCODER_Welcome_Screen {
 			$this->strings = EDD_Theme_Helper::get_strings();
 		}
 
-		if ( empty( $config['sections'] ) ) {
-			$this->sections = $this->set_default_sections( $config );
-		}
+		// if ( empty( $config['sections'] ) ) {
+		// 	$this->sections = $this->set_default_sections( $config );
+		// }
 
 		/**
 		 * Create the dashboard page
@@ -323,7 +323,7 @@ class TMPCODER_Welcome_Screen {
 		
 		$title = sprintf(
             /* Translators: 1: Menu Title */
-             esc_html__( 'About %1$s', 'sastra-essential-addons-for-elementor' ), esc_html( TMPCODER_PLUGIN_NAME ) );
+             esc_html__( 'About %1$s', 'sastra-essential-addons-for-elementor' ), esc_html( 'Spexo Addons for Elementor' ) );
 
 		if ( 0 < $this->actions_count ) {
 			$title .= '<span class="badge-action-count">' . esc_html( $this->actions_count ) . '</span>';
@@ -353,75 +353,9 @@ class TMPCODER_Welcome_Screen {
 	        $main_header_logo = TMPCODER_ADDONS_ASSETS_URL.'images/spexo-logo-web.svg';
 	    }
 
-		?>
-		<div class="wrap tmpcoder-theme-wrap">
-            <hr class="wp-header-end">
-            
-            <div class="about-wrap epsilon-wrap tmpcoder-theme-welcome">
-
-            	<div class="top-header-main common-box-shadow">
-					<div class="main-header-part">
-					    <div class="row">
-					        <div class="col-xl-6">
-					            <div class="main-header-logo">
-					            	<img src="<?php echo esc_url( $main_header_logo ); ?>" alt="Spexo-logo">
-					            </div>
-					        </div>
-					        <div class="col-xl-6">
-					            <div class="btn-group-main">
-					            	<ul>
-					            		<?php if (!defined( 'TMPCODER_ADDONS_PRO_VERSION' )) { ?>
-					            		<li class="tmpcoder-upgrade-now-button"><a target="_blank" href="<?php echo esc_url( TMPCODER_PURCHASE_PRO_URL.'?ref=tmpcoder-welcome-screen' ); ?>" class="btn-link">
-					            		<img src="<?php echo esc_url(TMPCODER_ADDONS_ASSETS_URL.'images/pro-icon.svg'); ?>">
-					            		<span><?php echo esc_html__( 'Get Pro Now', 'sastra-essential-addons-for-elementor' ); ?></span>
-					            		</a></li>
-					            		<?php } ?>
-					            		<li><a target="_blank" href="<?php echo esc_url( TMPCODER_SUPPORT_URL ); ?>" class="btn-link">
-					            		<img src="<?php echo esc_url(TMPCODER_ADDONS_ASSETS_URL.'images/support.svg'); ?>">
-					            		<span><?php echo esc_html__( 'Support', 'sastra-essential-addons-for-elementor' ); ?></span>
-					            		</a></li>
-					            		<li>
-					            			<a target="_blank" href="<?php echo esc_url( TMPCODER_DOCUMENTATION_URL ); ?>" class="btn-link">
-							            		<img src="<?php echo esc_url(TMPCODER_ADDONS_ASSETS_URL.'images/documentation.svg'); ?>">
-							            		<span><?php echo esc_html__( 'Documentation', 'sastra-essential-addons-for-elementor' ); ?></span>	
-					            			</a>
-					            		</li>
-					            	</ul>
-					            </div>
-					        </div>
-					    </div>
-					</div>
-
-					<h2 class="nav-tab-wrapper wp-clearfix">
-						
-						<?php foreach ( $this->sections as $id => $section ) { 
-
-                            if ( in_array($id, array('system-info')) ){
-                                continue;
-                            }
-                            ?>
-							
-							<?php $class = $id === $tab ? 'nav-tab-active' : ''; ?>
-
-							<a class="nav-tab <?php echo esc_attr($class);  ?>" href="<?php echo esc_url( $section['url'] ); ?>">
-								<img src="<?php echo esc_url(TMPCODER_ADDONS_ASSETS_URL.'images/'.$section['icon']); ?>">
-								<span><?php echo wp_kses_post( $section['label'] ); ?></span>
-							</a>
-						<?php } ?>
-					</h2>
-
-				</div>
-
-				<?php
-				if (isset($this->sections[ $tab ]['path']) && $this->sections[ $tab ]['path'] != "") {
-				 	
-					require_once $this->sections[ $tab ]['path'];
-			 	} 
-			 	?>
-
-            </div>
-		</div>
-		<?php
+		if ( function_exists( 'tmpcoder_render_admin_header' ) ) {
+			tmpcoder_render_admin_header( $main_header_logo, $tab );
+		}
 	}
 
 	/**
@@ -450,124 +384,5 @@ class TMPCODER_Welcome_Screen {
 		}
 
 		return $i;
-	}
-
-	/**
-	 * Generate url for the backend section tabs
-	 *
-	 * @param string $id Id of the backend tab.
-	 *
-	 * @return string
-	 */
-	public static function tmpcoder_generate_admin_url( $id = '' ) {
-		$url = 'admin.php?page=%1$s-welcome&tab=%2$s';
-
-        return admin_url( sprintf( $url, TMPCODER_THEME, $id ) );
-	}
-
-	/**
-	 * Generate default sections, with exclusion
-	 *
-	 * @param array $config Configuration array.
-	 *
-	 * @return array
-	 */
-	private function set_default_sections( $config = array() ) {
-		$arr = array(
-			'getting-started'     => array(
-				'id'    => 'getting-started',
-				'icon'    => 'getting-start-tab.svg',
-                'url'   => $this->tmpcoder_generate_admin_url( 'getting-started' ),
-				'label' => __( 'Getting Started', 'sastra-essential-addons-for-elementor' ),
-				'path'  => TMPCODER_PLUGIN_DIR . '/inc/admin/lib/welcome-screen/sections/getting-started.php',
-			),
-			'prebuilt-blocks' => array(
-				'id'    => 'prebuilt-blocks',
-				'icon'    => 'prebuilt-block-tab.svg',
-				'url'   => $this->tmpcoder_generate_admin_url( 'prebuilt-blocks' ),
-				'label' => __( 'Prebuilt Blocks', 'sastra-essential-addons-for-elementor' ),
-				'path'  => TMPCODER_PLUGIN_DIR . '/inc/admin/lib/welcome-screen/sections/prebuilt-blocks.php',
-			),
-			'prebuilt-demos' => array(
-				'id'    => 'prebuilt-demos',
-				'icon'    => 'prebuilt-websites-tab.svg',
-				'url'   => admin_url().'admin.php?page=tmpcoder-import-demo',
-				'label' => __( 'Prebuilt Websites', 'sastra-essential-addons-for-elementor' ),
-			),
-			'site-builder' => array(
-				'id'    => 'site-builder',
-				'icon'    => 'site-builder-tab.svg',
-				'url'   => $this->tmpcoder_generate_admin_url( 'site-builder' ),
-				'label' => __( 'Site Builder', 'sastra-essential-addons-for-elementor' ),
-				'path'  => TMPCODER_PLUGIN_DIR . '/inc/admin/lib/welcome-screen/sections/site-builder.php',
-			),
-			'widgets'   => array(
-				'id'    => 'widgets',
-				'icon'    => 'widget-setting-tab.svg',
-				'url'   => $this->tmpcoder_generate_admin_url( 'widgets' ),
-				'label' => __( 'Widget Settings', 'sastra-essential-addons-for-elementor' ),
-				'path'  => TMPCODER_PLUGIN_DIR . '/inc/admin/lib/welcome-screen/sections/widgets.php',
-			),
-			'global-options'   => array(
-				'id'    => 'global-options',
-				'icon'  => 'global-setting-tab.svg',
-				'url'   => admin_url('admin.php?page='.TMPCODER_THEME.'_addons_global_settings'),
-				'label' => __( 'Global Options', 'sastra-essential-addons-for-elementor' ),
-			),
-			'settings'  => array(
-				'id'    => 'settings',
-				'icon'    => 'intigrations-tab.svg',
-				'url'   => $this->tmpcoder_generate_admin_url( 'settings' ),
-				'label' => __( 'Integrations', 'sastra-essential-addons-for-elementor' ),
-				'path'  => TMPCODER_PLUGIN_DIR . '/inc/admin/lib/welcome-screen/sections/settings.php',
-			),
-			'system-info' => array(
-				'id'    => 'system-info',
-				'icon'    => 'system-info-tab.svg',
-				'url'   => $this->tmpcoder_generate_admin_url( 'system-info' ),
-				'label' => __( 'System Info', 'sastra-essential-addons-for-elementor' ),
-				'path'  => TMPCODER_PLUGIN_DIR . '/inc/admin/lib/welcome-screen/sections/system-status.php',
-			),
-			'tools' => array(
-				'id'    => 'tools',
-				'icon'    => 'tools-icon-3.svg',
-				'url'   => $this->tmpcoder_generate_admin_url( 'tools' ),
-				'label' => __( 'Tools', 'sastra-essential-addons-for-elementor' ),
-				'path'  => TMPCODER_PLUGIN_DIR . '/inc/admin/lib/welcome-screen/sections/tools.php',
-			),
-		);
-
-		if (defined('TMPCODER_CURRENT_THEME_NAME') && !in_array(TMPCODER_CURRENT_THEME_NAME, array('SastraWP','Spexo')) ) { 
-			unset($arr['global-options']);
-			unset($arr['prebuilt-demos']);
-		}
-		if (!class_exists('ReduxFramework')) {
-			unset($arr['global-options']);
-		}
-
-		if ( isset( $config['sections_exclude'] ) && ! empty( $config['sections_exclude'] ) ) {
-			foreach ( $config['sections_exclude'] as $id ) {
-				unset( $arr[ $id ] );
-			}
-		}
-
-		if ( isset( $config['sections_include'] ) && ! empty( $config['sections_include'] ) ) {
-			foreach ( $config['sections_include'] as $id => $props ) {
-				$arr[ $id ] = $props;
-			}
-		}
-
-		if ( defined ('TMPCODER_PRO_PLUGIN_NAME') ) {
-			$arr['license'] = array(
-				'id'    => 'license',
-				'icon'    => 'license.svg',
-				'url'   => admin_url('admin.php?page=tmpcoder-license-activation'),
-				'label' => __( 'License', 'sastra-essential-addons-for-elementor' )
-			);
-
-			$arr = apply_filters('tmpcoder_add_options_tabs', $arr);
-		}
-
-		return $arr;
 	}
 }

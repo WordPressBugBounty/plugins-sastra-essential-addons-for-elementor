@@ -148,10 +148,10 @@ class TMPCODER_Admin_Bar {
 
 		$admin_bar->add_menu( [
 			'id'    => 'spexo-addons',
-			'title' => sprintf( '<img src="%s"> Spexo addons', TMPCODER_ADDONS_ASSETS_URL .'images/logo-40x40.svg' ),
+			'title' => sprintf( '<img src="%s"> Spexo Addons', TMPCODER_ADDONS_ASSETS_URL .'images/logo-40x40.svg' ),
 			'href'  => tmpcoder_get_dashboard_link(),
 			'meta'  => [
-				'title' => __( 'Spexo addons', 'sastra-essential-addons-for-elementor' ),
+				'title' => __( 'Spexo Addons', 'sastra-essential-addons-for-elementor' ),
 			]
 		] );
 

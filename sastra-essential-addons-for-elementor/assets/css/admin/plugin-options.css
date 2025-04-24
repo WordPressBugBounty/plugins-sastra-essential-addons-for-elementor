@@ -1335,7 +1335,7 @@
   text-transform: capitalize;
 }
 
-/* GOGA - conditions overflow the viewport if too many */
+/* TMPCODER INFO -  conditions overflow the viewport if too many */
 .tmpcoder-conditions-wrap {
   max-height: 40vh;
   width: 650px;
@@ -1911,3 +1911,15 @@ div.fs-notice.updated, div.fs-notice.success {
   overflow: hidden;
 }
 .about-wrap.tmpcoder-theme-welcome{max-width: unset;}
+
+/*--------------------------------------------------------------
+== Delete template confirm popup
+--------------------------------------------------------------*/
+
+.tmpcoder-delete-template-confirm-popup-wrap .popup-action {
+  text-align: center;
+}
+
+.toplevel_page_spexo-welcome .tmpcoder-delete-template-popup.tmpcoder-admin-popup {
+  max-width: 540px;
+}

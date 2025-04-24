@@ -88,10 +88,21 @@
     flex-direction: column;
     align-items: flex-end;
 }
-#import-process-complete-popup, #import-demo-uninstall-popup {
+#import-process-complete-popup, 
+#import-demo-uninstall-popup,
+#import-demo-confirm-popup,
+#tmpcoder-skip-wizard-confirm-popup {
     padding: 30px;
 }
-#import-process-complete-popup .popup-heading, #import-demo-uninstall-popup .popup-heading {
+#tmpcoder-delete-template-confirm-popup,
+#tmpcoder-set-global-fonts-confirm-popup {
+    padding: 10px;
+}
+#import-process-complete-popup .popup-heading, 
+#import-demo-confirm-popup .popup-heading,
+#tmpcoder-skip-wizard-confirm-popup .popup-heading,
+#tmpcoder-delete-template-confirm-popup .popup-heading,
+#tmpcoder-set-global-fonts-confirm-popup .popup-heading {
     font-size: 26px;
     margin-top: 0;
 }
@@ -111,34 +122,93 @@
     margin-right: 6px;
     vertical-align: bottom;
 }
-#import-demo-uninstall-popup .popup-message {
+#import-demo-uninstall-popup .popup-message,
+#import-demo-confirm-popup .popup-message,
+#tmpcoder-skip-wizard-confirm-popup .popup-message,
+#tmpcoder-delete-template-confirm-popup .popup-message,
+#tmpcoder-set-global-fonts-confirm-popup .popup-message {
     margin: 20px 0;
     font-size: 14px;
 }
-#import-demo-uninstall-popup .button {
+#import-demo-uninstall-popup .button,
+#import-demo-confirm-popup .button,
+#tmpcoder-skip-wizard-confirm-popup .button,
+#tmpcoder-delete-template-confirm-popup .button,
+#tmpcoder-set-global-fonts-confirm-popup .button {
     padding: 3px 20px;
     font-size: 14px;
     margin-right: 4px;
 }
+
+body .tmpcoder-delete-template-confirm-popup-wrap .button,
+body .tmpcoder-set-global-fonts-confirm-popup-wrap .button {
+    background: #5729d9;
+    color: #fff;
+    border-radius: 4px;
+    /* padding: 10px 20px 11px 20px; */
+    transition: all 300ms ease;
+    border: 1px solid #5729d9;
+}
+
+.tmpcoder-delete-template-confirm-popup-wrap .button.button-secondary,
+.tmpcoder-set-global-fonts-confirm-popup-wrap .button.button-secondary {
+    background: transparent;
+    border-color: #562ad5;
+    color: #562ad5;
+    transition: all 300ms ease;
+    border: 1px solid #5729d9;
+}
+
+.tmpcoder-delete-template-confirm-popup-wrap .button:hover,
+.tmpcoder-set-global-fonts-confirm-popup-wrap .button:hover {
+    background: transparent;
+    border-color: #562ad5;
+    color: #562ad5;
+    transition: all 300ms ease;
+    border: 1px solid #5729d9;
+}
+
+.tmpcoder-delete-template-confirm-popup-wrap .button.button-secondary:hover,
+.tmpcoder-set-global-fonts-confirm-popup-wrap .button.button-secondary:hover {
+    background: #5729d9;
+    color: #fff;
+    border-radius: 4px;
+    /* padding: 10px 20px 11px 20px; */
+    transition: all 300ms ease;
+    border: 1px solid #5729d9;
+}
+
+.tmpcoder-set-global-fonts-confirm-popup-wrap .popup-action {
+    text-align: center;
+  }
+
 .notshow{display: none!important;}
 
 /*Welcome Screen Css*/
-.toplevel_page_spexo-welcome #wpwrap, .toplevel_page_spexo-welcome .about-wrap{
+.toplevel_page_spexo-welcome #wpwrap, .toplevel_page_spexo-welcome .about-wrap,
+.spexo-addons_page_tmpcoder-import-demo #wpwrap, .spexo-addons_page_tmpcoder-import-demo .about-wrap,
+.spexo-addons_page_spexo_addons_global_settings #wpwrap, .spexo-addons_page_spexo_addons_global_settings .about-wrap {
     background: #f0f5fa !important;
 }
-.toplevel_page_spexo-welcome .tmpcoder-theme-welcome{
+.toplevel_page_spexo-welcome .tmpcoder-theme-welcome,
+.spexo-addons_page_tmpcoder-import-demo .tmpcoder-theme-welcome,
+.spexo-addons_page_spexo_addons_global_settings .tmpcoder-theme-welcome {
     background: transparent;
     margin: 0px;
     border-radius: 0px;
 }
-.toplevel_page_spexo-welcome .wrap h2.nav-tab-wrapper{
+.toplevel_page_spexo-welcome .wrap h2.nav-tab-wrapper,
+.spexo-addons_page_tmpcoder-import-demo .wrap h2.nav-tab-wrapper,
+.spexo-addons_page_spexo_addons_global_settings .wrap h2.nav-tab-wrapper {
     border: 0;
     text-align: center;
     background: #fff;
     padding: 12px 8px;
     border-radius: 10px;
 }
-.toplevel_page_spexo-welcome .tmpcoder-theme-welcome .nav-tab {
+.toplevel_page_spexo-welcome .tmpcoder-theme-welcome .nav-tab,
+.spexo-addons_page_tmpcoder-import-demo .tmpcoder-theme-welcome .nav-tab,
+.spexo-addons_page_spexo_addons_global_settings .tmpcoder-theme-welcome .nav-tab {
     border: 0;
     border-radius: 0;
     font-size: 16px;
@@ -148,31 +218,58 @@
     display: flex;
     align-items: center;
 }
-.toplevel_page_spexo-welcome .tmpcoder-theme-welcome .nav-tab:focus{
+.toplevel_page_spexo-welcome .tmpcoder-theme-welcome .nav-tab:focus,
+.spexo-addons_page_tmpcoder-import-demo .tmpcoder-theme-welcome .nav-tab:focus,
+.spexo-addons_page_spexo_addons_global_settings .tmpcoder-theme-welcome .nav-tab:focus {
     outline: 0px;
     box-shadow: none;
 }
-.toplevel_page_spexo-welcome .tmpcoder-theme-welcome .nav-tab img{
+.toplevel_page_spexo-welcome .tmpcoder-theme-welcome .nav-tab img,
+.spexo-addons_page_tmpcoder-import-demo .tmpcoder-theme-welcome .nav-tab img,
+.spexo-addons_page_spexo_addons_global_settings .tmpcoder-theme-welcome .nav-tab img {
     width: 16px;
     filter: brightness(0);
     opacity: 0.6;
     transition: all 0.3s ease-in-out;
 }
-.toplevel_page_spexo-welcome .tmpcoder-theme-welcome .nav-tab span{
-    padding-left: 8px;
+
+.spexo-addons_page_spexo_addons_global_settings div.wrap:has(> h2:empty) {
+    display: none;
+}
+
+.toplevel_page_spexo-welcome .tmpcoder-theme-welcome .nav-tab span,
+.spexo-addons_page_tmpcoder-import-demo .tmpcoder-theme-welcome .nav-tab span,
+.spexo-addons_page_spexo_addons_global_settings .tmpcoder-theme-welcome .nav-tab span {
+    padding-left:8px;
 }
 .toplevel_page_spexo-welcome .tmpcoder-theme-welcome .nav-tab:hover img,
-.toplevel_page_spexo-welcome .tmpcoder-theme-welcome .nav-tab.nav-tab-active img{
+.toplevel_page_spexo-welcome .tmpcoder-theme-welcome .nav-tab.nav-tab-active img,
+.spexo-addons_page_tmpcoder-import-demo .tmpcoder-theme-welcome .nav-tab:hover img,
+.spexo-addons_page_tmpcoder-import-demo .tmpcoder-theme-welcome .nav-tab.nav-tab-active img,
+.spexo-addons_page_spexo_addons_global_settings .tmpcoder-theme-welcome .nav-tab:hover img,
+.spexo-addons_page_spexo_addons_global_settings .tmpcoder-theme-welcome .nav-tab.nav-tab-active img {
     filter: none;
     opacity: 1;
 }
-.toplevel_page_spexo-welcome .tmpcoder-theme-welcome .nav-tab{
+.toplevel_page_spexo-welcome .tmpcoder-theme-welcome .nav-tab,
+.spexo-addons_page_tmpcoder-import-demo .tmpcoder-theme-welcome .nav-tab,
+.spexo-addons_page_spexo_addons_global_settings .tmpcoder-theme-welcome .nav-tab {
     color: #50575e;
 }
 .toplevel_page_spexo-welcome .tmpcoder-theme-welcome .nav-tab:hover,
-.toplevel_page_spexo-welcome .tmpcoder-theme-welcome .nav-tab.nav-tab-active{
+.toplevel_page_spexo-welcome .tmpcoder-theme-welcome .nav-tab.nav-tab-active,
+.spexo-addons_page_tmpcoder-import-demo .tmpcoder-theme-welcome .nav-tab:hover,
+.spexo-addons_page_tmpcoder-import-demo .tmpcoder-theme-welcome .nav-tab.nav-tab-active,
+.spexo-addons_page_spexo_addons_global_settings .tmpcoder-theme-welcome .nav-tab:hover,
+.spexo-addons_page_spexo_addons_global_settings .tmpcoder-theme-welcome .nav-tab.nav-tab-active {
     color: #5729d9;
 }
+
+.spexo-addons_page_tmpcoder-import-demo .about-wrap.tmpcoder-theme-welcome,
+.spexo-addons_page_spexo_addons_global_settings .about-wrap.tmpcoder-theme-welcome {
+    max-width: unset;
+}
+
 .toplevel_page_spexo-welcome .tmpcoder-theme-welcome .nav-tab .dashicons{
     margin-right: 6px;
     position: relative;
@@ -308,7 +405,9 @@
     box-shadow: unset;
     outline: none;
 }
-.toplevel_page_spexo-welcome .wrap.tmpcoder-theme-wrap{
+.toplevel_page_spexo-welcome .wrap.tmpcoder-theme-wrap,
+.spexo-addons_page_tmpcoder-import-demo .wrap.tmpcoder-theme-wrap,
+.spexo-addons_page_spexo_addons_global_settings .wrap.tmpcoder-theme-wrap {
     margin: 0px;
 }
 .toplevel_page_spexo-welcome .tmpcoder-element .tmpcoder-element-info ul{
@@ -1048,14 +1147,16 @@ body.toplevel_page_spexo-welcome .tmpcoder-tplib-filters .tmpcoder-tplib-filters
     font-size: 9px;
     background: #009f06;
 }
-.toplevel_page_spexo-welcome .tmpcoder-user-template-popup .tmpcoder-create-template{
+.toplevel_page_spexo-welcome .tmpcoder-user-template-popup .tmpcoder-create-template,
+.toplevel_page_spexo-welcome .tmpcoder-delete-template-confirm-popup .tmpcoder-delete-template-confirm-button {
     background: #5729d9;
     border-radius: 4px;
     padding: 10px 20px 11px 20px;
     transition: all 300ms ease;
     border: 1px solid #5729d9;
 }
-.toplevel_page_spexo-welcome .tmpcoder-user-template-popup .tmpcoder-create-template:hover{
+.toplevel_page_spexo-welcome .tmpcoder-user-template-popup .tmpcoder-create-template:hover,
+.toplevel_page_spexo-welcome .tmpcoder-delete-template-confirm-popup .tmpcoder-delete-template-confirm-button:hover {
     background: #fff;
     color: #5729d9;
 }
@@ -1145,12 +1246,14 @@ body.toplevel_page_spexo-welcome .tmpcoder-tplib-filters h3 i{
     position: relative;
 }
 .toplevel_page_spexo-welcome .tmpcoder-user-template-popup,
-.toplevel_page_spexo-welcome .tmpcoder-admin-popup{
+.toplevel_page_spexo-welcome .tmpcoder-admin-popup,
+.spexo-addons_page_spexo_addons_global_settings .tmpcoder-admin-popup {
     background: #ffffff;
     border-radius: 10px;
     max-width: 750px;
 }
-.toplevel_page_spexo-welcome .tmpcoder-admin-popup header h2{
+.toplevel_page_spexo-welcome .tmpcoder-admin-popup header h2,
+.spexo-addons_page_spexo_addons_global_settings header h2{
     margin-top: 0px;
     margin-top: 0px;
     font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
@@ -1159,7 +1262,8 @@ body.toplevel_page_spexo-welcome .tmpcoder-tplib-filters h3 i{
     font-size: 22px;
     margin-bottom: 18px;
 }
-.toplevel_page_spexo-welcome .tmpcoder-admin-popup header p{
+.toplevel_page_spexo-welcome .tmpcoder-admin-popup header p,
+.spexo-addons_page_spexo_addons_global_settings header p {
     color: #727272;
     font-size: 15px;
 }
@@ -1170,7 +1274,8 @@ body.toplevel_page_spexo-welcome .tmpcoder-tplib-filters h3 i{
 .toplevel_page_spexo-welcome input.tmpcoder-user-template-title:focus{
     border: 1px solid #cacaca !important;
 }
-.toplevel_page_spexo-welcome .tmpcoder-admin-popup header{
+.toplevel_page_spexo-welcome .tmpcoder-admin-popup header,
+.spexo-addons_page_spexo_addons_global_settings header {
     margin-bottom: 30px;
     color: #727272;
 }
@@ -1185,9 +1290,16 @@ body.toplevel_page_spexo-welcome .tmpcoder-tplib-filters h3 i{
 .toplevel_page_spexo-welcome .tmpcoder-user-role-condition{
     margin-top: 20px;
 }
-.toplevel_page_spexo-welcome .tmpcoder-admin-popup{
+.toplevel_page_spexo-welcome .tmpcoder-admin-popup {
     padding-top: 40px;
 }
+
+.toplevel_page_spexo-welcome .tmpcoder-delete-template-popup.tmpcoder-admin-popup,
+body.spexo-addons_page_spexo_addons_global_settings .tmpcoder-set-global-fonts-popup.tmpcoder-admin-popup {
+    padding: 30px;
+}
+
+.toplevel_page_spexo-welcome .tmpcoder-admin-popup
 .toplevel_page_spexo-welcome .tmpcoder-save-conditions{
     margin-top: 40px;
     border-radius: 4px;
@@ -1201,7 +1313,8 @@ body.toplevel_page_spexo-welcome .tmpcoder-tplib-filters h3 i{
 .toplevel_page_spexo-welcome .tmpcoder-save-conditions:hover{
     background: #ffffff !important;
     color: #5729d9;
-    border-color: #5729d9 !important;
+    /*border-color: #5729d9 !important;*/
+    border:1px solid #5729d9;
 }
 .toplevel_page_spexo-welcome .tmpcoder-options-row td{
     border-color: #e8e8e8;
@@ -1213,7 +1326,8 @@ body.toplevel_page_spexo-welcome .tmpcoder-tplib-filters h3 i{
 .toplevel_page_spexo-welcome .target_rule-condition-wrap select:hover{
     color: #2c3338;
 }
-.toplevel_page_spexo-welcome .tmpcoder-admin-popup .close-popup:hover{
+.toplevel_page_spexo-welcome .tmpcoder-admin-popup .close-popup:hover,
+.spexo-addons_page_spexo_addons_global_settings .tmpcoder-admin-popup .close-popup:hover {
     color: #5729d9;
 }
 .tmpcoder-popup-pro-notice,
@@ -2166,8 +2280,8 @@ body.spexo-addons_page_spexo_addons_global_settings .redux-container .redux-side
     margin-top: 0;
 }
 .toplevel_page_spexo-welcome .tmpcoder-notice-banner,
-.spexo-addons_page_spexo_addons_global_settings .tmpcoder-notice-banner,
-.spexo-addons_page_tmpcoder-import-demo .tmpcoder-notice-banner {
+.spexo-addons_page_tmpcoder-import-demo .tmpcoder-notice-banner,
+.spexo-addons_page_spexo_addons_global_settings .tmpcoder-notice-banner {
     margin-left: 30px;
     margin-right: 30px;
 }
@@ -2321,4 +2435,21 @@ body:not(.spexo-addons_page_tmpcoder-import-demo):not(.toplevel_page_spexo-welco
 }
 .tmpcoder-settings .pvfdisplymod label {
     cursor: pointer;
+}
+
+.admin_page_tmpcoder-plugin-wizard .notice {
+    display: none;
+}
+
+.admin_page_tmpcoder-plugin-wizard .notice.theme-wizard-notice {
+    display: block;
+}
+
+.spexo-addons_page_spexo_addons_global_settings .tmpcoder-set-global-fonts-popup.tmpcoder-admin-popup {
+    max-width: 600px;
+}
+
+.spexo-addons_page_tmpcoder-import-demo .notice-success {
+    margin-left: 30px;
+    margin-right: 30px;
 }

@@ -351,15 +351,7 @@ class TMPCODER_Theme_Layouts_Base {
 	
 		if ( tmpcoder_header_enabled() ) {
 			// Render Tmpcoder Header
-
-			do_action( 'tmpcoder_wp_body_open' );
-			if (\Elementor\Plugin::$instance->preview->is_preview_mode()) {
-				echo "<div class='tmpcoder-before-header-content-editor'>";
-			}
 			TMPCODER_Header_Footer_Elements::get_header_content();
-			if (\Elementor\Plugin::$instance->preview->is_preview_mode()) {
-				echo "</div>";
-			}
 		}  
     }
 
@@ -394,13 +386,7 @@ class TMPCODER_Theme_Layouts_Base {
   		
   		if ( tmpcoder_footer_enabled() ) {
   			// Render Tmpcoder Footer
-  			if (\Elementor\Plugin::$instance->preview->is_preview_mode()) {
-				echo "<div class='tmpcoder-before-footer-content-editor'>";
-			}
 			TMPCODER_Header_Footer_Elements::get_footer_content();
-			if (\Elementor\Plugin::$instance->preview->is_preview_mode()) {
-				echo "</div>";
-			}
 		}
     }
 
@@ -556,11 +542,6 @@ class TMPCODER_Theme_Layouts_Base {
 			$elementor->frontend->enqueue_styles();
 		}
 
-		// if ( method_exists( '\ElementorPro\Plugin', 'enqueue_styles' ) ) {
-		// 	$elementor_pro = \ElementorPro\Plugin::instance();
-		// 	$elementor_pro->enqueue_styles();
-		// }
-
 		// Load Header Template CSS File
 		$header_template_id = !empty(tmpcoder_get_header_id()) ? tmpcoder_get_header_id() : false;
 
@@ -615,7 +596,6 @@ class TMPCODER_Theme_Layouts_Base {
 		$canvas_template_id = !empty($canvas_conditions) ? $this->get_dynamic_content_id($canvas_conditions) : false;
 
 		if ( false !== $canvas_template_id ) {
-			
 			if ( class_exists( '\Elementor\Core\Files\CSS\Post' ) ) {
 				$canvas_css_file = new \Elementor\Core\Files\CSS\Post( $canvas_template_id );
 			} elseif ( class_exists( '\Elementor\Post_CSS_File' ) ) {

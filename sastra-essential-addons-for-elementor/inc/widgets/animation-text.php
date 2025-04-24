@@ -92,6 +92,8 @@ class TMPCODER_Advanced_Text extends Widget_Base {
 			]
 		);
 
+		tmpcoder_library_buttons( $this, Controls_Manager::RAW_HTML );
+
 		$this->add_control_text_style();
 
 		// Upgrade to Pro Notice

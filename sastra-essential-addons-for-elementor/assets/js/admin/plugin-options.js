@@ -212,63 +212,77 @@ jQuery(document).ready(function( $ ) {
 	** Reset Template -------------------------
 	*/
 	function deleteTemplate() {
-		$( '.tmpcoder-delete-template' ).on( 'click', function() {
-
-			// Buttons
+		$('.tmpcoder-delete-template').on('click', function () {
 			var deleteButton = $(this);
-
-			if ( ! confirm(deleteButton.data('warning')) ) {
-				return;
-			}
-
+			var slug = deleteButton.data('slug');
+			var nonce = deleteButton.data('nonce');
+	
+			// Store data in popup
+			$('.tmpcoder-delete-template-confirm-popup-wrap')
+				.data('slug', slug)
+				.data('nonce', nonce)
+				.data('button', deleteButton)
+				.fadeIn();
+		});
+	
+		// Cancle delete template
+		$('.tmpcoder-delete-template-popup').find('.tmpcoder-delete-template-confirm-popup-close').on( 'click', function() {
+			$('.tmpcoder-delete-template-confirm-popup-wrap').fadeOut();
+		});
+	
+		// Confirm delete template
+		$('.tmpcoder-delete-template-confirm-button').on('click', function () {
+			var popup = $('.tmpcoder-delete-template-confirm-popup-wrap');
+			var slug = popup.data('slug');
+			var nonce = popup.data('nonce');
+			var deleteButton = popup.data('button');
+			
 			// Get Template Library
 			var library = 'my_templates' === getActiveFilter() ? 'elementor_library' : TmpcoderPluginOptions.post_type;
-
-			// Get Template Slug
-			var slug = deleteButton.attr('data-slug');
-
-			var oneTimeNonce = deleteButton.attr('data-nonce');
-
-			deleteButton.closest('li').css('opacity','0.5');
-			deleteButton.closest('li').css('pointer-events','none');
-
-			// AJAX Data
+	
+			deleteButton.closest('li').css({
+				opacity: '0.5',
+				pointerEvents: 'none'
+			});
+	
 			var data = {
-				nonce: oneTimeNonce,
 				action: 'tmpcoder_delete_template',
 				template_slug: slug,
 				template_library: library,
+				nonce: nonce,
 			};
-
-			// Remove Template via AJAX
-			$.post(ajaxurl, data, function(response) {
+	
+			// Delete via AJAX
+			$.post(ajaxurl, data, function () {
 				deleteButton.closest('li').remove();
-			});
-
-			// Save Conditions
-			$.post(ajaxurl, data, function(response) {
-				setTimeout(function(){
-					if ( $('.tmpcoder-my-templates-list li').length === 0 ) {
+	
+				setTimeout(function () {
+					if ($('.tmpcoder-my-templates-list li').length === 0) {
 						$('.tmpcoder-my-templates-list').append('<li class="tmpcoder-no-templates">You don\'t have any templates yet!</li>');
 					}
 				}, 500);
 			});
-
+	
 			// Delete associated Conditions
 			if ( 'my_templates' !== getActiveFilter() ) {
 				var conditions = JSON.parse($( '#tmpcoder_'+ currentTab +'_conditions' ).val());
-					delete conditions[slug];
-
+				delete conditions[slug];
+	
 				// Set Conditions
 				$('#tmpcoder_'+ currentTab +'_conditions').val( JSON.stringify(conditions) );
-
+	
 				// AJAX Data
-				var data = {
+				var saveData = {
 					action: 'tmpcoder_save_template_conditions',
 					nonce: TmpcoderPluginOptions.nonce,
 				};
-				data['tmpcoder_'+ currentTab +'_conditions'] = JSON.stringify(conditions);
+				saveData['tmpcoder_' + currentTab + '_conditions'] = JSON.stringify(conditions);
+	
+				$.post(ajaxurl, saveData);
 			}
+	
+			// Close popup
+			popup.fadeOut();
 		});
 	}
 
