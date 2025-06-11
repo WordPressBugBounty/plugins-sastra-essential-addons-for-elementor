@@ -4,7 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 add_action( 'wp_enqueue_scripts', 'tmpcoder_add_dynamic_styles', 9999);
 add_action('wp_enqueue_scripts', 'tmpcoder_dequeue_elementor_global__css', 9999);
-
+	
 if (!function_exists('tmpcoder_add_dynamic_styles')) {
 
 	function tmpcoder_add_dynamic_styles(){

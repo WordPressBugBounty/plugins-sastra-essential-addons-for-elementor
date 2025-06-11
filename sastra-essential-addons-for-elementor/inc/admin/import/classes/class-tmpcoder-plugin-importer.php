@@ -391,7 +391,7 @@ if ( ! class_exists( 'TMPCODER_Importer' ) ) {
 		    
 		   $ext = pathinfo( $filename, PATHINFO_EXTENSION );
 			
-			TMPCODER_Importer_Log::add('im here - '.$ext);
+			// TMPCODER_Importer_Log::add('im here - '.$ext);
 
 		  	if ( 'svg' === $ext ) {
 				

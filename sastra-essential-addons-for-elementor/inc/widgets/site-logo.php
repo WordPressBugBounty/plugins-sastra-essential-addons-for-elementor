@@ -148,6 +148,7 @@ class TMPCODER_Site_Logo extends Widget_Base {
 				'default' => 'medium',
 			]
 		);
+
 		$this->add_responsive_control(
 			'align',
 			[
@@ -790,12 +791,13 @@ class TMPCODER_Site_Logo extends Widget_Base {
 
 		if ( ! empty( $settings['custom_image']['url'] ) ) {
 			$image_data = wp_get_attachment_image_src( $settings['custom_image']['id'], $image_size, true );
-		} else if( function_exists('tmpcoder_get_theme_logo') && ! empty( tmpcoder_get_theme_logo() ) ){
-            $image_data = array( tmpcoder_get_theme_logo() );
+		} else if( function_exists('tmpcoder_get_theme_logo_details') && ! empty( tmpcoder_get_theme_logo_details() ) ){
+            $image_data = tmpcoder_get_theme_logo_details();
 		}else if ( function_exists('tmpcoder_get_theme_text') && ! empty( tmpcoder_get_theme_text() ) ) {
 			$image_data = array( tmpcoder_get_theme_text() );
         } else if ( ! empty( wp_get_attachment_image_src( get_theme_mod( 'custom_logo' ) ) ) ) {
 			$image_data = wp_get_attachment_image_src( get_theme_mod( 'custom_logo' ), $image_size, true );
+			$image_data['attachment_id'] = get_theme_mod( 'custom_logo' );
         } else {
 			echo wp_kses_post('<h2>'.get_bloginfo('name').'</h2>');
 		}
@@ -806,16 +808,33 @@ class TMPCODER_Site_Logo extends Widget_Base {
 			$img_animation = $settings['hover_animation'];
 		}
 		if ( ! empty( $image_data ) ) {
-			$image_url = $image_data[0];
+			$image_url = isset($image_data['url']) ? $image_data['url'] : $image_data[0];
 
 			$alt_text = '';
+			$image_title = '';
+
 			if ( isset($image_url) && $image_url != "" ) {
-				$image_id = $this->tmpcoder_get_image_id_from_url($image_url);
+
+				if (isset($image_data['attachment_id']) && $image_data['attachment_id'] != '') {
+					$image_id = $image_data['attachment_id'];		
+				}
+				elseif (isset($settings['custom_image']['id']) && $settings['custom_image']['id'] !='') {
+					$image_id = $settings['custom_image']['id'];
+				}
+				else
+				{
+					$image_id = isset($image_data['id']) ? $image_data['id'] : $this->tmpcoder_get_image_id_from_url($image_url);
+				}
+
 				$alt_text = get_post_meta($image_id, '_wp_attachment_image_alt', true);
+
+				$image_title = get_the_title( $image_id );
+
 				$settings[ 'image_size' ] = ['id' => $image_id];
 				$image_html = Group_Control_Image_Size::get_attachment_image_html( $settings, 'image_size' );
 
-				
+				$settings[ 'site_logo_size' ] = ['id' => $image_id];
+				$image_html = Group_Control_Image_Size::get_attachment_image_html( $settings, 'site_logo_size' );
 			}
 		}
 
@@ -827,8 +846,17 @@ class TMPCODER_Site_Logo extends Widget_Base {
 				<div class="tmpcoder-site-logo-container">
 					<?php 
 					if ($image_html) {
+
 						$image_original_class = 'wp-image-'.$image_id;
+
 						$image_html = str_replace($image_original_class, $class_animation, $image_html);
+
+						 $image_html = preg_replace(
+						    '/\salt="([^"]*)"/',
+						    ' title="' . esc_attr( $image_title ) . '" alt="$1"',
+						    $image_html
+						);
+
 						echo wp_kses_post($image_html);
 					}
 					else
@@ -856,7 +884,7 @@ class TMPCODER_Site_Logo extends Widget_Base {
 				</figure>
 		<?php endif; ?>
 		</div>  
-			<?php
+		<?php
 	}
 
     /**

@@ -16569,3 +16569,5 @@ body:not(.rtl) .tmpcoder-product-qty-align-both .tmpcoder-quantity-wrapper i:las
 }
 
 /* Css for even (same height image) in media grid widget - end */
+
+.tmpcoder-grid-items-swatches-parent .woocommerce-loop-product__title {display: none;}

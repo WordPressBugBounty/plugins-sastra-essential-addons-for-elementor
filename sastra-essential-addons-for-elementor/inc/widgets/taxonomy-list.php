@@ -27,7 +27,15 @@ class TMPCODER_Taxonomy_List extends Widget_Base {
 	}
 
 	public function get_categories() {
-		return [ 'tmpcoder-widgets-category' ];
+
+		if (tmpcoder_show_theme_buider_widget_on('type_single_post') || tmpcoder_show_theme_buider_widget_on('type_archive')) {
+			return [ 'tmpcoder-theme-builder-widgets'];
+		}
+		elseif (tmpcoder_show_theme_buider_widget_on('type_single_product') || tmpcoder_show_theme_buider_widget_on('type_product_category') || tmpcoder_show_theme_buider_widget_on('type_product_archive')) {
+			return [ 'tmpcoder-woocommerce-builder-widgets'];
+		}else{
+			return [ 'tmpcoder-widgets-category' ];
+		}
 	}
 
 	public function get_script_depends() {
@@ -230,6 +238,19 @@ class TMPCODER_Taxonomy_List extends Widget_Base {
 				'label_block' => false,
 				'default' => 'yes',
 				// 'separator' => 'before',
+				'condition' => [
+					'disable_links!' => 'yes'
+				]
+			]
+		);
+
+		$this->add_control(
+			'tmpcoder_enable_title_attribute',
+			[
+				'label' => esc_html__( 'Enable Title Attribute', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::SWITCHER,
+				'return_value' => 'yes',
+				'render_type' => 'template',
 				'condition' => [
 					'disable_links!' => 'yes'
 				]
@@ -571,11 +592,16 @@ class TMPCODER_Taxonomy_List extends Widget_Base {
 		$this->add_section_style_toggle_icon();
     }
 
-	public function get_tax_wrapper_open_tag( $settings, $term_id, $open_in_new_page ) {
+	public function get_tax_wrapper_open_tag( $settings, $term_id, $open_in_new_page, $term_name='' ) {
 		if ( 'yes' == $settings['disable_links'] ) {
 			echo '<span>';
 		} else {
-			echo '<a target="'. esc_attr($open_in_new_page) .'" href="'. esc_url(get_term_link($term_id)) .'">';
+
+			if ($settings['tmpcoder_enable_title_attribute'] != 'yes') {
+				$term_name = '';
+			}
+
+			echo '<a title="'.esc_attr($term_name).'" target="'. esc_attr($open_in_new_page) .'" href="'. esc_url(get_term_link($term_id)) .'">';
 		}
 	}
 
@@ -616,7 +642,7 @@ class TMPCODER_Taxonomy_List extends Widget_Base {
         	
             echo wp_kses_post('<li '. $cat_class . ' data-term-id="'.esc_attr($data_parent_term_id) .'">');
 				$toggle_icon = !empty($children) && ('vertical' === $settings['taxonomy_list_layout']) && ('yes' === $settings['show_sub_categories_on_click']) ? '<i class="fas fa-caret-right tmpcoder-tax-dropdown" aria-hidden="true"></i>' : '';
-				$this->get_tax_wrapper_open_tag( $settings, $term->term_id, $open_in_new_page );
+				$this->get_tax_wrapper_open_tag( $settings, $term->term_id, $open_in_new_page, $term->name );
 					echo wp_kses('<span class="tmpcoder-tax-wrap">'. $toggle_icon . ' ' . $icon_wrapper .'<span>'. esc_html($term->name) .'</span></span>', tmpcoder_wp_kses_allowed_html());
 		            echo ($settings['show_tax_count']) ? '<span><span class="tmpcoder-term-count">&nbsp;('. esc_html($term->count) .')</span></span>' : '';
 				$this->get_tax_wrapper_close_tag( $settings );
@@ -636,7 +662,7 @@ class TMPCODER_Taxonomy_List extends Widget_Base {
 				
 				echo wp_kses_post('<li '. $sub_class . ' data-term-id="child-'. esc_attr($data_child_term_id) .'" data-id="'. esc_attr($data_item_id) .'">');
 				$toggle_icon = !empty($grand_children) && ('vertical' === $settings['taxonomy_list_layout']) && ('yes' === $settings['show_sub_categories_on_click']) ? '<i class="fas fa-caret-right tmpcoder-tax-dropdown" aria-hidden="true"></i>' : '';
-					$this->get_tax_wrapper_open_tag( $settings, $term->term_id, $open_in_new_page );
+					$this->get_tax_wrapper_open_tag( $settings, $term->term_id, $open_in_new_page, $term->name );
 						echo wp_kses('<span class="tmpcoder-tax-wrap">'. $toggle_icon . ' ' . $icon_wrapper .'<span>'. esc_html($term->name) .'</span></span>', array(
                             'span' => array(
                                 'class' => ''
@@ -662,7 +688,7 @@ class TMPCODER_Taxonomy_List extends Widget_Base {
 					}
 					
 					echo wp_kses_post('<li '. $sub_class .' '. $data_grandchild_term_id .' data-id="'. esc_attr($grandchild_id) .'" >');
-						$this->get_tax_wrapper_open_tag( $settings, $term->term_id, $open_in_new_page );
+						$this->get_tax_wrapper_open_tag( $settings, $term->term_id, $open_in_new_page, $term->name );
 							echo wp_kses('<span class="tmpcoder-tax-wrap">'. $toggle_icon . ' ' . $icon_wrapper .'<span>'. esc_html($term->name) .'</span></span>', array(
                                 'span' => array(
                                     'class' => ''
@@ -680,7 +706,7 @@ class TMPCODER_Taxonomy_List extends Widget_Base {
 						$data_great_grandchild_term_id = ' data-parent-id="'. $grandchild_id .'" data-term-id="great-grandchild-'. $data_child_term_id .'"';
 					
 						echo wp_kses_post('<li '. $sub_class .' '. $data_great_grandchild_term_id .' >');
-							$this->get_tax_wrapper_open_tag( $settings, $term->term_id, $open_in_new_page );
+							$this->get_tax_wrapper_open_tag( $settings, $term->term_id, $open_in_new_page, $term->name );
 								echo wp_kses('<span class="tmpcoder-tax-wrap">'. $icon_wrapper .'<span>'. esc_html($term->name) .'</span></span>', array(
                                     'span' => array(
                                         'class' => array(),

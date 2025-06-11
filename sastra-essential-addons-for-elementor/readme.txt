@@ -1,20 +1,22 @@
 === Spexo Addons for Elementor - Free Elementor Addons, Widgets and Templates ===
 Contributors: templatescoderthemes, skywebtech
 Tags: elementor, elementor addons, elementor templates, elementor widgets, woocommerce elementor
-Stable tag: 1.0.21
+Stable tag: 1.0.22
 Requires at least: 5.0
 Tested up to: 6.8
 Requires PHP: 7.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-Spexo comes with 100+ best elementor addons and elementor template kit. All starter kit supports Astra, Spexo, Storefront, OceanWP, GeneratePress and more.
+100+ best elementor addons & template kit. Free Widgets: Elementor Post Grid, Woocommerce, Form, Mega Menu Builder, Carousel, Image Hotspots, Parallax
 
 == Description ==
 
 **Spexo Addons** (formerly Sastra Addons) is the easy to use and most flexible addon for [Elementor](https://wordpress.org/plugins/elementor/) page builder plugin. We aim to offer you the tools necessary to streamline and simplify the website development process. The most significant advantage is that you can develop anything **without writing a single line of code**. Whether you are a developer or not, our easy to use prebuilt widgets, extensions and builders will make your life easy and you can develop a beautiful, smooth and faster website.
 
-##Spexo Addons for Elementor - comes with 80+ Best Free Elementor widgets, 200+ creative blocks & element pack, Ready to use prebuilt websites & elementor templates, Free addons for Elementor, Elementor Mega Menu Builder, Prebuilt Widgets, Blocks & Extensions##
+Spexo Addons for Elementor - comes with **80+ Best Free Elementor widgets**, **200+ creative blocks & element pack**, Ready to use prebuilt websites & elementor templates, Free addons for Elementor, Elementor Mega Menu Builder, Prebuilt Widgets, Blocks & Extensions.
+
+Showcase user engagement using powerful tools like **Dynamic Search with AJAX**, **Popup Builder**, and **One Page Navigation**—all crafted to simplify navigation, increase interaction, and offer greater design flexibility. Enhance your website with popular widgets such as **Image Comparison**, **Interactive Image Hotspots**, and **Blog Posts Carousel**, enabling you to build visually striking, interactive experiences. Every tool is fully compatible with Elementor’s intuitive drag-and-drop editor, allowing for seamless customization without any coding.
 
 **USEFUL LINKS** 👇
 [Live Demo](https://spexoaddons.com/) | [Free Elementor Templates](https://spexoaddons.com/spexo-elementor-theme/) | [Need Support?](https://templatescoder.com/support/) | [Documentation](https://spexoaddons.com/documentation)
@@ -117,6 +119,8 @@ Our Lottie animation widget gives you the ability to easily add Lottie Animation
 
 ### [Elementor Themes & Templates Kits](https://spexoaddons.com/spexo-elementor-theme/):
 - [AI Software Agency](https://spexoaddons.com/preview/ai-software-agency-elementor-template/)
+- [AI SaaS Agency](https://spexoaddons.com/preview/ai-saas-agency-elementor-template/)
+- [Classic Blog](https://spexoaddons.com/preview/classic-blog-elementor-template/)
 - [Beer & Brewery](https://spexoaddons.com/preview/beer-brewery-elementor-template/)
 - [Business Corporate](https://spexoaddons.com/preview/business-corporate-elementor-template/)
 - [Business Startup](https://spexoaddons.com/preview/business-startup-elementor-template/)
@@ -304,6 +308,36 @@ Feel free to contact us anytime via [Support](https://templatescoder.com/support
 
 == Changelog ==
 
+= v1.0.22 - 2025-06-07 =
+
+= New Features =  
+* New Widget: Global Template with management options under the Site Builder menu.
+* New Widget: Product Additional Info to display extra product details.
+* New Widget: Product Media List for showcasing product images in list view.
+* New Demo: Classic Blog prebuilt layout added.
+* Added : New 15+ prebuilt blocks and section designs in various categories like header, testimonial, services and many more.
+* Dashboard Enhancements: Helpful documentation links added across:
+  - Prebuilt Websites page
+  - Prebuilt Blocks page
+  - License Activation area
+  - Resume Import Process popup
+  - System Info page
+
+= Improvements = 
+* Product Grid/Slider/Carousel Widget: Now displays stock status.
+* Product Stock Widget: Enhanced with advanced customization options.
+* Advanced Slider Widget: Added support for customizable heading title tags (SEO improvement).
+* Site Logo Widget: Enhanced for SEO with proper alt and title attributes on the logo image.
+
+= Enhancements = 
+* Title Attribute Option: Added ability to enable title attribute in the following widgets:
+  - Post Grid/Slider/Carousel
+  - Product Grid/Slider/Carousel
+  - Taxonomy List
+  - Sharing Buttons
+  - Product Additional Information
+  - Breadcrumb
+
 = v1.0.21 - 2025-04-24 =
 
 * Added : 'Even' option in "Image Grid/Slider Widget" for display all images in same height
@@ -345,18 +379,5 @@ Feel free to contact us anytime via [Support](https://templatescoder.com/support
 = v1.0.17 - 2025-02-13 =
 
 * Fixed: No post found issue in Post Grid Widget
-
-= v1.0.16 - 2025-02-10 =
-
-* Improved: Moved CSS and JS files specific to each widget into separate files for better performance.
-* Added: Option in admin bar for renew on demand assest for specific page and all pages
-* Improved: Performance by loading widget custom JS and other css and js libraries assets conditionally in frontend
-* Fixed: Slider Nav arrows "Show On Hover" option not working in slider widgets
-* Fixed: Infinite scroll pagination not woking in "Post Timeline" widget
-* Fixed: PHP warning in "Advanced Slider" widget 
-* Fixed: PHP warning in "Magazine Grid" widget 
-* Improved: Image render process for optimize images using lazy load feture
-* Fixed: Output Escap related errors in "Post Timeline" widget  
-* Fixed: Errors in Woocommerce widget that occurs after deactive woocommerce plugin   
 
 [See changelog for all versions.](https://spexoaddons.com/changelog/)

@@ -63,8 +63,9 @@ jQuery(document).ready(function( $ ) {
 	*/
 	function createUserTemplate() {
 		// Get Template Library
-		var library = 'my_templates' === getActiveFilter() ? 'elementor_library' : TmpcoderPluginOptions.post_type;
+		var library = 'type_global_template' === getActiveFilter() ? 'elementor_library' : TmpcoderPluginOptions.post_type;
 		// Get Template Title
+
 		var title = $('.tmpcoder-user-template-title').val();
 		
 		// Get Template Slug
@@ -106,8 +107,7 @@ jQuery(document).ready(function( $ ) {
 			setTimeout(function() {
 				// Get Template ID
 
-				// Redirect User to Editor
-				if ( 'my_templates' === currentTab.replace( /\W+/g, '-' ).toLowerCase() ) {
+				if ( 'type_global_template' === currentTab.replace( /\W+/g, '-' ).toLowerCase() ) {
 					var url = TmpcoderPluginOptions.admin_url+'post.php?post='+ id +'&action=elementor';
 					url = TmpcodersanitizeURL(url);
 					window.location.href = url;
@@ -238,7 +238,7 @@ jQuery(document).ready(function( $ ) {
 			var deleteButton = popup.data('button');
 			
 			// Get Template Library
-			var library = 'my_templates' === getActiveFilter() ? 'elementor_library' : TmpcoderPluginOptions.post_type;
+			var library = 'type_global_template' === getActiveFilter() ? 'elementor_library' : TmpcoderPluginOptions.post_type;
 	
 			deleteButton.closest('li').css({
 				opacity: '0.5',
@@ -264,7 +264,7 @@ jQuery(document).ready(function( $ ) {
 			});
 	
 			// Delete associated Conditions
-			if ( 'my_templates' !== getActiveFilter() ) {
+			if ( 'type_global_template' !== getActiveFilter() ) {
 				var conditions = JSON.parse($( '#tmpcoder_'+ currentTab +'_conditions' ).val());
 				delete conditions[slug];
 	
@@ -891,6 +891,18 @@ jQuery(document).ready(function( $ ) {
 				$('.tmpcoder-widgets-not-found').css('display', 'flex');
 				$('.submit').hide();
 			}
+
+			jQuery.ajax({
+                type: 'POST',
+                url: ajaxurl,
+                data: {
+                    action: 'tmpcoder_backend_search_query_results',
+                    search_query: val,
+                    type:1
+                },
+                success: function( response ) {}
+            });
+
 		}, 1000);  
 	});
 

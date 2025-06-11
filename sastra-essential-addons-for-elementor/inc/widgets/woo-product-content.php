@@ -26,7 +26,7 @@ class TMPCODER_Woo_Product_Content extends Widget_Base {
 	}
 
 	public function get_categories() {
-		return [ 'tmpcoder-woocommerce-builder-widgets' ];
+		return tmpcoder_show_theme_buider_widget_on('type_single_product') ? [ 'tmpcoder-woocommerce-builder-widgets'] : [];
 	}
 
 	public function get_keywords() {

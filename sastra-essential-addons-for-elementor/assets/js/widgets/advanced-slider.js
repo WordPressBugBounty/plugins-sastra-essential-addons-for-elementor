@@ -95,22 +95,17 @@
             $scope.find('.slick-current').addClass('tmpcoder-slick-visible');
 
             var maxHeight = -1;
-            // $scope.find('.slick-slide').each(function() {
-            // if ($(this).height() > maxHeight) {
-            //  maxHeight = $(this).height();
-            // }
-            // });
-            // $scope.find('.slick-slide').each(function() {
-            // if ($(this).height() < maxHeight) {
-            //  console.log(Math.ceil((maxHeight-$(this).height())/2) + 'px 0');
-            //  $(this).css('margin', Math.ceil((maxHeight-$(this).height())/2) + 'px 0');
-            //  // $(this).css('transform', 'translateY(-50%)');
-            // }
-            // });
 
             // TMPCODER INFO -  needs condition check if there are any images
             if ($scope.find('.tmpcoder-slider-img').length !== 0) {
-                $scope.find('.tmpcoder-advanced-slider').css('height', $scope.find('.slick-current').outerHeight());
+
+                // Wait for the first image to load
+                $scope.find('.slick-current img').on('load', function() {
+                    // Set the height of the slider container based on the first image
+                    $scope.find('.tmpcoder-advanced-slider').css('height', $scope.find('.slick-current').outerHeight());
+                });
+
+                // $scope.find('.tmpcoder-advanced-slider').css('height', $scope.find('.slick-current').outerHeight());
 
                 $scope.find('.tmpcoder-slider-arrow').on('click', function () {
                     console.log('works resize');

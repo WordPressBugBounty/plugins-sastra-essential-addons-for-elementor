@@ -26,11 +26,11 @@ class TMPCODER_Product_Mini_Cart extends Widget_Base {
 	}
 
 	public function get_categories() {
-		return ['tmpcoder-woocommerce-builder-widgets'];
+		return tmpcoder_show_theme_buider_widget_on('type_header') ? [ 'tmpcoder-header-builder-widgets'] : ['tmpcoder-woo-builder-widgets'];
 	}
 
 	public function get_keywords() {
-		return [ 'woocommerce', 'product-ini-cart', 'product', 'mini', 'cart' ];
+		return [ 'spexo', 'woocommerce', 'product-mini-cart', 'product', 'mini', 'cart' ];
 	}
 
 	public function get_script_depends() {

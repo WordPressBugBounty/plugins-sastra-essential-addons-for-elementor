@@ -27,7 +27,7 @@ class TMPCODER_Post_Info extends Widget_Base {
 	}
 
 	public function get_categories() {
-		return [ 'tmpcoder-theme-builder-widgets' ];
+		return tmpcoder_show_theme_buider_widget_on('type_single_post') ? [ 'tmpcoder-theme-builder-widgets'] : [];
 	}
 
 	public function get_keywords() {

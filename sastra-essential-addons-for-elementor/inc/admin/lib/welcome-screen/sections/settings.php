@@ -260,6 +260,31 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
                     <?php do_action('tmpcoder_secondary_image_options_tab'); ?>
                 <?php endif; ?>
 
+                <?php if (! tmpcoder_is_availble() ) : ?>
+                    <div class="tmpcoder-settings-group-tooltip">
+                        <div class="tmpcoder-woo-template-info tmpcoder-compare-wishlist tmpcoder-setting">
+                            <h3><?php echo esc_html('Smooth Scrolling Controls') ?></h3>
+                            <div class="tmpcoder-setting-tooltip">
+                                <a href="<?php echo esc_attr(TMPCODER_PURCHASE_PRO_URL) ?>?ref=tmpcoder-plugin-backend-settings-smooth-scroll#purchasepro" class="tmpcoder-setting-tooltip-link" target="_blank">
+                                    <span class="dashicons dashicons-lock"></span>
+                                    <span class="dashicons dashicons-unlock"></span>
+                                </a>
+                                <div class="tmpcoder-setting-tooltip-text"><?php esc_html_e( 'Upgrade to Pro', 'sastra-essential-addons-for-elementor' ); ?></div>
+                            </div>
+                            
+                        </div>
+                        <div class="tmpcoder-woo-template-info">
+                            <div class="tmpcoder-woo-template-title">
+                                <div><?php echo esc_html('Smooth Scroll') ?></div>
+                            </div>
+                            <input type="checkbox" id="tmpcoder_smooth_scroll" disabled="disabled">
+                            <label for="tmpcoder_smooth_scroll"></label>
+                        </div>
+                    </div>
+                <?php else: ?>
+                    <?php do_action('tmpcoder_smooth_scroll_options'); ?>
+                <?php endif; ?>
+
             </div>
             <?php submit_button( '', 'tmpcoder-options-button' ); ?>
         </div>  

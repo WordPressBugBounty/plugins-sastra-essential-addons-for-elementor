@@ -34,7 +34,13 @@ class TMPCODER_Post_Grid extends Widget_Base {
 	}
 
 	public function get_categories() {
-		return [ 'tmpcoder-widgets-category' ];
+		if (tmpcoder_show_theme_buider_widget_on('type_archive') || tmpcoder_show_theme_buider_widget_on('type_single_post')) {
+			return [ 'tmpcoder-theme-builder-widgets' ];
+		}
+		else
+		{
+			return [ 'tmpcoder-widgets-category' ];
+		}
 	}
 
 	public function get_keywords() {
@@ -2290,6 +2296,19 @@ class TMPCODER_Post_Grid extends Widget_Base {
 				'separator' => 'after'
             ]
         );
+
+		$repeater->add_control(
+			'tmpcoder_enable_title_attribute',
+			[
+				'label' => esc_html__( 'Enable Title Attribute', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::SWITCHER,
+				'return_value' => 'yes',
+				'render_type' => 'template',
+				'condition' => [
+					'element_select' => 'title',
+				]
+			]
+		);
 
 		$repeater->add_control(
 			'element_title_tag',
@@ -8857,7 +8876,19 @@ class TMPCODER_Post_Grid extends Widget_Base {
 
 		echo '<'. esc_attr( tmpcoder_validate_html_tag($settings['element_title_tag']) ) .' class="'. esc_attr($class) .'">';
 			echo '<div class="inner-block">';
-				echo '<a target="'. esc_attr($open_links_in_new_tab) .'" '.wp_kses_post($pointer_item_class) .' href="'. esc_url( get_the_permalink() ) .'">';
+
+				$title_tag = '';
+
+				if (isset($settings['tmpcoder_enable_title_attribute']) && $settings['tmpcoder_enable_title_attribute'] == 'yes') {
+					
+					if ( 'word_count' === $settings['element_trim_text_by'] ) {
+						$title_tag = esc_html(wp_trim_words( get_the_title(), $settings['element_word_count'] ));
+					} else {
+						$title_tag = esc_html(substr(html_entity_decode(get_the_title()), 0, $settings['element_letter_count']) .'...');
+					}
+				}
+
+				echo '<a title="'.esc_attr($title_tag).'" target="'. esc_attr($open_links_in_new_tab) .'" '.wp_kses_post($pointer_item_class) .' href="'. esc_url( get_the_permalink() ) .'">';
 					if ( 'word_count' === $settings['element_trim_text_by'] ) {
 						echo esc_html(wp_trim_words( get_the_title(), $settings['element_word_count'] ));
 					} else {

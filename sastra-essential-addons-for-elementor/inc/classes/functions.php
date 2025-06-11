@@ -209,12 +209,13 @@ if (!function_exists('tmpcoder_get_post_id_by_meta_key_and_meta_value')) {
 
 if (!function_exists('tmpcoder_breadcrumb')) {
 	
-	function tmpcoder_breadcrumb($delimiter = "") {
+	function tmpcoder_breadcrumb($delimiter = "", $enable_title_attr=false) {
 	    
-
 	    if ($delimiter == "") {
 	        $delimiter = " / ";
 	    }
+
+	    $GLOBALS['tmpcoder_enable_title_attr'] = $enable_title_attr;
 
 	    if (!defined('TMPCODER_BREAD_DELIMITER')) {
 	        define('TMPCODER_BREAD_DELIMITER', $delimiter);
@@ -237,6 +238,7 @@ if (!function_exists('tmpcoder_breadcrumb')) {
                     ),
                     'a' => array(
                         'href'=> array(),
+						'title'=>array(),
                     ),
                     'span' => array(
                         'class' => array(),
@@ -252,6 +254,7 @@ if (!function_exists('tmpcoder_breadcrumb')) {
                     ),
                     'a' => array(
                         'href'=> array(),
+						'title'=>array(),
                     ),
                     'span' => array(
                         'class' => array(),
@@ -266,6 +269,7 @@ if (!function_exists('tmpcoder_breadcrumb')) {
                     ),
                     'a' => array(
                         'href'=> array(),
+						'title'=>array(),
                     ),
                     'span' => array(
                         'class' => array(),
@@ -280,6 +284,7 @@ if (!function_exists('tmpcoder_breadcrumb')) {
                     ),
                     'a' => array(
                         'href'=> array(),
+						'title'=>array(),
                     ),
                     'span' => array(
                         'class' => array(),
@@ -294,6 +299,7 @@ if (!function_exists('tmpcoder_breadcrumb')) {
                     ),
                     'a' => array(
                         'href'=> array(),
+						'title'=>array(),
                     ),
                     'span' => array(
                         'class' => array(),
@@ -308,6 +314,7 @@ if (!function_exists('tmpcoder_breadcrumb')) {
                     ),
                     'a' => array(
                         'href'=> array(),
+						'title'=>array(),
                     ),
                     'span' => array(
                         'class' => array(),
@@ -331,6 +338,7 @@ if (!function_exists('tmpcoder_breadcrumb')) {
                             ),
                             'a' => array(
                                 'href'=> array(),
+                                'title'=>array(),
                             ),
                             'span' => array(
                                 'class' => array(),
@@ -346,6 +354,7 @@ if (!function_exists('tmpcoder_breadcrumb')) {
                         ),
                         'a' => array(
                             'href'=> array(),
+							'title'=>array(),
                         ),
                         'span' => array(
                             'class' => array(),
@@ -361,6 +370,7 @@ if (!function_exists('tmpcoder_breadcrumb')) {
                     ),
                     'a' => array(
                         'href'=> array(),
+						'title'=>array(),
                     ),
                     'span' => array(
                         'class' => array(),
@@ -375,6 +385,7 @@ if (!function_exists('tmpcoder_breadcrumb')) {
                     ),
                     'a' => array(
                         'href'=> array(),
+						'title'=>array(),
                     ),
                     'span' => array(
                         'class' => array(),
@@ -385,7 +396,22 @@ if (!function_exists('tmpcoder_breadcrumb')) {
 
 	            add_filter( 'woocommerce_breadcrumb_defaults', 'tmpcoder_breadcrumb_delimiter' );
 
-	            woocommerce_breadcrumb(); 
+	            ob_start();
+			    woocommerce_breadcrumb();
+			    $woocommerce_breadcrumb = ob_get_clean();
+			    
+			    if ($enable_title_attr === true) {
+			    
+				    $woocommerce_breadcrumb = preg_replace_callback(
+					    '/<a[^>]+>([^<]+)<\/a>/i',
+					    function( $matches ) {
+					        $name = esc_attr( trim( $matches[1] ) );
+					        return str_replace('<a', '<a title="' . $name . '"', $matches[0]);
+					    },
+					    $woocommerce_breadcrumb
+					);
+			    }
+			    echo wp_kses($woocommerce_breadcrumb, tmpcoder_wp_kses_allowed_html());
 	        }
 	    }
 	}
@@ -405,7 +431,7 @@ if (!function_exists('tmpcoder_render_page')) {
 	
 	function tmpcoder_render_page($delimiter)
 	{   
-	    $output = "<label><a href='".esc_url(home_url())."' >Home</a></label>";
+	    $output = tmpcoder_render_home_link();
 	    $output .= "<span class='custom-delimiter'> ".$delimiter." </span>";
 	    $output .= "<label class='current-item-name'>".the_title('', '', false )."</label>";
 
@@ -417,7 +443,7 @@ if (!function_exists('tmpcoder_render_category')) {
 	
 	function tmpcoder_render_category($delimiter)
 	{
-	    $output = "<label><a href='".esc_url(home_url())."' >Home</a></label>";
+	    $output = tmpcoder_render_home_link();
 
 	    if ( is_category() ){
 
@@ -456,7 +482,7 @@ if (!function_exists('tmpcoder_render_single')) {
 	
 	function tmpcoder_render_single($delimiter)
 	{
-	    $output = "<label><a href='".esc_url(home_url())."' >Home</a></label>";
+	    $output = tmpcoder_render_home_link();
 
 	    // parent category
 	    $parent_cat = current( get_the_category() );
@@ -499,7 +525,7 @@ if (!function_exists('tmpcoder_render_author')) {
 	function tmpcoder_render_author($delimiter)
 	{   
 	    $author_name = get_the_author();
-	    $output = "<label><a href='".esc_url(home_url())."' >Home</a></label>";
+	    $output = tmpcoder_render_home_link();
 	    $output .= "<span class='custom-delimiter'> ".$delimiter." </span>";
 	    $output .= "<label class='current-item-name'>". $author_name ."</label>";
 
@@ -511,7 +537,7 @@ if (!function_exists('tmpcoder_render_day')) {
 	
 	function tmpcoder_render_day($delimiter)
 	{
-	    $output = "<label><a href='".esc_url(home_url())."' >Home</a></label>";
+	    $output = tmpcoder_render_home_link();
 	    $output .= "<span class='custom-delimiter'> ".$delimiter." </span>";
 	    $output .= "<label class='current-item-name'>". get_the_time('F jS, Y') ."</label>";
 	    return $output;
@@ -522,7 +548,7 @@ if (!function_exists('tmpcoder_render_month')) {
 	
 	function tmpcoder_render_month($delimiter)
 	{
-	    $output = "<label><a href='".esc_url(home_url())."' >Home</a></label>";
+	    $output = tmpcoder_render_home_link();
 	    $output .= "<span class='custom-delimiter'> ".$delimiter." </span>";
 	    $output .= "<label class='current-item-name'>". get_the_time('F, Y') ."</label>";
 	    return $output;
@@ -533,7 +559,7 @@ if (!function_exists('tmpcoder_render_year')) {
 	
 	function tmpcoder_render_year($delimiter)
 	{
-	    $output = "<label><a href='".esc_url(home_url())."' >Home</a></label>";
+	    $output = tmpcoder_render_home_link();
 	    $output .= "<span class='custom-delimiter'> ".$delimiter." </span>";
 	    $output .= "<label class='current-item-name'>". get_the_time('Y') ."</label>";
 	    return $output;
@@ -544,7 +570,7 @@ if (!function_exists('tmpcoder_render_search')) {
 	function tmpcoder_render_search($delimiter)
 	{
 	    $search = get_search_query();
-	    $output = "<label><a href='".esc_url(home_url())."' >Home</a></label>";
+	    $output = tmpcoder_render_home_link();
 	    $output .= "<span class='custom-delimiter'> ".$delimiter." </span>";
 	    $output .= "<label class='current-item-name'>". sprintf('Search results for: %s', $search ) ."</label>";
 	    return $output;
@@ -555,11 +581,28 @@ if (!function_exists('tmpcoder_render_404')) {
 	function tmpcoder_render_404($delimiter)
 	{
 	    $search = get_search_query();
-	    $output = "<label><a href='".esc_url(home_url())."' >Home</a></label>";
+	    $output = tmpcoder_render_home_link();
 	    $output .= "<span class='custom-delimiter'> ".$delimiter." </span>";
 	    $output .= "<label class='current-item-name'>". __('404', 'sastra-essential-addons-for-elementor') ."</label>";
 
 	    return $output;
+	}
+}
+
+if (!function_exists('tmpcoder_render_home_link')) {
+	function tmpcoder_render_home_link(){
+
+		if (isset($GLOBALS['tmpcoder_enable_title_attr']) && $GLOBALS['tmpcoder_enable_title_attr'] == true) {
+			return "<label>
+			<a title=".esc_attr('Home')." href='".esc_url(home_url())."' >".esc_html__('Home','sastra-essential-addons-for-elementor')."</a>
+			</label>";
+		}
+		else
+		{
+			return "<label>
+			<a href='".esc_url(home_url())."' >".esc_html__('Home','sastra-essential-addons-for-elementor')."</a>
+			</label>";	
+		}
 	}
 }
 
@@ -760,7 +803,13 @@ function tmpcoder_get_post_sharing_icon( $args = [] ) {
 	$output = '';
 
 	if ( '' !== $network_title ) {
-		$output .= '<a href="'. $sharing_url .'" class="tmpcoder-sharing-icon tmpcoder-sharing-'. esc_attr( $args['network'] ) .'" title="" target="_blank">';
+
+		$title_attr = '';
+		if (isset($args['tmpcoder_enable_title_attribute']) && $args['tmpcoder_enable_title_attribute'] == 'yes' ) {
+			$title_attr = $network_title;
+		}
+
+		$output .= '<a title="'.esc_attr($title_attr).'" href="'. $sharing_url .'" class="tmpcoder-sharing-icon tmpcoder-sharing-'. esc_attr( $args['network'] ) .'" title="" target="_blank">';
 			// Tooltip
 			$output .= 'yes' === $args['tooltip'] ? '<span class="tmpcoder-sharing-tooltip tmpcoder-tooltip">'. esc_html( $network_title ) .'</span>' : '';
 			
@@ -1336,6 +1385,7 @@ if (!function_exists('tmpcoder_get_woocommerce_builder_modules')) {
 			'Woo Grid/Slider/Carousel' => ['woo-grid', 'woo-grid', 'woo-grid-slider-carousel', 'new','woo-product-grid.php','TMPCODER_Woo_Grid','woo-grid-1.svg'],
 			'Product Title' => ['product-title', '', 'product-title', 'new','woo-product-title.php','TMPCODER_Woo_Product_Title','product-title.svg'],
 			'Product Media' => ['product-media', '', 'product-media', 'new','woo-product-media.php','TMPCODER_Product_Media','product-media.svg'],
+			'Product Media List' => ['product-media-list', '', 'product-media-list', 'new','woo-product-media-list.php','TMPCODER_Product_Media_List','product-media.svg'],
 			'Product Price' => ['product-price', '', 'product-price', 'new','woo-product-price.php','TMPCODER_Woo_Product_Price','product-price.svg'],
 			'Product Add to Cart' => ['product-add-to-cart', '', 'product-add-to-cart', 'new','woo-add-to-cart.php','TMPCODER_Woo_Add_To_Cart','product-add-to-cart.svg'],
 			'Product Tabs' => ['product-tabs', '', 'product-tabs', 'new','woo-product-tab.php','TMPCODER_Product_Tabs','product-tabs.svg'],
@@ -1345,6 +1395,7 @@ if (!function_exists('tmpcoder_get_woocommerce_builder_modules')) {
 			'Product Meta' => ['product-meta', '', 'product-meta', 'new','woo-product-meta.php','TMPCODER_Product_Meta','product-meta.svg'],
 			'Product Stock' => ['product-stock', '', 'product-stock', 'new','woo-product-stock.php','TMPCODER_Product_Stock','product-stock.svg'],
 			'Product Mini Cart' => ['product-mini-cart', '', 'product-mini-cart', 'new','woo-mini-cart.php','TMPCODER_Product_Mini_Cart','product-mini-cart.svg'],
+			'Product Additional Information' => ['product-additional-information', '', 'product-additional-information', 'new','woo-product-additional-info.php','TMPCODER_Product_AdditionalInformation','product-meta.svg'],
 		];
 	}
 }
@@ -1424,6 +1475,7 @@ if (!function_exists('tmpcoder_get_registered_modules')) {
 			'Breadcrumb' => ['Breadcrumb', '', 'breadcrumb', 'new','breadcrumb.php','TMPCODER_Breadcrumb','breadcrumb.svg'],
 			'Archive List' => ['archive-list', '', 'archive-list', 'new','archive-list.php','TMPCODER_Archive_List','page-list.svg'],
             'Recent Post List' => ['recent-post-list', 'recent-post-list', 'recent-post-list', 'new','recent-post-list.php','TMPCODER_Post_List','page-list.svg'],
+            'Elementor Template' => ['elementor-template', '', '', 'new','elementor-template.php','TMPCODER_Elementor_Template','elementor-template.svg'],
 		];
 	}
 }
@@ -1670,7 +1722,7 @@ if ( !function_exists('tmpcoder_wp_kses_allowed_html') ){
                 'allow' => true,
                 'allowfullscreen' => true,
         	),
-            'style'   => array(),
+            'style'   => array('>' => true),
             'script'   => array(),
             'svg'   => array(
 	            'version' => true,
@@ -1706,7 +1758,7 @@ if ( !function_exists('tmpcoder_wp_kses_allowed_html') ){
                 'fill-rule' => true,
                 'transform' => true,
             ),
-            'line'  => array ( 
+            'line'  => array( 
                 'id'        => true,
                 'x1'        => true,
                 'y1'        => true,
@@ -1805,6 +1857,9 @@ if ( !function_exists('tmpcoder_wp_kses_allowed_html') ){
                 'size' => true,
                 'aria-invalid' => true,
                 'onclick' => true,
+            ),
+            'canvas' => array(
+                'id' => true,
             ),
 
         );
@@ -2102,7 +2157,67 @@ function tmpcoder_upgrade_pro_notice_handle() {
 }
 add_action('wp_ajax_tmpcoder_upgrade_pro_notice_dismiss', 'tmpcoder_upgrade_pro_notice_handle');
 	
-add_filter('option_page_capability_tmpcoder-settings', 'tmpcoder_set_settings', 10, 3);
+// add_filter('option_page_capability_tmpcoder-settings', 'tmpcoder_set_settings', 10, 3);
+	
+// Set the required capability for your settings page
+add_filter('option_page_capability_tmpcoder-settings', function () {
+    return 'edit_theme_options'; 
+});
+
+// Handle saving of custom options into post meta (instead of the options table)
+add_action('admin_init', 'tmpcoder_handle_settings_save');
+
+function tmpcoder_handle_settings_save() {
+    // Bail early if this is not our settings page submission
+    if (
+        !isset($_POST['option_page']) ||
+        $_POST['option_page'] !== 'tmpcoder-settings' ||
+        !isset($_POST['_wpnonce']) ||
+        !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['_wpnonce'])), 'tmpcoder-settings-options')
+    ) {
+        return;
+    }
+
+    // Unsanitized but unslashed input
+	$raw_options = wp_unslash($_POST);
+
+	// Sanitize recursively
+	$options = tmpcoder_recursive_sanitize_text_field($raw_options);
+
+    // $options = array_map('sanitize_text_field', wp_unslash($_POST));
+    // $options = $_POST;
+
+    $post_id = tmpcoder_get_post_id_by_meta_key_and_meta_value('tmpcoder_registerd_settings');
+
+    if ($post_id) {
+        update_post_meta($post_id, 'tmpcoder_registerd_settings', $options);
+    } else {
+        $current_user_id = get_current_user_id();
+
+        $post_id = wp_insert_post([
+            'post_title'  => 'Tmpcoder Registered Settings',
+            'post_status' => 'publish',
+            'post_author' => $current_user_id,
+            'post_type'   => 'theme-advanced-hook',
+        ]);
+
+        if (!is_wp_error($post_id)) {
+            update_post_meta($post_id, 'tmpcoder_registerd_settings', $options);
+        }
+    }
+}
+
+function tmpcoder_recursive_sanitize_text_field($array) {
+    foreach ($array as $key => &$value) {
+        if (is_array($value)) {
+            $value = tmpcoder_recursive_sanitize_text_field($value);
+        } else {
+            $value = sanitize_text_field($value);
+        }
+    }
+    return $array;
+}
+
 
 if (!function_exists('tmpcoder_set_settings')) {
 	
@@ -3008,3 +3123,105 @@ if ( ! function_exists( 'tmpcoder_get_admin_header_tabs' ) ) {
 		return $tabs;
 	}
 }
+
+/* Allow Variation Swatches Plugin Support */
+
+add_filter('cfvsw_requires_shop_settings', 'tmpcoder_requires_shop_settings');
+
+function tmpcoder_requires_shop_settings(){
+	return true;
+}
+
+remove_action( 'woocommerce_shop_loop_item_title', 'woocommerce_template_loop_product_title' );
+
+// Register Elementor AJAX Actions
+add_action( 'wp_ajax_tmpcoder_backend_search_query_results', 'tmpcoder_backend_search_query_results_func');
+
+/**
+** Register Elementor AJAX Actions
+*/
+
+if (!function_exists('tmpcoder_backend_search_query_results_func')) {
+	
+	function tmpcoder_backend_search_query_results_func() {
+
+	    if ( strpos($_SERVER['SERVER_NAME'],'instawp') || strpos($_SERVER['SERVER_NAME'],'tastewp') ) {
+			// return;
+		}
+	    
+	    $search_query = isset($_POST['search_query']) ? sanitize_text_field(wp_unslash($_POST['search_query'])) : '';
+
+	    $type = isset($_POST['type']) ? sanitize_text_field(wp_unslash($_POST['type'])) : '';
+
+	    $req_params = array(
+            'action'       => 'save_search_query_data',
+            'search_query' => $search_query,
+            'type' 		   => $type,
+        );
+
+        $options = array(
+            'timeout'    => ( ( defined('DOING_CRON') && DOING_CRON ) ? 30 : 3 ),
+            'user-agent' => 'tmpcoder-plugin-user-agent',
+        );
+        	
+    	$api_url = TMPCODER_UPDATES_URL;
+
+        $theme_request = wp_remote_get(add_query_arg($req_params,$api_url), $options);
+
+        if ( ! is_wp_error( $theme_request ) && wp_remote_retrieve_response_code($theme_request) == 200){
+            return $theme_response = wp_remote_retrieve_body($theme_request);
+            exit();
+        }else{
+            return array('status' => 'error', 'message'=> $theme_request->get_error_message());
+        }
+	}
+}
+
+if (!function_exists('tmpcoder_get_site_domain')) {
+
+	function tmpcoder_get_site_domain() {
+		return function_exists( 'wp_parse_url' ) ? wp_parse_url( get_home_url(), PHP_URL_HOST ) : false;
+	}
+}
+
+function tmpcoder_show_theme_buider_widget_on($key) {
+    $post_id = get_the_ID();
+
+    if (!$post_id) {
+        return false;
+    }
+
+    $meta_value = get_post_meta($post_id, 'tmpcoder_template_type', true);
+
+    if (!empty($meta_value) && $meta_value == $key) {
+    	return true;
+    }
+    else
+    {
+    	return false;
+    }
+}
+
+if ( !function_exists('tmpcoder_get_theme_logo_details') ){
+
+    function tmpcoder_get_theme_logo_details(){
+        if ( class_exists('Tmpcoder_Site_Settings') ){
+            $tmpcoder_logo_image = Tmpcoder_Site_Settings::tmpcoder_get('tmpcoder_logo_image');
+            $site_logo = ( Tmpcoder_Site_Settings::tmpcoder_has('tmpcoder_logo_image') ) ? $tmpcoder_logo_image : '';
+            return isset($tmpcoder_logo_image['url']) && $tmpcoder_logo_image['url'] != '' ? $site_logo : '';
+        }else{
+            return '';
+        }
+    }
+}
+
+if (!empty(get_option('elementor_optimized_image_loading')) && get_option('elementor_optimized_image_loading') == 1) {
+ 	
+	add_filter( 'wp_get_attachment_image_attributes', function( $attr, $attachment, $size ) {
+	    if ( is_product() && !empty( $attr['class'] ) && strpos( $attr['class'], 'wp-post-image' ) !== false ) {
+	        $attr['fetchpriority'] = 'high';
+	        $attr['loading'] = 'lazy';
+	    }
+	    return $attr;
+	}, 20, 3 );
+ } 

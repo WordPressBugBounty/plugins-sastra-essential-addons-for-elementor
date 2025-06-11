@@ -36,7 +36,12 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 	}
 
 	public function get_categories() {
-		return ['tmpcoder-widgets-category'];
+
+		if (tmpcoder_show_theme_buider_widget_on('type_product_archive') || tmpcoder_show_theme_buider_widget_on('type_product_category') || tmpcoder_show_theme_buider_widget_on('type_single_product')) {
+			return [ 'tmpcoder-woocommerce-builder-widgets'];
+		}else{
+			return ['tmpcoder-widgets-category'];
+		}
 	}
 
 	public function get_keywords() {
@@ -2132,6 +2137,19 @@ class TMPCODER_Woo_Grid extends Widget_Base {
         );
 
 		$repeater->add_control(
+			'tmpcoder_enable_title_attribute',
+			[
+				'label' => esc_html__( 'Enable Title Attribute', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::SWITCHER,
+				'return_value' => 'yes',
+				'render_type' => 'template',
+				'condition' => [
+					'element_select' => 'title',
+				]
+			]
+		);
+
+		$repeater->add_control(
 			'element_title_tag',
 			[
 				'label' => esc_html__( 'Title HTML Tag', 'sastra-essential-addons-for-elementor' ),
@@ -2450,6 +2468,19 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 				'label' => esc_html__( 'Show Out of Stock Badge', 'sastra-essential-addons-for-elementor' ),
 				'type' => Controls_Manager::SWITCHER,
 				'return_value' => 'yes',
+				'condition' => [
+					'element_select' => 'status',
+				],
+			]
+		);
+
+		$repeater->add_control(
+			'element_status_instock',
+			[
+				'label' => esc_html__( 'Show In Stock Badge', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::SWITCHER,
+				'return_value' => 'yes',
+				'default' => '',
 				'condition' => [
 					'element_select' => 'status',
 				],
@@ -9090,7 +9121,19 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 
 		echo '<'. esc_attr( tmpcoder_validate_html_tag($settings['element_title_tag']) ) .' class="'. esc_attr($class) .'">';
 			echo '<div class="inner-block">';
-				echo '<a target="'. esc_attr($open_links_in_new_tab) .'"  '. esc_attr($pointer_item_class) .' href="'. esc_url( get_the_permalink() ) .'">';
+
+				$title_tag = '';
+
+				if (isset($settings['tmpcoder_enable_title_attribute']) && $settings['tmpcoder_enable_title_attribute'] == 'yes') {
+					
+					if ( 'word_count' === $settings['element_trim_text_by'] ) {
+						$title_tag = esc_html(wp_trim_words( get_the_title(), $settings['element_word_count'] ));
+					} else {
+						$title_tag = esc_html(substr(html_entity_decode(get_the_title()), 0, $settings['element_letter_count']) .'...');
+					}
+				}
+
+				echo '<a title="'.esc_attr($title_tag).'" target="'. esc_attr($open_links_in_new_tab) .'"  '. esc_attr($pointer_item_class) .' href="'. esc_url( get_the_permalink() ) .'">';
 				if ( 'word_count' === $settings['element_trim_text_by'] ) {
 					echo esc_html(wp_trim_words( get_the_title(), $settings['element_word_count'] ));
 				} else {
@@ -9099,6 +9142,8 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 				echo '</a>';
 			echo '</div>';
 		echo '</'. esc_attr( tmpcoder_validate_html_tag($settings['element_title_tag']) ) .'>';
+
+		do_action( 'woocommerce_shop_loop_item_title' );
 	}
 
 	// Render Post Excerpt
@@ -9357,10 +9402,23 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 				echo '<span class="tmpcoder-woo-outofstock">'. esc_html__( 'Out of Stock', 'sastra-essential-addons-for-elementor' ) .'</span>';
 			}
 
+			// In Stock Badge (Optional, Woo-style improvement)
+			if ( 'yes' === $settings['element_status_instock'] && $product->is_in_stock() ) {
+				$instock_text = apply_filters( 'tmpcoder_instock_label_text', __( 'In Stock', 'sastra-essential-addons-for-elementor' ), $product, $settings );
+				if ( !empty($instock_text) ){
+    				echo '<span class="tmpcoder-woo-instock">' . esc_html( $instock_text ) . '</span>';
+				}
+			}
+
 			// Featured
 			if ( 'yes' === $settings['element_status_featured'] && $product->is_featured() ) {
 				echo '<span class="tmpcoder-woo-featured">'. esc_html__( 'Featured', 'sastra-essential-addons-for-elementor' ) .'</span>';
 			}
+
+			/**
+			 * Action hook for 3rd party badge insertion.
+			 */
+			do_action( 'tmpcoder_product_status_badges', $product, $settings );
 
 			echo '</div>';
 		echo '</div>';
@@ -9447,10 +9505,10 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 		echo '<div class="'. esc_attr($class) .'">';
 			echo '<div class="inner-block">';
 			
-
 			if ( $button_HTML != apply_filters( 'woocommerce_loop_add_to_cart_link', $button_HTML, $product ) ) {
 				echo wp_kses_post(apply_filters( 'woocommerce_loop_add_to_cart_link', $button_HTML, $product ));
 			} else {
+
 				// Button HTML
 				echo wp_kses('<a '. implode( ' ', $attributes ) .'><span>'. $button_HTML .'</span></a>', tmpcoder_wp_kses_allowed_html() );
 			}
@@ -10562,6 +10620,8 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 
 			// Grid Item
 			echo '<article class="'. esc_attr( $post_class ) .'">';
+			echo '<ul class="tmpcoder-grid-items-swatches-parent">';
+			echo '<li>';
 
 			// Password Protected Form
 			$this->render_password_protected_input( $settings );
@@ -10602,7 +10662,8 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 			$this->get_elements_by_location( 'below', $settings, get_the_ID() );
 
 			echo '</div>'; // End .tmpcoder-grid-item-inner
-
+			echo '</li>'; 
+			echo '</ul>';
 			echo '</article>'; // End .tmpcoder-grid-item
 
 		endwhile;

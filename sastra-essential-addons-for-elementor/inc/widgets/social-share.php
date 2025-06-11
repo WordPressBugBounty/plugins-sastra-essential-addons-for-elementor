@@ -188,6 +188,16 @@ class TMPCODER_Social_Share extends Widget_Base {
 			]
 		);
 
+		$this->add_control(
+			'tmpcoder_enable_title_attribute',
+			[
+				'label' => esc_html__( 'Enable Title Attribute', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::SWITCHER,
+				'return_value' => 'yes',
+				'render_type' => 'template',
+			]
+		);
+
 		$this->add_control_sharing_columns();
 
 		// Upgrade to Pro Notice
@@ -730,6 +740,7 @@ class TMPCODER_Social_Share extends Widget_Base {
 				'labels' => $settings['sharing_show_label'],
 				'custom_label' => $button['sharing_custom_label'],
 				'tooltip' => 'no',
+				'tmpcoder_enable_title_attribute' => $settings['tmpcoder_enable_title_attribute'],
 				'url' => esc_url( get_the_permalink() ),
 				'title' => esc_html( get_the_title() ),
 				'text' => esc_html( get_the_excerpt() ),

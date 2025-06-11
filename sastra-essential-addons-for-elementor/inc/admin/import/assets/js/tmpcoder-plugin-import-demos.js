@@ -230,25 +230,26 @@ const import_xml = function(file_url, is_retry=false, tmpcoder_cpt_data='') {
             if (response.data)
             {
                 window.onbeforeunload = null;
-                // message_text.html(response.data+ ' <a href="">Close popup</a>');
-                message_text.html(response.data.error+ ' <a href="">Close popup</a>');
+                
+                message_text.html(response.data.error+ ' <a href="">Close popup</a>  '+tmpcoder_ajax_object.need_help_doc_link);
                 message_text.addClass('notice notice-error');
                 jQuery('#install-content-loader').remove();
                 reference.text(reference.attr('data-id'));
-                jQuery('.import-demo-content').removeAttr('style');            
+                jQuery('.import-demo-content').removeAttr('style');
             }
             else
             {
                 reference.text(reference.attr('data-id'));
                 jQuery('.import-demo-content').removeAttr('style');            
                 message_text.text(tmpcoder_ajax_object.invalid_request_url_message);
+                message_text.append('  '+tmpcoder_ajax_object.enable_to_downlaod_xml_doc_link)
             }
         }
     })
     .fail( function( error ) {
         console.log(error);
         window.onbeforeunload = null;
-        message_text.html(' <a href="">Close popup</a>');
+        message_text.html(' <a href="">Close popup</a>    '+tmpcoder_ajax_object.need_help_doc_link);
         message_text.addClass('notice notice-error');
         jQuery('#install-content-loader').remove();
         reference.text(reference.attr('data-id'));
@@ -387,7 +388,7 @@ const import_redux_options  = function(redux_file_url) {
             if (response.data)
             {
                 window.onbeforeunload = null;
-                message_text.html(response.data+ ' <a href="">Close popup</a>');
+                message_text.html(response.data+ ' <a href="">Close popup</a>    '+tmpcoder_ajax_object.need_help_doc_link);
                 message_text.addClass('notice notice-error');
                 jQuery('#install-content-loader').remove();
                 reference.text(reference.attr('data-id'));
@@ -404,7 +405,7 @@ const import_redux_options  = function(redux_file_url) {
     .fail( function( error ) {
         console.log(error);
         window.onbeforeunload = null;
-        message_text.html( ' <a href="">Close popup</a>');
+        message_text.html( ' <a href="">Close popup</a>  '+tmpcoder_ajax_object.need_help_doc_link);
         message_text.addClass('notice notice-error');
         jQuery('#install-content-loader').remove();
         reference.text(reference.attr('data-id'));
@@ -467,7 +468,7 @@ const import_elementor_options = function(elementor_file_url){
             if (response.data)
             {
                 window.onbeforeunload = null;
-                message_text.html(response.data+ ' <a href="">Close popup</a>');
+                message_text.html(response.data+ ' <a href="">Close popup</a>  '+tmpcoder_ajax_object.need_help_doc_link);
                 message_text.addClass('notice notice-error');
                 jQuery('#install-content-loader').remove();
                 reference.text(reference.attr('data-id'));
@@ -484,7 +485,7 @@ const import_elementor_options = function(elementor_file_url){
     .fail( function( error ) {
         console.log(error);
         window.onbeforeunload = null;
-        message_text.html( ' <a href="">Close popup</a>');
+        message_text.html( ' <a href="">Close popup</a>  '+tmpcoder_ajax_object.need_help_doc_link);
         message_text.addClass('notice notice-error');
         jQuery('#install-content-loader').remove();
         reference.text(reference.attr('data-id'));
@@ -526,7 +527,7 @@ const reset_widget_data = function(callback){
             if (response.data)
             {
                 window.onbeforeunload = null;
-                message_text.html(response.data+ ' <a href="">Close popup</a>');
+                message_text.html(response.data+ ' <a href="">Close popup</a>  '+tmpcoder_ajax_object.need_help_doc_link);
                 message_text.addClass('notice notice-error');
                 jQuery('#install-content-loader').remove();
                 reference.text(reference.attr('data-id'));
@@ -590,7 +591,7 @@ const import_widget_data = function(widget_file_url){
             if (response.data)
             {
                 window.onbeforeunload = null;
-                message_text.html(response.data+ ' <a href="">Close popup</a>');
+                message_text.html(response.data+ ' <a href="">Close popup</a>  '+tmpcoder_ajax_object.need_help_doc_link);
                 message_text.addClass('notice notice-error');
                 jQuery('#install-content-loader').remove();
                 reference.text(reference.attr('data-id'));
@@ -607,7 +608,7 @@ const import_widget_data = function(widget_file_url){
     .fail( function( error ) {
         console.log(error);
         window.onbeforeunload = null;
-        message_text.html(' <a href="">Close popup</a>');
+        message_text.html(' <a href="">Close popup</a>  '+tmpcoder_ajax_object.need_help_doc_link);
         message_text.addClass('notice notice-error');
         jQuery('#install-content-loader').remove();
         reference.text(reference.attr('data-id'));
@@ -655,7 +656,7 @@ const import_revslider_data = function(revslider_file_url) {
             if (response.data)
             {
                 window.onbeforeunload = null;
-                message_text.html(response.data+ ' <a href="">Close popup</a>');
+                message_text.html(response.data+ ' <a href="">Close popup</a>  '+tmpcoder_ajax_object.need_help_doc_link);
                 message_text.addClass('notice notice-error');
                 jQuery('#revslider-data-loader').remove();
                 reference.text(reference.attr('data-id'));
@@ -673,7 +674,7 @@ const import_revslider_data = function(revslider_file_url) {
     .fail( function( error ) {
         console.log(error);
         window.onbeforeunload = null;
-        message_text.html(' <a href="">Close popup</a>');
+        message_text.html(' <a href="">Close popup</a>  '+tmpcoder_ajax_object.need_help_doc_link);
         message_text.addClass('notice notice-error');
         jQuery('#revslider-data-loader').remove();
         reference.text(reference.attr('data-id'));
@@ -1099,6 +1100,7 @@ jQuery(document).on('click','.tmpcoder-retry-import', function(e){
     var retry_url = jQuery(this).attr('data-xml-url');    
     tmpcoder_wxr_import(retry_url);
     jQuery(this).parent().css('display','none');    
+    jQuery(this).parent().next().css('display','none');    
 });
 
 // installPluginViaAjax('revslider');

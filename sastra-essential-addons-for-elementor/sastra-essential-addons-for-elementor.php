@@ -3,7 +3,7 @@
  * Plugin Name: Spexo Addons for Elementor
  * Plugin URI: http://spexoaddons.com/
  * Description: Spexo Addons for Elementor is all in one solution for complete starter sites, single page templates, blocks & images. This plugin offers additional features needed by our theme.
- * Version: 1.0.21
+ * Version: 1.0.22
  * Author: TemplatesCoder
  * Author URI:  https://templatescoder.com/
  * Elementor tested up to: 3.28.3
@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 $theme = (is_object(wp_get_theme()->parent())) ? wp_get_theme()->parent() : wp_get_theme();
 
 if ( ! defined( 'TMPCODER_PLUGIN_VER' ) ) {
-    define( 'TMPCODER_PLUGIN_VER', '1.0.21' );
+    define( 'TMPCODER_PLUGIN_VER', '1.0.22' );
 }
 
 if ( ! defined( 'TMPCODER_PLUGIN_NAME' ) ) {
@@ -51,6 +51,9 @@ if ( !defined( 'TMPCODER_SUPPORT_URL' ) ) {
 
 if ( !defined( 'TMPCODER_DOCUMENTATION_URL' ) ) {
 	define( 'TMPCODER_DOCUMENTATION_URL', esc_url('https://spexoaddons.com/documentation/') );
+}
+if ( !defined( 'TMPCODER_PLUGIN_SITE_URL' ) ) {
+	define( 'TMPCODER_PLUGIN_SITE_URL', esc_url('https://spexoaddons.com/') );
 }
 
 if ( !defined('TMPCODER_RATING_LINK') ){
@@ -91,6 +94,22 @@ if ( ! defined( 'TMPCODER_THEME' ) ) {
 
 if ( ! defined( 'TMPCODER_UPDATES_URL' ) ) {
 	define( 'TMPCODER_UPDATES_URL', esc_url('https://updates.templatescoder.com/rest-api?') );
+}
+
+if ( ! defined( 'TMPCODER_FIX_IMPORT_ISSUE_DOC_LINK' ) ) {
+	define( 'TMPCODER_FIX_IMPORT_ISSUE_DOC_LINK', 'https://spexoaddons.com/documentation/how-to-fix-error-when-import-prebuilt-websites' );
+}
+
+if ( ! defined( 'TMPCODER_CURL_TIMEOUT_DOC_LINK' ) ) {
+	define( 'TMPCODER_CURL_TIMEOUT_DOC_LINK', 'https://spexoaddons.com/documentation/how-to-fix-error-when-import-prebuilt-websites#' );
+}
+
+if ( ! defined( 'TMPCODER_ENABLE_TO_DOWNLOAD_XML' ) ) {
+	define( 'TMPCODER_ENABLE_TO_DOWNLOAD_XML', 'https://spexoaddons.com/documentation/why-cant-store-the-xml-file-in-wp-content-folder' );
+}
+
+if ( ! defined( 'TMPCODER_RESUME_IMPORT_PROCESS_DOC_LINK' ) ) {
+	define( 'TMPCODER_RESUME_IMPORT_PROCESS_DOC_LINK', 'https://spexoaddons.com/documentation/how-to-fix-the-operation-timed-out-error-while-importing-a-prebuilt-website' );
 }
 
 if ( ! defined( 'TMPCODER_ADDONS_ASSETS_URL' ) ) {
@@ -491,4 +510,29 @@ if (is_multisite() && function_exists('is_plugin_active_for_network') && is_plug
         </div>
         <?php
     }
+}
+
+add_filter( 'plugin_action_links_' . plugin_basename( TMPCODER_PLUGIN_FILE ), 'tmpcoder_add_action_links' );
+
+function tmpcoder_add_action_links( $links ) {
+    if ( ! current_user_can( 'manage_options' ) ) {
+        return $links;
+    }
+
+    $links = array_merge( [
+        sprintf( '<a href="%s">%s</a>',
+            admin_url('admin.php?page=spexo-welcome'),
+            esc_html__( 'Settings', 'sastra-essential-addons-for-elementor' )
+        )
+    ], $links );
+    
+    if ( !defined( 'TMPCODER_ADDONS_PRO_VERSION' ) ) {
+        $links = array_merge( $links, [
+            sprintf( '<a target="_blank" style="color:#5729d9; font-weight: bold;" href="%s">%s</a>',
+                TMPCODER_PURCHASE_PRO_URL,
+                esc_html__( 'Get Pro', 'sastra-essential-addons-for-elementor' )
+            )
+        ] );
+    }
+    return $links;
 }

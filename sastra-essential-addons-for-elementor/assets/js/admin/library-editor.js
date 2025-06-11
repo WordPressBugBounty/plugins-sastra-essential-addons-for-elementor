@@ -24,6 +24,10 @@
 				$scope.find( '.tmpcoder-template-edit-btn' ).on( 'click', TmpcoderElementorEditorPopup.renderPopup );
 			} );
 
+			window.elementorFrontend.hooks.addAction( 'frontend/element_ready/tmpcoder-elementor-template.default', function( $scope ) {
+				$scope.find( '.tmpcoder-template-edit-btn' ).on( 'click', TmpcoderElementorEditorPopup.renderPopup );
+			} );
+
 			window.elementorFrontend.hooks.addAction( 'frontend/element_ready/tmpcoder-content-toggle.default', function( $scope ) {
 				$scope.find( '.tmpcoder-template-edit-btn' ).on( 'click', TmpcoderElementorEditorPopup.renderPopup );
 			} );

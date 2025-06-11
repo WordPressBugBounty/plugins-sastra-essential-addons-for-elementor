@@ -23,7 +23,7 @@ class TMPCODER_Product_Stock extends Widget_Base {
 	}
 
 	public function get_categories() {
-		return [ 'tmpcoder-woocommerce-builder-widgets' ];
+		return tmpcoder_show_theme_buider_widget_on('type_single_product') ? [ 'tmpcoder-woocommerce-builder-widgets'] : [];
 	}
 
 	public function get_keywords() {
@@ -59,6 +59,54 @@ class TMPCODER_Product_Stock extends Widget_Base {
 				],
 				'placeholder' => esc_html__( 'In Stock', 'sastra-essential-addons-for-elementor' ),
 				'default' => esc_html__( 'In Stock', 'sastra-essential-addons-for-elementor' ),
+			]
+		);
+
+		$this->add_control(
+			'availability_managing_text',
+			[
+				'label' => esc_html__( 'Show Managing Stock Text', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::SWITCHER,
+				'default' => 'no',
+				'return_value' => 'yes',
+			]
+		);
+
+		$this->add_control(
+			'in_stock_availability_managing_text',
+			[
+				'label' => esc_html__( 'Managing Stock Text', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::TEXT,
+				'dynamic' => [
+					'active' => true,
+				],
+				'placeholder' => esc_html__( 'Only {stock} left In Stock', 'sastra-essential-addons-for-elementor' ),
+				'default' => esc_html__( 'Only {stock} left In Stock', 'sastra-essential-addons-for-elementor' ),
+				'condition' => ['availability_managing_text' => 'yes']
+			]
+		);
+
+		$this->add_control(
+			'preorder_text_display',
+			[
+				'label' => esc_html__( 'Show Pre-order Text', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::SWITCHER,
+				'default' => 'no',
+				'return_value' => 'yes',
+			]
+		);
+
+		$this->add_control(
+			'preorder_text',
+			[
+				'label' => esc_html__( 'Pre-order Text', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::TEXT,
+				'dynamic' => [
+					'active' => true,
+				],
+				'placeholder' => esc_html__( 'Preorder', 'sastra-essential-addons-for-elementor' ),
+				'default' => esc_html__( 'Preorder', 'sastra-essential-addons-for-elementor' ),
+				'condition' => ['preorder_text_display' => 'yes']
 			]
 		);
 
@@ -370,9 +418,23 @@ class TMPCODER_Product_Stock extends Widget_Base {
 		if ( $product->is_on_backorder() ) {
 			$stock_html = $availability['availability'] ? $availability['availability'] : esc_html($settings['backorder_availability_text']);
 		} elseif ( $product->is_in_stock() ) {
+
+			$manage_stock   = $product->managing_stock();
+			$stock_quantity = $product->get_stock_quantity();
+
 			$stock_html = $availability['availability'] ? $availability['availability'] : esc_html($settings['in_stock_availability_text']);
+			
+			if ($manage_stock && $stock_quantity > 0 && $settings['availability_managing_text'] == 'yes') {
+				
+				$stock_html = str_replace('{stock}', $stock_quantity, $settings['in_stock_availability_managing_text']);
+			}
+
 		} else {
 			$stock_html = $availability['availability'] ? $availability['availability'] : esc_html($settings['out_of_stock_availability_text']);
+		}
+
+		if ($stock_status === 'preorder' && $settings['preorder_text_display'] == 'yes' ) {
+			$stock_html = $availability['availability'] ? $availability['availability'] : esc_html($settings['preorder_text']);
 		}
 
         echo '<div class="tmpcoder-product-stock">';

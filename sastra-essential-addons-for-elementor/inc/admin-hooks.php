@@ -66,3 +66,14 @@ function tmpcoder_copyright_sign_shortcode() {
     return "&copy;";
 }
 add_shortcode('COPYRIGHT', 'tmpcoder_copyright_sign_shortcode');
+
+if (is_admin()) {
+    require_once (TMPCODER_PLUGIN_DIR.'inc/admin/feedback.php');
+}
+
+add_action('init','tmpcoder_add_feature_notice_action');
+
+function tmpcoder_add_feature_notice_action(){
+    require TMPCODER_PLUGIN_DIR.'inc/admin/notice/feature-banner-notice.php';
+    require TMPCODER_PLUGIN_DIR.'inc/admin/notice/pro-features-notice.php';
+}

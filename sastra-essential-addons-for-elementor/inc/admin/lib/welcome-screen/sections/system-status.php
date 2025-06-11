@@ -210,7 +210,7 @@ if ( ! defined( 'WPINC' ) ) {
                 <th><?php esc_html_e( 'WP Remote Get:', 'sastra-essential-addons-for-elementor' ); ?></th>
                 <?php
 					$get_res = wp_safe_remote_get(
-						TMPCODER_PURCHASE_PRO_URL,
+						TMPCODER_UPDATES_URL,
 						[
 							'decompress' => false,
 							'user-agent' => 'tmpcoder-remote-get-test',
@@ -220,24 +220,26 @@ if ( ! defined( 'WPINC' ) ) {
                 <td>
                     <?php echo wp_kses_post(( ! is_wp_error( $get_res ) && $get_res['response']['code'] >= 200 && $get_res['response']['code'] < 300 ) ? '<span class="success">&#10004;</span>' : '<span class="error">'.sprintf(
                         /* translators: %s: Plugin Website Url  */
-                        __('wp_remote_get() failed. Some theme features may not work. Please contact your hosting provider and make sure that %s is not blocked.', 'sastra-essential-addons-for-elementor'), TMPCODER_PURCHASE_PRO_URL).'</span>'); ?>
+                        __('wp_remote_get() failed. Some theme features may not work. Please contact your hosting provider and make sure that %s is not blocked.', 'sastra-essential-addons-for-elementor'), TMPCODER_UPDATES_URL).'</span> <a href='.TMPCODER_FIX_IMPORT_ISSUE_DOC_LINK.'>'.esc_html('How to Fix ?').'</a>'); ?>
                 </td>
             </tr>
             <tr>
                 <th><?php esc_html_e( 'WP Remote Post:', 'sastra-essential-addons-for-elementor' ); ?></th>
                 <?php
-					$post_res = wp_safe_remote_post(
-						TMPCODER_PURCHASE_PRO_URL,
-						[
-							'decompress' => false,
-							'user-agent' => 'tmpcoder-remote-post-test',
-						]
-					);
+
+                    $post_res = wp_safe_remote_post(
+                        TMPCODER_UPDATES_URL,
+                        [
+                            'decompress' => false,
+                            'user-agent' => 'tmpcoder-remote-post-test',
+                        ]
+                    );
+
 					?>
                 <td>
                     <?php echo wp_kses_post(( ! is_wp_error( $post_res ) && $post_res['response']['code'] >= 200 && $post_res['response']['code'] < 300 ) ? '<span class="success">&#10004;</span>' : '<span class="error">'. sprintf(
                         /* translators: %s: Plugin Website Url */
-                        __('wp_remote_post() failed. Some theme features may not work. Please contact your hosting provider and make sure that %s is not blocked.', 'sastra-essential-addons-for-elementor'), TMPCODER_PURCHASE_PRO_URL ).'</span>'); ?>
+                        __('wp_remote_post() failed. Some theme features may not work. Please contact your hosting provider and make sure that %s is not blocked.', 'sastra-essential-addons-for-elementor'), TMPCODER_UPDATES_URL ).'</span> <a href='.TMPCODER_FIX_IMPORT_ISSUE_DOC_LINK.'>'.esc_html('How to Fix ?').'</a>'); ?>
                 </td>
             </tr>
             <tr>

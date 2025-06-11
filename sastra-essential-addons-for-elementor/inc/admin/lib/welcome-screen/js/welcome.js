@@ -188,4 +188,37 @@ jQuery(document).ready(function () {
 
     jQuery(window).on('scroll', checkSticky);
     checkSticky(); // initial check
+
+    var searchTimeout = null;  
+    jQuery('.tmpcoder-search-tracking').keyup(function(e) {
+
+        console.log('tmpcoder-search-tracking');
+
+        if ( e.which === 13 ) {
+            return false;
+        }
+
+        var val = jQuery(this).val().toLowerCase();
+
+        if (searchTimeout != null) {
+            clearTimeout(searchTimeout);
+        }
+
+        var type = jQuery(this).data('type');
+
+        searchTimeout = setTimeout(function() {
+            searchTimeout = null;
+            jQuery.ajax({
+                type: 'POST',
+                url:welcomeScreen.ajax_url,
+                data: {
+                    action: 'tmpcoder_backend_search_query_results',
+                    search_query: val,
+                    type:type
+                },
+                success: function( response ) {}
+            });
+        }, 1000);  
+    });
+
 });

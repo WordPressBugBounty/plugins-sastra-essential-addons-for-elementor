@@ -280,6 +280,17 @@ class TMPCODER_Breadcrumb  extends Widget_Base{
             ]
         );
 
+        $this->add_control(
+            'tmpcoder_enable_title_attribute',
+            [
+                'label' => esc_html__( 'Enable Title Attribute', 'sastra-essential-addons-for-elementor' ),
+                'type' => Controls_Manager::SWITCHER,
+                'return_value' => 'yes',
+                'render_type' => 'template',
+                'condition' => ['show_link' => 'yes']
+            ]
+        );
+
         $this->end_controls_section();
     }
 
@@ -405,7 +416,13 @@ class TMPCODER_Breadcrumb  extends Widget_Base{
                     }
 
                     if (isset($settings['show_link']) && $settings['show_link'] == 'yes') {
-                        tmpcoder_breadcrumb(); 
+
+                        $enable_title_attr = false;
+                        if (isset($settings['tmpcoder_enable_title_attribute']) && $settings['tmpcoder_enable_title_attribute'] == 'yes') {
+                            $enable_title_attr = true;        
+                        }
+
+                        tmpcoder_breadcrumb("",$enable_title_attr); 
                     }
 
                     ?>

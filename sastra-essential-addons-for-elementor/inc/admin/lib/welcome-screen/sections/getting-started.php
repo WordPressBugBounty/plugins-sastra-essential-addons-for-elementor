@@ -110,8 +110,20 @@ $featuredList = array();
         );
         array_push($featuredList, $featuredArr);
     }
-?>
 
+    $tmpcoder_news = [];
+    $tmpcoder_news[0]['featured_img_url'] = 'https://spexo.b-cdn.net/wp-content/uploads/2024/09/all-about-wordpress-elementor-min.jpg';
+    $tmpcoder_news[0]['title'] = 'All about Elementor: Elementor Widgets, Templates, Blocks, Extensions';
+    $tmpcoder_news[0]['link'] = TMPCODER_PLUGIN_SITE_URL.'blog/all-about-elementor/';
+
+    $tmpcoder_news[1]['featured_img_url'] = 'https://spexo.b-cdn.net/wp-content/uploads/2025/04/How-to-Fix-Elementor-Not-Loading.jpg';
+    $tmpcoder_news[1]['title'] = 'How to Fix Elementor Not Loading Error';
+    $tmpcoder_news[1]['link'] = TMPCODER_PLUGIN_SITE_URL.'blog/fix-elementor-not-loading-error/';
+
+    $tmpcoder_news[2]['featured_img_url'] = 'https://spexo.b-cdn.net/wp-content/uploads/2024/10/featured-image-28.jpg';
+    $tmpcoder_news[2]['title'] = 'How to Create Creative Agency Website in Elementor [No Coding Required]';
+    $tmpcoder_news[2]['link'] = TMPCODER_PLUGIN_SITE_URL.'blog/create-creative-agency-website-in-elementor/';
+?>
 
 <div class="wc-part">
     <div class="row">
@@ -185,17 +197,83 @@ $featuredList = array();
                     ?>
                 </div>
             </div>
+            <div class="tmpcoder-welcome-screen-blog-grid wc-data">
+                <h2>
+                    <i class="dashicons dashicons-admin-post icon-inline"></i>
+                    <?php esc_html_e( 'Latest Blogs', 'sastra-essential-addons-for-elementor' ); ?>
+                </h2>
+                
+               <?php
+
+               $options = array(
+                    'timeout'    => ( ( defined('DOING_CRON') && DOING_CRON ) ? 30 : 3 ),
+                    'user-agent' => 'tmpcoder-plugin-user-agent',
+                    'headers' => array( 'Referer' => site_url() ),
+                );
+                
+                $req_params = ['action' => 'get_welcome_screen_blog_ids'];
+
+                $api_url = TMPCODER_UPDATES_URL;
+                $response_ids = wp_remote_get(add_query_arg($req_params,$api_url), $options);
+
+                if ( is_wp_error( $response_ids ) ) {
+                    echo 'Error fetching IDs';
+                    return;
+                }
+
+                $ids_data = json_decode( wp_remote_retrieve_body( $response_ids ), true );
+
+                if ( ! isset( $ids_data['status'] ) || $ids_data['status'] !== 'success' || empty( $ids_data['data'] ) ) {
+                    echo 'No valid post IDs found.';
+                    return;
+                }
+
+                $post_ids = $ids_data['data']; // This should be an array of post IDs like [18394, 19096, 18380]
+
+                $ids_query = implode( '&include[]=', array_map( 'intval', $post_ids ) );
+
+                $api_url   = "https://spexoaddons.com/wp-json/wp/v2/posts?_embed&include[]=".$ids_query;
+
+                $response = wp_remote_get( $api_url );
+
+                if ( is_array( $response ) && !is_wp_error( $response ) ) {
+                    $posts = json_decode( wp_remote_retrieve_body( $response ) );
+                    echo '<div class="row tmpcoder-news-grid">';
+                        foreach ( $posts as $post ) {
+                            echo '<div class="tmpcoder-news-post col-xl-4">';
+                                $thumbnail = '';
+                                if ( isset( $post->_embedded->{'wp:featuredmedia'}[0]->source_url ) ) {
+                                    $thumbnail = $post->_embedded->{'wp:featuredmedia'}[0]->source_url;
+                                }
+                                if ( $thumbnail ) {
+                                    echo '<a href="'.esc_url($post->link).'" target="_blank">';    
+                                    echo '<div class="tmpcoder-post-img-container">';
+
+                                    echo '<img src="' . esc_url( $thumbnail ) . '" alt="' . esc_attr( $post->title->rendered ) . '" />';
+                                    echo '<h4>'. esc_html( $post->title->rendered ) .'</h4>';
+                                    echo '</div>';
+                                    echo '</a>';
+                                }
+                            echo '</div>';
+                        }
+                    echo '</div>';
+                }
+                else {
+                    echo esc_html__('Failed to fetch post content.', 'sastra-essential-addons-for-elementor');
+                }
+                ?>
+                <div class="tmpcoder-read-more-blogs">
+                    <a href="<?php echo esc_url(TMPCODER_PLUGIN_SITE_URL.'blog') ?>"  class="read-more-btn1 btn-link" target="_blank" ><?php echo esc_html('Read More Blogs') ?></a>
+                </div>
+            </div>
         </div>
 
         <div class="col-xl-4 help-box-main">
-            <?php /*
-            <div class="common-box-shadow help-box">
-                <a href="<?php echo esc_url(admin_url('admin.php?page=spexo-welcome&tab=system-info')); ?>" target="_blank">
-                    <h3><img src="<?php echo esc_url(TMPCODER_ADDONS_ASSETS_URL.'images/system-info-tab.svg'); ?>"><span><?php echo esc_html__( 'System Info', 'sastra-essential-addons-for-elementor' ); ?></span></h3>
-                    <p> <?php echo esc_html__( 'Comprehensive System Information for Plugin Compatibility and Performance', 'sastra-essential-addons-for-elementor' ); ?> </p>
-                </a>
-            </div>*/
-            ?>
+            <div class="tmpcoder-getting-started-video common-box-shadow help-box">
+                <iframe height="215"
+                src="https://www.youtube.com/embed/oEX5d5tpSLQ" allowfullscreen>
+                </iframe>
+            </div>
             <div class="common-box-shadow help-box">
                 <a href="<?php echo esc_url(TMPCODER_RATING_LINK); ?>" target="_blank">
                     <h3><img src="<?php echo esc_url(TMPCODER_ADDONS_ASSETS_URL.'images/rate-us.svg'); ?>"><span><?php echo esc_html__( 'Rate Us', 'sastra-essential-addons-for-elementor' ); ?></span></h3>

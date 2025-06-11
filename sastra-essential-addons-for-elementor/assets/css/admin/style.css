@@ -642,6 +642,9 @@ body .tmpcoder-set-global-fonts-confirm-popup-wrap .button {
 .help-box-main .help-box a{
     width: 100%;
 }
+.help-box-main .help-box iframe{
+    width: 100%;
+}
 .help-box-main .help-box:hover,.block-part .common-box-shadow:hover{
     box-shadow: 0px 15px 35px rgb(47 94 149 / 10%);
 }
@@ -1215,6 +1218,10 @@ body.toplevel_page_spexo-welcome .tmpcoder-tplib-filters .tmpcoder-tplib-filters
 .toplevel_page_spexo-welcome .tmpcoder-premade-blocks-page .tmpcoder-tplib-sidebar .tmpcoder-tplib-filters-wrap{
     width: 50%;
 }
+/*.tmpcoder-pre-text,
+.toplevel_page_spexo-welcome .tmpcoder-premade-blocks-page .tmpcoder-tplib-sidebar .tmpcoder-tplib-filters-wrap{
+    width: 40%;
+}*/
 .tmpcoder-pre-text p{
     margin: 0px !important;
     display: flex;
@@ -1463,6 +1470,18 @@ body.spexo-addons_page_spexo_addons_global_settings .redux-main .redux-action_ba
     color: #ffffff;
     border-color: #5729d9;
 }
+
+body.spexo-addons_page_spexo_addons_global_settings .redux-main .redux-container-raw .button-primary{
+    background: #5729d9;
+    color: #ffffff;
+    border-color: #5729d9;
+}
+body.spexo-addons_page_spexo_addons_global_settings .redux-main .redux-container-raw .button-primary:hover{
+    background: #ffffff;
+    border-color: #5729d9;
+    color: #5729d9;
+}
+
 body.spexo-addons_page_spexo_addons_global_settings .redux-main .redux-action_bar .button-primary:hover{
     background: #ffffff;
     border-color: #5729d9;
@@ -2452,4 +2471,250 @@ body:not(.spexo-addons_page_tmpcoder-import-demo):not(.toplevel_page_spexo-welco
 .spexo-addons_page_tmpcoder-import-demo .notice-success {
     margin-left: 30px;
     margin-right: 30px;
+}
+
+.spexo-addons_page_tmpcoder-import-demo .tmpcoder-prebuilt-site-blog-link {
+    text-align: center;
+}
+
+/* Plugin Deactive Popup Css - Start */
+
+.tmpcoder-deactivation-popup {
+    position: fixed;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    opacity: 1;
+    visibility: visible;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 999;
+}
+
+.tmpcoder-deactivation-popup.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.tmpcoder-deactivation-popup .overlay {
+    position: relative;
+    padding: 20px;
+    background: #fff;
+    overflow: auto;
+    max-height: 90%;
+    max-width: 90%;
+    border-radius: 10px;
+    -webkit-transform: translateY(0);
+    -ms-transform: translateY(0);
+    transform: translateY(0);
+}
+
+.tmpcoder-deactivation-popup * {
+    -webkit-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+}
+
+.tmpcoder-deactivation-popup .close {
+    cursor: pointer;
+    position: absolute;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    top: 6px;
+    right: 6px;
+    width: 30px;
+    height: 30px;
+    color: #252c59;
+    background: #f7f7f7;
+    border-radius: 10px;
+    z-index: 1;
+}
+
+.tmpcoder-deactivation-popup .body {
+    position: relative;
+    display: block;
+    max-width: 500px;
+    background: #fff;
+    border-radius: 10px;
+}
+
+.tmpcoder-deactivation-popup .body .title-wrap {
+    position: relative;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.tmpcoder-deactivation-popup .tmpcoder-img-wrap {
+    margin-right: 10px;
+}
+
+.tmpcoder-deactivation-popup img {
+    width: 150px;
+}
+
+.tmpcoder-deactivation-popup .body section {
+    margin-bottom: 10px;
+}
+
+.tmpcoder-deactivation-popup .messages-wrap p {
+    margin: 5px 0;
+}
+
+.tmpcoder-deactivation-popup .options-wrap :not([type="radio"]):not([type="checkbox"]) {
+    width: 100%;
+}
+
+.tmpcoder-deactivation-popup .options-wrap textarea {
+    max-height: 150px;
+    min-height: 50px;
+}
+
+.tmpcoder-deactivation-popup .body .options-wrap {
+    padding: 10px;
+    border-radius: 10px;
+    background: #f3f3f3;
+}
+
+.options-wrap.tmpcoder-info-notice {
+    background-color: #f0f7ff !important;
+}
+
+.tmpcoder-deactivation-popup .options-wrap label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.tmpcoder-deactivation-popup .tmpcoder-deactivate-btn {
+    color: rgb(60, 67, 74);
+    background-color: #f3f3f3;
+    border: 0px solid;
+    padding: 8px 18px;
+    border-radius: 10px;
+    font-size: 15px;
+    cursor: pointer;
+    -webkit-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+    text-decoration: none;
+}
+
+.tmpcoder-deactivation-popup .buttons-wrap {
+    text-align: right;
+}
+
+.tmpcoder-deactivation-popup .tmpcoder-deactivate-btn:hover {
+    color: #fff;
+    background-color: #5729d9;
+}
+
+.tmpcoder-fade {
+    font-weight: bold !important;
+    -webkit-animation: fade 1s linear infinite alternate-reverse;
+    animation: fade 1s linear infinite alternate-reverse;
+}
+
+/* Plugin Deactive Popup Css - End */
+
+.tmpcoder-premade-blocks-page .tmpcoder-upgrade-now-button {
+    margin-left: 10px;
+    width: 24%;
+}
+.tmpcoder-premade-blocks-page .tmpcoder-upgrade-now-button .btn-link {
+    font-size: 14px
+}
+.tmpcoder-premade-blocks-page .tmpcoder-upgrade-now-button .dashicons-video-alt3 {
+    top: 0;
+    margin-right:0;
+    margin-left: 5px;
+}
+
+.tmpcoder-getting-started-video iframe {
+    border-radius: 10px;
+}
+
+.tmpcoder-welcome-screen-blog-grid.wc-data{
+    border-left: 0;
+}
+.tmpcoder-welcome-screen-blog-grid.wc-data{
+    border-left: 0;
+}
+.tmpcoder-welcome-screen-blog-grid.wc-data .tmpcoder-news-post{
+    z-index: 1;
+}
+.tmpcoder-welcome-screen-blog-grid.wc-data .tmpcoder-news-post a {
+    text-decoration: none;
+}
+.tmpcoder-welcome-screen-blog-grid.wc-data .tmpcoder-news-post img {
+    border-radius: 5px;
+}
+.tmpcoder-welcome-screen-blog-grid.wc-data h2 {
+    margin-bottom: 20px;
+}
+.tmpcoder-welcome-screen-blog-grid.wc-data .dashicons {
+    margin-right: 0px;
+}
+.tmpcoder-welcome-screen-blog-grid.wc-data .tmpcoder-news-grid h4:hover {
+    color: #5729d9;
+}
+.tmpcoder-welcome-screen-blog-grid.wc-data .tmpcoder-read-more-blogs {
+    width: fit-content;
+    margin: auto;
+    position: inherit;
+    z-index: 1;
+}
+.tmpcoder-welcome-screen-blog-grid.wc-data .tmpcoder-read-more-blogs .btn-link {
+    background: #bf1864;
+    color: #fff;
+    border-radius: 5px;
+    border:1px solid #bf1864;
+}
+.tmpcoder-welcome-screen-blog-grid.wc-data .tmpcoder-read-more-blogs .btn-link:hover {
+    background: transparent;
+    color: #bf1864;
+}
+
+.tmpcoder-site-builder-doc-btns {
+    display: flex;
+}
+
+.tmpcoder-site-builder-doc-btns {
+    display: flex;
+    padding-top:30px; 
+}
+
+.tmpcoder-site-builder-doc-btns .tmpcoder-upgrade-now-button .dashicons,
+.tmpcoder-site-builder-doc-btns .tmpcoder-theme-builder-link .dashicons{
+    margin-right: 6px;
+    top: -2px;
+}
+.tmpcoder-site-builder-doc-btns .tmpcoder-theme-builder-link a {
+    background: transparent;
+    color: #bf1864;
+    border-radius: 5px;
+    border:1px solid #bf1864;
+}
+.tmpcoder-site-builder-doc-btns .tmpcoder-theme-builder-link a:hover{
+    background: #bf1864;
+    color: #fff;
+}
+.tmpcoder-site-builder-doc-btns a {
+    font-size: 13px;
 }

@@ -28,7 +28,15 @@ class TMPCODER_Archive_Title extends Widget_Base {
 	}
 
 	public function get_categories() {
-		return [ 'tmpcoder-theme-builder-widgets' ];
+
+		if (tmpcoder_show_theme_buider_widget_on('type_archive')) {
+			return [ 'tmpcoder-theme-builder-widgets' ];
+
+		}elseif (tmpcoder_show_theme_buider_widget_on('type_product_archive') || tmpcoder_show_theme_buider_widget_on('type_product_category')) {
+			return [ 'tmpcoder-woocommerce-builder-widgets'];
+		}else{
+			return [];
+		}
 	}
 
 	public function get_keywords() {

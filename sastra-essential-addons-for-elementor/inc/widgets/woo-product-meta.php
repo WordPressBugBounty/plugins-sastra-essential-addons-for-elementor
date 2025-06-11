@@ -21,7 +21,7 @@ class TMPCODER_Product_Meta extends Widget_Base {
 	}
 
 	public function get_categories() {
-		return [ 'tmpcoder-woocommerce-builder-widgets' ];
+		return tmpcoder_show_theme_buider_widget_on('type_single_product') ? [ 'tmpcoder-woocommerce-builder-widgets'] : [];
 	}
 
 	public function get_keywords() {
@@ -268,6 +268,16 @@ class TMPCODER_Product_Meta extends Widget_Base {
 			]
 		);
 
+		$this->add_control(
+			'tmpcoder_enable_title_attribute',
+			[
+				'label' => esc_html__( 'Enable Title Attribute', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::SWITCHER,
+				'return_value' => 'yes',
+				'render_type' => 'template',
+			]
+		);
+
         $this->end_controls_section();
 
         // Section: Request New Feature
@@ -301,8 +311,27 @@ class TMPCODER_Product_Meta extends Widget_Base {
         $post = get_post( $product->get_id() );
         setup_postdata( $product->get_id() );
 
-        echo '<div class="tmpcoder-product-meta">';
-            woocommerce_template_single_meta();
-        echo '</div>';
+        ob_start();
+	    woocommerce_template_single_meta();
+	    $meta_html = ob_get_clean();
+
+	    echo '<div class="tmpcoder-product-meta">';
+
+		    if (isset($settings['tmpcoder_enable_title_attribute']) && $settings['tmpcoder_enable_title_attribute'] == 'yes') {
+
+			    $meta_html = preg_replace_callback(
+				    '/<a[^>]+>([^<]+)<\/a>/i',
+				    function( $matches ) {
+				        $name = esc_attr( trim( $matches[1] ) );
+				        return str_replace('<a', '<a title="' . $name . '"', $matches[0]);
+				    },
+				    $meta_html
+				);
+		    }
+
+	    echo wp_kses($meta_html, tmpcoder_wp_kses_allowed_html());
+
+	    echo '</div>';
+
     }
 }

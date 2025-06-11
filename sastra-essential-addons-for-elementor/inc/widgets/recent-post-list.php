@@ -25,7 +25,15 @@ class TMPCODER_Post_List extends Widget_Base {
 	}
 
 	public function get_categories() {
-		return ['tmpcoder-widgets-category'];
+
+		if (tmpcoder_show_theme_buider_widget_on('type_single_post') || tmpcoder_show_theme_buider_widget_on('type_archive')) {
+			return [ 'tmpcoder-theme-builder-widgets'];
+		}
+		elseif (tmpcoder_show_theme_buider_widget_on('type_single_product') || tmpcoder_show_theme_buider_widget_on('type_product_category') || tmpcoder_show_theme_buider_widget_on('type_product_archive')) {
+			return [ 'tmpcoder-woocommerce-builder-widgets'];
+		}else{
+			return [ 'tmpcoder-widgets-category' ];
+		}
 	}
 	
 	public function get_icon() {

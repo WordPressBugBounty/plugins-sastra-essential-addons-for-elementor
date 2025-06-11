@@ -70,8 +70,6 @@ if ( !class_exists('TemplatesWidgetRegister') ){
 
             add_action( 'elementor/controls/controls_registered', [ $this, 'register_custom_control' ] );
 
-            add_action( 'elementor/elements/categories_registered', [ $this, 'add_elementor_widget_categories'] );
-
             // Editor CSS
             add_action( 'elementor/preview/enqueue_styles', [ $this, 'tmpcoder_enqueue_editor_styles' ], 998 );
 
@@ -95,7 +93,61 @@ if ( !class_exists('TemplatesWidgetRegister') ){
 
             // Enqueue Scripts
             add_action( 'admin_enqueue_scripts', [ $this, 'tmpcoder_templates_library_scripts' ] );
+
+            add_action('elementor/elements/categories_registered', [ $this, 'add_elementor_widget_categories' ],0);
         }
+
+        public function add_elementor_widget_categories( $elements_manager ) {
+
+            // Get all existing categories (reflection trick)
+
+            $reflection = new \ReflectionClass($elements_manager);
+            $property = $reflection->getProperty('categories');
+            $property->setAccessible(true);
+            $categories = $property->getValue($elements_manager);
+
+            // Backup and remove our custom categories if already added
+            unset(
+                $categories['tmpcoder-widgets-category'],
+                $categories['tmpcoder-theme-builder-widgets'],
+                $categories['tmpcoder-woocommerce-builder-widgets'],
+                $categories['tmpcoder-header-builder-widgets'],
+                $categories['tmpcoder-premium-widgets']
+            );
+
+            // Apply new order
+            $ordered_custom_categories = [
+                'tmpcoder-widgets-category' => [
+                    'title' => sprintf(wp_kses_post('%s Widgets <a class="tmpcoder-editor-upgrade-pro-icon" href="'.TMPCODER_PURCHASE_PRO_URL.'" target="_blank"><i class="eicon-upgrade-crown"></i>Upgrade</a>'), 'Spexo Addons'),
+                    'icon' => 'fa fa-star',
+                ],
+                'tmpcoder-theme-builder-widgets' => [
+                    'title' => sprintf(wp_kses_post('%s Theme Builder <a class="tmpcoder-editor-upgrade-pro-icon" href="'.TMPCODER_PURCHASE_PRO_URL.'" target="_blank"><i class="eicon-upgrade-crown"></i>Upgrade</a>'), 'Spexo Addons'),
+                    'icon' => 'fa fa-star',
+                ],
+                'tmpcoder-woocommerce-builder-widgets' => [
+                    'title' => sprintf(wp_kses_post('%s Woo Builder <a class="tmpcoder-editor-upgrade-pro-icon" href="'.TMPCODER_PURCHASE_PRO_URL.'" target="_blank"><i class="eicon-upgrade-crown"></i>Upgrade</a>'), 'Spexo Addons'),
+                    'icon' => 'fa fa-star',
+                ],
+                'tmpcoder-header-builder-widgets' => [
+                    'title' => sprintf(wp_kses_post('%s Header Builder <a class="tmpcoder-editor-upgrade-pro-icon" href="'.TMPCODER_PURCHASE_PRO_URL.'" target="_blank"><i class="eicon-upgrade-crown"></i>Upgrade</a>'), 'Spexo Addons'),
+                    'icon' => 'fa fa-star',
+                ],
+                'tmpcoder-premium-widgets' => [
+                    'title' => sprintf(wp_kses_post('%s Premium Widgets <a class="tmpcoder-editor-upgrade-pro-icon" href="'.TMPCODER_PURCHASE_PRO_URL.'" target="_blank"><i class="eicon-upgrade-crown"></i>Upgrade</a>'), 'Spexo Addons'),
+                    'icon' => 'fa fa-star',
+                ],
+            ];
+
+            // Add custom categories in desired order
+            foreach ( $ordered_custom_categories as $key => $args ) {
+                $elements_manager->add_category( $key, $args );
+            }
+
+            // Re-set the original categories (fallback if needed)
+            $property->setValue($elements_manager, array_merge($ordered_custom_categories, $categories));
+        }
+
 
         /**
         ** Enqueue Scripts and Styles
@@ -601,46 +653,6 @@ if ( !class_exists('TemplatesWidgetRegister') ){
             $controls_manager->register( new TMPCODER_Control_Button_Animations() );
             $controls_manager->register( new TMPCODER_Control_Arrow_Icons() );
         } 
-
-        public function add_elementor_widget_categories( $elements_manager ) {
-
-            $elements_manager->add_category(
-              'tmpcoder-widgets-category',
-              [
-                // Translators: %s is the plugin name.
-                'title' => sprintf(wp_kses_post( '%s Widgets <a class="tmpcoder-editor-upgrade-pro-icon" href="'.TMPCODER_PURCHASE_PRO_URL.'" target="_blank"><i class="eicon-upgrade-crown"></i>Upgrade</a>'), 'Spexo Addons'),
-                'icon' => 'fa fa-star',
-              ]
-            );
-
-            $elements_manager->add_category(
-              'tmpcoder-theme-builder-widgets',
-              [
-                // Translators: %s is the plugin name.
-                'title' => sprintf(wp_kses_post( '%s Theme Builder <a class="tmpcoder-editor-upgrade-pro-icon" href="'.TMPCODER_PURCHASE_PRO_URL.'" target="_blank"><i class="eicon-upgrade-crown"></i>Upgrade</a>'), 'Spexo Addons'),
-                'icon' => 'fa fa-star',
-              ]
-            );
-
-            $elements_manager->add_category(
-              'tmpcoder-woocommerce-builder-widgets',
-              [
-                // Translators: %s is the plugin name.
-                'title' => sprintf(wp_kses_post( '%s Woo Builder <a class="tmpcoder-editor-upgrade-pro-icon" href="'.TMPCODER_PURCHASE_PRO_URL.'" target="_blank"><i class="eicon-upgrade-crown"></i>Upgrade</a>'), 'Spexo Addons'),
-                'icon' => 'fa fa-star',
-              ]
-            );
-
-            // Add Premium Widtgets category in panel
-            $elements_manager->add_category(
-              'tmpcoder-premium-widgets',
-              [
-                // Translators: %s is the plugin name.
-                'title' => sprintf(wp_kses_post( '%s Premium Widgets <a class="tmpcoder-editor-upgrade-pro-icon" href="'.TMPCODER_PURCHASE_PRO_URL.'" target="_blank"><i class="eicon-upgrade-crown"></i>Upgrade</a>'), 'Spexo Addons'),
-                'icon' => 'fa fa-star',
-              ]
-            );
-        }
 
         public function tmpcoder_promote_premium_widgets($config){
 

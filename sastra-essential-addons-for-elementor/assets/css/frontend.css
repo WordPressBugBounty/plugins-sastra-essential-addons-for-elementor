@@ -1025,3 +1025,62 @@ body .select2-container .select2-selection--single .select2-selection__arrow {
 }
 
 /* Post Content Custom Css - end */
+
+/* Template Edit button - start */
+
+.tmpcoder-template-edit-btn {
+    position: absolute;
+    top: 0;
+    right: 40px;
+    display: none;
+    line-height: 1;
+    padding: 8px 13px;
+    cursor: pointer;
+    background: #fcb92c;
+    color: #fff;
+    border: 1px solid #fcb92c;
+}
+
+.elementor-editor-active .tmpcoder-template-edit-btn {
+    display: inline-block;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.elementor-editor-active .elementor-element-edit-mode:hover .tmpcoder-template-edit-btn {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Template Edit button - end */
+
+/* Swatches css for prouct grid widget - start */
+
+ul.tmpcoder-grid-items-swatches-parent {
+    padding: 0;
+    margin: 0;
+} 
+.tmpcoder-grid-items-swatches-parent li {
+    list-style: none;
+}
+
+/* Swatches css for prouct grid widget - end */
+
+/* Additional css information - start */
+
+.tmpcoder-product-additional-information table.shop_attributes {
+    margin-bottom: 0;
+}
+
+.tmpcoder-product-additional-information table td,
+.tmpcoder-product-additional-information table th {
+    vertical-align: middle;
+}
+
+.tmpcoder-product-additional-information table.shop_attributes,
+.tmpcoder-product-additional-information table.shop_attributes td,
+.tmpcoder-product-additional-information table.shop_attributes th {
+  border: none;
+}
+
+/* Additional css information - end */

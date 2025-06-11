@@ -34,7 +34,17 @@ class TMPCODER_Content_Ticker extends Widget_Base {
 	}
 
 	public function get_categories() {
-		return [ 'tmpcoder-widgets-category'];
+
+		if (tmpcoder_show_theme_buider_widget_on('type_header')) {
+			return [ 'tmpcoder-header-builder-widgets'];
+		}
+		elseif (tmpcoder_show_theme_buider_widget_on('type_archive')) {
+			return [ 'tmpcoder-theme-builder-widgets' ];
+		}
+		else
+		{
+			return [ 'tmpcoder-widgets-category' ];
+		}
 	}
 
 	public function get_keywords() {

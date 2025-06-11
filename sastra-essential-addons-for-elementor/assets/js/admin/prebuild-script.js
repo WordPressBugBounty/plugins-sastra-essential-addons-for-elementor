@@ -319,14 +319,15 @@
 
 							TmpcoderLibraryTmpls.renderPopupGrid( previewIframe );
 
-							/* elementorCommon.ajax.addRequest( 'tmpcoder_templates_library_blocks_search_data', {
+							 elementorCommon.ajax.addRequest( 'tmpcoder_backend_search_query_results_func', {
 								data: {
 									search_query: val,
+									type:3
 								},
 								success: function() {
 									// console.log(val);
 								}
-							}); */
+							}); 
 						} else if ( 'sections' === tab ) {
 							if ( '' !== val ) {
 								previewIframe.find('.tmpcoder-tplib-template-wrap').hide();
@@ -337,14 +338,15 @@
 
 							TmpcoderLibraryTmpls.renderPopupGrid( previewIframe );
 
-							/* elementorCommon.ajax.addRequest( 'tmpcoder_templates_library_sections_search_data', {
+							 elementorCommon.ajax.addRequest( 'tmpcoder_backend_search_query_results_func', {
 								data: {
 									search_query: val,
+									type:4
 								},
 								success: function() {
 									// console.log(val);
 								}
-							}); */
+							}); 
 						}
 					}, 1000);
 				});

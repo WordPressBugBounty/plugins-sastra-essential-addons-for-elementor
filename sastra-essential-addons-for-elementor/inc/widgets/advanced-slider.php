@@ -598,7 +598,8 @@ class TMPCODER_Advanced_Slider extends Widget_Base {
 					'h3' => esc_html__( 'H3', 'sastra-essential-addons-for-elementor' ),
 					'h4' => esc_html__( 'H4', 'sastra-essential-addons-for-elementor' ),
 					'h5' => esc_html__( 'H5', 'sastra-essential-addons-for-elementor' ),
-					'h6' => esc_html__( 'H6', 'sastra-essential-addons-for-elementor' )
+					'h6' => esc_html__( 'H6', 'sastra-essential-addons-for-elementor' ),
+					'div' => esc_html__( 'Div', 'sastra-essential-addons-for-elementor' )
 				],
 				'default' => 'h2',
 				'condition' => [
@@ -633,7 +634,8 @@ class TMPCODER_Advanced_Slider extends Widget_Base {
 					'h3' => esc_html__( 'H3', 'sastra-essential-addons-for-elementor' ),
 					'h4' => esc_html__( 'H4', 'sastra-essential-addons-for-elementor' ),
 					'h5' => esc_html__( 'H5', 'sastra-essential-addons-for-elementor' ),
-					'h6' => esc_html__( 'H6', 'sastra-essential-addons-for-elementor' )
+					'h6' => esc_html__( 'H6', 'sastra-essential-addons-for-elementor' ),
+					'div' => esc_html__( 'Div', 'sastra-essential-addons-for-elementor' )
 				],
 				'default' => 'h3',
 				'condition' => [
@@ -1073,7 +1075,8 @@ class TMPCODER_Advanced_Slider extends Widget_Base {
 					'h3' => esc_html__( 'H3', 'sastra-essential-addons-for-elementor' ),
 					'h4' => esc_html__( 'H4', 'sastra-essential-addons-for-elementor' ),
 					'h5' => esc_html__( 'H5', 'sastra-essential-addons-for-elementor' ),
-					'h6' => esc_html__( 'H6', 'sastra-essential-addons-for-elementor' )
+					'h6' => esc_html__( 'H6', 'sastra-essential-addons-for-elementor' ),
+					'div' => esc_html__( 'Div', 'sastra-essential-addons-for-elementor' )
 				],
 				'default' => 'h2',
 				'condition' => [
@@ -1116,7 +1119,8 @@ class TMPCODER_Advanced_Slider extends Widget_Base {
 					'h3' => esc_html__( 'H3', 'sastra-essential-addons-for-elementor' ),
 					'h4' => esc_html__( 'H4', 'sastra-essential-addons-for-elementor' ),
 					'h5' => esc_html__( 'H5', 'sastra-essential-addons-for-elementor' ),
-					'h6' => esc_html__( 'H6', 'sastra-essential-addons-for-elementor' )
+					'h6' => esc_html__( 'H6', 'sastra-essential-addons-for-elementor' ),
+					'div' => esc_html__( 'Div', 'sastra-essential-addons-for-elementor' )
 				],
 				'default' => 'h3',
 				'condition' => [

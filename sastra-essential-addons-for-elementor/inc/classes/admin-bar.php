@@ -130,6 +130,8 @@ class TMPCODER_Admin_Bar {
 			'SpexoAdmin',
 			[
 				'nonce'    => wp_create_nonce( 'tmpcoder_clear_cache' ),
+				'_wpnonce' => wp_create_nonce( 'tmpcoder_feedback_nonce' ),
+				'_wpnonce_' => wp_create_nonce( 'tmpcoder-plugin-notice-js' ),
 				'post_id'  => get_queried_object_id(),
 				'ajax_url' => admin_url( 'admin-ajax.php' ),
 			]

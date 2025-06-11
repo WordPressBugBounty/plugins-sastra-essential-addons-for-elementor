@@ -42,6 +42,27 @@ function tmpcoder_addons_theme_builder_page() {
 
             <?php TMPCODER_Templates_Loop::render_delete_template_confirm_popup(); ?>
 
+            <div class="tmpcoder-site-builder-doc-btns">
+                <div class="tmpcoder-upgrade-now-button ">
+                    <a href="<?php echo esc_url(TMPCODER_DOCUMENTATION_URL.'site-builder-overview') ?>" target="_blank" class="btn-link">
+                        <i class="dashicons dashicons-external"></i>
+                        <?php esc_html_e('Site Builder Overview', 'sastra-essential-addons-for-elementor')?>
+                    </a>
+                </div>
+                <!-- <div class="tmpcoder-theme-builder-link">
+                    <a href="#" target="_blank" class="btn-link">
+                        <i class="dashicons dashicons-video-alt3"></i>
+                        <?php //esc_html_e('Theme Builder Tutorial', 'sastra-essential-addons-for-elementor')?>
+                    </a>
+                </div>
+                <div class="tmpcoder-theme-builder-link">
+                    <a href="#" target="_blank" class="btn-link">
+                        <i class="dashicons dashicons-video-alt3"></i>
+                        <?php //esc_html_e('Woo Builder Tutorial', 'sastra-essential-addons-for-elementor')?>
+                    </a>
+                </div> -->
+            </div>
+
             <!-- Tabs -->
             <div class="site-builder-main common-box-shadow tmpcoder-layout-tabs">
             <div class="nav-tab-wrapper tmpcoder-nav-tab-wrapper">
@@ -71,6 +92,9 @@ function tmpcoder_addons_theme_builder_page() {
                 </a>
                 <a href="?page=spexo-welcome&tab=site-builder&layout_type=type_single_product" data-title="type_single_product" class="nav-tab <?php echo esc_attr($active_tab == 'type_single_product' ? 'nav-tab-active' : ''); ?>">
                     <?php esc_html_e( 'Single Product', 'sastra-essential-addons-for-elementor' ); ?>
+                </a>
+                <a href="?page=spexo-welcome&tab=site-builder&layout_type=type_global_template" data-title="type_global_template" class="nav-tab <?php echo esc_attr($active_tab == 'type_global_template' ? 'nav-tab-active' : ''); ?>">
+                    <?php esc_html_e( 'Global Templates', 'sastra-essential-addons-for-elementor' ); ?>
                 </a>
             </div>
 
@@ -160,6 +184,10 @@ function tmpcoder_addons_theme_builder_page() {
                     <div class="tmpcoder-activate-woo-notice"><span class="dashicons dashicons-info-outline"></span> <?php esc_html_e('Please install/activate WooCommerce in order to create product single templates!', 'sastra-essential-addons-for-elementor') ?></div>
                 <?php endif ; ?>
 
+            <?php elseif ( $active_tab == 'type_global_template' ) : ?>
+
+            <?php TMPCODER_Templates_Loop::render_elementor_saved_templates( 'type_global_template' ); ?>
+
             <?php endif; ?>
 
             <div class="tmpcoder-settings-page-header">
@@ -174,6 +202,9 @@ function tmpcoder_addons_theme_builder_page() {
 
                         if ($active_tab == 'type_404') {
                             $active_tab_label = '404 Page';
+                        }
+                        if ($active_tab == 'type_global_template') {
+                            $active_tab_label = str_replace('Template', '', $active_tab_label);
                         }
 
                         ?>

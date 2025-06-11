@@ -192,6 +192,10 @@
                 });
 
                 var handleScroll = function () {
+
+                    /* For manage top position of sticky header on scroll when wp admin bar visible on frontend */
+                    changeAdminBarOffset();
+
                     let scrollPos = $window.scrollTop();
 
                     if ('fixed' != positionStyle) {
@@ -210,7 +214,7 @@
                         stickyEffectsOffset = 0;
                         if (scrollPos > stickyEffectsOffset) {
                             if ('yes' == $scope.data('tmpcoder-replace-header')) {
-
+                        
                                 if ('yes' === $scope.data('tmpcoder-sticky-hide')) {
 
                                     if (scrollPos >= distanceFromTop) {
@@ -219,10 +223,17 @@
 
                                     if (scrollPos < prevScrollPos) {
                                         $scope.next().addClass('tmpcoder-hidden-header').addClass('tmpcoder-' + stickyAnimation + '-in');
+
+                                        console.log('tmpcoder-' + stickyAnimation + '-in');
+
+                                        changeAdminBarOffset($scope.next());
+                                        // $scope.next().addClass('tmpcoder-adminbar-replace-header');
                                     }
                                 } else {
                                     $scope.addClass('tmpcoder-visibility-hidden');
                                     $scope.next().addClass('tmpcoder-hidden-header').addClass('tmpcoder-' + stickyAnimation + '-in');
+                                    // console.log('replace-header');
+                                    changeAdminBarOffset($scope.next());
                                 }
                             } else {
                                 $scope.addClass('tmpcoder-sticky-header');
@@ -232,6 +243,7 @@
                                 $scope.next().removeClass('tmpcoder-hidden-header');
                                 $scope.removeClass('tmpcoder-visibility-hidden');
                                 $scope.next().removeClass('tmpcoder-' + stickyAnimation + '-in');
+                                $scope.next().removeClass('tmpcoder-adminbar-replace-header');
                             } else {
                                 $scope.removeClass('tmpcoder-sticky-header');
                             }
@@ -240,6 +252,7 @@
 
                     if ('yes' === $scope.data('tmpcoder-sticky-hide')) {
                         distanceFromTop = 0;
+
                         if (scrollPos >= distanceFromTop) {
                             if (scrollPos < prevScrollPos) {
                                 // Scrolling up
@@ -320,13 +333,26 @@
                 $scope.css({ 'position': stickType });
             }
 
-            function changeAdminBarOffset() {
-                if ($('#wpadminbar').length) {
+            function changeAdminBarOffset($replace_header='') {
+
+                if ($('#wpadminbar').length) {  
                     adminBarHeight = $('#wpadminbar').css('height').slice(0, $('#wpadminbar').css('height').length - 2);
-                    // if ( 'top'  ===  positionLocation && ( 'fixed' == $scope.css('position')  || 'sticky' == $scope.css('position') ) ) {
+
+                    // if ( 'top' === positionLocation && ( 'fixed' == $scope.css('position') || 'sticky' == $scope.css('position'))) {
+
                     if ('top' === positionLocation && ('fixed' == $scope.css('position'))) {
-                        $scope.css('top', +adminBarHeight + offsetTop + 'px');
+                        $scope.css('top', + adminBarHeight + offsetTop + 'px');
                         $scope.css('bottom', 'auto');
+                    }
+
+                    // console.log($replace_header);
+
+                    if ($replace_header && 'top' === positionLocation && ('fixed' == $replace_header.css('position')) )
+                    {
+
+                        // $replace_header.addClass('tmpcoder-adminbar-replace-header');
+                        $replace_header.css('top', + adminBarHeight + offsetTop + 'px');
+                        $replace_header.css('bottom', 'auto');
                     }
                 }
             }

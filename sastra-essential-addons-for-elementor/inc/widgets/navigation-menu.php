@@ -27,7 +27,7 @@ class TMPCODER_Navigation_Menu extends Widget_Base {
 	}
 
 	public function get_categories() {
-		return [ 'tmpcoder-widgets-category'];
+		return tmpcoder_show_theme_buider_widget_on('type_header') ? [ 'tmpcoder-header-builder-widgets'] : ['tmpcoder-widgets-category'];
 	}
 
 	public function get_keywords() {

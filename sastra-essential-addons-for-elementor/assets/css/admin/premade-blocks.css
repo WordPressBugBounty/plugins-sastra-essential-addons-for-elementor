@@ -444,3 +444,7 @@
 div.fs-notice.updated, div.fs-notice.success {
   display: none !important;
 }
+
+.toplevel_page_spexo-welcome .tmpcoder-pro-features-notice {
+    display: flex !important;
+}

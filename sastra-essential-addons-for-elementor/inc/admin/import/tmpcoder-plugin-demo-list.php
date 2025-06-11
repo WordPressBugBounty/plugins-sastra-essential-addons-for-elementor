@@ -32,6 +32,20 @@ function tmpcoder_import_demo_list(){
     ?>
 
     <div class="tmpcoder-import-demo-page">
+        <div class="tmpcoder-documentation-buttons-header">
+            <div class="tmpcoder-prebuilt-demo-doc-link">
+                <a href="<?php echo esc_url(TMPCODER_DOCUMENTATION_URL.'how-to-import-prebuilt-website') ?>" target="_blank" class="btn-link">
+                    <i class="dashicons dashicons-external"></i>
+                    <?php esc_html_e('How To Import Prebuilt Websites', 'sastra-essential-addons-for-elementor')?>
+                </a>
+            </div>
+            <!-- <div class="tmpcoder-upgrade-now-button tmpcoder-prebuilt-video-link">
+                <a href="#" target="_blank" class="btn-link">
+                    <i class="dashicons dashicons-video-alt3"></i>
+                    <?php // esc_html_e('Video Tutorial', 'sastra-essential-addons-for-elementor')?>
+                </a>
+            </div> -->
+        </div>
         <header>
             <div class="tmpcoder-import-demo-left">
                 <div class="tmpcoder-import-demo-logo">
@@ -40,8 +54,9 @@ function tmpcoder_import_demo_list(){
             </div>
 
             <div class="tmpcoder-import-demo-right">
+
                 <div class="tmpcoder-import-demo-search">
-                    <input type="text" autocomplete="off" placeholder="<?php esc_html_e('Search Websites...', 'sastra-essential-addons-for-elementor'); ?>">
+                    <input class="tmpcoder-search-tracking" data-type="2" type="text" autocomplete="off" placeholder="<?php esc_html_e('Search Websites...', 'sastra-essential-addons-for-elementor'); ?>">
                     <span class="dashicons dashicons-search"></span>
                 </div>
 
@@ -180,6 +195,8 @@ function tmpcoder_import_demo_list(){
             
         }else if ($import_error_msg != '') {
             echo '<div class="not-found-message">'.esc_html($import_error_msg).'</div>';
+            echo '<div class="tmpcoder-prebuilt-site-blog-link"><a target="_blank" href='.esc_url(TMPCODER_CURL_TIMEOUT_DOC_LINK).'>'.esc_html('How to fix it ?').' </a></div>';
+
         }else{
             echo '<div class="not-found-message">'.esc_html('There`s currently no demo available. Please try again later').'</div>';
         } ?>
@@ -268,6 +285,8 @@ function tmpcoder_import_demo_list(){
                             <p class="display-error-message"></p>
                             <button class="tmpcoder-retry-import button button-primary"><?php esc_html_e('Resume Import Procces', 'sastra-essential-addons-for-elementor') ?></button>
                         </div>
+                        <a class="error-message-text-button" href="<?php echo esc_url(TMPCODER_RESUME_IMPORT_PROCESS_DOC_LINK); ?>" target="_blank"><?php esc_html_e('Need Help ?', 'sastra-essential-addons-for-elementor') ?>
+                        </a>
                         <div class="progress-counter"> <?php esc_html_e('0/5 completed', 'sastra-essential-addons-for-elementor') ?> </div>
                         <div class="progress">
                             <div class="progress-bar" role="progressbar" aria-valuenow="0"
@@ -362,6 +381,8 @@ if ( ! function_exists( 'tmpcoder_demo_import_scripts_func' ) ) :
             'import_revslider_data_message' => __('Import Revolution Slider Data ', 'sastra-essential-addons-for-elementor'),
             'import_revslider_failed_message' => __('Failed - Importing Revolution Slider Data ', 'sastra-essential-addons-for-elementor'),
             'install_plugin_failed_message' => __('Failed - Install/Active Required plugins', 'sastra-essential-addons-for-elementor'),
+            'need_help_doc_link' => '<a target="_blank" href="'.esc_url(TMPCODER_FIX_IMPORT_ISSUE_DOC_LINK).'">'.__('Need Help ?', 'sastra-essential-addons-for-elementor').'</a>',
+            'enable_to_downlaod_xml_doc_link' => '<a target="_blank" href="'.esc_url(TMPCODER_ENABLE_TO_DOWNLOAD_XML).'">'.__('Need Help ?', 'sastra-essential-addons-for-elementor').'</a>',
         ));
     }
 endif;

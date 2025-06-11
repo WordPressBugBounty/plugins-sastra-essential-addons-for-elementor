@@ -59,7 +59,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                             <div class="col-xl-3">
                                 <div class="tmpcoder-widgets-search">
                                     <div class="tmpcoder-widgets-search-inner">
-                                        <input type="text" autocomplete="off" placeholder="<?php esc_html_e('Search Widgets...', 'sastra-essential-addons-for-elementor'); ?>">
+                                        <input class="tmpcoder-search-tracking" data-type="1" type="text" autocomplete="off" placeholder="<?php esc_html_e('Search Widgets...', 'sastra-essential-addons-for-elementor'); ?>">
                                         <span class="dashicons dashicons-search"></span>
                                     </div>
                                 </div>

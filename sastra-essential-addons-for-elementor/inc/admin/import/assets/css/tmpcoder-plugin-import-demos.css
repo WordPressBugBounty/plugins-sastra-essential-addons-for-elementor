@@ -507,3 +507,24 @@ p {
         line-height: 24px;
     }
 }
+
+.spexo-addons_page_tmpcoder-import-demo .tmpcoder-documentation-buttons-header {
+    display: flex;
+    margin: 0 30px 20px;
+}
+
+.spexo-addons_page_tmpcoder-import-demo .tmpcoder-documentation-buttons-header i, .spexo-addons_page_tmpcoder-import-demo .tmpcoder-documentation-buttons-header img {
+    margin-right: 5px;
+}
+
+.spexo-addons_page_tmpcoder-import-demo .tmpcoder-documentation-buttons-header .tmpcoder-prebuilt-video-link i {
+    /*font-size: 15px;*/
+}
+.spexo-addons_page_tmpcoder-import-demo .tmpcoder-documentation-buttons-header .tmpcoder-prebuilt-demo-doc-link a {
+    color: #bf1864;
+    border: 1px solid #bf1864;
+}
+.spexo-addons_page_tmpcoder-import-demo .tmpcoder-documentation-buttons-header .tmpcoder-prebuilt-demo-doc-link a:hover {
+    background: #bf1864;
+    color:#fff;
+}

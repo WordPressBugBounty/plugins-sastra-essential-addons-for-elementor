@@ -88,7 +88,7 @@ class TMPCODER_Templates_Loop {
 			'post_type' => array( 'elementor_library' ),
 			'post_status' => array( 'publish' ),
 			'meta_key' => '_elementor_template_type',
-			'meta_value' => ['page', 'section'],
+			'meta_value' => ['page', 'section', 'container'],
 			'numberposts' => -1
 		);
 
@@ -96,7 +96,7 @@ class TMPCODER_Templates_Loop {
 		$user_templates = get_posts( $args );
 
 		// My Templates List
-		echo '<ul class="tmpcoder-my-templates-list striped">';
+		echo '<ul class="tmpcoder-my-templates-list">';
 
 		// The Loop
 		if ( ! empty( $user_templates ) ) {
@@ -109,8 +109,12 @@ class TMPCODER_Templates_Loop {
 					echo '<h3 class="tmpcoder-title">'. esc_html($user_template->post_title) .'</h3>';
 					
 					echo '<span class="tmpcoder-action-buttons">';
-						echo '<a href="'. esc_url($edit_url) .'" class="tmpcoder-edit-template button button-primary">'. esc_html__( 'Edit', 'sastra-essential-addons-for-elementor' ) .'</a>';
-						echo '<span class="tmpcoder-delete-template button button-primary" data-slug="'. esc_attr($user_template->post_name) .'" data-warning="'. esc_html__( 'Are you sure you want to delete this template?', 'sastra-essential-addons-for-elementor' ) .'"><span class="dashicons dashicons-no-alt"></span></span>';
+						echo '<a href="'. esc_url($edit_url) .'" class="tmpcoder-edit-template button button-primary">'. esc_html__( 'Edit Template', 'sastra-essential-addons-for-elementor' ) .'</a>';
+
+						// Delete
+						$one_time_nonce = wp_create_nonce( 'delete_post-' . $user_template->post_name );
+
+						echo '<span class="tmpcoder-delete-template button button-primary" data-nonce="'.esc_attr($one_time_nonce).'" data-slug="'. esc_attr($user_template->post_name) .'" data-warning="'. esc_html__( 'Are you sure you want to delete this template?', 'sastra-essential-addons-for-elementor' ) .'"><span class="dashicons dashicons-trash"></span></span>';
 					echo '</span>';
 				echo '</li>';
 			}

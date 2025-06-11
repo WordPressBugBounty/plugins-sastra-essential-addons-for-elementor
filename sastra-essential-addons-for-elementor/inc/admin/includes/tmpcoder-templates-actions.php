@@ -34,6 +34,9 @@ class TMPCODER_Templates_Actions {
 
 		// Select Conditions
 		add_action( 'wp_ajax_tmpcoder_select_popup_conditions', [ $this, 'tmpcoder_select_popup_conditions' ] );
+
+		// Register Elementor AJAX Actions
+		add_action( 'elementor/ajax/register_actions', [ $this, 'tmpcoder_register_elementor_ajax_actions' ] );
 	}
 
 	/**
@@ -145,8 +148,8 @@ class TMPCODER_Templates_Actions {
 		$template_library = isset($_POST['template_library']) ? sanitize_text_field(wp_unslash($_POST['template_library'])): '';
 
 		$post = get_page_by_path( $template_slug, OBJECT, $template_library );
-
-		if ( get_post_type($post->ID) == TMPCODER_THEME_ADVANCED_HOOKS_POST_TYPE) {
+		
+		if ( get_post_type($post->ID) == TMPCODER_THEME_ADVANCED_HOOKS_POST_TYPE || get_post_type($post->ID) == 'elementor_library') {
 			wp_delete_post( $post->ID, true );
 		}
 	}
@@ -210,6 +213,38 @@ class TMPCODER_Templates_Actions {
 		}
 
 		flush_rewrite_rules();
+	}
+
+	/**
+	** Register Elementor AJAX Actions
+	*/
+
+	public function tmpcoder_register_elementor_ajax_actions( Ajax $ajax )
+	{
+		// Elementor Search Data
+		$ajax->register_ajax_action( 'tmpcoder_backend_search_query_results_func', function( $data ) {
+			if ( strpos($_SERVER['SERVER_NAME'],'instawp') || strpos($_SERVER['SERVER_NAME'],'tastewp') ) {
+			// return;
+		}
+	    
+	    $search_query = isset($data['search_query']) ? sanitize_text_field(wp_unslash($data['search_query'])) : '';
+
+	    $type = isset($data['type']) ? sanitize_text_field(wp_unslash($data['type'])) : '';
+
+	    $req_params = array(
+	        'action'    	=> 'save_search_query_data',
+	        'search_query'  => $search_query,
+	        'type' => $type,
+	    );
+	    		
+	    $options = array(
+	        'timeout'    => ( ( defined('DOING_CRON') && DOING_CRON ) ? 30 : 3 ),
+	        'user-agent' => 'tmpcoder-plugin-user-agent',
+	    );
+	    
+	    $api_url = TMPCODER_UPDATES_URL;
+	    $theme_request = wp_remote_get(add_query_arg($req_params, $api_url), $options);
+		} );
 	}
 }
 
