@@ -11,7 +11,6 @@
   opacity: 0 !important;
 }
 
-
 /*--------------------------------------------------------------
 == TMPCODER Widgets
 --------------------------------------------------------------*/
@@ -1203,3 +1202,49 @@ pre.xdebug-var-dump {
 .elementor-slider .noUi-base .noUi-handle-upper .noUi-tooltip {
   top: -100%;
 }
+
+/* Product Grid Classic Css - start */
+
+.tmpcoder-warning {
+  font-size: 13px;
+  line-height: 18px;
+  background-color: #f3f0ca;
+  color: #886726;
+  padding: 10px;
+  border-radius: 3px;
+}
+
+/* tmpcoder Image Choose CSS */
+.elementor-control-type-choose .elementor-choices.tmpcoder-image-choices{
+  height: auto;
+  display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+.elementor-control-type-choose .elementor-choices.tmpcoder-image-choices .elementor-choices-label{
+  border: none;
+  border-radius: 4px;
+  padding: 10px;
+}
+.elementor-control-type-choose .elementor-choices.tmpcoder-image-choices .elementor-choices-label img{
+  image-rendering: pixelated;
+}
+/* .elementor-control-type-tmpcoder-image-choose .tmpcoder-image-choices .elementor-choices-label:hover,
+.elementor-control-type-tmpcoder-image-choose .elementor-choices input:checked+.elementor-choices-label{
+  background: #333538;
+}  will do add it letter */
+
+.elementor-control-url_contains_url_type .elementor-choices-label{
+  line-height: 32px;
+}
+.elementor-control-url_contains_url_type .elementor-choices-label i{
+  font-size: 180%;
+}
+
+.elementor-control-tmpcoder_dch_title_gradient_color_background .elementor-control-title::before {
+  content: "Set Gradient"; /* new text */
+  font-size: 12px;
+  color: inherit;
+}
+
+/* Product Grid Classic Css - end */

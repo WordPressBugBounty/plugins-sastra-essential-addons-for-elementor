@@ -77,3 +77,10 @@ function tmpcoder_add_feature_notice_action(){
     require TMPCODER_PLUGIN_DIR.'inc/admin/notice/feature-banner-notice.php';
     require TMPCODER_PLUGIN_DIR.'inc/admin/notice/pro-features-notice.php';
 }
+
+require TMPCODER_PLUGIN_DIR.'inc/traits/woo-product-comparable.php';
+require TMPCODER_PLUGIN_DIR.'inc/traits/product-grid.php';
+require TMPCODER_PLUGIN_DIR.'inc/traits/template-query.php';
+require TMPCODER_PLUGIN_DIR.'inc/traits/helper.php';
+require TMPCODER_PLUGIN_DIR.'inc/traits/ajax-handler.php';
+require TMPCODER_PLUGIN_DIR.'inc/classes/helper.php';

@@ -27,9 +27,9 @@ class TMPCODER_Plugin_Notice {
     
     public function tmpcoder_plugin_update_dismiss_notice() {
 
-        if ( !isset($_POST['nonce']) && !wp_verify_nonce( $_POST['nonce'], 'tmpcoder-plugin-notice-js')  || !current_user_can( 'manage_options' ) ) {
-          exit;
-        }
+		if ( !isset($_POST['nonce']) && !wp_verify_nonce( $_POST['nonce'], 'tmpcoder-plugin-notice-js')  || !current_user_can( 'manage_options' ) ) {
+		  exit;
+		}
 
         add_option( 'tmpcoder_plugin_update_dismiss_notice_' . get_plugin_data(TMPCODER_PLUGIN_FILE)['Version'], true );
     }

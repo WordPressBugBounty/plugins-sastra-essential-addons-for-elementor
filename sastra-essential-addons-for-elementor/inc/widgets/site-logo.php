@@ -830,9 +830,6 @@ class TMPCODER_Site_Logo extends Widget_Base {
 
 				$image_title = get_the_title( $image_id );
 
-				$settings[ 'image_size' ] = ['id' => $image_id];
-				$image_html = Group_Control_Image_Size::get_attachment_image_html( $settings, 'image_size' );
-
 				$settings[ 'site_logo_size' ] = ['id' => $image_id];
 				$image_html = Group_Control_Image_Size::get_attachment_image_html( $settings, 'site_logo_size' );
 			}
@@ -848,10 +845,10 @@ class TMPCODER_Site_Logo extends Widget_Base {
 					if ($image_html) {
 
 						$image_original_class = 'wp-image-'.$image_id;
+						$new_class = $image_original_class.' '.$class_animation;	
+						$image_html = str_replace($image_original_class, $new_class, $image_html);
 
-						$image_html = str_replace($image_original_class, $class_animation, $image_html);
-
-						 $image_html = preg_replace(
+					 	$image_html = preg_replace(
 						    '/\salt="([^"]*)"/',
 						    ' title="' . esc_attr( $image_title ) . '" alt="$1"',
 						    $image_html

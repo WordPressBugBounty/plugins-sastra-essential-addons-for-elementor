@@ -261,7 +261,6 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 				'classes' => 'tmpcoder-pro-control',
 				'condition' => [
 					'layout_select!' => 'slider',
-				
 				]
 			]
 		);
@@ -9143,7 +9142,7 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 			echo '</div>';
 		echo '</'. esc_attr( tmpcoder_validate_html_tag($settings['element_title_tag']) ) .'>';
 
-		do_action( 'woocommerce_shop_loop_item_title' );
+		// do_action( 'woocommerce_shop_loop_item_title' );
 	}
 
 	// Render Post Excerpt

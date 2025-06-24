@@ -1,7 +1,7 @@
 === Spexo Addons for Elementor - Free Elementor Addons, Widgets and Templates ===
 Contributors: templatescoderthemes, skywebtech
 Tags: elementor, elementor addons, elementor templates, elementor widgets, woocommerce elementor
-Stable tag: 1.0.22
+Stable tag: 1.0.23
 Requires at least: 5.0
 Tested up to: 6.8
 Requires PHP: 7.4
@@ -308,6 +308,14 @@ Feel free to contact us anytime via [Support](https://templatescoder.com/support
 
 == Changelog ==
 
+= v1.0.23 - 2025-06-24 =
+
+* Added : New widget "Product Grid Classic"
+	- Uses standard WooCommerce markup and styling for better compatibility with third-party plugins and themes.
+* Fixed : Several WooCommerce-related frontend issues.
+* Improved : General frontend performance and compatibility with the latest WordPress and WooCommerce versions.
+* Updated : Minor styling enhancements for product display components.
+
 = v1.0.22 - 2025-06-07 =
 
 = New Features =  
@@ -337,6 +345,13 @@ Feel free to contact us anytime via [Support](https://templatescoder.com/support
   - Sharing Buttons
   - Product Additional Information
   - Breadcrumb
+
+= User Experience Additions =  
+* Update Notification: Introduced a banner notice highlighting important updates after version changes.
+
+= Educational Resources =
+* Display of curated blog articles on the dashboard to assist with setup and troubleshooting.
+* Embedded introductory video on the dashboard to guide new users.
 
 = v1.0.21 - 2025-04-24 =
 
@@ -375,9 +390,5 @@ Feel free to contact us anytime via [Support](https://templatescoder.com/support
 * Added : A new alignment setting has been added to the Page List widget. Users can now customize the alignment of the list items.
 * Fixed : Elementor class not found warning in frontend after elementor plugin deactivate
 * Improved: Enhanced admin bar usability by adding direct access to key site building tools and options (Prebuilt Website, Prebuilt Blocks & Site Builder). 
-
-= v1.0.17 - 2025-02-13 =
-
-* Fixed: No post found issue in Post Grid Widget
 
 [See changelog for all versions.](https://spexoaddons.com/changelog/)

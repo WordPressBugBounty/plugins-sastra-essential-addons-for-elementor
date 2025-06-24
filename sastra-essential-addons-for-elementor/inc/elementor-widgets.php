@@ -1,6 +1,9 @@
 <?php
 
 namespace TMPCODER;
+use Spexo_Addons_Elementor\Traits\Ajax_Handler;
+use Spexo_Addons_Elementor\Traits\Helper;
+use Spexo_Addons_Elementor\Traits\Woo_Product_Comparable;
 
 /**
  * Prevent loading this file directly
@@ -11,6 +14,10 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 if ( !class_exists('TemplatesWidgetRegister') ){
     
     class TemplatesWidgetRegister {
+
+        use Helper;
+        use Woo_Product_Comparable;
+        use Ajax_Handler;
 
         private static $_instance = null;
 
@@ -63,7 +70,15 @@ if ( !class_exists('TemplatesWidgetRegister') ){
         }
 
         public function __construct(){
-          
+            
+            $this->init_ajax_hooks();
+
+            $this->register_hooks();
+
+            // Compare table
+            add_action( 'wp_ajax_nopriv_tmpcoder_product_grid', [$this, 'get_compare_table']);
+            add_action( 'wp_ajax_tmpcoder_product_grid', [$this, 'get_compare_table']);
+
             add_action('elementor/widgets/register', [$this, 'tmpcoder_register_widgets'], 99);
 
             add_action( 'wp_enqueue_scripts', [$this, 'tmpcoder_enqueue_scripts'], 998 );
@@ -357,6 +372,66 @@ if ( !class_exists('TemplatesWidgetRegister') ){
         public function tmpcoder_register_scripts(){
 
           wp_register_script(
+            'tmpcoder-woo-grid-general',
+            TMPCODER_PLUGIN_URI . 'assets/js/woo-grid-classic/general'. tmpcoder_script_suffix() .'.js',
+            [
+              'jquery',
+              'elementor-frontend'
+            ],
+            tmpcoder_get_plugin_version(),
+            true
+          );
+
+          wp_register_script(
+            'tmpcoder-load-more-products',
+            TMPCODER_PLUGIN_URI . 'assets/js/woo-grid-classic/load-more-products'. tmpcoder_script_suffix() .'.js',
+            ['tmpcoder-woo-grid-general'],
+            tmpcoder_get_plugin_version(),
+            true
+          );
+
+          wp_register_script(
+            'tmpcoder-quick-view',
+            TMPCODER_PLUGIN_URI . 'assets/js/woo-grid-classic/quick-view'. tmpcoder_script_suffix() .'.js',
+            ['tmpcoder-woo-grid-general'],
+            tmpcoder_get_plugin_version(),
+            true
+          );
+
+          wp_register_script(
+            'tmpcoder-woo-grid-classic',
+            TMPCODER_PLUGIN_URI . 'assets/js/woo-grid-classic/woo-grid-classic'. tmpcoder_script_suffix() .'.js',
+            ['tmpcoder-woo-grid-general'],
+            tmpcoder_get_plugin_version(),
+            true
+          );
+
+          wp_localize_script(
+            'tmpcoder-load-more-products',
+            'localize', 
+            [
+              'ajaxurl'            => admin_url( 'admin-ajax.php' ),
+              'nonce'              => wp_create_nonce( 'spexo-elementor-addons' ),
+              'i18n'               => [
+                'added'   => __( 'Added ', 'sastra-essential-addons-for-elementor' ),
+                'compare' => __( 'Compare', 'sastra-essential-addons-for-elementor' ),
+                'loading' => esc_html__( 'Loading...', 'sastra-essential-addons-for-elementor' )
+              ],
+              'tmpcoder_translate_text' => [
+                'required_text' => esc_html__( 'is a required field', 'sastra-essential-addons-for-elementor' ),
+                'invalid_text'  => esc_html__( 'Invalid', 'sastra-essential-addons-for-elementor' ),
+                'billing_text'  => esc_html__( 'Billing', 'sastra-essential-addons-for-elementor' ),
+                'shipping_text' => esc_html__( 'Shipping', 'sastra-essential-addons-for-elementor' ),
+                        'fg_mfp_counter_text' => apply_filters( 'tmpcoder/filterble-gallery/mfp-counter-text', __( 'of', 'sastra-essential-addons-for-elementor' ) ),
+              ],
+              'page_permalink'     => get_the_permalink(),
+              'cart_redirectition' => get_option( 'woocommerce_cart_redirect_after_add' ),
+              'cart_page_url'      => function_exists( 'wc_get_cart_url' ) ? wc_get_cart_url() : '',
+              'el_breakpoints'     => method_exists( \Elementor\Plugin::$instance->breakpoints, 'get_breakpoints_config' ) ? \Elementor\Plugin::$instance->breakpoints->get_breakpoints_config() : '',
+            ]
+          );
+
+          wp_register_script(
             'jquery-event-move',
             TMPCODER_PLUGIN_URI . 'assets/js/lib/jquery-event-move/jquery.event.move'. tmpcoder_script_suffix() .'.js',
             [],
@@ -504,6 +579,31 @@ if ( !class_exists('TemplatesWidgetRegister') ){
               );
             }
 
+            /* Woo Grid Classic Widget - start */
+
+            wp_register_style( 
+              'tmpcoder-woo-product-grid-classic', 
+              TMPCODER_PLUGIN_URI.'assets/css/woo-grid-classic/woo-product-grid-classic'.tmpcoder_script_suffix().'.css', 
+              [], 
+              tmpcoder_get_plugin_version()
+            );
+
+            wp_register_style( 
+              'tmpcoder-load-more-products', 
+              TMPCODER_PLUGIN_URI.'assets/css/woo-grid-classic/load-more'.tmpcoder_script_suffix().'.css', 
+              [], 
+              tmpcoder_get_plugin_version() 
+            );
+
+            wp_register_style( 
+              'tmpcoder-quick-view', 
+              TMPCODER_PLUGIN_URI.'assets/css/woo-grid-classic/quick-view'.tmpcoder_script_suffix().'.css', 
+              [], 
+              tmpcoder_get_plugin_version() 
+            );            
+
+            /* Woo Grid Classic Widget - end */
+
             /* Enqueue the widgets style & script start */
 
             wp_register_style( 
@@ -595,11 +695,9 @@ if ( !class_exists('TemplatesWidgetRegister') ){
             if ( \Elementor\Plugin::$instance->preview->is_preview_mode() ) {
 
               wp_enqueue_style('tmpcoder-prebuild-style', TMPCODER_PLUGIN_URI . 'assets/css/admin/prebuild-style'.tmpcoder_script_suffix().'.css', array(), tmpcoder_get_plugin_version(), false  );
-
             }
 
             wp_enqueue_style('tmpcoder-frontend-style', TMPCODER_PLUGIN_URI . 'assets/css/frontend'.tmpcoder_script_suffix().'.css', array(), tmpcoder_get_plugin_version(), false  );
-            
         }
 
         public function tmpcoder_enqueue_frontend_scripts(){
@@ -644,6 +742,7 @@ if ( !class_exists('TemplatesWidgetRegister') ){
 
             require TMPCODER_PLUGIN_DIR.'inc/controls/tmpcoder-ajax-select2/tmpcoder-control-ajax-select2.php';
             require_once (TMPCODER_PLUGIN_DIR . 'inc/controls/tmpcoder-ajax-select2/tmpcoder-control-icons.php');
+            require TMPCODER_PLUGIN_DIR.'inc/controls/choose.php';
 
             // Register Custom Controls
             $controls_manager = \Elementor\Plugin::$instance->controls_manager;
@@ -652,6 +751,7 @@ if ( !class_exists('TemplatesWidgetRegister') ){
             $controls_manager->register( new TMPCODER_Control_Animations_Alt() );
             $controls_manager->register( new TMPCODER_Control_Button_Animations() );
             $controls_manager->register( new TMPCODER_Control_Arrow_Icons() );
+            $controls_manager->register( new TMPCODER_Choose() );
         } 
 
         public function tmpcoder_promote_premium_widgets($config){
@@ -747,7 +847,56 @@ if ( !class_exists('TemplatesWidgetRegister') ){
 
             return $config;
         }
-    }
+
+        public function register_hooks(){
+
+          if( class_exists( 'woocommerce' ) ) {
+              // quick view
+              add_action( 'tmpcoder_woo_single_product_image', 'woocommerce_show_product_images', 20 );
+              add_action( 'tmpcoder_woo_single_product_summary', 'woocommerce_template_single_title', 5 );
+              add_action( 'tmpcoder_woo_single_product_summary', 'woocommerce_template_single_rating', 10 );
+              add_action( 'tmpcoder_woo_single_product_summary', 'woocommerce_template_single_price', 15 );
+              add_action( 'tmpcoder_woo_single_product_summary', 'woocommerce_template_single_excerpt', 20 );
+              add_action( 'tmpcoder_woo_single_product_summary', 'woocommerce_template_single_add_to_cart', 25 );
+              add_action( 'tmpcoder_woo_single_product_summary', 'woocommerce_template_single_meta', 30 );
+
+              add_action( 'tmpcoder_woo_before_product_loop', function ( $layout ) {
+                if ( $layout === 'tmpcoder-product-default' ) {
+                  return;
+                }
+
+                remove_action( 'woocommerce_before_shop_loop_item', 'woocommerce_template_loop_product_link_open' );
+                remove_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_product_link_close' );
+                remove_action( 'woocommerce_after_shop_loop_item', 'astra_woo_woocommerce_shop_product_content' );
+                remove_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart' );
+              } );
+
+              add_action( 'tmpcoder_woo_after_product_loop', function ( $layout ) {
+
+                if ( $layout === 'tmpcoder-product-default' ) {
+                  return;
+                }
+
+                add_action( 'woocommerce_before_shop_loop_item', 'woocommerce_template_loop_product_link_open' );
+                add_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_product_link_close' );
+                    //Get current active theme
+                    $theme = wp_get_theme();
+                    //Astra Theme
+
+                    if( function_exists( 'astra_woo_woocommerce_shop_product_content' ) ){
+                        add_action( 'woocommerce_after_shop_loop_item', 'astra_woo_woocommerce_shop_product_content' );
+                    } else {
+                        add_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart' );
+                    }
+                    //Theme Support
+                    $theme_to_check = ['OceanWP', 'Blocksy', 'Travel Ocean'];
+                    if( in_array( $theme->name, $theme_to_check, true ) ) {
+                        remove_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart' );
+                    }
+              });
+            }
+          }
+        }
 
     // Instantiate Plugin Class
     TemplatesWidgetRegister::instance();
