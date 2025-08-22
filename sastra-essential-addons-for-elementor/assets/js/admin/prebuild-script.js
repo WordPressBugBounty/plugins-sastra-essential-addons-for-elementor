@@ -465,7 +465,7 @@
 					proRefferal = '-pro';
 					previewIframe.find('.tmpcoder-tplib-header').find('.tmpcoder-tplib-insert-template').addClass('tmpcoder-tplib-insert-woo');
 				}
-
+				
 				previewIframe.find('.tmpcoder-tplib-header').find('.tmpcoder-tplib-insert-template').attr('data-filter', module).attr('data-slug', template).attr('data-kit', kitID);
 
 				previewIframe.find('.tmpcoder-tplib-header').find('.tmpcoder-tplib-insert-template').html($(this).parent().find('.tmpcoder-tplib-insert-template').html());
@@ -521,6 +521,7 @@
 						adminUrl = href.substring(0, href.indexOf('/wp-admin')+9);
 
 					var url = 'https://spexoaddons.com/?ref=rea-plugin-library-'+ module +'-upgrade-pro#purchasepro';
+
 					url = TmpcodersanitizeURL(url); 
 					window.open(url, '_blank');
 					return;

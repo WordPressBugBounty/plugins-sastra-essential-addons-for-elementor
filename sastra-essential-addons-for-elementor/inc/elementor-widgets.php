@@ -399,6 +399,14 @@ if ( !class_exists('TemplatesWidgetRegister') ){
           );
 
           wp_register_script(
+            'tmpcoder-woo-grid-classic-wishlist',
+            TMPCODER_PLUGIN_URI . 'assets/js/woo-grid-classic/wishlist'. tmpcoder_script_suffix() .'.js',
+            ['tmpcoder-woo-grid-general'],
+            tmpcoder_get_plugin_version(),
+            true
+          );
+
+          wp_register_script(
             'tmpcoder-woo-grid-classic',
             TMPCODER_PLUGIN_URI . 'assets/js/woo-grid-classic/woo-grid-classic'. tmpcoder_script_suffix() .'.js',
             ['tmpcoder-woo-grid-general'],

@@ -1,7 +1,8 @@
 (function ($) {
     "use strict";
-
+    
     const widgetGrid = function ($scope, $) {
+
         var iGrid = $scope.find('.tmpcoder-grid');
         var loadedItems;
 
@@ -1256,10 +1257,12 @@
             setTimeout(function () {
                 let lazyLoadObserver = new IntersectionObserver((entries, observer) => {
                     entries.forEach(entry => {
-                        if (entry.isIntersecting && entry.target.src.includes('icon-256x256')) {
+                        // if (entry.isIntersecting && entry.target.src.includes('icon-256x256')) {
+                        if (entry.isIntersecting) {
                             setTimeout(function () {
                                 entry.target.src = entry.target.parentElement.dataset.src;
-                                entry.target.classList.toggle('tmpcoder-hidden-image');
+                                // entry.target.classList.toggle('tmpcoder-hidden-image');
+                                entry.target.classList.remove('tmpcoder-hidden-image');
                                 $(window).trigger('resize');
                             }, 100);
                         }
@@ -1451,7 +1454,6 @@
             var wishlistArray;
 
             if (iGrid.find('.tmpcoder-wishlist-add').length) {
-
                 $.ajax({
                     url: tmpcoder_plugin_script.ajax_url,
                     type: 'POST',
@@ -1467,7 +1469,6 @@
 
                 iGrid.find('.tmpcoder-wishlist-add').each(function () {
                     var wishlistBtn = $(this);
-
                     if ($.inArray(wishlistBtn.data('product-id'), wishlistArray) !== -1) {
                         if (!wishlistBtn.hasClass('tmpcoder-button-hidden')) {
                             wishlistBtn.addClass('tmpcoder-button-hidden');

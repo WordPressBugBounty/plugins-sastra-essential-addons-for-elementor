@@ -7,7 +7,92 @@
 
         // $( document.body ).trigger( 'wc_fragment_refresh' );
 
-        var animationSpeed = $scope.find('.tmpcoder-mini-cart-wrap').data('animation');
+        var animationSpeed = $scope.find('.tmpcoder-mini-cart-wrap').length != 0 ? $scope.find('.tmpcoder-mini-cart-wrap').data('animation') : 600;
+
+        /* Update QTY Code in Mini cart Sidebar -  start */
+
+        $('body').on('click', '.mini-cart-plus, .mini-cart-minus', function(e){
+            e.preventDefault();
+            var $input = $(this).siblings('.mini-cart-qty-input');
+            var qty = parseInt($input.val());
+            var key = $(this).data('key');
+            const $btn = $(this);
+            const $wrap = $btn.closest('.mini-cart-qty-wrap');
+            const $loader = $wrap.find('.mini-cart-loader');
+
+            if ($(this).hasClass('mini-cart-plus')) {
+                qty++;
+            } else {
+                qty = qty > 1 ? qty - 1 : 1;
+            }
+
+            $input.val(qty);
+            $loader.show();
+
+            $.post(tmpcoder_plugin_script.ajax_url, {
+                action: 'tmpcoder_mini_cart_qty',
+                key: key,
+                qty: qty
+            }, function(responce){
+                $loader.hide();
+                jQuery(document.body).trigger('wc_fragment_refresh');
+                jQuery('.woocommerce-Price-amount').html(responce.data.cart_subtotal);
+                jQuery('.tmpcoder-mini-cart-icon-count span').text(responce.data.cart_count);
+
+            });
+        });
+
+        jQuery(document.body).on('wc_fragments_loaded wc_fragments_refreshed', function () {
+            jQuery('.widget_shopping_cart_content .woocommerce-mini-cart-item').each(function () {
+                const $item = jQuery(this);
+                const cart_item_key = $item.data('cart_item_key');
+
+                // Replace quantity block with custom markup
+                const quantityText = $item.find('.quantity').text().trim();
+                const quantity = parseInt(quantityText.split('×')[0].trim());
+
+                console.log(quantity);
+                console.log($item);
+
+                const customQtyHTML = `
+                    <div class="mini-cart-quantity mini-cart-qty-wrap">
+                        <button class="mini-cart-minus" data-key="${cart_item_key}">-</button>
+                        <input type="number" class="mini-cart-qty-input" value="${quantity}" data-key="${cart_item_key}" min="1">
+                        <button class="mini-cart-plus" data-key="${cart_item_key}">+</button>
+                        <span class="mini-cart-loader" style="display:none;"></span>
+                    </div>
+                `;
+
+                $item.find('.quantity').replaceWith(customQtyHTML);
+            });
+        });
+
+        $('body').on('change', '.mini-cart-qty-input', function(){
+            var $input = $(this);
+            var qty = parseInt($input.val());
+            var key = $input.data('key');
+            const $btn = $(this);
+            const $wrap = $btn.closest('.mini-cart-qty-wrap');
+            const $loader = $wrap.find('.mini-cart-loader');
+
+            if (qty < 1) qty = 1;
+
+            $loader.show();
+
+            $.post(tmpcoder_plugin_script.ajax_url, {
+                action: 'tmpcoder_mini_cart_qty',
+                key: key,
+                qty: qty
+            }, function(responce){
+                $loader.hide();
+                jQuery(document.body).trigger('wc_fragment_refresh');
+                jQuery('.woocommerce-Price-amount').html(responce.data.cart_subtotal);
+                jQuery('.tmpcoder-mini-cart-icon-count span').text(responce.data.cart_count);
+
+            });
+        });
+
+        /* Update QTY Code in Mini cart Sidebar -  end */
 
         $('body').on('click', function (e) {
             if (!e.target.classList.value.includes('tmpcoder-mini-cart') && !e.target.closest('.tmpcoder-mini-cart')) {

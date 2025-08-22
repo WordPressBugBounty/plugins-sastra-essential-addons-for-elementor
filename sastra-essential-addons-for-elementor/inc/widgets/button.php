@@ -512,33 +512,12 @@ class TMPCODER_Button extends Widget_Base {
 				'types' => [ 'classic', 'gradient' ],
 				'fields_options' => [
                     'color' => [
-						'default' => '#FFFFFF',
+						'default' => '#FFFFF',
 					],
 				],
 				'selector' => '	{{WRAPPER}} [class*="elementor-animation"]:hover,
 								{{WRAPPER}} .tmpcoder-button::before,
-								{{WRAPPER}} .tmpcoder-button::after,
-								{{WRAPPER}} .tmpcoder-button:hover,
-								{{WRAPPER}} .tmpcoder-button
-									:not(.tmpcoder-button-aylen)
-									:not(.tmpcoder-button-rayen-left)
-									:not(.tmpcoder-button-rayen-right)
-									:not(.tmpcoder-button-wayra-left)
-									:not(.tmpcoder-button-wayra-right)
-									:not(.tmpcoder-button-isi-left)
-									:not(.tmpcoder-button-isi-right)
-									:not(.tmpcoder-button-sweep-to-right)
-									:not(.tmpcoder-button-sweep-to-left)
-									:not(.tmpcoder-button-sweep-to-bottom)
-									:not(.tmpcoder-button-sweep-to-top)
-									:not(.tmpcoder-button-bounce-to-right)
-									:not(.tmpcoder-button-bounce-to-left)
-									:not(.tmpcoder-button-bounce-to-bottom)
-									:not(.tmpcoder-button-bounce-to-top)
-									:not(.tmpcoder-button-radial-out)
-									:not(.tmpcoder-button-rectangle-out)
-									:not(.tmpcoder-button-sweep-to-top):hover
-							',
+								{{WRAPPER}} .tmpcoder-button::after',
 			]
 		);
 

@@ -1350,7 +1350,6 @@ class TMPCODER_Target_Rules_Fields {
 		$option['current_post_id'] = self::$current_page_data['ID'];
 		$meta_header               = self::get_meta_option_post( $post_type, $option );
 
-        
 
 		/* Meta option is enabled */
 		if ( false === $meta_header ) {
@@ -1359,6 +1358,11 @@ class TMPCODER_Target_Rules_Fields {
             $q_obj             = get_queried_object();            
 
 			$location = isset( $option['location'] ) ? esc_sql( $option['location'] ) : '';
+
+			if (!$current_post_type) {
+
+				$current_post_type = $this->tmpcoder_get_current_archive_post_type();
+			}
 
 			$query = $wpdb->prepare("SELECT p.ID, pm.meta_value FROM {$wpdb->postmeta} as pm
             INNER JOIN {$wpdb->posts} as p ON pm.post_id = p.ID
@@ -1400,6 +1404,7 @@ class TMPCODER_Target_Rules_Fields {
 						if ( is_object( $q_obj ) ) {
 							$meta_args .= $wpdb->prepare(" OR pm.meta_value LIKE %s ","%\"{$current_post_type}|all|taxarchive|{$q_obj->taxonomy}\"%");
 							$meta_args .= $wpdb->prepare(" OR pm.meta_value LIKE %s ","%\"tax-{$q_obj->term_id}\"%");
+							
 						}
 					} elseif ( 'is_date' == $current_page_type ) {
 						$meta_args .= " OR pm.meta_value LIKE '%\"special-date\"%'";
@@ -1444,6 +1449,8 @@ class TMPCODER_Target_Rules_Fields {
 			// Ignore the PHPCS warning about constant declaration.
 			// @codingStandardsIgnoreStart
 			$posts  = $wpdb->get_results( $wpdb->prepare($query . ' AND (' . $meta_args . ')' . $orderby) );
+
+			$prepared_query = $wpdb->prepare($query . ' AND (' . $meta_args . ')' . $orderby);
             // @codingStandardsIgnoreEnd
 
             foreach ( $posts as $local_post ) {
@@ -1460,6 +1467,41 @@ class TMPCODER_Target_Rules_Fields {
 		}
 
 		return apply_filters( 'tmpcoder_get_display_posts_by_conditions', self::$current_page_data[ $post_type ], $post_type );
+	}
+
+	function tmpcoder_get_current_archive_post_type() {
+	    global $wp_taxonomies;
+
+	    // 1. Post Type Archive (e.g., /books/)
+	    if ( is_post_type_archive() ) {
+	        return get_post_type(); // or get_query_var('post_type')
+	    }
+
+	    // 2. Taxonomy Archive (category, tag, custom tax)
+	    if ( is_tax() || is_category() || is_tag() ) {
+	        $term = get_queried_object();
+
+	        if ( isset( $term->taxonomy ) && isset( $wp_taxonomies[ $term->taxonomy ] ) ) {
+	            $object_types = $wp_taxonomies[ $term->taxonomy ]->object_type;
+
+	            // If taxonomy is registered to multiple post types, return array or first one
+	            return is_array($object_types) ? $object_types[0] : $object_types;
+	        }
+	    }
+
+	    // 3. Try from query var fallback
+	    $q_post_type = get_query_var('post_type');
+	    if ( $q_post_type ) {
+	        return is_array($q_post_type) ? $q_post_type[0] : $q_post_type;
+	    }
+
+	    // 4. If inside loop with post loaded (not useful for empty archives)
+	    global $post;
+	    if ( isset( $post->post_type ) ) {
+	        return $post->post_type;
+	    }
+
+	    return null; // fallback
 	}
 
 	/**

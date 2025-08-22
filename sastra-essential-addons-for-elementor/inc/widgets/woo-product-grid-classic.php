@@ -119,6 +119,8 @@ class Product_Grid extends Widget_Base
             'tmpcoder-load-more-products',
             'tmpcoder-woo-grid-classic',
             'tmpcoder-quick-view',
+            'tmpcoder-woo-grid-classic-wishlist',
+            // 'tmpcoder-grid-widgets',
         ];
     }
 
@@ -200,6 +202,7 @@ class Product_Grid extends Widget_Base
         $this->init_style_product_controls();
         $this->init_style_color_typography_controls();
         $this->init_style_addtocart_controls();
+        $this->tmpcoder_init_style_addtowishlist_controls();        
         $this->sale_badge_style();
         $this->tmpcoder_product_action_buttons();
         $this->tmpcoder_product_action_buttons_style();
@@ -369,7 +372,7 @@ class Product_Grid extends Widget_Base
                 ],
 			]
 		);
-
+        
         $this->add_responsive_control(
             'tmpcoder_product_grid_column',
             [
@@ -714,6 +717,21 @@ class Product_Grid extends Widget_Base
             ]
         );
 
+        $this->add_control(
+            'allow_customizer_settings',
+            [
+                'label'        => esc_html__( 'Allow Customozer Settings', 'sastra-essential-addons-for-elementor' ),
+                'type'         => Controls_Manager::SWITCHER,
+                'label_on'     => esc_html__( 'Show', 'sastra-essential-addons-for-elementor' ),
+                'label_off'    => esc_html__( 'Hide', 'sastra-essential-addons-for-elementor' ),
+                'return_value' => 'yes',
+                'default'      => 'no',
+                'condition'   => [
+                  'post_type' => 'source_archive',
+                ],
+            ]
+        );
+
         $wc_settings_url = admin_url( 'admin.php?page=wc-settings&tab=products&section=inventory' );
         $this->add_control(
 			'tmpcoder_product_show_stockout',
@@ -1028,10 +1046,43 @@ class Product_Grid extends Widget_Base
             [
                 'name' => 'tmpcoder_product_grid_image_size',
                 'exclude' => ['custom'],
-                'default' => 'medium',
+                'default' => 'full',
                 'label_block' => true,
             ]
         );
+
+        if ( tmpcoder_is_availble() ) {
+            if ( tmpcoder_get_settings('tmpcoder_meta_secondary_image_product')  ===  'on' ) {
+                $this->add_control(
+                    'secondary_img_on_hover',
+                    [
+                        'label' => esc_html__( 'Secondary Img on Hover', 'sastra-essential-addons-for-elementor' ),
+                        'type' => Controls_Manager::SWITCHER,
+                        'render_type' => 'template',
+                    ]
+                );
+            } else {
+                $this->add_control(
+                    'secondary_img_on_hover',
+                    [
+                        'type' => Controls_Manager::RAW_HTML,
+                        // Translators: %s is the url.
+                        'raw' => sprintf( __( '<strong>Note:</strong> Navigate to <a href="%s" target="_blank">Spexo Addons > Settings</a><br> to enable the <strong>Secondary Image on Hover</strong> feature.', 'sastra-essential-addons-for-elementor' ), admin_url( 'admin.php?page=spexo-welcome&tab=settings' )),
+                        'content_classes' => 'elementor-panel-alert elementor-panel-alert-info',
+                    ]
+                );
+            }
+        } else {
+            $this->add_control(
+                'secondary_img_on_hover',
+                [
+                    // Translators: %s is the icon.
+                    'label' => sprintf( __( '2nd Image on Hover %s', 'sastra-essential-addons-for-elementor' ), '<i class="eicon-pro-icon"></i>' ),
+                    'type' => Controls_Manager::SWITCHER,
+                    'classes' => 'tmpcoder-pro-control no-distance'
+                ]
+		    );
+        }
 
         $this->add_control('show_compare', [
             'label'     => esc_html__('Product Compare?', 'sastra-essential-addons-for-elementor'),
@@ -1053,7 +1104,7 @@ class Product_Grid extends Widget_Base
 		    ]
 	    );
 
-	    if ( function_exists( 'YITH_WCWL' ) ) {
+	    if ( tmpcoder_is_availble() ) {
 		    $this->add_control(
 			    'tmpcoder_product_grid_wishlist',
 			    [
@@ -1063,9 +1114,73 @@ class Product_Grid extends Widget_Base
                     'label_off'    => esc_html__( 'Hide', 'sastra-essential-addons-for-elementor' ),
 				    'return_value' => 'yes',
 				    'default'      => 'no',
+                    'separator' => 'before',
 			    ]
 		    );
-	    }
+	    } else {
+            $this->add_control(
+                'tmpcoder_product_grid_wishlist',
+                [
+                    // Translators: %s is the icon.
+                    'label' => sprintf( __( 'Wishlist? %s', 'sastra-essential-addons-for-elementor' ), '<i class="eicon-pro-icon"></i>' ),
+                    'type' => Controls_Manager::SWITCHER,
+                    'classes' => 'tmpcoder-pro-control no-distance',
+                    'separator' => 'before',
+                ]
+		    );
+        }
+
+
+        $this->add_control(
+            'show_icon',
+			[
+				'label' => esc_html__( 'Show Icon', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::SWITCHER,
+				'default' => 'yes',
+				'return_value' => 'yes',
+				// 'separator' => 'before',
+				'condition'    => [
+                    'tmpcoder_product_grid_wishlist' => 'yes',
+                ],
+			]   
+        );
+
+        $this->add_control(
+            'show_text',
+			[
+				'label' => esc_html__( 'Show Text', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::SWITCHER,
+				'return_value' => 'yes',
+                'condition'    => [
+                    'tmpcoder_product_grid_wishlist' => 'yes',
+                ],
+			]   
+        );
+
+        $this->add_control(
+			'add_to_wishlist_text',
+			[
+				'label' => esc_html__( 'Add Text', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::TEXT,
+				'default' => 'Add to Wishlist',
+				'condition' => [
+                    'tmpcoder_product_grid_wishlist' => 'yes',
+                    // 'show_text' => 'yes',    
+                ],
+			]
+		);
+
+        $this->add_control(
+			'remove_from_wishlist_text',
+			[
+				'label' => esc_html__( 'Remove Text', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::TEXT,
+				'default' => 'Remove from Wishlist',
+				'condition' => [
+					'tmpcoder_product_grid_wishlist' => 'yes',
+				]
+			]
+		);
 
         $this->end_controls_section();
     }
@@ -2461,6 +2576,330 @@ class Product_Grid extends Widget_Base
         $this->end_controls_tabs();
 
         $this->end_controls_section();
+    }
+
+    protected function tmpcoder_init_style_addtowishlist_controls()
+    {
+		$this->start_controls_section(
+			'section_wishlist_button_styles',
+			[
+				'label' => esc_html__( 'Add to Wishlist', 'sastra-essential-addons-for-elementor' ),
+				'tab' => Controls_Manager::TAB_STYLE,
+                'condition' => [
+                    'tmpcoder_product_grid_wishlist' => 'yes',
+                ],
+			]
+		);
+
+		$this->start_controls_tabs( 'tabs_btn_styles' );
+
+		$this->start_controls_tab(
+			'tab_btn_normal',
+			[
+				'label' => esc_html__( 'Normal', 'sastra-essential-addons-for-elementor' ),
+			]
+		);
+
+		$this->add_control(
+			'wishlist_btn_color',
+			[
+				'label'  => esc_html__( 'Color', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::COLOR,
+				'default' => '#333333',
+				'selectors' => [
+					'{{WRAPPER}} .tmpcoder-wishlist-add span' => 'color: {{VALUE}}',
+					'{{WRAPPER}} .tmpcoder-wishlist-add i' => 'color: {{VALUE}}',
+					'{{WRAPPER}} .tmpcoder-wishlist-add svg' => 'fill: {{VALUE}}'
+				]
+			]
+		);
+
+		$this->add_control(
+			'btn_border_color',
+			[
+				'label'  => esc_html__( 'Border Color', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::COLOR,
+				'default' => '#E8E8E8',
+				'selectors' => [
+					'{{WRAPPER}} .tmpcoder-wishlist-add' => 'border-color: {{VALUE}}'
+				]
+			]
+		);
+
+		$this->add_control(
+			'wishlist_btn_bg_color',
+			[
+				'label'  => esc_html__( 'Background Color', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::COLOR,
+				'default' => '#FFF',
+				'selectors' => [
+					'{{WRAPPER}} .tmpcoder-wishlist-add' => 'background-color: {{VALUE}}'
+				]
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Box_Shadow::get_type(),
+			[
+				'name' => 'btn_box_shadow',
+				'selector' => '{{WRAPPER}} .tmpcoder-wishlist-add, {{WRAPPER}} .tmpcoder-wishlist-remove',
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			[
+				'name'     => 'btn_typography',
+				'selector' => '{{WRAPPER}} .tmpcoder-wishlist-add span, {{WRAPPER}} .tmpcoder-wishlist-add i, .tmpcoder-wishlist-remove span, {{WRAPPER}} .tmpcoder-wishlist-remove i',
+				'fields_options' => [
+					'typography' => [
+						'default' => 'custom',
+					],
+					'font_size' => [
+						'default' => [
+							'size' => '16',
+							'unit' => 'px',
+						],
+					],
+				]
+			]
+		);
+
+		$this->add_control(
+			'btn_transition_duration',
+			[
+				'label' => esc_html__( 'Transition Duration', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::NUMBER,
+				'default' => 0.5,
+				'min' => 0,
+				'max' => 5,
+				'step' => 0.1,
+				'selectors' => [
+					'{{WRAPPER}} .tmpcoder-wishlist-add' => 'transition-duration: {{VALUE}}s',
+					'{{WRAPPER}} .tmpcoder-wishlist-add span' => 'transition-duration: {{VALUE}}s',
+					'{{WRAPPER}} .tmpcoder-wishlist-add i' => 'transition-duration: {{VALUE}}s',
+					'{{WRAPPER}} .tmpcoder-wishlist-remove' => 'transition-duration: {{VALUE}}s',
+					'{{WRAPPER}} .tmpcoder-wishlist-remove span' => 'transition-duration: {{VALUE}}s',
+					'{{WRAPPER}} .tmpcoder-wishlist-remove i' => 'transition-duration: {{VALUE}}s'
+				],
+			]
+		);
+
+		$this->end_controls_tab();
+
+		$this->start_controls_tab(
+			'tab_btn_hover',
+			[
+				'label' => esc_html__( 'Hover', 'sastra-essential-addons-for-elementor' ),
+			]
+		);
+
+		$this->add_control(
+			'btn_hover_color',
+			[
+				'label'  => esc_html__( 'Color', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::COLOR,
+				'default' => '#FF4400',
+				'selectors' => [
+					'{{WRAPPER}} .tmpcoder-wishlist-add:hover i' => 'color: {{VALUE}}',
+					'{{WRAPPER}} .tmpcoder-wishlist-add:hover svg' => 'fill: {{VALUE}}',
+					'{{WRAPPER}} .tmpcoder-wishlist-add:hover span' => 'color: {{VALUE}}'
+				]
+			]
+		);
+
+		$this->add_control(
+			'btn_hover_border_color',
+			[
+				'label'  => esc_html__( 'Border Color', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::COLOR,
+				'default' => '#FF4400',
+				'selectors' => [
+					'{{WRAPPER}} .tmpcoder-wishlist-add:hover' => 'border-color: {{VALUE}}'
+				]
+			]
+		);
+
+		$this->add_control(
+			'btn_hover_bg_color',
+			[
+				'label'  => esc_html__( 'Background Color', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::COLOR,
+				'default' => '#FFF',
+				'selectors' => [
+					'{{WRAPPER}} .tmpcoder-wishlist-add:hover' => 'background-color: {{VALUE}}'
+				]
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Box_Shadow::get_type(),
+			[
+				'name' => 'btn_box_shadow_hr',
+				'selector' => '{{WRAPPER}} .tmpcoder-wishlist-add:hover, WRAPPER}} .tmpcoder-wishlist-remove:hover',
+			]
+		);
+
+		$this->end_controls_tab();
+
+		$this->start_controls_tab(
+			'tab_remove_btn',
+			[
+				'label' => esc_html__( 'Remove', 'sastra-essential-addons-for-elementor' ),
+			]
+		);
+
+		$this->add_control(
+			'remove_btn_text_color',
+			[
+				'label'  => esc_html__( 'Color', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::COLOR,
+				'default' => '#FF4400',
+				'selectors' => [
+					'{{WRAPPER}} .tmpcoder-wishlist-remove span' => 'color: {{VALUE}}',
+					'{{WRAPPER}} .tmpcoder-wishlist-remove i' => 'color: {{VALUE}}',
+					'{{WRAPPER}} .tmpcoder-wishlist-remove svg' => 'fill: {{VALUE}}',
+					'{{WRAPPER}} .tmpcoder-wishlist-remove:hover span' => 'color: {{VALUE}}',
+					'{{WRAPPER}} .tmpcoder-wishlist-remove:hover i' => 'color: {{VALUE}}',
+					'{{WRAPPER}} .tmpcoder-wishlist-remove:hover svg' => 'fill: {{VALUE}}'
+				]
+			]
+		);
+
+		$this->add_control(
+			'remove_btn_border_color',
+			[
+				'label'  => esc_html__( 'Border Color', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::COLOR,
+				'default' => '#FF4F40',
+				'selectors' => [
+					'{{WRAPPER}} .tmpcoder-wishlist-remove' => 'border-color: {{VALUE}}',
+					'{{WRAPPER}} .tmpcoder-wishlist-remove:hover' => 'border-color: {{VALUE}}'
+				]
+			]
+		);
+
+		$this->add_control(
+			'remove_btn_bg_color',
+			[
+				'label'  => esc_html__( 'Background Color', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::COLOR,
+				'default' => '#FFF',
+				'selectors' => [
+					'{{WRAPPER}} .tmpcoder-wishlist-remove' => 'background-color: {{VALUE}}',
+					'{{WRAPPER}} .tmpcoder-wishlist-remove:hover' => 'background-color: {{VALUE}}'
+				]
+			]
+		);
+
+		$this->end_controls_tab();
+
+		$this->end_controls_tabs();
+
+		$this->add_responsive_control(
+			'button_padding',
+			[
+				'label' => esc_html__( 'Padding', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::DIMENSIONS,
+				'size_units' => [ 'px' ],
+				'default' => [
+					'top' => 5,
+					'right' => 15,
+					'bottom' => 5,
+					'left' => 15,
+				],
+				'selectors' => [
+					'{{WRAPPER}} .tmpcoder-wishlist-add' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .tmpcoder-wishlist-remove' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};'
+				],
+				'separator' => 'before',
+			]
+		);
+
+		$this->add_responsive_control(
+			'button_margin',
+			[
+				'label' => esc_html__( 'Margin', 'sastra-essential-addons-for-elementor' ), 
+				'type' => Controls_Manager::DIMENSIONS,
+				'size_units' => [ 'px' ],
+				'default' => [
+					'top' => 5,
+					'right' => 0,
+					'bottom' => 0,
+					'left' => 0,
+				],
+				'selectors' => [
+					// '{{WRAPPER}} .tmpcoder-wishlist-add' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					// '{{WRAPPER}} .tmpcoder-wishlist-remove' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .tmpcoder-grid-item-wishlist-button .inner-block' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				]
+			]
+		);
+
+		$this->add_control(
+			'button_border_type',
+			[
+				'label' => esc_html__( 'Border Type', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::SELECT,
+				'options' => [
+					'none' => esc_html__( 'None', 'sastra-essential-addons-for-elementor' ),
+					'solid' => esc_html__( 'Solid', 'sastra-essential-addons-for-elementor' ),
+					'double' => esc_html__( 'Double', 'sastra-essential-addons-for-elementor' ),
+					'dotted' => esc_html__( 'Dotted', 'sastra-essential-addons-for-elementor' ),
+					'dashed' => esc_html__( 'Dashed', 'sastra-essential-addons-for-elementor' ),
+					'groove' => esc_html__( 'Groove', 'sastra-essential-addons-for-elementor' ),
+				],
+				'default' => 'none',
+				'selectors' => [
+					'{{WRAPPER}} .tmpcoder-wishlist-add' => 'border-style: {{VALUE}};',
+					'{{WRAPPER}} .tmpcoder-wishlist-remove' => 'border-style: {{VALUE}};'
+				],
+				'separator' => 'before',
+			]
+		);
+
+		$this->add_responsive_control(
+			'button_border_width',
+			[
+				'label' => esc_html__( 'Border Width', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::DIMENSIONS,
+				'size_units' => [ 'px', '%' ],
+				'default' => [
+					'top' => 2,
+					'right' => 2,
+					'bottom' => 2,
+					'left' => 2,
+				],
+				'selectors' => [
+					'{{WRAPPER}} .tmpcoder-wishlist-add' => 'border-width: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .tmpcoder-wishlist-remove' => 'border-width: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+				'condition' => [
+					'button_border_type!' => 'none',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'button_border_radius',
+			[
+				'label' => esc_html__( 'Border Radius', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::DIMENSIONS,
+				'size_units' => [ 'px', '%' ],
+				'default' => [
+					'top' => 1,
+					'right' => 1,
+					'bottom' => 1,
+					'left' => 1,
+				],
+				'selectors' => [
+					'{{WRAPPER}} .tmpcoder-wishlist-add' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .tmpcoder-wishlist-remove' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				]
+			]
+		);
+
+		$this->end_controls_section();
     }
 
     protected function tmpcoder_product_badges()
@@ -3967,16 +4406,24 @@ class Product_Grid extends Widget_Base
                 $found_posts                    = 0;
                 $post_offset                    = isset( $settings['product_offset'] ) ? absint( $settings['product_offset'] ) : 0;
 
+                $display_setting = get_option( 'woocommerce_category_archive_display' );
+
                 if ( file_exists( $template ) ) {
 	                $settings['tmpcoder_page_id'] = $this->page_id ? $this->page_id : get_the_ID();
 
                     if( $settings['post_type'] === 'source_archive' && ( ( is_archive() && $is_product_archive ) || is_search() ) ){
                         global $wp_query;
                         $query = $wp_query;
-                        $args  = $wp_query->query_vars;
+                        $args = $wp_query->query_vars;
+
+                        // $args['tax_query'] = $this->get_tax_query_args();
+                        // $query = new \WP_Query( $args );
+
                     } else {
 	                    $query = new \WP_Query( $args );
                     }
+
+                    $allow_customizer_settings = isset($settings['allow_customizer_settings']) && $settings['allow_customizer_settings'] == 'yes' ? true : false;
 
 
 	                if ( $query->have_posts() && ! $no_products_found ) {
@@ -3985,20 +4432,40 @@ class Product_Grid extends Widget_Base
 		                $max_page           = ceil( $found_posts / absint( $args['posts_per_page'] ) );
 		                $args['max_page']   = $max_page;
 		                $args['total_post'] = $found_posts;
+                        if ( ($display_setting === 'subcategories' || $display_setting === 'both') && $allow_customizer_settings == true ) {
 
-		                printf( '<ul class="products" data-layout-mode="%s">', esc_attr( $settings["tmpcoder_product_grid_layout"] ) );
+                            woocommerce_product_loop_start();
 
-                            while ( $query->have_posts() ) {
-                                $query->the_post();
-                                include( realpath( $template ) );
+                            if ( wc_get_loop_prop( 'total' ) ) {
+                                while ( have_posts() ) {
+                                    the_post();
+                                    
+                                    do_action( 'woocommerce_shop_loop' );
+
+                                    wc_get_template_part( 'content', 'product' );
+                                }
                             }
-                            wp_reset_postdata();
 
-		                echo '</ul>';
-                        do_action( 'tmpcoder_woo_after_product_loop' );
+                            woocommerce_product_loop_end();
+                        }
+                        else
+                        {
+    		                printf( '<ul class="products" data-layout-mode="%s">', esc_attr( $settings["tmpcoder_product_grid_layout"] ) );
 
-	                } else {
-                        echo '<p class="no-posts-found">' . esc_html__( 'No posts found!', 'sastra-essential-addons-for-elementor' ) . '</p>';
+                                while ( $query->have_posts() ) {
+                                    $query->the_post();
+                                    include( realpath( $template ) );
+                                }
+                                wp_reset_postdata();
+
+    		                echo '</ul>';
+
+                            do_action( 'tmpcoder_woo_after_product_loop' );
+
+                        }
+	                } 
+                    else {
+                        echo '<p class="no-posts-found">' . esc_html__( 'No posts found!', 'sastra-essential-addons-for-elementor' ) . '</p>';// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	                }
 
                 } else {
@@ -4014,8 +4481,31 @@ class Product_Grid extends Widget_Base
 
                 if( 'source_archive' === $settings['post_type'] ){
                     echo "<div class='tmpcoder-product-grid-pagination' >";
-                        woocommerce_pagination();
+                        // woocommerce_pagination();
+                        $total_pages = $query->max_num_pages;
+
+                        if ( $total_pages > 1 ) {
+                            $pagination = paginate_links([
+                                'total'     => $total_pages,
+                                'current'   => max(1, get_query_var('paged')),
+                                'format'    => '?paged=%#%',
+                                'type'      => 'array',
+                                'prev_text' => '←',
+                                'next_text' => '→',
+                            ]);
+
+                            if ( is_array( $pagination ) ) {
+                                echo '<nav class="woocommerce-pagination">';
+                                    echo '<ul class="page-numbers">';
+                                    foreach ( $pagination as $page ) {
+                                        echo '<li>' . $page . '</li>';// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                                    }
+                                    echo '</ul>';
+                                echo '</nav>';
+                            }
+                        }
                     echo "</div>";
+
                 }
 
                 if ( $found_posts > $args['posts_per_page'] && 'source_archive' !== $settings['post_type'] ) {
@@ -4068,15 +4558,16 @@ class Product_Grid extends Widget_Base
             'posts_per_page' => $settings['tmpcoder_product_grid_products_count'] ?: 4,
             'order' => (isset($settings['order']) ? $settings['order'] : 'desc'),
             'offset' => $settings['product_offset'],
-            'tax_query' => [
-                'relation' => 'AND',
-                [
-                    'taxonomy' => 'product_visibility',
-                    'field' => 'name',
-                    'terms' => ['exclude-from-search', 'exclude-from-catalog'],
-                    'operator' => 'NOT IN',
-                ],
-            ],
+            'tax_query' => $this->get_tax_query_args(),
+            // 'tax_query' => [
+            //     'relation' => 'AND',
+            //     [
+            //         'taxonomy' => 'product_visibility',
+            //         'field' => 'name',
+            //         'terms' => ['exclude-from-search', 'exclude-from-catalog'],
+            //         'operator' => 'NOT IN',
+            //     ],
+            // ],
         ];
 
         if ( is_singular() ) {
@@ -4200,6 +4691,115 @@ class Product_Grid extends Widget_Base
         return $args;
     }
 
+    // Taxonomy Query Args
+    public function get_tax_query_args() {
+        $tax_query = [];
+
+        // Filters Query
+        if ( isset($_GET['tmpcoderfilters']) ) {// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+            $selected_filters = WC()->query->get_layered_nav_chosen_attributes();
+
+            if ( !empty($selected_filters) ) {
+                foreach ( $selected_filters as $taxonomy => $data ) {
+                    array_push($tax_query, [
+                        'taxonomy' => $taxonomy,
+                        'field' => 'slug',
+                        'terms' => $data['terms'],
+                        'operator' => 'and' === $data['query_type'] ? 'AND' : 'IN',
+                        'include_children' => false,
+                    ]);
+                }
+            }
+
+            // Product Categories
+            if ( isset($_GET['filter_product_cat']) ) {// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+                array_push($tax_query, [
+                    'taxonomy' => 'product_cat',
+                    'field' => 'slug',
+                    'terms' => explode( ',', sanitize_text_field(wp_unslash($_GET['filter_product_cat'])) ),// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+                    'operator' => 'IN',
+                    'include_children' => true, // test this needed or not for hierarchy
+                ]);
+            }
+
+            // Product Tags
+            if ( isset($_GET['filter_product_tag']) ) {// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+                array_push($tax_query, [
+                    'taxonomy' => 'product_tag',
+                    'field' => 'slug',
+                    'terms' => explode( ',', sanitize_text_field(wp_unslash($_GET['filter_product_tag'])) ),// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+                    'operator' => 'IN',
+                    'include_children' => true, // test this needed or not for hierarchy
+                ]);
+            } 
+
+        // Grid Query
+        } else {
+            $settings = $this->get_settings();
+
+            if ( isset($_GET['tmpcoder_select_product_cat']) ) {// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+                if ( $_GET['tmpcoder_select_product_cat'] != '0' ) {// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+                    // Get category from URL
+                    $category = sanitize_text_field(wp_unslash($_GET['tmpcoder_select_product_cat']));// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+                
+                    array_push( $tax_query, [
+                        'taxonomy' => 'product_cat',
+                        'field' => 'id',
+                        'terms' => $category
+                    ] );
+                }
+            }
+
+            if ( isset($_GET['product_cat']) ) {// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+                if ( $_GET['product_cat'] != '0' ) {// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+                    // Get category from URL
+                    $category = sanitize_text_field(wp_unslash($_GET['product_cat']));// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+                
+                    array_push( $tax_query, [
+                        'taxonomy' => 'product_cat',
+                        'field' => 'id',
+                        'terms' => $category
+                    ] );
+                }
+            } else {
+                foreach ( get_object_taxonomies( 'product' ) as $tax ) {
+                    if ( ! empty($settings[ 'query_taxonomy_'. $tax ]) ) {
+                        array_push( $tax_query, [
+                            'taxonomy' => $tax,
+                            'field' => 'slug',
+                            'terms' => $settings[ 'query_taxonomy_'. $tax ]
+                        ] );
+                    }
+                }
+            }
+    
+        }
+
+        // Filter by rating.
+        if ( isset( $_GET['filter_rating'] ) ) {// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+
+            $product_visibility_terms  = wc_get_product_visibility_term_ids();
+            
+            $filter_rating = array_filter( array_map( 'absint', explode( ',', sanitize_text_field(wp_unslash( $_GET['filter_rating'] )) ) ) );// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+            $rating_terms  = array();
+            for ( $i = 1; $i <= 5; $i ++ ) {
+                if ( in_array( $i, $filter_rating, true ) && isset( $product_visibility_terms[ 'rated-' . $i ] ) ) {
+                    $rating_terms[] = $product_visibility_terms[ 'rated-' . $i ];
+                }
+            }
+            if ( ! empty( $rating_terms ) ) {
+                $tax_query[] = array(
+                    'taxonomy'      => 'product_visibility',
+                    'field'         => 'term_taxonomy_id',
+                    'terms'         => $rating_terms,
+                    'operator'      => 'IN',
+                );
+            }
+        }
+
+        return $tax_query;
+    }
+
     protected function tmpcoder_get_product_statuses() {
         return apply_filters( 'tmpcoder/woo-product-grid/product-statuses', [
             'publish'       => esc_html__( 'Publish', 'sastra-essential-addons-for-elementor' ),
@@ -4231,4 +4831,5 @@ class Product_Grid extends Widget_Base
 		    }
 	    });
     }
+
 }

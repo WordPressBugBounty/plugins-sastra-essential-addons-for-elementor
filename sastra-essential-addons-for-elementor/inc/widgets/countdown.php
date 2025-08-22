@@ -986,6 +986,40 @@ class TMPCODER_Countdown extends Widget_Base {
 	public function get_expired_actions_json( $settings ) {
 		$actions = [];
 
+		$allowed_html = [
+			'a' => [
+				'href' => [],
+				'title' => [],
+				'target' => [],
+			],
+			'h1' => [],
+			'h2' => [],
+			'h3' => [],
+			'h4' => [],
+			'h5' => [],
+			'h6' => [],
+			'b' => [],
+			'strong' => [],
+			'i' => [],
+			'em' => [],
+			'p' => [],
+			'br' => [],
+			'ul' => [],
+			'ol' => [],
+			'li' => [],
+			'span' => [],
+			'div' => [
+				'class' => [],
+			],
+			'img' => [
+				'src' => [],
+				'alt' => [],
+				'width' => [],
+				'height' => [],
+			],
+			// Add more allowed tags and attributes as needed
+		];
+
 		if ( ! empty( $settings['timer_actions'] ) ) {
 			foreach( $settings['timer_actions'] as $key => $value ) {
 				switch ( $value ) {
@@ -998,11 +1032,11 @@ class TMPCODER_Countdown extends Widget_Base {
 						break;
 
 					case 'message':
-						$actions['message'] = $settings['display_message_text'];
+						$actions['message'] = wp_kses_post($settings['display_message_text'], $allowed_html);
 						break;
 
 					case 'redirect':
-						$actions['redirect'] = $settings['redirect_url'];
+						$actions['redirect'] = esc_url($settings['redirect_url']) ? esc_url($settings['redirect_url']) : '#';
 						break;
 
 					case 'load-template':
@@ -1081,7 +1115,7 @@ class TMPCODER_Countdown extends Widget_Base {
 		$settings = $this->get_settings();
 		
 		// Render
-		echo '<div class="'. esc_attr($this->get_countdown_class( $settings )) .'"'. esc_attr(str_replace('"', '', $this->get_countdown_attributes( $settings ))).'>';
+		echo '<div class="'. esc_attr($this->get_countdown_class( $settings )) .'"'. $this->get_countdown_attributes( $settings ) .'>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			$this->render_countdown_items( $settings );
 		echo '</div>';
 

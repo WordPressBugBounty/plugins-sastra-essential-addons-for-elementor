@@ -29,9 +29,10 @@ if ( has_post_thumbnail() ) {
 $title_tag = isset( $settings['tmpcoder_product_grid_title_html_tag'] ) ? Helper::tmpcoder_validate_html_tag($settings['tmpcoder_product_grid_title_html_tag'])  : 'h2';
 $should_print_compare_btn = isset( $settings['show_compare'] ) && 'yes' === $settings['show_compare'];
 
-if ( function_exists( 'YITH_WCWL' ) ) {
-	$should_print_wishlist_btn = isset( $settings['tmpcoder_product_grid_wishlist'] ) && 'yes' === $settings['tmpcoder_product_grid_wishlist'];
+if ( tmpcoder_is_availble() ) {
+    $should_print_wishlist_btn = isset( $settings['tmpcoder_product_grid_wishlist'] ) && 'yes' === $settings['tmpcoder_product_grid_wishlist'];
 }
+
 // Improvement
 $grid_style_preset = isset($settings['tmpcoder_product_grid_style_preset']) ? $settings['tmpcoder_product_grid_style_preset'] : '';
 $list_style_preset = isset($settings['tmpcoder_product_list_style_preset']) ? $settings['tmpcoder_product_list_style_preset'] : '';
@@ -65,7 +66,7 @@ if ( true === wc_get_loop_product_visibility( $product->get_id() ) || $product->
             do_action( 'woocommerce_before_shop_loop_item' );
         }
         ?>
-        <div class="tmpcoder-product-wrap">
+        <div class="tmpcoder-product-wrap tmpcoder-grid">
             <div class="product-image-wrap">
                 <div class="image-wrap">
                     <?php
@@ -78,7 +79,9 @@ if ( true === wc_get_loop_product_visibility( $product->get_id() ) || $product->
                         echo '<a href="' . esc_url( $product->get_permalink() ) . '" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">';
                     }
                     // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-                    echo $product->get_image( $settings['tmpcoder_product_grid_image_size_size'], [ 'loading' => 'eager' ] );
+                    // echo $product->get_image( $settings['tmpcoder_product_grid_image_size_size'], [ 'loading' => 'eager' ] );
+
+                    Helper::render_product_thumbnail($settings);
 
                     if( $should_print_image_clickable ) {
                         echo '</a>';
@@ -104,9 +107,7 @@ if ( true === wc_get_loop_product_visibility( $product->get_id() ) || $product->
                         ?>
                         <?php
                         if ( ! empty( $should_print_wishlist_btn ) ) {
-                            echo '<li class="add-to-whishlist">';
-                            echo do_shortcode('[yith_wcwl_add_to_wishlist]');
-                            echo '</li>';
+                            Helper::render_product_wishlist_button($settings, $class='tmpcoder-wishlist-btn');
                         }
                         ?>
                         <li class="view-details"><?php echo '<a href="' . esc_url( $product->get_permalink() ) . '"><i class="fas fa-link"></i></a>'; ?></li>

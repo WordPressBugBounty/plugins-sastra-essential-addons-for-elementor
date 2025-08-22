@@ -9060,8 +9060,12 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 		if ('' === get_post_meta( $id, '_wp_attachment_image_alt', true )) {
 			$product_image_html = preg_replace( '/<img(.*?)alt="(.*?)"(.*?)>/i', '<img$1alt="'.get_the_title().'"$3>', $product_image_html );
 		}
-		
-		if ( get_post_meta(get_the_ID(), 'tmpcoder_secondary_image_id') && !empty(get_post_meta(get_the_ID(), 'tmpcoder_secondary_image_id')) ) {
+
+		if ( 
+			get_post_meta(get_the_ID(), 'tmpcoder_secondary_image_id') 
+			&& !empty(get_post_meta(get_the_ID(), 'tmpcoder_secondary_image_id')) 
+			&& tmpcoder_get_settings('tmpcoder_meta_secondary_image_product') === 'on'
+		) {
 
 			$src2 = Group_Control_Image_Size::get_attachment_image_src( get_post_meta(get_the_ID(), 'tmpcoder_secondary_image_id')[0], 'layout_image_crop', $settings );
 
@@ -9072,6 +9076,8 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 			$second_image_class = $second_original_class.' tmpcoder-anim-timing-'.$settings[ 'image_effects_animation_timing'];
 			$product_image_html = str_replace($second_original_class, $second_image_class.' tmpcoder-hidden-img', $product_image_html);
 		} else {
+			$settings['secondary_img_on_hover'] = 'no';
+			$second_image_html = '';
 			$src2 = '';
 		}
 
@@ -9088,7 +9094,7 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 
 				echo wp_kses_post($product_image_html); 
 
-				if ( 'yes' == $settings['secondary_img_on_hover'] && !empty($src2)) {
+				if ( 'yes' == $settings['secondary_img_on_hover'] && !empty($src2)) {	
 					echo wp_kses_post($second_image_html);
 				}
 			echo '</div>';

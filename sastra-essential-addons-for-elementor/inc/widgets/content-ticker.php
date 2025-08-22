@@ -1549,6 +1549,14 @@ class TMPCODER_Content_Ticker extends Widget_Base {
 
 		$this->end_controls_tabs();
 
+		$this->add_group_control(
+			\Elementor\Group_Control_Text_Stroke::get_type(),
+			[
+				'name' => 'text_stroke',
+				'selector' => '{{WRAPPER}} .tmpcoder-ticker-title',
+			]
+		);
+
 		// Image
 		$this->add_control(
 			'content_image_section',

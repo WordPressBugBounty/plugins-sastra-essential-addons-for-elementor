@@ -149,11 +149,11 @@ if (!function_exists('tmpcoder_add_dynamic_styles')) {
 		.elementor-widget-tmpcoder-dual-button .tmpcoder-dual-button [class*="elementor-animation"]:hover,
 		.elementor-widget-tmpcoder-dual-button .tmpcoder-dual-button .tmpcoder-button-effect::before,
 		.elementor-widget-tmpcoder-dual-button .tmpcoder-dual-button .tmpcoder-button-effect::after {
-			background-color: unset;
+			// background-color: unset;
 		}
 		.elementor-button-wrapper .elementor-button:hover,
 		.elementor-widget-tmpcoder-button .tmpcoder-button:hover {
-			background-color:var(--theme-button-background-hover);  
+			// background-color:var(--theme-button-background-hover);  
 		  	border-color:var(--button-border-hover-color);
 		  	color: var(--button-text-hover-color);
 		  	border-style:var(--button-border-hover-type);

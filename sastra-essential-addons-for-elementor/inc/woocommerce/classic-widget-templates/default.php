@@ -17,8 +17,32 @@ $product = wc_get_product( get_the_ID() );
 if ( ! $product ) {
 	error_log( '$product not found in ' . __FILE__ );
 	return;
+}	
+
+global $tmpcoder_settings;
+$tmpcoder_settings = $settings;
+
+if ( ! function_exists( 'tmpcoder_render_wishlist_button' ) ) {
+	function tmpcoder_render_wishlist_button() {
+		global $tmpcoder_settings;
+		if ( ! empty( $tmpcoder_settings ) ) {
+			Helper::render_product_wishlist_button( $tmpcoder_settings, 'tmpcoder-wishlist-btn' );
+		}
+	}
 }
 
+if ( ! function_exists( 'tmpcoder_render_product_thumbnail' ) ) {
+	function tmpcoder_render_product_thumbnail() {
+		global $product, $tmpcoder_settings;
+		
+		// Remove default WooCommerce thumbnail
+		remove_action( 'woocommerce_before_shop_loop_item_title', 'woocommerce_template_loop_product_thumbnail', 10 );
+
+		if ( ! empty( $tmpcoder_settings ) ) {
+			Helper::render_product_thumbnail( $tmpcoder_settings );
+		}
+	}
+}
 
 if ( has_post_thumbnail() ) {
 	$settings[ 'tmpcoder_image_size_customize' ] = [
@@ -31,8 +55,8 @@ if ( has_post_thumbnail() ) {
 $title_tag = isset( $settings['tmpcoder_product_grid_title_html_tag'] ) ? Helper::tmpcoder_validate_html_tag($settings['tmpcoder_product_grid_title_html_tag'])  : 'h2';
 $should_print_compare_btn = isset( $settings['show_compare'] ) && 'yes' === $settings['show_compare'];
 
-if ( function_exists( 'YITH_WCWL' ) ) {
-	$should_print_wishlist_btn = isset( $settings['tmpcoder_product_grid_wishlist'] ) && 'yes' === $settings['tmpcoder_product_grid_wishlist'];
+if ( tmpcoder_is_availble() ) {
+    $should_print_wishlist_btn = isset( $settings['tmpcoder_product_grid_wishlist'] ) && 'yes' === $settings['tmpcoder_product_grid_wishlist'];
 }
 // Improvement
 $grid_style_preset = isset($settings['tmpcoder_product_grid_style_preset']) ? $settings['tmpcoder_product_grid_style_preset'] : '';
@@ -77,20 +101,34 @@ if ( $should_print_rating ) {
 	}
 }
 
+$should_print_rating = isset( $settings['tmpcoder_product_grid_rating'] ) && 'yes' === $settings['tmpcoder_product_grid_rating'];
 
+remove_action( 'woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_rating', 5 );	
 
-if ( 'yes' !== $settings['tmpcoder_product_grid_rating'] ) {
-	remove_action('woocommerce_after_shop_loop_item_title','woocommerce_template_loop_rating',5);
+if ( $should_print_rating ) {
+
+	if ( ! function_exists( 'tmpcoder_render_custom_rating' ) ) {
+		function tmpcoder_render_custom_rating() {
+			global $product;
+
+			if ( ! $product || ! is_a( $product, 'WC_Product' ) ) {
+				return;
+			}
+
+			$avg_rating = $product->get_average_rating();
+
+			if ( $avg_rating > 0 ) {
+				echo wc_get_rating_html( $avg_rating, $product->get_rating_count() );// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			} else {
+				echo Helper::tmpcoder_rating_markup( $avg_rating, $product->get_rating_count() );// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			}
+		}
+	}
+
+	add_action( 'woocommerce_after_shop_loop_item_title', 'tmpcoder_render_custom_rating', 5 );
 }
 
-add_action('woocommerce_before_shop_loop_item_title', function() use ( $stock_out_badge_text ) {
-	global $product;
-	if ( ! $product->is_in_stock() ) {
-		remove_action( 'woocommerce_before_shop_loop_item_title', 'woocommerce_show_product_loop_sale_flash', 10 );
-		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		echo '<span class="outofstock-badge">'. $stock_out_badge_text .'</span>';
-	}
-}, 9 );
+add_action( 'woocommerce_before_shop_loop_item_title', 'tmpcoder_render_product_thumbnail', 9 );
 
 add_filter('woocommerce_sale_flash', function($text, $post, $product) use( $sale_badge_text ) {
 	return '<span class="onsale" data-notification="default">'. $sale_badge_text .'</span>';
@@ -101,6 +139,10 @@ if ( $should_print_compare_btn ) {
 		'\TMPCODER\Widgets\Product_Grid',
 		'print_compare_button',
 	] );
+}
+
+if ( $should_print_wishlist_btn ) {
+    add_action( '[woocommerce_after_shop_loop_item]', 'tmpcoder_render_wishlist_button' );
 }
 
 $thumb_size = isset($settings['tmpcoder_product_grid_image_size_size']) ? $settings['tmpcoder_product_grid_image_size_size'] : '';
@@ -123,4 +165,8 @@ if ( $should_print_compare_btn ) {
 		'\TMPCODER\Widgets\Product_Grid',
 		'print_compare_button',
 	] );
+}
+
+if ( $should_print_wishlist_btn ) {
+    remove_action( 'woocommerce_after_shop_loop_item', 'tmpcoder_render_wishlist_button' );
 }

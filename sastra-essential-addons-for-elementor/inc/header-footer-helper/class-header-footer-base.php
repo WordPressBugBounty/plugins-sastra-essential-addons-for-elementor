@@ -440,6 +440,7 @@ class TMPCODER_Theme_Layouts_Base {
         $template = NULL;
             	
 		// Archive Pages (includes search)
+
         if ($archives != NULL) {
 
             if ( (is_archive() || is_search()) ) {

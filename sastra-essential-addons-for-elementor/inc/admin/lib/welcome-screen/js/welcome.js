@@ -4,46 +4,48 @@ var welcomeScreenFunctions = {
 
         jQuery('.tmpcoder-btn-unused').click( function() {
 
-        var action = 'tmpcoder_get_elementor_pages';
-        var _nonce_key = welcomeScreen.ajax_nonce
+            var action = 'tmpcoder_get_elementor_pages';
+            var _nonce_key = welcomeScreen.ajax_nonce
 
-        jQuery.ajax({
-            url:welcomeScreen.ajax_url,
-            method:'POST',
-            data: 
-            {
-                action: action,
-                _ajax_nonce: _nonce_key,
-            },
-            beforeSend: function() {
-                jQuery('.welcome-backend-loader').fadeIn();
-                jQuery('.tmpcoder-theme-welcome').css('opacity','0.5');
-            }
-        })
-        .done( function( response ) {
+            jQuery.ajax({
+                url:welcomeScreen.ajax_url,
+                method:'POST',
+                data: 
+                {
+                    action: action,
+                    _ajax_nonce: _nonce_key,
+                },
+                beforeSend: function() {
+                    jQuery('.welcome-backend-loader').fadeIn();
+                    jQuery('.tmpcoder-theme-welcome').css('opacity','0.5');
+                },
+            })
+            .done( function( response ) {
 
-            if (response.success == true)
-            {
-
-                var currentURL = window.location.href;
-                window.location.href = TmpcodersanitizeURL(currentURL);
-                jQuery('.welcome-backend-loader').fadeOut();
-                jQuery('.tmpcoder-theme-welcome').css('opacity','1');   
-            }
-            else
-            {
-                var currentURL = window.location.href;
-                window.location.href = TmpcodersanitizeURL(currentURL);
-                jQuery('.welcome-backend-loader').fadeOut();
-                jQuery('.tmpcoder-theme-welcome').css('opacity','1');     
-            }
-        })
+                if (response.success == true)
+                {
+                    var currentURL = window.location.href;
+                    window.location.href = TmpcodersanitizeURL(currentURL);
+                    // console.log('----success----');
+                    // console.log(TmpcodersanitizeURL(currentURL));
+                    jQuery('.welcome-backend-loader').fadeOut();
+                    jQuery('.tmpcoder-theme-welcome').css('opacity','1');   
+                }
+                else
+                {
+                    var currentURL = window.location.href;
+                    window.location.href = TmpcodersanitizeURL(currentURL);
+                    // console.log('----success / else----'+TmpcodersanitizeURL(currentURL));
+                    jQuery('.welcome-backend-loader').fadeOut();
+                    jQuery('.tmpcoder-theme-welcome').css('opacity','1');     
+                }
+            })
             .fail( function( error ) {
+                console.log('fail');
                 console.log(error);
             })
         })
     },
-
     setGlobalFonts: function() {
         jQuery('.set-global-fonts-btn').click(function(e) {
             e.preventDefault();
@@ -101,46 +103,45 @@ var welcomeScreenFunctions = {
         });
     },
   
+    upgradeProNotice: function(){
+        jQuery('.tmpcoder-upgrade-pro-notice .tmpcoder-upgrade-pro-notice-dismiss').click( function(e) {
 
-  upgradeProNotice: function(){
-    jQuery('.tmpcoder-upgrade-pro-notice .tmpcoder-upgrade-pro-notice-dismiss').click( function(e) {
+            $this = jQuery(this);
+            $this.parent().slideUp( 700, function() {
+              $this.parent().remove();
+            });
+            
+            var action = 'tmpcoder_upgrade_pro_notice_dismiss';
+            var _nonce_key = welcomeScreen.ajax_nonce;
+            var activate_pro_notice = jQuery(this).hasClass('activate-pro-notice');
+            var activate_theme_notice = jQuery(this).hasClass('activate-theme-notice');
 
-        $this = jQuery(this);
-        $this.parent().slideUp( 700, function() {
-          $this.parent().remove();
+            jQuery.ajax({
+              url:welcomeScreen.ajax_url,
+                type: 'POST',
+                data: {
+                    action: action,
+                    nonce: _nonce_key,
+                    activate_pro_notice: activate_pro_notice,
+                    activate_theme_notice: activate_theme_notice,
+                },
+            })
+            .done( function( response ) {
+
+                if (response.success == true)
+                {
+                  console.log('Notice dismissed');   
+                }
+                else
+                {
+                  console.log('Failed to dismiss notice');    
+                }
+            })
+            .fail( function( error ) {
+                console.log(error);
+            })
         });
-        
-        var action = 'tmpcoder_upgrade_pro_notice_dismiss';
-        var _nonce_key = welcomeScreen.ajax_nonce;
-        var activate_pro_notice = jQuery(this).hasClass('activate-pro-notice');
-        var activate_theme_notice = jQuery(this).hasClass('activate-theme-notice');
-
-        jQuery.ajax({
-          url:welcomeScreen.ajax_url,
-            type: 'POST',
-            data: {
-                action: action,
-                nonce: _nonce_key,
-                activate_pro_notice: activate_pro_notice,
-                activate_theme_notice: activate_theme_notice,
-            },
-        })
-        .done( function( response ) {
-
-            if (response.success == true)
-            {
-              console.log('Notice dismissed');   
-            }
-            else
-            {
-              console.log('Failed to dismiss notice');    
-            }
-        })
-        .fail( function( error ) {
-            console.log(error);
-        })
-    });
-  }
+    }
 };
 
 jQuery( document ).ready( function() {

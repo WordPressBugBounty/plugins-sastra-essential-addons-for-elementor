@@ -29,9 +29,10 @@ if ( has_post_thumbnail() ) {
 $title_tag = isset( $settings['tmpcoder_product_grid_title_html_tag'] ) ? Helper::tmpcoder_validate_html_tag($settings['tmpcoder_product_grid_title_html_tag'])  : 'h2';
 $should_print_compare_btn = isset( $settings['show_compare'] ) && 'yes' === $settings['show_compare'];
 
-if ( function_exists( 'YITH_WCWL' ) ) {
-	$should_print_wishlist_btn = isset( $settings['tmpcoder_product_grid_wishlist'] ) && 'yes' === $settings['tmpcoder_product_grid_wishlist'];
+if ( tmpcoder_is_availble() ) {
+    $should_print_wishlist_btn = isset( $settings['tmpcoder_product_grid_wishlist'] ) && 'yes' === $settings['tmpcoder_product_grid_wishlist'];
 }
+
 // Improvement
 $grid_style_preset = isset($settings['tmpcoder_product_grid_style_preset']) ? $settings['tmpcoder_product_grid_style_preset'] : '';
 $list_style_preset = isset($settings['tmpcoder_product_list_style_preset']) ? $settings['tmpcoder_product_list_style_preset'] : '';
@@ -76,7 +77,7 @@ if ( $should_print_rating ) {
 }
 ?>
 <li class="product <?php echo esc_attr( "{$product_wrapper_classes} {$list_style_preset}" ) ?>">
-    <div class="tmpcoder-product-wrap">
+    <div class="tmpcoder-product-wrap tmpcoder-grid">
         <div class="product-image-wrap">
             <div class="image-wrap">
                 <?php
@@ -89,7 +90,9 @@ if ( $should_print_rating ) {
                     echo( ! $product->is_in_stock() ? '<span class="tmpcoder-onsale outofstock ' . esc_attr( $sale_badge_preset . ' ' . $sale_badge_align ) . '">' . $stock_out_badge_text . '</span>' : ( $product->is_on_sale() ? '<span class="tmpcoder-onsale ' . esc_attr( $sale_badge_preset . ' ' . $sale_badge_align ) . '">' . $sale_badge_text . '</span>' : '' ) );
                 }
                 // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-                echo wp_kses_post( $product->get_image( $settings['tmpcoder_product_grid_image_size_size'], [ 'loading' => 'eager' ] ) );
+                // echo wp_kses_post( $product->get_image( $settings['tmpcoder_product_grid_image_size_size'], [ 'loading' => 'eager' ] ) );
+
+                Helper::render_product_thumbnail($settings);
 
                 if( $should_print_image_clickable ) {
                     echo '</a>';
@@ -135,9 +138,7 @@ if ( $should_print_rating ) {
 
                 <?php
                 if ( ! empty( $should_print_wishlist_btn ) ) {
-                    echo '<li class="add-to-whishlist">';
-                    echo do_shortcode('[yith_wcwl_add_to_wishlist]');
-                    echo '</li>';
+                    Helper::render_product_wishlist_button($settings, $class='tmpcoder-wishlist-btn');
                 }
                 ?>
                 <?php

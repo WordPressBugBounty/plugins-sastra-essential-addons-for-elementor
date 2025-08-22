@@ -1,7 +1,7 @@
 === Spexo Addons for Elementor - Free Elementor Addons, Widgets and Templates ===
 Contributors: templatescoderthemes, skywebtech
 Tags: elementor, elementor addons, elementor templates, elementor widgets, woocommerce elementor
-Stable tag: 1.0.23
+Stable tag: 1.0.24
 Requires at least: 5.0
 Tested up to: 6.8
 Requires PHP: 7.4
@@ -308,6 +308,13 @@ Feel free to contact us anytime via [Support](https://templatescoder.com/support
 
 == Changelog ==
 
+= v1.0.24 - 2025-08-22 =
+
+* Added : Text stroke option in content ticker widget 
+* Improved : Nav Menu display type when menu display as vertical view
+* Fixed : disable unused widget feature for pro widgets
+* Fixed : Parallax background supports Elementor Flexbox and Grid containers with multiple backgrounds.
+
 = v1.0.23 - 2025-06-24 =
 
 * Added : New widget "Product Grid Classic"
@@ -373,22 +380,11 @@ Feel free to contact us anytime via [Support](https://templatescoder.com/support
 * Enhanced : Priority for enqueueing header CSS to prevent header content from flickering or blanking after page load.
 * Fixed : Issue where images wouldn't load after clicking "Load More Posts" when W3 Total Cache's lazy load feature was enabled.
 
-
 = v1.0.19 - 2025-03-06 =
 
 * Added : 'Edit' button on hover for Header, Footer, Single Post, and Single Product layouts in Elementor editor, redirecting the user to the corresponding layout's editing screen upon clicking the button.
 * Improved : Elementor editor preview to properly reflect the single post layout as it appears on the frontend when editing a specific blog post.
 * Tweak : Removed single post layout display when editing the header & Footer builder in Elementor editor to avoid layout conflicts.
 * Fixed : Removed unwanted content when printing single blog content on the frontend.
-
-
-= v1.0.18 - 2025-02-25 =
-
-* Added : A new "Tools" menu tab in the admin dashboard.
-	- Created the "Regenerate Global Assets" tool under the Tools menu.
-	- The "Regenerate Global Assets" tool allows administrators to remove global assets and clear cache files from the uploads folder.
-* Added : A new alignment setting has been added to the Page List widget. Users can now customize the alignment of the list items.
-* Fixed : Elementor class not found warning in frontend after elementor plugin deactivate
-* Improved: Enhanced admin bar usability by adding direct access to key site building tools and options (Prebuilt Website, Prebuilt Blocks & Site Builder). 
 
 [See changelog for all versions.](https://spexoaddons.com/changelog/)

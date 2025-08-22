@@ -187,7 +187,8 @@ if ( ! defined( 'ABSPATH' ) ) {
                     // ------ Array Value name ------
                     // 'widget name' => ['widget-slug', 'purchase pro url', 'docs link', 'tag', 'file name', 'widget class', 'widget icon'],
                     $theme_builder_modules_pro = [
-                        'Custom Field' => ['custom-field-pro', TMPCODER_PURCHASE_PRO_URL.'?ref=tmpcoder-plugin-backend-elements-theme-builder-widgets-upgrade-pro#purchasepro', 'custom-field', 'pro', '', '', 'custom-field.svg']
+                        'Custom Field' => ['custom-field-pro', TMPCODER_PURCHASE_PRO_URL.'?ref=tmpcoder-plugin-backend-elements-theme-builder-widgets-upgrade-pro#purchasepro', 'custom-field', 'pro', '', '', 'custom-field.svg'],
+                        // 'Category Grid' => ['category-grid-pro', TMPCODER_PURCHASE_PRO_URL.'?ref=tmpcoder-plugin-backend-elements-catgrid-widgets-upgrade-pro#purchasepro', 'category-grid', 'pro', '', '', 'woo-category-grid.svg'],
                     ];
 
                     foreach ( array_merge($tmpcoder_get_theme_builder_modules, $theme_builder_modules_pro) as $title => $data ) {
@@ -289,8 +290,8 @@ if ( ! defined( 'ABSPATH' ) ) {
                     'Product Filters' => ['product-filters-pro', TMPCODER_PURCHASE_PRO_URL.'?ref=tmpcoder-plugin-backend-elements-woo-prodfilter-widgets-upgrade-pro#purchasepro', 'product-filters', 'pro', '', '', 'product-filters.svg'],
                     'Product Breadcrumbs' => ['product-breadcrumbs-pro', TMPCODER_PURCHASE_PRO_URL.'?ref=tmpcoder-plugin-backend-elements-woo-breadcru-widgets-upgrade-pro#purchasepro', 'product-breadcrumb', 'pro', '', '', 'product-breadcrumbs.svg'],
                     'My Account Page' => ['my-account-page-pro', TMPCODER_PURCHASE_PRO_URL.'?ref=tmpcoder-plugin-backend-elements-woo-myacc-widgets-upgrade-pro#purchasepro', 'my-account-page', 'pro', '', '', 'page-my-account.svg'],
-                    'Woo Category Grid' => ['woo-category-grid-pro', TMPCODER_PURCHASE_PRO_URL.'?ref=tmpcoder-plugin-backend-elements-woo-catgrid-widgets-upgrade-pro#purchasepro', 'woo-category-grid', 'pro', '', '', 'woo-category-grid.svg'],
                     'Category Grid' => ['category-grid-pro', TMPCODER_PURCHASE_PRO_URL.'?ref=tmpcoder-plugin-backend-elements-catgrid-widgets-upgrade-pro#purchasepro', 'category-grid', 'pro', '', '', 'woo-category-grid.svg'],
+                    'Woo Category Grid' => ['woo-category-grid-pro', TMPCODER_PURCHASE_PRO_URL.'?ref=tmpcoder-plugin-backend-elements-woo-catgrid-widgets-upgrade-pro#purchasepro', 'woo-category-grid', 'pro', '', '', 'woo-category-grid.svg'],
                     'Wishlist Button' => ['wishlist-button-pro', TMPCODER_PURCHASE_PRO_URL.'#purchasepro?ref=tmpcoder-plugin-backend-elements-woo-wishlist-btn-widgets-upgrade-expert#purchasepro', 'wishlist-button', 'pro', '', '', 'wishlist-button.svg'],
                     'Mini Wishlist' => ['mini-wishlist-pro', TMPCODER_PURCHASE_PRO_URL.'#purchasepro?ref=tmpcoder-plugin-backend-elements-woo-wishlist-mini-widgets-upgrade-expert#purchasepro', 'mini-wishlist', 'pro', '', '', 'mini-wishlist.svg'],
                     'Wishlist Table' => ['wishlist-pro', TMPCODER_PURCHASE_PRO_URL.'#purchasepro?ref=tmpcoder-plugin-backend-elements-woo-wishlist-widgets-upgrade-expert#purchasepro', 'wishlist-table', 'pro', '', '', 'wishlist-table.svg'],

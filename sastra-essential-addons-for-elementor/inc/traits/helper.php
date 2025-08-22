@@ -261,6 +261,4 @@ trait Helper
 		    return is_array( $param ) ? array_map( 'sanitize_text_field', $param ) : sanitize_text_field( $param );
 	    }, $tax_list );
     }
-
 }
-

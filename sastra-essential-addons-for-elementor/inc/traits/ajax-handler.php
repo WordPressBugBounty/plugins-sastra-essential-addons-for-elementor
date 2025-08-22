@@ -2,7 +2,7 @@
 /**
  * Class trait Ajax_Handler file
  *
- * @package Essential-addons-for-elementor-lite\Traits
+ * @package Spexo-addons-for-elementor\Traits
  */
 
 namespace Spexo_Addons_Elementor\Traits;
@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @class       Ajax_Handler
  * @since       5.0.9
- * @package     Essential-addons-for-elementor-lite\Traits
+ * @package     Spexo-addons-for-elementor\Traits
  */
 trait Ajax_Handler {
 	//use Template_Query;
@@ -169,7 +169,7 @@ trait Ajax_Handler {
 			}
 
 			$file_path = realpath( sprintf(
-				'%s/woo-templates/%s/%s',
+				'%s/woocommerce/%s/%s',
 				$dir_path,
 				$template_info['name'],
 				$template_info['file_name']
@@ -214,7 +214,7 @@ trait Ajax_Handler {
 						$iterator ++;
 					}
 				} else {
-					$html .= __( '<p class="no-posts-found">No posts found!</p>', 'sastra-essential-addons-for-elementor' );
+					$html .= __( '<p class="no-posts-found">No posts found!</p>', 'sastra-essential-addons-for-elementor' );// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				}
 			}
 		}
@@ -676,7 +676,7 @@ trait Ajax_Handler {
 			}
 
 			$file_path = realpath( sprintf(
-				'%s/woo-templates/%s/%s',
+				'%s/woocommerce/%s/%s',
 				$dir_path,
 				$template_info['name'],
 				$template_info['file_name']

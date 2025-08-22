@@ -119,7 +119,10 @@
 
                 if (dataActions.hasOwnProperty('message')) {
                     if (!$scope.children('.elementor-widget-container').children('.tmpcoder-countdown-message').length) {
-                        countDownWrap.after('<div class="tmpcoder-countdown-message">' + dataActions['message'] + '</div>');
+
+                        // Sanitize message to prevent XSS
+                        var sanitizedMessage = sanitizeHTMLContent(dataActions['message']);
+                        countDownWrap.after('<div class="tmpcoder-countdown-message">' + sanitizedMessage + '</div>');
                     }
                 }
 
@@ -132,6 +135,48 @@
                 }
             }
         }
+    }
+
+    // Add this helper function to sanitize HTML content
+    const sanitizeHTMLContent = function(html) {
+        // Create a temporary DOM element
+        var tempDiv = document.createElement('div');
+        tempDiv.innerHTML = html;
+        
+        // Remove all script tags
+        var scripts = tempDiv.getElementsByTagName('script');
+        while(scripts.length > 0) {
+            scripts[0].parentNode.removeChild(scripts[0]);
+        }
+
+        // Remove all iframe tags
+        var iframes = tempDiv.getElementsByTagName('iframe');
+        while(iframes.length > 0) {
+            iframes[0].parentNode.removeChild(iframes[0]);
+        }
+        
+        // Find all elements to remove potential malicious attributes
+        var allElements = tempDiv.getElementsByTagName('*');
+        for (var i = 0; i < allElements.length; i++) {
+            // Remove event handler attributes
+            var attrs = allElements[i].attributes;
+            for (var j = attrs.length - 1; j >= 0; j--) {
+                var attrName = attrs[j].name;
+                // Remove all on* event handlers
+                if (attrName.substring(0, 2) === 'on') {
+                    allElements[i].removeAttribute(attrName);
+                }
+                // Remove javascript: URLs
+                if (attrName === 'href' || attrName === 'src') {
+                    var value = attrs[j].value;
+                    if (value.toLowerCase().indexOf('javascript:') === 0) {
+                        allElements[i].removeAttribute(attrName);
+                    }
+                }
+            }
+        }
+        
+        return tempDiv.innerHTML;
     }
 
     /* -------- Countdown Timer End ------- */

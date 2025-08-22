@@ -35,7 +35,9 @@ class TMPCODER_Remote_Api {
             return $theme_response;
             
         }else{
-            return array('status' => 'error', 'message'=> $theme_request->get_error_message());
+            if (is_object($theme_request)) {
+                return array('status' => 'error', 'message'=> $theme_request->get_error_message());
+            }
         }
     }
 
@@ -73,7 +75,9 @@ class TMPCODER_Remote_Api {
             return $theme_response;
             
         }else{
-            return array('status' => 'error', 'message'=> $theme_request->get_error_message());
+            if (is_object($theme_request)) {
+                return array('status' => 'error', 'message'=> $theme_request->get_error_message());
+            }
         }
     }
 
@@ -117,7 +121,9 @@ class TMPCODER_Remote_Api {
             return $theme_response;
             
         }else{
-            return array('status' => 'error', 'message'=> $theme_request->get_error_message());
+            if (is_object($theme_request)) {
+                return array('status' => 'error', 'message'=> $theme_request->get_error_message());
+            }
         }
     }
 }

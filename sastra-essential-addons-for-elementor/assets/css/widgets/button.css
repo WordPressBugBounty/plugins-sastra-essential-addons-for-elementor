@@ -201,7 +201,8 @@
 .elementor-widget-tmpcoder-button .tmpcoder-button-none:hover,
 .elementor-widget-tmpcoder-button [class*="elementor-animation"]:hover,
 .elementor-widget-tmpcoder-button .tmpcoder-button::before,
-.elementor-widget-tmpcoder-button .tmpcoder-button::after {
+.elementor-widget-tmpcoder-button .tmpcoder-button::after
+{
 	background-color: var(--theme-button-background-hover,#023f7c);
 }
 

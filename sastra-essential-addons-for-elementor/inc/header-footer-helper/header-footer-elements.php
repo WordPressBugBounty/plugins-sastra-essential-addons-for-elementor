@@ -119,7 +119,7 @@ if ( ! class_exists('TMPCODER_Header_Footer_Elements') ){
             if ( '' === $id ) {
                 $id = false;
             }
-
+            
             return apply_filters( 'tmpcoder_get_'.$type.'_id', $id );
         }
 

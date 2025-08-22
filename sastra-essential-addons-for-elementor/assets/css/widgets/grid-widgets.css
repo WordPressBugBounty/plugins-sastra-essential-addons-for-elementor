@@ -1707,6 +1707,34 @@
 .elementor-widget-tmpcoder-woo-grid img + img.tmpcoder-hidden-img {   
     opacity: 0;
 }
+
+/* Product Secondary image - START */
+.elementor-widget-tmpcoder-woo-grid .tmpcoder-hidden-img:first-child {
+  opacity: 0;
+}
+
+.elementor-widget-tmpcoder-woo-grid img + img.tmpcoder-hidden-img {   
+  opacity: 0;
+}
+
+div.tmpcoder-grid-image-wrap[data-img-on-hover="yes"] img:first-child {
+  opacity: 1;  /* Show first image by default */
+}
+
+div.tmpcoder-grid-image-wrap[data-img-on-hover="yes"] img:nth-child(2) {
+  opacity: 0;    /* Hide second image by default */
+}
+
+.tmpcoder-grid-media-wrap:hover div.tmpcoder-grid-image-wrap[data-img-on-hover="yes"]:has(img:nth-child(2)) img:first-child {
+  opacity: 0;
+}
+
+.tmpcoder-grid-media-wrap:hover div.tmpcoder-grid-image-wrap[data-img-on-hover="yes"]:has(img:nth-child(2)) img:nth-child(2) {
+  opacity: 1;
+}
+
+/* Product Secondary image - END */
+
 article .tmpcoder-grid-media-wrap .tmpcoder-grid-media-link {
     position: absolute;
     top: 0;

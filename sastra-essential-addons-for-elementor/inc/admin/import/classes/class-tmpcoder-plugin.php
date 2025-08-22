@@ -205,8 +205,7 @@ if ( ! class_exists( 'Tmpcoder' ) ) :
 		 */
 		
 		public function load_textdomain() {
-
-			load_plugin_textdomain( 'sastra-essential-addons-for-elementor' );
+			
 		}
 
 		/**

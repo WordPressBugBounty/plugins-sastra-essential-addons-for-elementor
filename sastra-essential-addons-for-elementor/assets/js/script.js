@@ -53,7 +53,7 @@
         }
 
         if ($scope.hasClass('tmpcoder-jarallax') || $scope.hasClass('tmpcoder-jarallax-yes')) {
-            parallaxBackground();
+            observeParallax($scope);
         }
 
         if ($scope.hasClass('tmpcoder-parallax-yes')) {
@@ -483,20 +483,11 @@
                 if (!editorCheck() && $scope.hasClass('tmpcoder-jarallax')) {
                     $scope.css('background-image', 'url("' + $scope.attr('bg-image') + '")');
 
-                    if ($scope.attr('scroll-effect') == 'scale') {
-                        $scope.css('background-image', '');
-
-                        $scope.find('.e-con-inner,.elementor-container').css('z-index', 1);
-
-                        $scope.append('<div class="tmpcoder-custom-zoom-effect" style="background-image: url(' + $scope.attr('bg-image') + ');background-position: center center;background-repeat: no-repeat;background-size: cover;position: absolute;top: 0px;left: 0px;width: 100%;height: 100%;"></div>');
-                        initializeScrollZoomAnimationTrigger('tmpcoder-custom-zoom-effect');
-                    }
-                    else {
-                        $scope.jarallax({
-                            type: $scope.attr('scroll-effect'),
-                            speed: $scope.attr('speed-data'),
-                        });
-                    }
+                    $scope.css('background-image', 'url("' + $scope.attr('bg-image') + '")');
+                    $scope.jarallax({
+                        type: $scope.attr('scroll-effect'),
+                        speed: $scope.attr('speed-data'),
+                    });
 
                 } else if (editorCheck()) {
                     $scope.css('background-image', 'url("' + $scope.find('.tmpcoder-jarallax').attr('bg-image-editor') + '")');
@@ -506,6 +497,23 @@
                     });
                 }
             }
+        }
+
+        function observeParallax($scope) {
+            const observer = new IntersectionObserver((entries, obs) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Call your original function once
+                        parallaxBackground.call(this, $scope);
+                        obs.unobserve(entry.target); // Only trigger once
+                    }
+                });
+            }, {
+                rootMargin: '0px',
+                threshold: 0.1
+            });
+        
+            observer.observe($scope[0]);
         }
 
         function parallaxMultiLayer() {
@@ -576,6 +584,10 @@
     }
 
     jQuery(window).on('elementor/frontend/init', function () {
+
+        jQuery(document).on("click", '.tmpcoder-nav-menu .tmpcoder-menu-item', function (e) {
+            jQuery('.tmpcoder-close-offcanvas').trigger("click");
+        });
 
         jQuery(document).on("click", '.dialog-lightbox-widget .elementor-video-container', function (e) {
             jQuery(".dialog-close-button").trigger("click");

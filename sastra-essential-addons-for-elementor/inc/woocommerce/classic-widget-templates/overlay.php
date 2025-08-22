@@ -29,9 +29,10 @@
  $title_tag = isset( $settings['tmpcoder_product_grid_title_html_tag'] ) ? Helper::tmpcoder_validate_html_tag($settings['tmpcoder_product_grid_title_html_tag'])  : 'h2';
  $should_print_compare_btn = isset( $settings['show_compare'] ) && 'yes' === $settings['show_compare'];
  
- if ( function_exists( 'YITH_WCWL' ) ) {
-     $should_print_wishlist_btn = isset( $settings['tmpcoder_product_grid_wishlist'] ) && 'yes' === $settings['tmpcoder_product_grid_wishlist'];
- }
+ if ( tmpcoder_is_availble() ) {
+    $should_print_wishlist_btn = isset( $settings['tmpcoder_product_grid_wishlist'] ) && 'yes' === $settings['tmpcoder_product_grid_wishlist'];
+}
+
  // Improvement
  $grid_style_preset = isset($settings['tmpcoder_product_grid_style_preset']) ? $settings['tmpcoder_product_grid_style_preset'] : '';
  $list_style_preset = isset($settings['tmpcoder_product_list_style_preset']) ? $settings['tmpcoder_product_list_style_preset'] : '';
@@ -84,11 +85,9 @@
              }
              ?>
              <?php
-             if ( ! empty( $should_print_wishlist_btn ) ) {
-                 echo '<div class="add-to-whishlist">';
-                 echo do_shortcode('[yith_wcwl_add_to_wishlist]');
-                 echo '</div>';
-             }
+            if ( ! empty( $should_print_wishlist_btn ) ) {
+                Helper::render_product_wishlist_button($settings, $class='tmpcoder-wishlist-btn');
+            }
              ?>
          </div>
      </div>

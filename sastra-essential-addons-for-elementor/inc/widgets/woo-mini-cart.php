@@ -41,6 +41,20 @@ class TMPCODER_Product_Mini_Cart extends Widget_Base {
 		return ['tmpcoder-product-mini-cart'];
 	}
 
+	public function show_mini_cart_update_qty() {
+		$this->add_control(
+			'show_mini_cart_update_qty_pro',
+			[
+				// Translators: %s is the icon.
+				'label' => sprintf( __( 'Allow Update Quantity %s', 'sastra-essential-addons-for-elementor' ), '<i class="eicon-pro-icon"></i>' ),
+				'type' => Controls_Manager::SWITCHER,
+				'default' => 'no',
+				'return_value' => 'yes',
+				'class' => 'tmpcoder-pro-controle',
+			]
+		);
+	}
+
 	public function add_control_mini_cart_style() {
 		$this->add_control(
 			'mini_cart_style',
@@ -183,7 +197,10 @@ class TMPCODER_Product_Mini_Cart extends Widget_Base {
 			]
 		);
 
+
 		$this->add_control_mini_cart_style(); 
+
+		$this->show_mini_cart_update_qty(); 
 
 		$this->add_controls_group_mini_cart_style();
 
@@ -616,7 +633,7 @@ class TMPCODER_Product_Mini_Cart extends Widget_Base {
 				if ( 'none' !== $settings['toggle_text']) :
 					if ( 'price' == $settings['toggle_text'] ) { ?>
 						<span class="tmpcoder-mini-cart-btn-price">
-							<?php echo wp_kses_post($sub_total);  ?>
+							<?php echo wp_kses_post($sub_total); ?>
 						</span>
 					<?php } else { ?>
 						<span class="tmpcoder-mini-cart-btn-text">
@@ -651,6 +668,25 @@ class TMPCODER_Product_Mini_Cart extends Widget_Base {
 		}
     	
 		$settings = $this->get_settings_for_display();
+
+		if (isset($settings['show_mini_cart_update_qty']) && $settings['show_mini_cart_update_qty'] == 'yes') {
+			
+			add_filter( 'woocommerce_widget_cart_item_quantity', function( $html, $cart_item, $cart_item_key ) {
+			    $quantity = $cart_item['quantity'];
+			    ob_start();
+			    ?>
+			    <div class="mini-cart-quantity mini-cart-qty-wrap">
+			        <button class="mini-cart-minus" data-key="<?php echo esc_attr( $cart_item_key ); ?>">-</button>
+			        <input type="number" min="1" value="<?php echo esc_attr( $quantity ); ?>" data-key="<?php echo esc_attr( $cart_item_key ); ?>" class="mini-cart-qty-input" />
+			        <button class="mini-cart-plus" data-key="<?php echo esc_attr( $cart_item_key ); ?>">+</button>
+			        <span class="mini-cart-loader" style="display:none;"></span>
+			    </div>
+			    </div>
+			    <?php
+			    return ob_get_clean();
+
+			}, 10, 3 );
+		}
 
 		$this->add_render_attribute(
 			'mini_cart_attributes',

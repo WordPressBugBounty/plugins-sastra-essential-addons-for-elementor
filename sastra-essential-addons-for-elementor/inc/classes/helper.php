@@ -3,6 +3,7 @@
 namespace Spexo_Addons_Elementor\Classes;
 
 use Elementor\Utils;
+use Elementor\Group_Control_Image_Size;
 
 if (!defined('ABSPATH')) {
     exit;
@@ -848,5 +849,158 @@ class Helper
     public static function tmpcoder_e_optimized_markup(){
         return Plugin::$instance->experiments->is_feature_active( 'e_optimized_markup' );
     }
+
+    public static function render_product_wishlist_button( $settings, $class ) {
+        global $product;
+        
+        if ( !tmpcoder_is_availble() ) {
+            return;
+        }
+
+        // If NOT a Product
+        if ( is_null( $product ) ) {
+            return;
+        }
+
+        $user_id = get_current_user_id();
+        
+        if ($user_id > 0) {
+            if (is_multisite()) {
+                $wishlist_key = 'tmpcoder_wishlist_'.get_current_blog_id();
+            } else {
+                $wishlist_key = 'tmpcoder_wishlist';
+            }
+            $wishlist = get_user_meta( get_current_user_id(), $wishlist_key, true );
+        } else {
+			$blog_id = get_current_blog_id();
+			$cookie_key = 'tmpcoder_wishlist_' . $blog_id;
+		
+			if (isset($_COOKIE['tmpcoder_wishlist'])) {
+				$wishlist = json_decode(sanitize_text_field(wp_unslash($_COOKIE['tmpcoder_wishlist'])), true);
+			} else if (isset($_COOKIE[$cookie_key])) {
+				$wishlist = json_decode(sanitize_text_field(wp_unslash($_COOKIE[$cookie_key])), true);
+			} else {
+				$wishlist = array();
+			}
+        }
+        
+        if ( ! $wishlist ) {
+            $wishlist = array();
+        }
+
+        // $popup_notification_animation = isset($this->get_settings_for_display()['popup_notification_animation']) ? $this->get_settings_for_display()['popup_notification_animation'] : '';
+        // $popup_notification_fade_out_in = isset($this->get_settings_for_display()['popup_notification_fade_out_in']) ? $this->get_settings_for_display()['popup_notification_fade_out_in'] : '';
+        // $popup_notification_animation_duration = isset($this->get_settings_for_display()['popup_notification_animation_duration']) ? $this->get_settings_for_display()['popup_notification_animation_duration'] : '';
+
+        $wishlist_attributes = [
+            'data-wishlist-url' => get_option('tmpcoder_wishlist_page') ? get_option('tmpcoder_wishlist_page') : '',
+        //  'data-atw-popup='. $settings['element_show_added_to_wishlist_popup'],
+        //  'data-atw-animation='. $popup_notification_animation,
+        //  'data-atw-fade-out-in='. $popup_notification_fade_out_in,
+        //  'data-atw-animation-time='. $popup_notification_animation_duration,
+        //  'data-open-in-new-tab='. $settings['element_open_links_in_new_tab']
+        ];
+
+        // $wishlist_attributes = [];
+
+        $button_HTML = '';
+        $page_id = get_queried_object_id();
+        
+        $button_add_title = '';
+        $button_remove_title = '';
+        $add_to_wishlist_content = '';
+        $remove_from_wishlist_content = '';
+
+        if ( 'yes' === $settings['show_icon'] ) {
+            $add_to_wishlist_content .= '<i class="far fa-heart"></i>';
+            $remove_from_wishlist_content .= '<i class="fas fa-heart"></i>';
+        }
+
+        if ( 'yes' === $settings['show_text'] ) {
+            $add_to_wishlist_content .= ' <span>'. esc_html($settings['add_to_wishlist_text']) .'</span>';
+        } else {
+            $button_add_title = 'title='. esc_attr($settings['add_to_wishlist_text']);
+            $button_remove_title = 'title='. esc_attr($settings['remove_from_wishlist_text']);
+        }
+
+        if ( 'yes' === $settings['show_text'] ) {
+            $remove_from_wishlist_content .= ' <span>'. esc_html($settings['remove_from_wishlist_text']) .'</span>';
+        }
+
+        echo '<div class="'. esc_attr($class) .'">';
+            echo '<div class="inner-block">';
+    
+            $remove_button_hidden = !in_array( $product->get_id(), $wishlist ) ? 'tmpcoder-button-hidden' : '';
+            $add_button_hidden = in_array( $product->get_id(), $wishlist ) ? 'tmpcoder-button-hidden' : '';
+        
+            // '. implode( ' ', $wishlist_attributes ) .'
+            echo '<button class="tmpcoder-wishlist-add '. esc_attr($add_button_hidden) .'" '. esc_attr($button_add_title) .' data-product-id=' . esc_attr($product->get_id()) . ''. ' ' . esc_attr(implode( ' ', $wishlist_attributes )) .' >'. wp_kses_post($add_to_wishlist_content) .'</button>';
+            echo '<button class="tmpcoder-wishlist-remove '. esc_attr($remove_button_hidden) .'" '. esc_attr($button_remove_title) .' data-product-id="' . esc_attr($product->get_id()) . '">'. wp_kses_post($remove_from_wishlist_content) .'</button>';
+
+            echo '</div>';
+        echo '</div>';
+    }
+
+	// Render Post Thumbnail
+	public static function render_product_thumbnail( $settings ) {
+		$id  = get_post_thumbnail_id();
+
+		$settings[ 'image_effects_animation_timing'] = 'ease-default';
+
+		$src = Group_Control_Image_Size::get_attachment_image_src( $id, 'tmpcoder_product_grid_image_size', $settings );
+
+		$settings['tmpcoder_product_grid_image_size'] = ['id' => $id];
+		$product_image_html = Group_Control_Image_Size::get_attachment_image_html($settings,'tmpcoder_product_grid_image_size');
+
+		$image_original_class = 'wp-image-'.$id;
+		$custom_image_class = $image_original_class.' tmpcoder-anim-timing-'.$settings[ 'image_effects_animation_timing'];
+		$product_image_html = str_replace($image_original_class, $custom_image_class, $product_image_html);
+
+		if ('' === get_post_meta( $id, '_wp_attachment_image_alt', true )) {
+			$product_image_html = preg_replace( '/<img(.*?)alt="(.*?)"(.*?)>/i', '<img$1alt="'.get_the_title().'"$3>', $product_image_html );
+		}
+
+		if ( 
+			get_post_meta(get_the_ID(), 'tmpcoder_secondary_image_id') 
+			&& !empty(get_post_meta(get_the_ID(), 'tmpcoder_secondary_image_id')) 
+			&& tmpcoder_get_settings('tmpcoder_meta_secondary_image_product') === 'on'
+		) {
+		
+			$src2 = Group_Control_Image_Size::get_attachment_image_src( get_post_meta(get_the_ID(), 'tmpcoder_secondary_image_id')[0], 'tmpcoder_product_grid_image_size', $settings );
+
+			$settings['tmpcoder_product_grid_image_size'] = ['id' => get_post_meta(get_the_ID(), 'tmpcoder_secondary_image_id', true)];
+			$second_image_html = Group_Control_Image_Size::get_attachment_image_html($settings,'tmpcoder_product_grid_image_size');
+
+			$second_original_class = 'wp-image-'.get_post_meta(get_the_ID(), 'tmpcoder_secondary_image_id', true);
+			$second_image_class = $second_original_class.' tmpcoder-anim-timing-'.$settings[ 'image_effects_animation_timing'];
+			$product_image_html = str_replace($second_original_class, $second_image_class.' tmpcoder-hidden-img', $product_image_html);
+		} else {
+			$settings['secondary_img_on_hover'] = 'no';
+			$second_image_html = '';
+			$src2 = '';
+		}
+
+		// if ( has_post_thumbnail() ) {
+
+			echo '<div class="tmpcoder-grid-media-wrap">';
+			echo '<div class="tmpcoder-grid-image-wrap" data-src="'. esc_url( $src ) .'"  data-img-on-hover="'. esc_attr($settings['secondary_img_on_hover']) .'" data-src-secondary="'. esc_url( $src2 ) .'">';
+
+				if (!has_post_thumbnail() && isset($settings['tmpcoder_fallback_image_switch']) && $settings['tmpcoder_fallback_image_switch'] == 'yes') {
+						
+					if (isset($settings['tmpcoder_fallback_image']['url']) && $settings['tmpcoder_fallback_image']['url'] != '') {
+						$product_image_html = '<img src="'.esc_url($settings['tmpcoder_fallback_image']['url']).'" width="366" height="366" alt="'.esc_attr(get_the_title()).'">';
+						$src = $settings['tmpcoder_fallback_image']['url'];
+					}
+				}
+
+				echo wp_kses_post($product_image_html); 
+
+				if ( 'yes' == $settings['secondary_img_on_hover'] && !empty($src2)) {
+					echo wp_kses_post($second_image_html);
+				}
+			echo '</div>';
+			echo '</div>';
+		// }
+	}
 
 }

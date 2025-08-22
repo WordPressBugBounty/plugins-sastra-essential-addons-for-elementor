@@ -1171,3 +1171,4 @@ div[class*="tmpcoder-sub-menu-fx"] .tmpcoder-mega-menu .tmpcoder-sub-mega-menu.t
     display: block !important;
 }*/
 
+.tmpcoder-nav-menu-vertical .tmpcoder-nav-menu .tmpcoder-menu-item {display: inline-block;}

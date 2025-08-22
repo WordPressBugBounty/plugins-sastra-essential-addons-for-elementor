@@ -180,6 +180,8 @@ class TMPCODER_Post_Grid extends Widget_Base {
 		);
 	}
 
+	public function add_control_grid_lazy_loader() {}
+
 	public function add_control_display_scheduled_posts() { 
 		$this->add_control(
 			'display_scheduled_posts',
@@ -1905,6 +1907,8 @@ class TMPCODER_Post_Grid extends Widget_Base {
 		$this->add_control_open_links_in_new_tab();
 		
 		$this->add_control_grid_lazy_loading();
+		
+		$this->add_control_grid_lazy_loader();
 
 		$this->add_control_layout_animation();
 
@@ -8749,7 +8753,7 @@ class TMPCODER_Post_Grid extends Widget_Base {
 
 		// get the meta value of video attachment
 		$post_meta = get_post_meta($post_id, $meta_key, true);
-
+		
 		$video_class = !empty($post_meta) && tmpcoder_is_availble() ? 'tmpcoder-grid-video-wrap' : 'tmpcoder-grid-image-wrap';			
 
 		$src = Group_Control_Image_Size::get_attachment_image_src( $id, 'layout_image_crop', $settings );
@@ -8784,13 +8788,22 @@ class TMPCODER_Post_Grid extends Widget_Base {
 	        $main_thumbnail_html = str_replace('<img ', "<img class='" . esc_attr($custom_image_class) . "' ", $main_thumbnail_html);
 	    }
 		
-		if ( get_post_meta(get_the_ID(), 'tmpcoder_secondary_image_id') && !empty(get_post_meta(get_the_ID(), 'tmpcoder_secondary_image_id')) ) {
+		// if ( get_post_meta(get_the_ID(), 'tmpcoder_secondary_image_id') && !empty(get_post_meta(get_the_ID(), 'tmpcoder_secondary_image_id')) ) {
+		$key = 'tmpcoder_meta_secondary_image_' . $settings['query_source'];
+
+		if ( 
+			get_post_meta( get_the_ID(), 'tmpcoder_secondary_image_id' ) 
+			&& !empty( get_post_meta( get_the_ID(), 'tmpcoder_secondary_image_id' ) ) 
+			&& tmpcoder_get_settings( $key ) === 'on'
+		) {
+
 			$src2 = Group_Control_Image_Size::get_attachment_image_src( get_post_meta(get_the_ID(), 'tmpcoder_secondary_image_id')[0], 'layout_image_crop', $settings );
 			$second_image_id = get_post_meta(get_the_ID(), 'tmpcoder_secondary_image_id', true);
 			$second_image_original_class = 'wp-image-'.$second_image_id;
 			$settings[ 'layout_image_crop' ] = ['id' => $second_image_id];
 			$secondory_thumbnail_html = Group_Control_Image_Size::get_attachment_image_html( $settings, 'layout_image_crop' );
 		} else {
+			$settings['secondary_img_on_hover'] = 'no';
 			$secondory_thumbnail_html = '';
 			$src2 = '';
 			$second_image_original_class = '';
@@ -8818,9 +8831,11 @@ class TMPCODER_Post_Grid extends Widget_Base {
 
 				if ( 'yes' == $settings['grid_lazy_loading'] ) {
 
-					echo '<img data-no-lazy="1" src="'. esc_url(TMPCODER_ADDONS_ASSETS_URL) . 'images/icon-256x256.png" alt="'. esc_attr( $alt ) .'" class="grid-main-image tmpcoder-hidden-image tmpcoder-anim-timing-'. esc_attr($settings[ 'image_effects_animation_timing']) .'">';
+					$lazy_loader_image_url = !empty($settings['grid_lazy_loader']['url']) ? $settings['grid_lazy_loader']['url'] : TMPCODER_ADDONS_ASSETS_URL . 'images/icon-256x256.png';
 
-					if ( 'yes' == $settings['secondary_img_on_hover'] ) {
+					echo '<img data-no-lazy="1" src="' . esc_url($lazy_loader_image_url) . '" alt="' . esc_attr($alt) . '" class="testing grid-main-image tmpcoder-hidden-image tmpcoder-anim-timing-' . esc_attr($settings['image_effects_animation_timing']) . '">';
+
+					if ( 'yes' == $settings['secondary_img_on_hover'] && !empty($src2) ) {
 
 						if (strpos($secondory_thumbnail_html, 'class=') !== false) {
 					        $secondory_thumbnail_html = preg_replace("/class='(.*?)'/", " class='" . esc_attr('$1 ' . $custom_image_class.' tmpcoder-hidden-img secondary-image ') . "'", $secondory_thumbnail_html);
@@ -8835,7 +8850,7 @@ class TMPCODER_Post_Grid extends Widget_Base {
 
 					echo wp_kses_post($main_thumbnail_html);
 					
-					if ( 'yes' == $settings['secondary_img_on_hover'] ) {
+					if ( 'yes' == $settings['secondary_img_on_hover'] && !empty($src2) ) {
 						
 						if (strpos($secondory_thumbnail_html, 'class=') !== false) {
 					        $secondory_thumbnail_html = preg_replace("/class='(.*?)'/", " class='" . esc_attr('$1 ' . $custom_image_class.' tmpcoder-hidden-img secondary-image ') . "'", $secondory_thumbnail_html);

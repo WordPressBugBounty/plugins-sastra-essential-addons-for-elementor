@@ -95,40 +95,39 @@ class TMPCODER_Templates_Library_Sections {
                     $template_slug_for_image = !empty($data[$template_slug]['image']) ? $data[$template_slug]['image'] : TMPCODER_ADDONS_ASSETS_URL. 'images/placeholder.png';
 
 					// $template_slug 	 = $slug .'-'. $data[$i];
-					// $template_class  = substr($template_slug, -4) == '-pro' && !tmpcoder_is_availble() ? ' tmpcoder-tplib-pro-wrap' : '';
-					$template_class  = substr($template_slug, -4) == '-pro' ? ' tmpcoder-tplib-pro-wrap' : '';
+					$template_class  = substr($template_slug, -4) == '-pro' && !tmpcoder_is_availble() ? ' tmpcoder-tplib-pro-wrap' : '';
+					// $template_class  = substr($template_slug, -4) == '-pro' ? ' tmpcoder-tplib-pro-wrap' : '';
 					$template_class .= strpos($template_slug, 'woo') && !class_exists( 'WooCommerce' ) ? ' tmpcoder-tplib-woo-wrap' : '';
 
-					// if (defined('TMPCODER_ADDONS_PRO_VERSION') && tmpcoder_is_availble()) {
-					// 	$template_class .= ' tmpcoder-tplib-pro-active';
-					// }
+					if (defined('TMPCODER_ADDONS_PRO_VERSION') && tmpcoder_is_availble()) {
+						$template_class .= ' tmpcoder-tplib-pro-active';
+					}
+					?>
 
-			?>
+					<div class="tmpcoder-tplib-template-wrap<?php echo esc_attr($template_class); ?>" data-title="<?php echo esc_attr(strtolower($title)); ?>">
+						<div class="tmpcoder-tplib-template" data-slug="<?php echo esc_attr($template_slug); ?>" data-filter="<?php echo esc_attr($slug); ?>" data-preview-type="image">
+							<div class="tmpcoder-tplib-template-media">
+								<img class="tmpcoder-lazyload-image" src="<?php echo esc_url(TMPCODER_ADDONS_ASSETS_URL.'images/lazy-loader.gif'); ?>" data-src="<?php echo esc_url($template_slug_for_image); ?>">
+								<div class="tmpcoder-tplib-template-media-overlay">
+									<i class="eicon-eye"></i>
+								</div>
+							</div>
+							<div class="tmpcoder-tplib-template-footer elementor-clearfix">
+								<?php $title_v = $template_title;//$title .' '. esc_html($data[$i]);?>
+								<?php if ( !defined('TMPCODER_ADDONS_PRO_VERSION') && ! tmpcoder_is_availble() ) : ?>
+									<h3><?php echo substr($template_slug, -4) == '-pro' ? esc_html(str_replace('-pro', ' Pro', $title_v)) : esc_html(str_replace('-zzz', ' Pro', $title_v)); ?></h3>
+								<?php else : ?>
+									<h3><?php echo substr($template_slug, -4) == '-pro' ? esc_html(str_replace('-pro', '', $title_v)) : esc_html(str_replace('-zzz', '', $title_v)); ?></h3>
+								<?php endif; ?>
 
-				<div class="tmpcoder-tplib-template-wrap<?php echo esc_attr($template_class); ?>" data-title="<?php echo esc_attr(strtolower($title)); ?>">
-					<div class="tmpcoder-tplib-template" data-slug="<?php echo esc_attr($template_slug); ?>" data-filter="<?php echo esc_attr($slug); ?>" data-preview-type="image">
-						<div class="tmpcoder-tplib-template-media">
-							<img class="tmpcoder-lazyload-image" src="<?php echo esc_url(TMPCODER_ADDONS_ASSETS_URL.'images/lazy-loader.gif'); ?>" data-src="<?php echo esc_url($template_slug_for_image); ?>">
-							<div class="tmpcoder-tplib-template-media-overlay">
-								<i class="eicon-eye"></i>
+								<?php if ( substr($template_slug, -4) == '-pro' && !tmpcoder_is_availble() ) : ?>
+									<span class="tmpcoder-tplib-insert-template tmpcoder-tplib-insert-pro"><i class="eicon-flash"></i> <span><?php esc_html_e( 'Go Pro', 'sastra-essential-addons-for-elementor' ); ?></span></span>
+								<?php else : ?>
+									<span class="tmpcoder-tplib-insert-template"><i class="eicon-file-download"></i> <span><?php esc_html_e( 'Insert', 'sastra-essential-addons-for-elementor' ); ?></span></span>
+								<?php endif; ?>
 							</div>
 						</div>
-						<div class="tmpcoder-tplib-template-footer elementor-clearfix">
-							<?php $title_v = $template_title;//$title .' '. esc_html($data[$i]);?>
-							<?php if ( !defined('TMPCODER_ADDONS_PRO_VERSION') && ! tmpcoder_is_availble() ) : ?>
-								<h3><?php echo substr($template_slug, -4) == '-pro' ? esc_html(str_replace('-pro', ' Pro', $title_v)) : esc_html(str_replace('-zzz', ' Pro', $title_v)); ?></h3>
-							<?php else : ?>
-								<h3><?php echo substr($template_slug, -4) == '-pro' ? esc_html(str_replace('-pro', '', $title_v)) : esc_html(str_replace('-zzz', '', $title_v)); ?></h3>
-							<?php endif; ?>
-
-							<?php if ( substr($template_slug, -4) == '-pro' && !tmpcoder_is_availble() ) : ?>
-								<span class="tmpcoder-tplib-insert-template tmpcoder-tplib-insert-pro"><i class="eicon-flash"></i> <span><?php esc_html_e( 'Go Pro', 'sastra-essential-addons-for-elementor' ); ?></span></span>
-							<?php else : ?>
-								<span class="tmpcoder-tplib-insert-template"><i class="eicon-file-download"></i> <span><?php esc_html_e( 'Insert', 'sastra-essential-addons-for-elementor' ); ?></span></span>
-							<?php endif; ?>
-						</div>
 					</div>
-				</div>
 
 				<?php endfor; ?>
 			<?php endforeach;?>

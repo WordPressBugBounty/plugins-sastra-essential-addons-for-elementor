@@ -3,6 +3,7 @@
 use Elementor\Core\Files\CSS\Post as Post_CSS;
 use Elementor\Utils;
 use Elementor\Group_Control_Image_Size;
+use TMPCODER\Classes\Pro_Modules;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -123,12 +124,13 @@ if (!function_exists('tmpcoder_add_cart_single_product_ajax')) {
 
 add_action('woocommerce_after_mini_cart', 'tmpcoder_woocommerce_after_mini_cart');
 
-function tmpcoder_woocommerce_after_mini_cart(){
+function tmpcoder_woocommerce_after_mini_cart() {
 	echo '<div style="display: none;">
-		<input class="refresh-tmpcoder-cart-qty" type="hidden" value="'. esc_attr(WC()->cart->get_cart_contents_count()). '" />
-		<div class="refresh-tmpcoder-cart-total">'. esc_html(WC()->cart->get_cart_total()).'</div>
+		<input class="refresh-tmpcoder-cart-qty" type="hidden" value="' . esc_attr(WC()->cart->get_cart_contents_count()) . '" />
+		<div class="refresh-tmpcoder-cart-total">' . wp_kses_post(WC()->cart->get_cart_total()) . '</div>
 	</div>';
 }
+
 
 /* Update Page Meta Data Start */
 
@@ -865,6 +867,11 @@ function tmpcoder_get_shop_url( $settings ) {
 		$url = add_query_arg( 'psearch', sanitize_text_field(wp_unslash( $_GET['psearch'] )), $url );// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 	}
 
+	// Search
+	if ( isset( $_GET['s'] ) ) {// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$url = add_query_arg( 's', sanitize_text_field(wp_unslash( $_GET['s'] )), $url );// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	}
+
 	// Rating
 	if ( isset( $_GET['filter_rating'] ) ) {// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		$url = add_query_arg( 'filter_rating', sanitize_text_field(wp_unslash( $_GET['filter_rating'] )), $url );// phpcs:ignore WordPress.Security.NonceVerification.Recommended
@@ -1202,6 +1209,7 @@ if (!function_exists('tmpcoder_get_template_id')) {
 
 add_action( 'wp_enqueue_scripts', 'tmpcoder_redirect_upgrade_page_script');
 add_action( 'admin_enqueue_scripts', 'tmpcoder_redirect_upgrade_page_script');
+add_action( 'elementor/editor/after_enqueue_scripts', 'tmpcoder_redirect_upgrade_page_script' );
 function tmpcoder_redirect_upgrade_page_script() {
     wp_enqueue_script( 'tmpcoder-redirect-url-utils-script', TMPCODER_PLUGIN_URI .'assets/js/utils'.tmpcoder_script_suffix().'.js', ['jquery'], tmpcoder_get_plugin_version(), false );
 
@@ -1383,7 +1391,8 @@ if (!function_exists('tmpcoder_get_woocommerce_builder_modules')) {
 			// 'widget name' => ['widget-slug', 'live demo link', 'docs link', 'tag','file name','widget class','widget icon'],
 
 			'Woo Grid/Slider/Carousel' => ['woo-grid', 'woo-grid', 'woo-grid-slider-carousel', 'new','woo-product-grid.php','TMPCODER_Woo_Grid','woo-grid-1.svg'],
-			'Woo Product Grid (Classic)' => ['woo-product-grid-classic', 'woo-product-grid-classic', 'woo-product-grid-classic', 'new','woo-product-grid-classic.php','Product_Grid','woo-grid-1.svg'],
+			'Woo Product Grid (Classic)' => ['eicon-woocommerce', 'woo-product-grid-classic', 'woo-product-grid-classic', 'new','woo-product-grid-classic.php','Product_Grid','woo-grid-1.svg'],
+			// 'Woo Product Grid (Classic)' => ['woo-product-grid-classic', 'woo-product-grid-classic', 'woo-product-grid-classic', 'new','woo-product-grid-classic.php','Product_Grid','woo-grid-1.svg'],
 			'Product Title' => ['product-title', '', 'product-title', 'new','woo-product-title.php','TMPCODER_Woo_Product_Title','product-title.svg'],
 			'Product Media' => ['product-media', '', 'product-media', 'new','woo-product-media.php','TMPCODER_Product_Media','product-media.svg'],
 			'Product Media List' => ['product-media-list', '', 'product-media-list', 'new','woo-product-media-list.php','TMPCODER_Product_Media_List','product-media.svg'],
@@ -1476,7 +1485,7 @@ if (!function_exists('tmpcoder_get_registered_modules')) {
 			'Breadcrumb' => ['Breadcrumb', '', 'breadcrumb', 'new','breadcrumb.php','TMPCODER_Breadcrumb','breadcrumb.svg'],
 			'Archive List' => ['archive-list', '', 'archive-list', 'new','archive-list.php','TMPCODER_Archive_List','page-list.svg'],
             'Recent Post List' => ['recent-post-list', 'recent-post-list', 'recent-post-list', 'new','recent-post-list.php','TMPCODER_Post_List','page-list.svg'],
-            'Elementor Template' => ['elementor-template', '', '', 'new','elementor-template.php','TMPCODER_Elementor_Template','elementor-template.svg'],
+            'Global Template' => ['elementor-template', '', 'global-templates', 'new','elementor-template.php','TMPCODER_Elementor_Template','elementor-template.svg'],
 		];
 	}
 }
@@ -1522,8 +1531,51 @@ if (!function_exists('tmpcoder_get_all_widgtes')) {
 function tmpcoder_get_widget_lists(){
 
 	$array = [];
-	foreach (tmpcoder_get_all_widgtes() as $key => $value) {
- 		array_push($array, 'tmpcoder-'.$value[0]);
+
+	$pro_widgets = (tmpcoder_is_availble() && defined( 'TMPCODER_ADDONS_PRO_VERSION' )) ? Pro_Modules::tmpcoder_get_woocommerce_builder_modules() : [];
+
+	$tmpcoder_get_all_widgtes = tmpcoder_get_all_widgtes();	
+
+	if ( tmpcoder_is_availble() ) {
+		$tmpcoder_get_all_widgtes = array_merge( $tmpcoder_get_all_widgtes, [
+			'Custom Field' => ['custom-field-pro','','','new','custom-field-pro.php','TMPCODER_Custom_Field_Pro']
+		] );
+	}
+
+	$all_array = array_merge($tmpcoder_get_all_widgtes, $pro_widgets);
+
+	foreach ($all_array as $key => $value) {
+
+		if ($value[0] == 'reading-progress-bar') {
+			$value[0] = str_replace('-pro', '-pro', $value[0]);
+		}
+		else
+		{
+			$value[0] = str_replace('-pro', '', $value[0]);
+		}
+
+ 		if ($value[0] == 'Breadcrumb') {
+ 			array_push($array, 'tmpcoder_'.strtolower($value[0]));
+ 		}elseif ($value[0] == 'eicon-woocommerce') {
+ 			array_push($array, $value[0]);
+ 		}elseif ($value[0] == 'product-title' || $value[0] == 'product-price' || $value[0] == 'product-add-to-cart' || $value[0] == 'product-content') {
+
+ 			if ($value[0] == 'product-add-to-cart') {
+ 				$value[0] = str_replace('product-', '', $value[0]);
+ 			}
+ 			array_push($array, 'tmpcoder-woo-'.$value[0]);
+
+ 		}elseif ($value[0] == 'product-excerpt') {
+ 			array_push($array, 'tmpcoder-woo-short-description');
+ 		}elseif ($value[0] == 'my-account-page') {
+ 			array_push($array, 'tmpcoder-my-account-pro');
+ 		}elseif ($value[0] == 'post-thumbnail') {
+ 			array_push($array, 'tmpcoder-post-media');
+ 		}elseif ($value[0] == 'logo') {
+ 			array_push($array, 'site-logo');
+ 		}else{
+ 			array_push($array, 'tmpcoder-'.$value[0]);
+ 		}
  	}
  	return $array;
 }
@@ -1549,7 +1601,7 @@ function tmpcoder_get_elementor_pages(){
 	$page = !empty($_GET['page']) ? sanitize_text_field( wp_unslash($_GET['page']) ) : '';
 	
 	$tmpcoder_widgets_list = tmpcoder_get_widget_lists();
-	
+
 	if ( empty( $post_ids ) ) {
 		wp_send_json_error(esc_html('Empty post list.'));
 	}
@@ -1572,7 +1624,6 @@ function tmpcoder_get_elementor_pages(){
 			foreach($get_widgets as $key => $value ){	
 
 				if(!empty($value) && in_array( $value, $tmpcoder_widgets_list ) ){						
-
 					$countWidgets[$value] = (isset($countWidgets[$value]) ? absint($countWidgets[$value]) : 0) + 1;
 				}
 			}
@@ -1580,10 +1631,28 @@ function tmpcoder_get_elementor_pages(){
 	}	
 
 	foreach ($tmpcoder_widgets_list as $key => $value) {
-		if (!in_array($countWidgets[$value], $countWidgets)) {
-			$desableWidgets = str_replace('tmpcoder-', 'tmpcoder-element-', $value);			
+		
+		if (!isset($countWidgets[$value]) || !in_array($countWidgets[$value], $countWidgets)) {
+
+			if ($value == 'tmpcoder_breadcrumb') {
+				$value = 'tmpcoder-Breadcrumb';
+			}if ($value == 'eicon-woocommerce') {
+				$value = 'tmpcoder-eicon-woocommerce';
+			}if ($value == 'tmpcoder-woo-product-title' || $value == 'tmpcoder-woo-product-price' || $value == 'tmpcoder-woo-product-content') {
+				$value = str_replace('woo-', '', $value);
+			}if ($value == 'tmpcoder-woo-add-to-cart') {
+				$value = 'tmpcoder-product-add-to-cart';
+			}if ($value == 'tmpcoder-woo-short-description') {
+				$value = 'tmpcoder-product-excerpt';
+			}if ($value == 'tmpcoder-my-account-pro') {
+				$value = 'tmpcoder-my-account-page';
+			}if ($value == 'tmpcoder-post-media') {
+				$value = 'tmpcoder-post-thumbnail';
+			}
+
+			$desableWidgets = str_replace('tmpcoder-', 'tmpcoder-element-', $value);
 			$unusedWidgets[] = $desableWidgets;
-			update_option($desableWidgets,'');
+			update_option($desableWidgets, '');
 		}
 	}
 
@@ -1612,16 +1681,23 @@ function tmpcoder_disabled_unused_elements( $post_id = '', $tmpcoder_widgets_lis
 		if ( empty( $meta_data ) ) {
 			return '';
 		}
-		
+	
 		$to_return = [];
 
 		\Elementor\Plugin::instance()->db->iterate_data( $meta_data, function( $element ) use ($tmpcoder_widgets_list, &$to_return) {
 
 			$page = !empty($_GET['page']) ? sanitize_text_field(wp_unslash($_GET['page'])) : '';// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			
-			if ( !empty( $element['widgetType'] ) && array_key_exists($element['widgetType'], array_flip($tmpcoder_widgets_list) ) ) {
+			$found_widget = isset($element['widgetType']) ? $element['widgetType'] : '';	
 
-				$to_return[] = $element['widgetType'];
+			$found_widget = preg_replace('/-pro$/', '', $found_widget);
+
+			if ($found_widget == 'tmpcoder-my-account') {
+				$found_widget = 'tmpcoder-my-account-pro';
+			}
+
+			if ( !empty( $found_widget ) && array_key_exists($found_widget, array_flip($tmpcoder_widgets_list) ) ) {
+				$to_return[] = $found_widget;
 			}
 		});
 	}	
@@ -1799,6 +1875,9 @@ if ( !function_exists('tmpcoder_wp_kses_allowed_html') ){
                 'type' => true,
                 'name' => true,
                 'value' => true,
+                'style' => true,
+                'min' => true,
+                'max' => true,
                 'title' => true,
                 'id' => true,
                 'class' => true,
@@ -3241,3 +3320,177 @@ if (!empty(get_option('elementor_optimized_image_loading')) && get_option('eleme
 	    return $attr;
 	}, 20, 3 );
 } 
+
+add_filter( 'wp_kses_allowed_html', function( $allowed_tags, $context ) {
+
+    // Only apply for Elementor frontend/editor or specific contexts if needed
+    if ( in_array( $context, [ 'post', 'data', 'elementor' ] ) ) {
+
+        $allowed_tags['input'] = [
+            'type' => true,
+            'name' => true,
+            'value' => true,
+            'style' => true,
+            'min' => true,
+            'max' => true,
+            'title' => true,
+            'id' => true,
+            'class' => true,
+            'placeholder' => true,
+            'autocomplete' => true,
+            'size' => true,
+            'aria-*' => true,
+            'data-*' => true,
+            'tmpcoder-query-type' => true,
+            'tmpcoder-taxonomy-type' => true,
+            'number-of-results' => true,
+            'ajax-search' => true,
+            'show-description' => true,
+            'number-of-words' => true,
+            'show-ajax-thumbnails' => true,
+            'show-view-result-btn' => true,
+            'view-result-text' => true,
+            'no-results' => true,
+            'exclude-without-thumb' => true,
+            'link-target' => true,
+            'ajax-search-img-size' => true,
+        ];
+    }
+
+    return $allowed_tags;
+
+}, 10, 2 );
+
+add_action( 'wp_ajax_tmpcoder_mini_cart_qty', 'tmpcoder_update_cart_qty' );
+add_action( 'wp_ajax_nopriv_tmpcoder_mini_cart_qty', 'tmpcoder_update_cart_qty' );
+
+function tmpcoder_update_cart_qty() {
+    if ( isset($_POST['key'], $_POST['qty']) ) {
+        WC()->cart->set_quantity( sanitize_text_field($_POST['key']), intval($_POST['qty']), true );
+        WC()->cart->calculate_totals();
+
+        // Get values
+	    $cart_count = WC()->cart->get_cart_contents_count();
+	    $cart_subtotal = WC()->cart->get_cart_subtotal();
+
+	     // Optionally return refreshed mini-cart HTML
+	    ob_start();
+	    woocommerce_mini_cart();
+	    $mini_cart_html = ob_get_clean();
+
+	    wp_send_json_success([
+	        'cart_count'     => $cart_count,
+	        'cart_subtotal'  => $cart_subtotal,
+	        'mini_cart_html' => $mini_cart_html,
+	        'message'        => 'Cart updated successfully.',
+	    ]);
+    }
+    wp_die();
+}
+
+// =========================================================================
+
+// Taxonomy Query Args
+function get_tax_query_args() {
+    $tax_query = [];
+
+    // Filters Query
+    if ( isset($_GET['tmpcoderfilters']) ) {// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        $selected_filters = WC()->query->get_layered_nav_chosen_attributes();
+
+        if ( !empty($selected_filters) ) {
+            foreach ( $selected_filters as $taxonomy => $data ) {
+                array_push($tax_query, [
+                    'taxonomy' => $taxonomy,
+                    'field' => 'slug',
+                    'terms' => $data['terms'],
+                    'operator' => 'and' === $data['query_type'] ? 'AND' : 'IN',
+                    'include_children' => false,
+                ]);
+            }
+        }
+
+        // Product Categories
+        if ( isset($_GET['filter_product_cat']) ) {// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+            array_push($tax_query, [
+                'taxonomy' => 'product_cat',
+                'field' => 'slug',
+                'terms' => explode( ',', sanitize_text_field(wp_unslash($_GET['filter_product_cat'])) ),// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+                'operator' => 'IN',
+                'include_children' => true, // test this needed or not for hierarchy
+            ]);
+        }
+
+        // Product Tags
+        if ( isset($_GET['filter_product_tag']) ) {// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+            array_push($tax_query, [
+                'taxonomy' => 'product_tag',
+                'field' => 'slug',
+                'terms' => explode( ',', sanitize_text_field(wp_unslash($_GET['filter_product_tag'])) ),// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+                'operator' => 'IN',
+                'include_children' => true, // test this needed or not for hierarchy
+            ]);
+        } 
+
+    // Grid Query
+    }
+
+    // Filter by rating.
+    if ( isset( $_GET['filter_rating'] ) ) {// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+
+        $product_visibility_terms  = wc_get_product_visibility_term_ids();
+        
+        $filter_rating = array_filter( array_map( 'absint', explode( ',', sanitize_text_field(wp_unslash( $_GET['filter_rating'] )) ) ) );// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        $rating_terms  = array();
+        for ( $i = 1; $i <= 5; $i ++ ) {
+            if ( in_array( $i, $filter_rating, true ) && isset( $product_visibility_terms[ 'rated-' . $i ] ) ) {
+                $rating_terms[] = $product_visibility_terms[ 'rated-' . $i ];
+            }
+        }
+        if ( ! empty( $rating_terms ) ) {
+            $tax_query[] = array(
+                'taxonomy'      => 'product_visibility',
+                'field'         => 'term_taxonomy_id',
+                'terms'         => $rating_terms,
+                'operator'      => 'IN',
+            );
+        }
+    }
+
+    return $tax_query;
+}
+
+if (class_exists( 'WooCommerce' )) {
+ 	
+	if (isset($_GET['tmpcoderfilters'])) {
+		add_action( 'woocommerce_product_query', 'tmpcoder_custom_woocommerce_tax_query' );
+	}
+} 
+
+function tmpcoder_custom_woocommerce_tax_query( $query ) {
+    // Ensure this is the main product query and not in the admin area
+    if ( ! $query->is_main_query() || is_admin() ) {
+        return;
+    }
+
+    $is_product_archive = is_product_tag() || is_product_category() || is_shop() || is_product_taxonomy();
+
+    if( ( ( is_archive() && $is_product_archive ) || is_search() ) ){
+
+	    // Get the existing tax_query, if any
+	    $tax_query = $query->get( 'tax_query' );
+
+	    // If no tax_query exists, initialize it as an empty array
+	    if ( ! is_array( $tax_query ) ) {
+	        $tax_query = array();
+	    }
+
+	    if (!empty(get_tax_query_args())) {
+		    // Add your custom tax_query arguments
+		    $tax_query[] = get_tax_query_args();
+	    }
+
+	    // Set the modified tax_query back to the query object
+	    $query->set( 'tax_query', $tax_query );
+    }
+}
