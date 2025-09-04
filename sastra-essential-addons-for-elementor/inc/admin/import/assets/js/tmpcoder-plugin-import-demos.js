@@ -259,7 +259,8 @@ const import_xml = function(file_url, is_retry=false, tmpcoder_cpt_data='') {
 
 const tmpcoder_wxr_import = function(url) {
 
-    var progres = getRandomInt(51,70);
+    // var progres = getRandomInt(51,70);
+    var progres = 61;
     set_progress_value(progres,2);
     message_text.text(tmpcoder_ajax_object.import_site_content_message);
     message_error_message.removeAttr('style');
@@ -298,6 +299,10 @@ const tmpcoder_wxr_import = function(url) {
 
                     jQuery('.tmpcoder-retry-import').attr('data-xml-url',update_url);
                     jQuery('.error-message-text-button').css('display','flex');
+
+                    setTimeout(function(){
+                        jQuery('.tmpcoder-retry-import').trigger('click');
+                    },1000);
                 }
                 break;
         }
@@ -323,6 +328,10 @@ const tmpcoder_wxr_import = function(url) {
 
         jQuery('.tmpcoder-retry-import').attr('data-xml-url',update_url);          
         jQuery('.error-message-text-button').css('display','flex');          
+
+        setTimeout(function(){
+            jQuery('.tmpcoder-retry-import').trigger('click');
+        },1000);
     };
 
     evtSource.addEventListener( 'log', function ( message ) {
@@ -1099,8 +1108,8 @@ const fiterFreeProTemplates = function( price ) {
 jQuery(document).on('click','.tmpcoder-retry-import', function(e){
     var retry_url = jQuery(this).attr('data-xml-url');    
     tmpcoder_wxr_import(retry_url);
-    jQuery(this).parent().css('display','none');    
-    jQuery(this).parent().next().css('display','none');    
+    // jQuery(this).parent().css('display','none');    
+    // jQuery(this).parent().next().css('display','none');    
 });
 
 // installPluginViaAjax('revslider');

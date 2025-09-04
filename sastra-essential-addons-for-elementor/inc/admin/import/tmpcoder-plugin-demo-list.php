@@ -283,9 +283,9 @@ function tmpcoder_import_demo_list(){
                         </ul>
                         <div class="error-message-text-button">
                             <p class="display-error-message"></p>
-                            <button class="tmpcoder-retry-import button button-primary"><?php esc_html_e('Resume Import Procces', 'sastra-essential-addons-for-elementor') ?></button>
+                            <button class="tmpcoder-retry-import button button-primary" style="display:none;"><?php esc_html_e('Resume Import Procces', 'sastra-essential-addons-for-elementor') ?></button>
                         </div>
-                        <a class="error-message-text-button" href="<?php echo esc_url(TMPCODER_RESUME_IMPORT_PROCESS_DOC_LINK); ?>" target="_blank"><?php esc_html_e('Need Help ?', 'sastra-essential-addons-for-elementor') ?>
+                        <a class="error-message-text-button" style="display:none;" href="<?php echo esc_url(TMPCODER_RESUME_IMPORT_PROCESS_DOC_LINK); ?>" target="_blank"><?php esc_html_e('Need Help ?', 'sastra-essential-addons-for-elementor') ?>
                         </a>
                         <div class="progress-counter"> <?php esc_html_e('0/5 completed', 'sastra-essential-addons-for-elementor') ?> </div>
                         <div class="progress">
@@ -367,7 +367,8 @@ if ( ! function_exists( 'tmpcoder_demo_import_scripts_func' ) ) :
             'delete_previews_demo_message' => __('Delete previously imported demo...', 'sastra-essential-addons-for-elementor'),
             'import_site_content_message' => __('Importing Site Content...', 'sastra-essential-addons-for-elementor'),
             'invalid_request_url_message' => __('! Invalid Request URL', 'sastra-essential-addons-for-elementor'),
-            'import_site_content_faild_message' => __('Importing Site Content Failed.- Server Timeout Error', 'sastra-essential-addons-for-elementor'),
+            // 'import_site_content_faild_message' => __('Importing Site Content Failed.- Server Timeout Error', 'sastra-essential-addons-for-elementor'),
+            'import_site_content_faild_message' => __('Due to your server’s slow speed, the import process may take longer to complete, so please wait a little while.', 'sastra-essential-addons-for-elementor'),
             'import_site_options_message' => __('Importing Site Options...', 'sastra-essential-addons-for-elementor'),
             'import_site_options_failed_message' => __('Failed - Importing Site Options...', 'sastra-essential-addons-for-elementor'),
             'import_elementor_options_message' => __('Importing Elementor Options...', 'sastra-essential-addons-for-elementor'),

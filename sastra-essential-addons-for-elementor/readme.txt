@@ -1,7 +1,7 @@
 === Spexo Addons for Elementor - Free Elementor Addons, Widgets and Templates ===
 Contributors: templatescoderthemes, skywebtech
 Tags: elementor, elementor addons, elementor templates, elementor widgets, woocommerce elementor
-Stable tag: 1.0.24
+Stable tag: 1.0.25
 Requires at least: 5.0
 Tested up to: 6.8
 Requires PHP: 7.4
@@ -308,6 +308,11 @@ Feel free to contact us anytime via [Support](https://templatescoder.com/support
 
 == Changelog ==
 
+= v1.0.25 - 2025-09-03 =
+
+* Improved : Button Widget Compatibility with the latest Elementor versions.
+* Enhanced : Import process with automated resume functionality, allowing automatic retries to complete the import even on slower hosting environments.
+
 = v1.0.24 - 2025-08-22 =
 
 * Added : Text stroke option in content ticker widget 
@@ -379,12 +384,5 @@ Feel free to contact us anytime via [Support](https://templatescoder.com/support
 * Enhanced : Dynamic CSS generation method to resolve issues caused by permission restrictions, ensuring more reliable stylesheet rendering.
 * Enhanced : Priority for enqueueing header CSS to prevent header content from flickering or blanking after page load.
 * Fixed : Issue where images wouldn't load after clicking "Load More Posts" when W3 Total Cache's lazy load feature was enabled.
-
-= v1.0.19 - 2025-03-06 =
-
-* Added : 'Edit' button on hover for Header, Footer, Single Post, and Single Product layouts in Elementor editor, redirecting the user to the corresponding layout's editing screen upon clicking the button.
-* Improved : Elementor editor preview to properly reflect the single post layout as it appears on the frontend when editing a specific blog post.
-* Tweak : Removed single post layout display when editing the header & Footer builder in Elementor editor to avoid layout conflicts.
-* Fixed : Removed unwanted content when printing single blog content on the frontend.
 
 [See changelog for all versions.](https://spexoaddons.com/changelog/)
