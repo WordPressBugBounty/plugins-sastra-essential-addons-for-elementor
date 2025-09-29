@@ -283,9 +283,131 @@ tmpcoder.hooks.addAction("init", "ea", function() {
 		}
 	};
 
+	// Slider functionality
+	const initProductSlider = function($scope, $) {
+		const $slider = $scope.find('.tmpcoder-product-slider');
+		const $container = $scope.find('#tmpcoder-product-grid');
+		const $sliderContainer = $scope.find('.tmpcoder-slider-container');
+			
+		// console.log('initProductSlider');
+
+		if ($slider.length && $container.hasClass('slider')) {
+			// Count total products
+			const totalProducts = $slider.find('.product').length;
+			const columns = parseInt($container.data('slider-columns')) || 3;
+			const tabletColumns = parseInt($container.data('slider-columns-tablet')) || 2;
+			const mobileColumns = parseInt($container.data('slider-columns-mobile')) || 1;
+			
+			// console.log('Total products:', totalProducts, 'Columns:', columns);
+			
+			// Get settings from data attributes
+			const settings = {
+				slidesToShow: Math.min(columns, totalProducts), // Don't show more slides than available products
+				slidesToScroll: parseInt($container.data('slider-slides-to-scroll')) || 1,
+				autoplay: $container.data('slider-autoplay') === 'yes',
+				autoplaySpeed: parseInt($container.data('slider-autoplay-speed')) || 3000,
+				pauseOnHover: $container.data('slider-pause-on-hover') === 'yes',
+				infinite: $container.data('slider-infinite-loop') === 'yes' && totalProducts > columns, // Only enable infinite if we have more products than columns
+				arrows: $container.data('slider-navigation') === 'yes',
+				dots: $container.data('slider-pagination') === 'yes',
+				centerMode: false,
+				variableWidth: false,
+				adaptiveHeight: true,
+				responsive: [
+					{
+						breakpoint: 1024,
+						settings: {
+							slidesToShow: Math.min(tabletColumns, totalProducts),
+							slidesToScroll: 1,
+							infinite: totalProducts > tabletColumns
+						}
+					},
+					{
+						breakpoint: 768,
+						settings: {
+							slidesToShow: Math.min(mobileColumns, totalProducts),
+							slidesToScroll: 1,
+							infinite: totalProducts > mobileColumns
+						}
+					}
+				]
+			};
+
+			// Custom navigation
+			if (settings.arrows) {
+				const $nav = $scope.find('.tmpcoder-slider-nav');
+				if ($nav.length) {
+					settings.prevArrow = $nav.find('.tmpcoder-slider-prev');
+					settings.nextArrow = $nav.find('.tmpcoder-slider-next');
+				}
+			}
+
+			// Custom dots container
+			if (settings.dots) {
+				const $dotsContainer = $scope.find('.tmpcoder-slider-dots');
+				if ($dotsContainer.length) {
+					settings.appendDots = $dotsContainer;
+				}
+			}
+
+			// Initialize Slick slider only if we have products
+			if (totalProducts > 0) {
+				$slider.slick(settings);
+
+				// Wait for slider to be fully initialized
+				$slider.on('init', function() {
+					// console.log('Slider fully initialized');
+					
+					// Add class to show slider container with smooth transition
+					setTimeout(function() {
+						$sliderContainer.addClass('slider-ready');
+					}, 100);
+				});
+				
+				// If slider is already initialized (sometimes happens)
+				if ($slider.hasClass('slick-initialized')) {
+					setTimeout(function() {
+						$sliderContainer.addClass('slider-ready');
+					}, 100);
+				}
+
+				// console.log('Slider initialized with settings:', settings);
+
+			} else {
+				// console.log('No products found for slider');
+				// Show container even if no products
+				$sliderContainer.addClass('slider-ready');
+			}
+
+			// Handle window resize for responsive behavior
+			$(window).on('resize', function() {
+				if ($slider.hasClass('slick-initialized')) {
+					$slider.slick('refresh');
+				}
+			});
+		}
+	};
+
+	// Enhanced productGrid function with slider support
+	const enhancedProductGrid = function($scope, $) {
+		// Call original function
+		productGrid($scope, $);
+			
+		// console.log('originalProductGrid');
+
+		// Initialize slider if layout is slider
+		const $container = $scope.find('#tmpcoder-product-grid');
+		if ($container.hasClass('slider')) {
+			// Wait for DOM to be ready
+			setTimeout(function() {
+				initProductSlider($scope, $);
+			}, 100);
+		}
+	};
+
 	if (tmpcoder.elementStatusCheck('tmpcoderProductGridLoad') && typeof window.forceFullyRun === "undefined") {
 		return;
 	}
 
-	elementorFrontend.hooks.addAction("frontend/element_ready/eicon-woocommerce.default", productGrid);
+	elementorFrontend.hooks.addAction("frontend/element_ready/eicon-woocommerce.default", enhancedProductGrid);
 });

@@ -682,6 +682,8 @@ class TMPCODER_Post_Thumbnail extends Widget_Base {
 	protected function render() {
 		// Get Settings
 		$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 
 		if (tmpcoder_is_preview_mode()) {
 			$thumb_id = get_post_thumbnail_id(tmpcoder_get_last_post_id());

@@ -1499,32 +1499,34 @@ class TMPCODER_Promo_Box extends Widget_Base {
 	protected function render() {
 		// Get Settings
 		$settings = $this->get_settings();
+		$settings_new = $this->get_settings_for_display();
+		$settings = array_merge( $settings, $settings_new );
 
-		$image_src = Group_Control_Image_Size::get_attachment_image_src( $settings['image']['id'], 'image_size', $settings );
-		$content_image_src = Group_Control_Image_Size::get_attachment_image_src( $settings['content_image']['id'], 'content_image_size', $settings );
+		$image_src = Group_Control_Image_Size::get_attachment_image_src( $settings['image']['id'] ?? 0, 'image_size', $settings );
+		$content_image_src = Group_Control_Image_Size::get_attachment_image_src( $settings['content_image']['id']??'', 'content_image_size', $settings );
 
 		if ( ! $image_src ) {
-			$image_src = $settings['image']['url'];
+			$image_src = $settings['image']['url'] ?? '';
 		}
 
 		if ( ! $content_image_src ) {
-			$content_image_src = $settings['content_image']['url'];
+			$content_image_src = $settings['content_image']['url'] ?? '';
 		}
 
 		$content_btn_element = 'div';
-		$content_link = $settings['content_link']['url'];
+		$content_link = $settings['content_link']['url'] ?? '';
 
 		if ( '' !== $content_link ) {
 
 			$content_btn_element = 'a';
 
-			$this->add_render_attribute( 'link_attribute', 'href', $settings['content_link']['url'] );
+			$this->add_render_attribute( 'link_attribute', 'href', $settings['content_link']['url'] ?? '' );
 
-			if ( $settings['content_link']['is_external'] ) {
+			if ( $settings['content_link']['is_external'] ?? false ) {
 				$this->add_render_attribute( 'link_attribute', 'target', '_blank' );
 			}
 
-			if ( $settings['content_link']['nofollow'] ) {
+			if ( $settings['content_link']['nofollow'] ?? false ) {
 				$this->add_render_attribute( 'link_attribute', 'nofollow', '' );
 			}
 		}
@@ -1584,7 +1586,7 @@ class TMPCODER_Promo_Box extends Widget_Base {
 
 				<?php if ( 'none' !== $settings['content_icon_type'] ) : ?>
 				<?php echo wp_kses_post('<div '. $this->get_render_attribute_string('icon_attribute').'>'); ?>
-					<?php if ( 'icon' === $settings['content_icon_type'] && '' !== $settings['content_icon']['value'] ) : ?>
+					<?php if ( 'icon' === $settings['content_icon_type'] && (!empty($settings['content_icon']['value']) && '' !== $settings['content_icon']['value']) ) : ?>
 
 						<?php 
 
@@ -1595,7 +1597,7 @@ class TMPCODER_Promo_Box extends Widget_Base {
 						else
 						{
 							?>
-							<i class="<?php echo esc_attr( $settings['content_icon']['value'] ); ?>"></i>
+							<i class="<?php echo esc_attr( $settings['content_icon']['value'] ?? '' ); ?>"></i>
 							<?php
 						}
 
@@ -1603,7 +1605,7 @@ class TMPCODER_Promo_Box extends Widget_Base {
 
 					<?php elseif ( 'image' === $settings['content_icon_type'] && $content_image_src ) : ?>
 						<?php 
-							$settings[ 'layout_image_crop' ] = ['id' => $settings['content_image']['id']];
+							$settings[ 'layout_image_crop' ] = ['id' => $settings['content_image']['id'] ?? 0];
 							$content_image = Group_Control_Image_Size::get_attachment_image_html( $settings, 'layout_image_crop' );
 							echo wp_kses_post($content_image);
 						?>
@@ -1613,7 +1615,7 @@ class TMPCODER_Promo_Box extends Widget_Base {
 
 				<?php
 
-				if ( '' !== $settings['content_title'] ) {
+				if ( !empty($settings['content_title']) && '' !== $settings['content_title'] ) {
 
 					echo wp_kses_post('<'. esc_attr( tmpcoder_validate_html_tag($settings['content_title_tag']) ) .' '. $this->get_render_attribute_string( 'title_attribute' ) .'>');
 					if ( 'title' === $settings['content_link_type'] || 'btn-title' === $settings['content_link_type']  ) {
@@ -1631,7 +1633,7 @@ class TMPCODER_Promo_Box extends Widget_Base {
 
 				?>
 
-				<?php if ( '' !== $settings['content_description'] ) : ?>
+				<?php if ( !empty($settings['content_description']) && '' !== $settings['content_description'] ) : ?>
 					<?php echo wp_kses_post('<div '. $this->get_render_attribute_string( 'description_attribute' ).'>'); ?>
 						<?php echo wp_kses_post('<p>'. $settings['content_description'] .'</p>'); ?>	
 					</div>						
@@ -1641,11 +1643,11 @@ class TMPCODER_Promo_Box extends Widget_Base {
 					<?php echo wp_kses_post('<div '. $this->get_render_attribute_string( 'btn_attribute' ).'>'); ?>
                     <?php echo wp_kses_post('<'. esc_html($content_btn_element).' class="tmpcoder-promo-box-btn" '. $this->get_render_attribute_string( 'link_attribute' ).'>');?>
 
-							<?php if ( '' !== $settings['content_btn_text'] ) : ?>
+							<?php if ( !empty($settings['content_btn_text']) && '' !== $settings['content_btn_text'] ) : ?>
 							<span class="tmpcoder-promo-box-btn-text"><?php echo esc_html($settings['content_btn_text']); ?></span>		
 							<?php endif; ?>
 
-							<?php if ( '' !== $settings['content_btn_icon']['value'] ) : ?>
+							<?php if ( !empty($settings['content_btn_icon']['value']) && '' !== $settings['content_btn_icon']['value'] ) : ?>
 							<span class="tmpcoder-promo-box-btn-icon">
 
 								<?php

@@ -3,10 +3,10 @@
  * Plugin Name: Spexo Addons for Elementor
  * Plugin URI: http://spexoaddons.com/
  * Description: Spexo Addons for Elementor is all in one solution for complete starter sites, single page templates, blocks & images. This plugin offers additional features needed by our theme.
- * Version: 1.0.25
+ * Version: 1.0.26
  * Author: TemplatesCoder
  * Author URI:  https://templatescoder.com/
- * Elementor tested up to: 3.28.3
+ * Elementor tested up to: 3.31.3
  * Text Domain: sastra-essential-addons-for-elementor
  * License: GPLv3
  *
@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 $theme = (is_object(wp_get_theme()->parent())) ? wp_get_theme()->parent() : wp_get_theme();
 
 if ( ! defined( 'TMPCODER_PLUGIN_VER' ) ) {
-    define( 'TMPCODER_PLUGIN_VER', '1.0.25' );
+    define( 'TMPCODER_PLUGIN_VER', '1.0.26' );
 }
 
 if ( ! defined( 'TMPCODER_PLUGIN_NAME' ) ) {

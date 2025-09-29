@@ -45,7 +45,9 @@ class TMPCODER_Image_Accordion extends Widget_Base {
         $depends = [ 'tmpcoder-lightgallery' => true, 'tmpcoder-image-accordion' => true];
 
 		if ( ! tmpcoder_elementor()->preview->is_preview_mode() ) {
-			$settings = $this->get_settings_for_display();
+			$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 
 			$filtered = array_filter($settings['accordion_elements'], function($element) {
 			    return isset($element['element_select']) && $element['element_select'] === 'lightbox';
@@ -64,7 +66,9 @@ class TMPCODER_Image_Accordion extends Widget_Base {
 		$depends = [ 'tmpcoder-animations-css' => true, 'tmpcoder-link-animations-css' => true, 'tmpcoder-button-animations-css' => true, 'tmpcoder-lightgallery-css' => true, 'tmpcoder-image-accordion' => true];
 
 		if ( ! tmpcoder_elementor()->preview->is_preview_mode() ) {
-			$settings = $this->get_settings_for_display();
+			$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 
 			$filtered = array_filter($settings['accordion_elements'], function($element) {
 			    return isset($element['element_select']) && $element['element_select'] === 'lightbox';
@@ -473,9 +477,7 @@ class TMPCODER_Image_Accordion extends Widget_Base {
 				'render_type' => 'template',
 				'default' => [
 					'url' => TMPCODER_ADDONS_ASSETS_URL . 'images/according-image-1.jpg',
-				],
-				'selectors' => [
-					'{{WRAPPER}} {{CURRENT_ITEM}} .tmpcoder-accordion-background' => 'background-image: url({{URL}})',
+					'id' => 0,
 				],
 			]
 		);
@@ -2196,7 +2198,7 @@ class TMPCODER_Image_Accordion extends Widget_Base {
 		echo wp_kses_post('<div class="tmpcoder-img-accordion-hover-bg '. $this->get_animation_class( $settings, 'overlay' ) .'">');
 
 			// if ( tmpcoder_is_availble() ) {
-			// 	if ( '' !== $settings['overlay_image']['url'] ) {
+			// 	if ( !empty($settings['overlay_image']['url']) && '' !== $settings['overlay_image']['url'] ) {
 			// 		echo '<img src="'. esc_url( $settings['overlay_image']['url'] ) .'">';
 			// 	}
 			// }
@@ -2319,7 +2321,7 @@ class TMPCODER_Image_Accordion extends Widget_Base {
 					}
 	
 					// Lightbox Icon
-					if( '' != $settings['element_lightbox_icon'] ) {
+					if( (!empty($settings['element_lightbox_icon']) && '' != $settings['element_lightbox_icon']) ) {
 						if (is_array($settings['element_lightbox_icon']['value'])) {
 
 							echo '<i class="tmpcoder-img-accordion-extra-icon-right">';
@@ -2407,7 +2409,9 @@ class TMPCODER_Image_Accordion extends Widget_Base {
 
 
     protected function render() {
-		$settings = $this->get_settings_for_display();
+		$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 
 		if ( ! tmpcoder_is_availble() ) {
 			$settings['lightbox_popup_thumbnails'] = '';
@@ -2467,20 +2471,25 @@ class TMPCODER_Image_Accordion extends Widget_Base {
 				break;
 			}
 			
-			if ( !empty($item['accordion_item_bg_image']['id']) ) {
-				$this->item_bg_image_url = Group_Control_Image_Size::get_attachment_image_src( $item['accordion_item_bg_image']['id'], 'accordion_image_size', $settings );
-			} elseif ( !empty($item['accordion_item_bg_image']['url']) ) {
-				$this->item_bg_image_url = $item['accordion_item_bg_image']['url'];
+			// Skip if item is not valid array
+			if ( !is_array($item) ) {
+				continue;
+			}
+			
+			if ( isset($item['accordion_item_bg_image']) && !empty($item['accordion_item_bg_image']['id']) ) {
+				$this->item_bg_image_url = Group_Control_Image_Size::get_attachment_image_src( $item['accordion_item_bg_image']['id'] ?? 0, 'accordion_image_size', $settings );
+			} elseif ( isset($item['accordion_item_bg_image']) && !empty($item['accordion_item_bg_image']['url']) ) {
+				$this->item_bg_image_url = $item['accordion_item_bg_image']['url'] ?? '';
 			} else {
 				$this->item_bg_image_url = TMPCODER_ADDONS_ASSETS_URL . 'images/according-image-1.jpg';
 			}
 
 			$layout['activeItem'] = [
 				'activeWidth' => isset($settings['accordion_active_item_style']['size']) ? $settings['accordion_active_item_style']['size'] : '',
-				'defaultActive' => $settings['default_active'],
-				'interaction' => tmpcoder_is_availble() ? $settings['accordion_interaction'] : 'hover',
-				'overlayLink' => 'yes' === $item['wrapper_link'] && isset($item['accordion_btn_url']) ? $item['accordion_btn_url']['url'] : '',
-				'overlayLinkTarget' => isset($item['accordion_btn_url']) && $item['accordion_btn_url']['is_external'] === 'on' ? '_blank' : '_self'
+				'defaultActive' => $settings['default_active'] ?? '',
+				'interaction' => tmpcoder_is_availble() ? ($settings['accordion_interaction'] ?? 'hover') : 'hover',
+				'overlayLink' => 'yes' === ($item['wrapper_link'] ?? '') && isset($item['accordion_btn_url']) ? ($item['accordion_btn_url']['url'] ?? '') : '',
+				'overlayLinkTarget' => isset($item['accordion_btn_url']) && ($item['accordion_btn_url']['is_external'] ?? '') === 'on' ? '_blank' : '_self'
 			];
 
 			$this->add_render_attribute( 'accordion-settings'.$key, [
@@ -2497,7 +2506,13 @@ class TMPCODER_Image_Accordion extends Widget_Base {
 			?>
 				<?php echo wp_kses_post('<div data-src="'.esc_url($this->item_bg_image_url).'" class="tmpcoder-image-accordion-item elementor-repeater-item-'.$item['_id'] .' '. $this->get_image_effect_class( $settings ).'">');?>
 
-				<div class="tmpcoder-accordion-background"></div>
+				<?php 
+				$bg_style = '';
+				if ( !empty($this->item_bg_image_url) ) {
+					$bg_style = ' style="background-image: url(' . esc_url($this->item_bg_image_url) . ');"';
+				}
+				echo '<div class="tmpcoder-accordion-background"' . $bg_style . '></div>';
+				?>
 					<?php
 						echo wp_kses_post('<div '. $render_attribute .'>');
 							$this->render_media_overlay( $settings );

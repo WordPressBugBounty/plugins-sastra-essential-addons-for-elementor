@@ -2427,10 +2427,12 @@ class TMPCODER_Post_Comments extends Widget_Base {
 
 	function tmpcoder_comment_reply_text( $link ) {
 		$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 
 		$reply_text = "Reply";
 
-		if (isset($settings['reply_text']) && $settings['reply_text'] != '') {
+		if (isset($settings['reply_text']) && !empty($settings['reply_text']) && $settings['reply_text'] != '') {
 			$reply_text = $settings['reply_text'];
 		}
 
@@ -2450,6 +2452,8 @@ class TMPCODER_Post_Comments extends Widget_Base {
 
 		//  Get Settings
 		$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 
 		$GLOBALS['tmpcoder_post_comments_widget'] = $this;
 
@@ -2536,6 +2540,8 @@ class TMPCODER_Post_Comments extends Widget_Base {
 			// Comment Form: Author, Email and Website Fields
 			add_filter( 'comment_form_default_fields', function( $defaults ) {
 				$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 				$author_label = $email_label = $url_label = '';
 				$author_ph = $email_ph = $url_ph = '';
 				$req = get_option( 'require_name_email' );
@@ -2571,7 +2577,7 @@ class TMPCODER_Post_Comments extends Widget_Base {
 				];
 
 				// Remove Website Field
-				if ( '' === $settings['comment_form_website'] ) {
+				if ( empty($settings['comment_form_website']) || '' === $settings['comment_form_website'] ) {
 					$fields['url'] = '</div>';
 				}
 
@@ -2581,6 +2587,8 @@ class TMPCODER_Post_Comments extends Widget_Base {
 			// Comment Form Defaults
 			add_filter( 'comment_form_defaults', function( $defaults ) {
 				$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 				$text_label = $text_ph = '';
 				$req = get_option( 'require_name_email' );
 
@@ -2603,7 +2611,7 @@ class TMPCODER_Post_Comments extends Widget_Base {
 				$defaults['class_form'] = 'tmpcoder-comment-form tmpcoder-cf-'. esc_attr($settings['comments_form_layout']);
 
 				// No Website Filed Class
-				if ( '' === $settings['comment_form_website'] ) {
+				if ( empty($settings['comment_form_website']) || '' === $settings['comment_form_website'] ) {
 					$defaults['class_form'] .= ' tmpcoder-cf-no-url';
 				}
 

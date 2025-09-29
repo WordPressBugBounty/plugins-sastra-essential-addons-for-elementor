@@ -3250,3 +3250,188 @@ div.tmpcoder-grid-image-wrap[data-img-on-hover="yes"]:has(img:nth-child(2)):hove
 }
 
 /* Secondary image - END */
+
+/* Slider Layout Styles - START */
+.tmpcoder-product-grid.slider {
+    position: relative;
+}
+
+.tmpcoder-slider-container {
+    position: relative;
+}
+
+.tmpcoder-product-grid.slider .products.tmpcoder-product-slider {
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+
+.tmpcoder-product-grid.slider .products.tmpcoder-product-slider .product {
+    margin-bottom: 0;
+    width: 100% !important;
+    float: none;
+    display: block;
+}
+
+/* Slider Navigation */
+.tmpcoder-slider-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+    z-index: 10;
+    pointer-events: none;
+}
+
+.tmpcoder-slider-nav button {
+    position: absolute;
+    /* background: rgba(0, 0, 0, 0.7); */
+    /* color: #fff; */
+    /* border: none; */
+    /* border-radius: 50%; */
+    /* width: 40px;
+    height: 40px; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    /* transition: all 0.3s ease; */
+    pointer-events: all;
+    /* font-size: 16px; */
+    margin: 0;
+    padding: 0;
+}
+
+.tmpcoder-slider-nav button:hover {
+    /* background: rgba(0, 0, 0, 0.9);
+    transform: scale(1.1); */
+}
+
+.tmpcoder-slider-nav button:focus {
+    outline: none;
+    /* box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5); */
+}
+
+.tmpcoder-slider-nav button i {
+    font-size: inherit;
+    line-height: 1;
+}
+
+.tmpcoder-slider-prev {
+    left: 10px;
+}
+
+.tmpcoder-slider-next {
+    right: 10px;
+}
+
+/* Slider Pagination */
+.tmpcoder-product-grid .tmpcoder-slider-dots {
+    /* text-align: center; */
+    position: relative;
+    display: block;
+    margin-top: 20px;
+
+}
+
+.tmpcoder-slider-dots .slick-dots {
+    display: flex !important;
+    /* justify-content: center;
+    align-items: center; */
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 8px;
+}
+
+.tmpcoder-slider-dots .slick-dots li {
+    margin: 0;
+    padding: 0;
+}
+
+.tmpcoder-slider-dots .slick-dots li button {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #ccc;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-indent: -9999px;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+/* .tmpcoder-slider-dots .slick-dots li.slick-active button,
+.tmpcoder-slider-dots .slick-dots li button:hover
+ {
+    background: #333;
+    transform: scale(1.2);
+} */
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .tmpcoder-slider-nav button {
+        width: 35px;
+        height: 35px;
+        font-size: 14px;
+    }
+    
+    .tmpcoder-slider-prev {
+        left: 5px;
+    }
+    
+    .tmpcoder-slider-next {
+        right: 5px;
+    }
+}
+
+@media (max-width: 480px) {
+    .tmpcoder-slider-nav button {
+        width: 30px;
+        height: 30px;
+        font-size: 12px;
+    }
+}
+
+/* Hide navigation when disabled */
+.tmpcoder-product-grid.slider[data-slider-navigation=""] .tmpcoder-slider-nav,
+.tmpcoder-product-grid.slider[data-slider-navigation="no"] .tmpcoder-slider-nav {
+    display: none;
+}
+
+/* Hide pagination when disabled */
+.tmpcoder-product-grid.slider[data-slider-pagination=""] .tmpcoder-slider-dots,
+.tmpcoder-product-grid.slider[data-slider-pagination="no"] .tmpcoder-slider-dots {
+    display: none;
+}
+
+/* Hide slider initially to prevent flash */
+.tmpcoder-product-grid.slider .products.tmpcoder-product-slider {
+    display: block;
+    margin: 0;
+    padding: 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+.tmpcoder-slider-container .tmpcoder-slider-nav {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+.slider-ready .tmpcoder-slider-nav {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Show slider after initialization */
+.tmpcoder-product-grid.slider .products.tmpcoder-product-slider.slick-initialized {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Slider Layout Styles - END */

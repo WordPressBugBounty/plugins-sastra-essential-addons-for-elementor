@@ -1231,15 +1231,15 @@ class TMPCODER_Post_Info extends Widget_Base {
 
 	// Extra Icon & Text 
 	public function render_extra_icon_text( $settings ) {
-		if ( '' !== $settings['post_info_extra_icon'] || '' !== $settings['post_info_extra_text'] ) {
+		if ( (!empty($settings['post_info_extra_icon']) && '' !== $settings['post_info_extra_icon']) || (!empty($settings['post_info_extra_text']) && '' !== $settings['post_info_extra_text']) ) {
 			echo '<span class="tmpcoder-post-info-text">';
 				// Extra Icon
-				if ( '' !== $settings['post_info_extra_icon'] ) {
+				if ( !empty($settings['post_info_extra_icon']) && '' !== $settings['post_info_extra_icon'] ) {
 					\Elementor\Icons_Manager::render_icon( $settings['post_info_extra_icon'], [ 'aria-hidden' => 'true' ] );
 				}
 
 				// Extra Text
-				if ( '' !== $settings['post_info_extra_text'] ) {
+				if ( !empty($settings['post_info_extra_text']) && '' !== $settings['post_info_extra_text'] ) {
 					echo '<span>'. esc_html( $settings['post_info_extra_text'] ) .'</span>';
 				}
 			echo '</span>';
@@ -1249,6 +1249,8 @@ class TMPCODER_Post_Info extends Widget_Base {
 	protected function render() {
 		// Get Settings
 		$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 
 		echo '<ul class="tmpcoder-post-info tmpcoder-post-info-'. esc_attr($settings['post_info_layout']) .'">';
 

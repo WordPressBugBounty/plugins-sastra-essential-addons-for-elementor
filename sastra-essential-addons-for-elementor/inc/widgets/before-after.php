@@ -713,6 +713,8 @@ class TMPCODER_Before_After extends Widget_Base {
 	protected function render() {
 		// Get Settings
 		$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 
 		if ( ! tmpcoder_is_availble() ) {
 			$settings['direction'] = 'horizontal';
@@ -737,15 +739,18 @@ class TMPCODER_Before_After extends Widget_Base {
 		// Divider
 		echo '<div class="tmpcoder-ba-image-container'. esc_attr($class) .'" data-position="'. esc_attr($settings['divider_position']) .'" data-trigger="'. esc_attr($settings['trigger']) .'">';
 			
-			// Defaults
-			if ( '' !== $settings['image_upload_1']['url'] ) {
-				$settings[ 'image_upload_1_1' ] = ['id' => $settings['image_upload_1']['id']];
-				$image_upload_1 = Group_Control_Image_Size::get_attachment_image_html( $settings, 'image_upload_1_1' );
-			}
-			if ( '' !== $settings['image_upload_2']['url'] ) {
-				$settings[ 'image_upload_2_2' ] = ['id' => $settings['image_upload_2']['id']];
-				$image_upload_2 = Group_Control_Image_Size::get_attachment_image_html( $settings, 'image_upload_2_2' );
-			}
+		// Defaults
+		$image_upload_1 = '';
+		$image_upload_2 = '';
+		
+		if ( !empty($settings['image_upload_1']['url']) && '' !== ($settings['image_upload_1']['url'] ?? '') ) {
+			$settings[ 'image_upload_1_1' ] = ['id' => $settings['image_upload_1']['id'] ?? 0];
+			$image_upload_1 = Group_Control_Image_Size::get_attachment_image_html( $settings, 'image_upload_1_1' );
+		}
+		if ( !empty($settings['image_upload_2']['url']) && '' !== ($settings['image_upload_2']['url'] ?? '') ) {
+			$settings[ 'image_upload_2_2' ] = ['id' => $settings['image_upload_2']['id'] ?? 0];
+			$image_upload_2 = Group_Control_Image_Size::get_attachment_image_html( $settings, 'image_upload_2_2' );
+		}
 
 			// Image 1
 			echo '<div class="tmpcoder-ba-image-1">';
@@ -754,7 +759,7 @@ class TMPCODER_Before_After extends Widget_Base {
 				}
 				else
 				{
-					echo "<img src='".esc_url($settings['image_upload_1']['url'])."'>";
+					echo "<img src='".esc_url($settings['image_upload_1']['url'] ?? '')."'>";
 				}
 			echo '</div>';
 			
@@ -765,29 +770,29 @@ class TMPCODER_Before_After extends Widget_Base {
 				}
 				else
 				{
-					echo "<img src='".esc_url($settings['image_upload_2']['url'])."'>";
+					echo "<img src='".esc_url($settings['image_upload_2']['url'] ?? '')."'>";
 				}
 			echo '</div>';
 
 			// Divider
 			echo '<div class="tmpcoder-ba-divider">';
 				echo '<div class="tmpcoder-ba-divider-icons">';
-					echo '<i class="fa '. esc_attr($settings['divider_icon'] .'-'. $icon_dir_first) .'"></i>';
-					echo '<i class="fa '. esc_attr($settings['divider_icon'] .'-'. $icon_dir_second) .'"></i>';
+					echo '<i class="fa '. esc_attr(($settings['divider_icon'] ?? '') .'-'. $icon_dir_first) .'"></i>';
+					echo '<i class="fa '. esc_attr(($settings['divider_icon'] ?? '') .'-'. $icon_dir_second) .'"></i>';
 				echo '</div>';
 			echo '</div>';
 
 			// Label 1
-			if ( '' !== $settings['label_image_1'] ) {
+			if ( !empty($settings['label_image_1']) && '' !== ($settings['label_image_1'] ?? '') ) {
 				echo '<div class="tmpcoder-ba-label tmpcoder-ba-label-1">';
-					echo '<div>'. esc_html($settings['label_image_1']) .'</div>';
+					echo '<div>'. esc_html($settings['label_image_1'] ?? '') .'</div>';
 				echo '</div>';
 			}
 
 			// Label 2
-			if ( '' !== $settings['label_image_2'] ) {
+			if ( !empty($settings['label_image_2']) && '' !== ($settings['label_image_2'] ?? '') ) {
 				echo '<div class="tmpcoder-ba-label tmpcoder-ba-label-2">';
-					echo '<div>'. esc_html($settings['label_image_2']) .'</div>';
+					echo '<div>'. esc_html($settings['label_image_2'] ?? '') .'</div>';
 				echo '</div>';
 			}
 

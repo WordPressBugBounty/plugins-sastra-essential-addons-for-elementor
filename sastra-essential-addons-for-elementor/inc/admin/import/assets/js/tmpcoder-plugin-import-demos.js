@@ -767,10 +767,11 @@ jQuery(document).on('click','.demo-success-button', function(e){
 })
 
 // temprary
-jQuery(document).on('click','.popup-close', function(){
+jQuery(document).on('click','.popup-close', function() {
     jQuery('#import-demo-uninstall-popup').fadeOut();
     jQuery('#uninstall-demo-popup').fadeOut();
     jQuery('.tmpcoder-admin-popup').fadeOut();
+    jQuery('#import-demo-confirm-popup').fadeOut();
     jQuery('.tmpcoder-import-popup-wrap').fadeOut();
 })
 

@@ -2703,6 +2703,8 @@ class TMPCODER_Testimonial_Carousel extends Widget_Base {
 
 	public function render_testimonial_image( $item ) {
 		$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 
 		$settings[ 'testimonial_image_size' ] = ['id' => $item['testimonial_image']['id']];
 		$image_html = Group_Control_Image_Size::get_attachment_image_html( $settings, 'testimonial_image_size' );
@@ -2799,7 +2801,9 @@ class TMPCODER_Testimonial_Carousel extends Widget_Base {
 
 
 	public function tmpcoder_testimonial_content( $item ) {
-		$settings = $this->get_settings(); ?>
+		$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new ); ?>
 
 		<div class="tmpcoder-testimonial-content-wrap">
 			<div class="tmpcoder-testimonial-content-inner">
@@ -2844,6 +2848,8 @@ class TMPCODER_Testimonial_Carousel extends Widget_Base {
 
 	public function render_testimonial_rating( $item ) {
 		$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 		$rating_amount = $item['testimonial_rating_amount'];
 		$round_rating = (int)$rating_amount;
 		$rating_icon = '&#xE934;';
@@ -2884,6 +2890,8 @@ class TMPCODER_Testimonial_Carousel extends Widget_Base {
 
 	protected function render() {	
 		$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 		$item_html = '';
 		$item_count = 0;
 
@@ -2921,15 +2929,15 @@ class TMPCODER_Testimonial_Carousel extends Widget_Base {
 		] );
 
 		$slider_nav_icon_location = '';
-		// if (isset($settings['slider_nav_icon_location']) && $settings['slider_nav_icon_location'] != '') {
+		// if (isset($settings['slider_nav_icon_location']) && !empty($settings['slider_nav_icon_location']) && $settings['slider_nav_icon_location'] != '') {
 			
 		// 	$slider_nav_icon_location = $settings['slider_nav_icon_location'];
 		// }
 
 		?>
-		<div class="tmpcoder-testimonial-carousel-wrap <?php echo esc_attr($slider_nav_icon_location, 'sastra-essential-addons-for-elementor') ?>">
+		<div class="tmpcoder-testimonial-carousel-wrap <?php echo esc_attr($slider_nav_icon_location ?? '', 'sastra-essential-addons-for-elementor') ?>">
 			
-			<?php echo wp_kses_post('<div '. $this->get_render_attribute_string( 'testimonial-caousel-attribute' ).' data-slide-effect="'. esc_attr($settings['testimonial_effect']).'">'); ?>
+			<?php echo wp_kses_post('<div '. $this->get_render_attribute_string( 'testimonial-caousel-attribute' ).' data-slide-effect="'. esc_attr($settings['testimonial_effect'] ?? '').'">'); ?>
 					
 					<?php foreach ( $settings['testimonial_items'] as $key => $item ) : ?>
 
@@ -2976,7 +2984,7 @@ class TMPCODER_Testimonial_Carousel extends Widget_Base {
 
 			<div class="tmpcoder-testimonial-arrow-container">
 				<div class="tmpcoder-testimonial-prev-arrow tmpcoder-testimonial-arrow" id="<?php echo 'tmpcoder-testimonial-prev-'. esc_attr($this->get_id()); ?>">
-					<?php echo wp_kses($this->tmpcoder_get_icon( $settings['testimonial_nav_icon'], '' ), tmpcoder_wp_kses_allowed_html());  ?>
+					<?php echo wp_kses($this->tmpcoder_get_icon( $settings['testimonial_nav_icon'] ?? '', '' ) ?? '', tmpcoder_wp_kses_allowed_html());  ?>
 				</div>
 				<div class="tmpcoder-testimonial-next-arrow tmpcoder-testimonial-arrow" id="<?php echo 'tmpcoder-testimonial-next-'. esc_attr($this->get_id()); ?>">
 					<?php echo wp_kses($this->tmpcoder_get_icon( $settings['testimonial_nav_icon'], '' ), tmpcoder_wp_kses_allowed_html() );  ?>

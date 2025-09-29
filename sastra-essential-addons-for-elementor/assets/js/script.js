@@ -244,6 +244,11 @@
                                 $scope.removeClass('tmpcoder-visibility-hidden');
                                 $scope.next().removeClass('tmpcoder-' + stickyAnimation + '-in');
                                 $scope.next().removeClass('tmpcoder-adminbar-replace-header');
+
+                                // console.log('after replace of')
+                                // $scope.next().css('position','fixed !important');
+                                // $scope.next().css('top',-1000);
+
                             } else {
                                 $scope.removeClass('tmpcoder-sticky-header');
                             }
@@ -345,15 +350,13 @@
                         $scope.css('bottom', 'auto');
                     }
 
-                    // console.log($replace_header);
+                    // if ($replace_header && 'top' === positionLocation && ('fixed' == $replace_header.css('position')) )
+                    // {
 
-                    if ($replace_header && 'top' === positionLocation && ('fixed' == $replace_header.css('position')) )
-                    {
-
-                        // $replace_header.addClass('tmpcoder-adminbar-replace-header');
-                        $replace_header.css('top', + adminBarHeight + offsetTop + 'px');
-                        $replace_header.css('bottom', 'auto');
-                    }
+                    //     // $replace_header.addClass('tmpcoder-adminbar-replace-header');
+                    //     $replace_header.css('top', + adminBarHeight + offsetTop + 'px');
+                    //     $replace_header.css('bottom', 'auto');
+                    // }
                 }
             }
         }

@@ -2123,6 +2123,71 @@ trait Woo_Product_Comparable {
         }
 	}
 
+	public function add_product_in_compare_table_widget($product_id,$remove){
+
+		$user_id = get_current_user_id();
+
+        if (is_multisite()) {
+            $compare_key = 'tmpcoder_compare_'.get_current_blog_id();
+        } else {
+            $compare_key = 'tmpcoder_compare';
+        }
+
+        // NEW CODE
+        if ($user_id > 0) {
+            $compare = get_user_meta($user_id, $compare_key, true);
+            if (!$compare) {
+                $compare = array();
+            }
+        } else {
+            $compare = $this->get_compare_from_cookie();
+        }
+
+        if ($remove) {
+
+        	$compare = array_diff($compare, array($product_id));
+	        if ($user_id > 0) {
+	            update_user_meta($user_id, $compare_key, $compare);
+	        } else {
+	            $this->set_compare_to_cookie($compare);
+	        }
+        }
+        else
+        {
+	        if (in_array($product_id, $compare)) {
+	            wp_send_json_error(array('message' => esc_html__('Product is already in compare.', 'sastra-essential-addons-for-elementor')));
+	            return;
+	        }
+
+			$compare[] = $product_id;
+
+	        if ($user_id > 0) {
+	            update_user_meta($user_id, $compare_key, $compare);
+	        } else {
+	            $this->set_compare_to_cookie($compare);
+	        }
+        }
+	} 
+
+	public function get_compare_from_cookie() {
+        $blog_id = get_current_blog_id();
+        $cookie_key = 'tmpcoder_compare_'.$blog_id;
+        if (isset($_COOKIE['tmpcoder_compare'])) {
+            return json_decode(sanitize_text_field(wp_unslash($_COOKIE['tmpcoder_compare'])), true);
+        } else if ( isset($_COOKIE[$cookie_key]) ) {
+            return json_decode(sanitize_text_field(wp_unslash($_COOKIE[$cookie_key])), true);
+        }
+        return array();
+    }
+    
+    public function set_compare_to_cookie($compare) {
+        if ( is_multisite() ) {
+            setcookie( sanitize_key('tmpcoder_compare_'. get_current_blog_id() .''), wp_json_encode($compare), time() + (86400 * 10), '/'); // Expires in 7 days
+        } else {
+            setcookie( sanitize_key('tmpcoder_compare'), wp_json_encode($compare), time() + (86400 * 10), '/'); // Expires in 7 days
+        }
+    }
+
 	public function get_compare_table() {
 		$ajax      = wp_doing_ajax();
 		$page_id   = 0;
@@ -2154,6 +2219,11 @@ trait Woo_Product_Comparable {
 
 		if ( ! empty( $product_id ) ) {
 			$p_exist = ! empty( $product_ids ) && is_array( $product_ids );
+
+			$remove = isset($_POST['remove_product']) && $_POST['remove_product'] == 1 ? true : false;
+
+			$this->add_product_in_compare_table_widget($product_id,$remove);
+
 			if ( ! empty( $_POST['remove_product'] ) && $p_exist ) {
 			    $product_ids = array_filter($product_ids, function ($id) use ($product_id){
                     return $id != intval( $product_id );

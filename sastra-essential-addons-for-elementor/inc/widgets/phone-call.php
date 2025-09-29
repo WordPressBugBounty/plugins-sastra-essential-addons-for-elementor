@@ -640,14 +640,16 @@ class TMPCODER_Phone_Call extends Widget_Base {
 	protected function render() {
 	// Get Settings
 	$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 
 		echo '<div class="tmpcoder-pc-wrapper">';
 			echo '<a href="tel:'. esc_attr($settings['telnumber']) .'" class="tmpcoder-pc-btn">';
 				echo '<div class="tmpcoder-pc-content">';
-				if ( '' !== $settings['button_text'] && $settings['button_txt_show'] == 'yes' ) {
+				if ( (!empty($settings['button_text']) && '' !== $settings['button_text']) && $settings['button_txt_show'] == 'yes' ) {
 					echo '<span class="tmpcoder-pc-text">'. esc_html($settings ['button_text']) .'</span>';
 				}
-				if ( '' !== $settings['pc_icon']['value'] ) {
+				if ( !empty($settings['pc_icon']['value']) && '' !== $settings['pc_icon']['value'] ) {
 					echo '<span class="tmpcoder-pc-btn-icon">';
 			 			\Elementor\Icons_Manager::render_icon( $settings['pc_icon'] );
 					echo '</span>';

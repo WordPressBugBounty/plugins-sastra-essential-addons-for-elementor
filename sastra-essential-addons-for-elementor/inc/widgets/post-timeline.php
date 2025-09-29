@@ -50,7 +50,9 @@ class TMPCODER_Posts_Timeline extends Widget_Base {
 		$depends = [ 'swiper' => true, 'tmpcoder-aos-js' => true, 'tmpcoder-infinite-scroll' => true, 'tmpcoder-posts-timeline' => true ];
 
 		if ( ! tmpcoder_elementor()->preview->is_preview_mode() ) {
-			$settings = $this->get_settings_for_display();
+			$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 
 			if ( $settings['timeline_layout'] != 'horizontal-bottom' ) {
 				unset( $depends['swiper'] );
@@ -69,7 +71,9 @@ class TMPCODER_Posts_Timeline extends Widget_Base {
 		$depends = [ 'swiper' => true, 'tmpcoder-animations-css' => true, 'tmpcoder-loading-animations-css' => true, 'tmpcoder-aos-css' => true, 'tmpcoder-posts-timeline' => true ];
 
 		if ( ! tmpcoder_elementor()->preview->is_preview_mode() ) {
-			$settings = $this->get_settings_for_display();
+			$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 
 			if ( $settings['timeline_layout'] != 'horizontal-bottom' ) {
 				unset( $depends['swiper'] );
@@ -5001,6 +5005,8 @@ class TMPCODER_Posts_Timeline extends Widget_Base {
 	
 	public function get_tax_query_args() {
 		$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 		$tax_query = [];
 
 		if ( 'related' === $settings[ 'timeline_post_types' ] ) {
@@ -5035,6 +5041,8 @@ class TMPCODER_Posts_Timeline extends Widget_Base {
 	// for frontend
 	public function get_main_query_args() {
 		$settings = $this->get_settings();
+		$settings_new = $this->get_settings_for_display();
+		$settings = array_merge( $settings, $settings_new );
 		$author = ! empty( $settings[ 'query_author' ] ) ? implode( ',', $settings[ 'query_author' ] ) : '';
 
 		// Get Paged
@@ -5050,7 +5058,10 @@ class TMPCODER_Posts_Timeline extends Widget_Base {
 
 		$ids_array = '';
 
-		if ($settings[ 'query_exclude_'. $settings[ 'timeline_post_types' ] ]) {
+		$query_exclude__args = isset($settings[ 'query_exclude_'. $settings[ 'timeline_post_types' ] ]) ? $settings[ 'query_exclude_'. $settings[ 'timeline_post_types' ] ] : '' ;
+
+		// if ($settings[ 'query_exclude_'. $settings[ 'timeline_post_types' ] ]) {
+		if (isset($query_exclude__args) && (is_array($query_exclude__args) && count($query_exclude__args)) ) {
 			
 			$slug_args = [
 			    'post_type'      => $settings[ 'timeline_post_types' ],
@@ -5741,7 +5752,9 @@ class TMPCODER_Posts_Timeline extends Widget_Base {
 	}
 
 	protected function render() {
-		$settings = $this->get_settings_for_display();
+		$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 
 		global $paged;
 		$paged = 1;

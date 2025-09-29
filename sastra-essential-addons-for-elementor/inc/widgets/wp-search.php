@@ -1970,6 +1970,8 @@ class TMPCODER_Search extends Widget_Base {
 
     protected function render_search_submit_btn() {
         $settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 
         $this->add_render_attribute(
         'button', [
@@ -1986,7 +1988,7 @@ class TMPCODER_Search extends Widget_Base {
         if ( 'yes' === $settings['search_btn'] ) : ?>
 
         <?php echo wp_kses_post('<button '.$this->get_render_attribute_string( 'button' ).'>'); ?>
-            <?php if ( 'icon' === $settings['search_btn_type'] && '' !== $settings['search_btn_icon']['value'] ) : ?>
+            <?php if ( 'icon' === $settings['search_btn_type'] && (!empty($settings['search_btn_icon']['value']) && '' !== $settings['search_btn_icon']['value']) ) : ?>
 
                 <?php if (is_array($settings['search_btn_icon']['value'])) {
 
@@ -1998,7 +2000,7 @@ class TMPCODER_Search extends Widget_Base {
 
                 <?php } ?>
 
-            <?php elseif( 'text' === $settings['search_btn_type'] && '' !== $settings['search_btn_text'] ) : ?>
+            <?php elseif( 'text' === $settings['search_btn_type'] && (!empty($settings['search_btn_text']) && '' !== $settings['search_btn_text']) ) : ?>
                 <?php echo esc_html( $settings['search_btn_text'] ); ?>
             <?php endif; ?>
         </button>
@@ -2010,6 +2012,8 @@ class TMPCODER_Search extends Widget_Base {
     protected function render() {
         // Get Settings
         $settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 
         $hidden_input = '';
 

@@ -749,6 +749,8 @@ class TMPCODER_Post_Navigation extends Widget_Base {
     protected function render() {
         // Get Settings
         $settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 
         if ( !tmpcoder_is_availble() ) {
             $settings['post_nav_image'] = '';
@@ -840,7 +842,7 @@ class TMPCODER_Post_Navigation extends Widget_Base {
 
                     // Post Thumbnail
                     if ( 'yes' === $settings['post_nav_image'] ) {
-                        if ( '' === $settings['post_nav_image_bg'] || 'fixed' === $settings['post_nav_layout'] ) {
+                        if ( (empty($settings['post_nav_image_bg']) || '' === $settings['post_nav_image_bg']) || 'fixed' === $settings['post_nav_layout'] ) {
                             echo wp_kses_post($prev_image_html);
                         }
                     }
@@ -887,7 +889,7 @@ class TMPCODER_Post_Navigation extends Widget_Base {
         }
 
         // Middle Divider
-        if ( 'static' === $settings['post_nav_layout'] && 'yes' === $settings['post_nav_dividers'] && '' === $settings['post_nav_back'] ) {
+        if ( 'static' === $settings['post_nav_layout'] && 'yes' === $settings['post_nav_dividers'] && (empty($settings['post_nav_back']) || '' === $settings['post_nav_back']) ) {
             echo '<div class="tmpcoder-post-nav-divider"></div>';
         }
 
@@ -923,7 +925,7 @@ class TMPCODER_Post_Navigation extends Widget_Base {
 
                     // Post Thumbnail
                     if ( 'yes' === $settings['post_nav_image'] ) {
-                        if ( '' === $settings['post_nav_image_bg'] || 'fixed' === $settings['post_nav_layout'] ) {
+                        if ( (empty($settings['post_nav_image_bg']) || '' === $settings['post_nav_image_bg']) || 'fixed' === $settings['post_nav_layout'] ) {
                             echo wp_kses_post($next_image_html);
                         }
                     }

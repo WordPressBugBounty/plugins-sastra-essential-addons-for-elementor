@@ -1,440 +1,475 @@
 (function ($) {
 
-    if ('undefined' == typeof window.paCheckSafari) {
-        window.paCheckSafari = checkSafariBrowser();
+	if ('undefined' == typeof window.tmpcoderCheckSafari) {
+		window.tmpcoderCheckSafari = checkSafariBrowser();
 
-        function checkSafariBrowser() {
+		function checkSafariBrowser() {
 
-            var iOS = /iP(hone|ad|od)/i.test(navigator.userAgent) && !window.MSStream;
+			var iOS = /iP(hone|ad|od)/i.test(navigator.userAgent) && !window.MSStream;
 
-            if (iOS) {
-                var allowedBrowser = /(Chrome|CriOS|OPiOS|FxiOS)/.test(navigator.userAgent);
+			if (iOS) {
+				var allowedBrowser = /(Chrome|CriOS|OPiOS|FxiOS)/.test(navigator.userAgent);
 
-                if (!allowedBrowser) {
-                    var isFireFox = '' === navigator.vendor;
-                    allowedBrowser = allowedBrowser || isFireFox;
-                }
+				if (!allowedBrowser) {
+					var isFireFox = '' === navigator.vendor;
+					allowedBrowser = allowedBrowser || isFireFox;
+				}
 
-                var isSafari = /WebKit/i.test(navigator.userAgent) && !allowedBrowser;
+				var isSafari = /WebKit/i.test(navigator.userAgent) && !allowedBrowser;
 
-            } else {
-                var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-            }
+			} else {
+				var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+			}
 
-            if (isSafari) {
-                return true;
-            }
+			if (isSafari) {
+				return true;
+			}
 
-            return false;
-        }
+			return false;
+		}
 
-    }
+	}
 
-    $(window).on('elementor/frontend/init', function () {
-        var paFloatingEffects = elementorModules.frontend.handlers.Base.extend({
+	$(window).on('elementor/frontend/init', function () {
+		var tmpcoderFloatingEffects = elementorModules.frontend.handlers.Base.extend({
 
-            onInit: function () {
+			floatingTarget: null,
 
-                elementorModules.frontend.handlers.Base.prototype.onInit.apply(this, arguments);
+            targetSelector: null,
 
-                if (this.$element.hasClass('tmpcoder-floating-effects-yes')) {
+			onInit: function () {
 
-                    if (this.$element.hasClass('tmpcoder-disable-fe-yes')) {
-                        if (window.paCheckSafari)
-                            return;
+				elementorModules.frontend.handlers.Base.prototype.onInit.apply(this, arguments);
+
+				//Return if animations should be disabled on Safari.
+				if (this.$element.hasClass('tmpcoder-disable-fe-yes') && window.tmpcoderCheckSafari)
+					return;
+
+				var targetSelector = '' !== this.getElementSettings('tmpcoder_fe_target') ? this.getElementSettings('tmpcoder_fe_target') : '';
+
+				this.setFloatingTarget(targetSelector);
+
+				if (this.$element.hasClass('tmpcoder-floating-effects-yes')) {
+
+					this.run();
+
+				} else if (elementorFrontend.isEditMode()) {
+                    if(anime.running.length) {
+                        // Remove the animation if disabled in the editor.
+                        this.removeFloatingAnimation(true);
                     }
+				}
 
-                    this.run();
+			},
+
+			run: function () {
+				var _this = this,
+					eleSettings = this.getEffectSettings();
+
+				var hasEffects = Object.keys(eleSettings.effectSettings).length;
+
+				// Reset effects before applying it.
+				// Fix: disabled effects still works in the editor.
+				if (elementorFrontend.isEditMode() || !hasEffects) {
+					this.removeFloatingAnimation(false);
+				}
+
+				// Using IntersectionObserverAPI.
+				var eleObserver = new IntersectionObserver(function (entries) {
+					entries.forEach(function (entry) {
+						if (entry.isIntersecting) {
+							_this.applyEffects(eleSettings);
+							eleObserver.unobserve(entry.target); // to only excecute the callback func once.
+						}
+					});
+				});
+
+				eleObserver.observe(_this.$element[0]);
+			},
+
+			removeFloatingAnimation: function(checkAnimation) {
+				// anime.js doesn't reset the manipulated properties, so we need to reset it manually.
+                var hasRunningAnime = checkAnimation ? this.hasRunningAnime(): true;
+                if ( -1 !== hasRunningAnime ) {
+                    anime.remove(this.floatingTarget);
+                    this.resetTargetProps();
                 }
-            },
+			},
 
-            run: function () {
-                var _this = this,
-                    eleSettings = this.getEffectSettings();
+            hasRunningAnime: function() {
+                var currentTarget = this.targetSelector;
 
-                // make sure that at least 1 setting exists
-                var settingVals = Object.values(eleSettings.effectSettings);
-
-                var safe = settingVals.findIndex(function (element) {
-                    return (element !== undefined);
+                var hasRunningAnime = anime.running.findIndex(function (element) {
+                    return $(element.animatables[0].target).is(currentTarget);
                 });
 
-                if (-1 === safe) {
-                    return false;
-                }
-
-                // test this.
-                // if (!this.settings) {
-                //     return false;
-                // }
-
-                // unsing IntersectionObserverAPI.
-                var eleObserver = new IntersectionObserver(function (entries) {
-                    entries.forEach(function (entry) {
-                        if (entry.isIntersecting) {
-                            _this.applyEffects(eleSettings);
-                            eleObserver.unobserve(entry.target); // to only excecute the callback func once.
-                        }
-                    });
-                });
-
-                eleObserver.observe(_this.$element[0]);
-
-                // elementorFrontend.waypoint(
-                //     _this.$element,
-                //     function () {
-                //         _this.applyEffects(eleSettings);
-                //     }
-                // );
+                return hasRunningAnime;
             },
 
-            getEffectSettings: function () {
-                var settings = this.getElementSettings();
+			resetTargetProps: function () {
+				$(this.floatingTarget).css({
+					transform: 'inherit',
+					opacity: 'inherit',
+					filter: 'inherit',
+					// background: 'inherit'
+				});
+			},
 
-                var easing = 'steps' === settings.tmpcoder_fe_easing ? 'steps(' + settings.tmpcoder_fe_ease_step + ')' : settings.tmpcoder_fe_easing,
-                    translateEnabled = 'yes' === settings.tmpcoder_fe_translate_switcher,
-                    rotateEnabled = 'yes' === settings.tmpcoder_fe_rotate_switcher,
-                    scaleEnabled = 'yes' === settings.tmpcoder_fe_scale_switcher,
-                    skewEnabled = 'yes' === settings.tmpcoder_fe_skew_switcher,
-                    opacityEnabled = 'yes' === settings.tmpcoder_fe_opacity_switcher,
-                    bgColorEnabled = 'yes' === settings.tmpcoder_fe_bg_color_switcher,
-                    blurEnabled = 'yes' === settings.tmpcoder_fe_blur_switcher,
-                    contrastEnabled = 'yes' === settings.tmpcoder_fe_contrast_switcher,
-                    gScaleEnabled = 'yes' === settings.tmpcoder_fe_gScale_switcher,
-                    hueEnabled = 'yes' === settings.tmpcoder_fe_hue_switcher,
-                    brightEnabled = 'yes' === settings.tmpcoder_fe_brightness_switcher,
-                    satEnabled = 'yes' === settings.tmpcoder_fe_saturate_switcher,
-                    generalSettings = {
-                        direction: settings.tmpcoder_fe_direction,
-                        loop: 'default' === settings.tmpcoder_fe_loop ? true : settings.tmpcoder_fe_loop_number,
-                        easing: easing,
-                        target: '' !== settings.tmpcoder_fe_target ? settings.tmpcoder_fe_target : '',
-                    };
+			setFloatingTarget: function (target) {
 
-                var eleSettings = {
-                    general: generalSettings,
-                    effectSettings: {}
-                };
+				var $widgetContainer = this.$element[0];
 
-                if (translateEnabled) {
-                    eleSettings.effectSettings.translate = {
-                        'x_param_from': settings.tmpcoder_fe_Xtranslate.sizes.from,
-                        'x_param_to': settings.tmpcoder_fe_Xtranslate.sizes.to,
-                        'y_param_from': settings.tmpcoder_fe_Ytranslate.sizes.from,
-                        'y_param_to': settings.tmpcoder_fe_Ytranslate.sizes.to,
-                        'duration': settings.tmpcoder_fe_trans_duration.size,
-                        'delay': settings.tmpcoder_fe_trans_delay.size,
-                    }
-                }
+                this.targetSelector = '.elementor-element-' + this.$element.data('id');
 
-                if (rotateEnabled) {
-                    eleSettings.effectSettings.rotate = {
-                        'x_param_from': settings.tmpcoder_fe_Xrotate.sizes.from,
-                        'x_param_to': settings.tmpcoder_fe_Xrotate.sizes.to,
-                        'y_param_from': settings.tmpcoder_fe_Yrotate.sizes.from,
-                        'y_param_to': settings.tmpcoder_fe_Yrotate.sizes.to,
-                        'z_param_from': settings.tmpcoder_fe_Zrotate.sizes.from,
-                        'z_param_to': settings.tmpcoder_fe_Zrotate.sizes.to,
-                        'duration': settings.tmpcoder_fe_rotate_duration.size,
-                        'delay': settings.tmpcoder_fe_rotate_delay.size,
-                    }
-                }
+				if (target) {
+					// If the selector does not exists in the current widget, then search in the whole page.
+					$widgetContainer = this.$element.find(target).length > 0 ? '.elementor-element-' + this.$element.data('id') + ' ' + target : target;
+                    this.targetSelector = $widgetContainer;
+				}
 
-                if (scaleEnabled) {
-                    eleSettings.effectSettings.scale = {
-                        'x_param_from': settings.tmpcoder_fe_Xscale.sizes.from,
-                        'x_param_to': settings.tmpcoder_fe_Xscale.sizes.to,
-                        'y_param_from': settings.tmpcoder_fe_Yscale.sizes.from,
-                        'y_param_to': settings.tmpcoder_fe_Yscale.sizes.to,
-                        'duration': settings.tmpcoder_fe_scale_duration.size,
-                        'delay': settings.tmpcoder_fe_scale_delay.size,
-                    }
-                }
+				this.floatingTarget = $widgetContainer;
+			},
 
-                if (skewEnabled) {
-                    eleSettings.effectSettings.skew = {
-                        'x_param_from': settings.tmpcoder_fe_Xskew.sizes.from,
-                        'x_param_to': settings.tmpcoder_fe_Xskew.sizes.to,
-                        'y_param_from': settings.tmpcoder_fe_Yskew.sizes.from,
-                        'y_param_to': settings.tmpcoder_fe_Yskew.sizes.to,
-                        'duration': settings.tmpcoder_fe_skew_duration.size,
-                        'delay': settings.tmpcoder_fe_skew_delay.size,
-                    }
-                }
+			getEffectSettings: function () {
+				var settings = this.getElementSettings();
 
-                if (TmpcoderFESettings.papro_installed) {
-                    if (opacityEnabled) {
-                        eleSettings.effectSettings.opacity = {
-                            'from': settings.tmpcoder_fe_opacity.sizes.from / 100,
-                            'to': settings.tmpcoder_fe_opacity.sizes.to / 100,
-                            'duration': settings.tmpcoder_fe_opacity_duration.size,
-                            'delay': settings.tmpcoder_fe_opacity_delay.size
-                        };
-                    }
+				var easing = 'steps' === settings.tmpcoder_fe_easing ? 'steps(' + settings.tmpcoder_fe_ease_step + ')' : settings.tmpcoder_fe_easing,
+					translateEnabled = 'yes' === settings.tmpcoder_fe_translate_switcher,
+					rotateEnabled = 'yes' === settings.tmpcoder_fe_rotate_switcher,
+					scaleEnabled = 'yes' === settings.tmpcoder_fe_scale_switcher,
+					skewEnabled = 'yes' === settings.tmpcoder_fe_skew_switcher,
+					opacityEnabled = 'yes' === settings.tmpcoder_fe_opacity_switcher,
+					bgColorEnabled = 'yes' === settings.tmpcoder_fe_bg_color_switcher,
+					blurEnabled = 'yes' === settings.tmpcoder_fe_blur_switcher,
+					contrastEnabled = 'yes' === settings.tmpcoder_fe_contrast_switcher,
+					gScaleEnabled = 'yes' === settings.tmpcoder_fe_gScale_switcher,
+					hueEnabled = 'yes' === settings.tmpcoder_fe_hue_switcher,
+					brightEnabled = 'yes' === settings.tmpcoder_fe_brightness_switcher,
+					satEnabled = 'yes' === settings.tmpcoder_fe_saturate_switcher,
+					generalSettings = {
+						direction: settings.tmpcoder_fe_direction,
+						loop: 'default' === settings.tmpcoder_fe_loop ? true : settings.tmpcoder_fe_loop_number,
+						easing: easing,
+						target: '' !== settings.tmpcoder_fe_target ? settings.tmpcoder_fe_target : '',
+					};
 
-                    if (bgColorEnabled) {
-                        eleSettings.effectSettings.bgColor = {
-                            'from': settings.tmpcoder_fe_bg_color_from,
-                            'to': settings.tmpcoder_fe_bg_color_to,
-                            'duration': settings.tmpcoder_fe_bg_color_duration.size,
-                            'delay': settings.tmpcoder_fe_bg_color_delay.size,
-                        }
-                    }
+				var eleSettings = {
+					general: generalSettings,
+					effectSettings: {}
+				};
 
-                    if (blurEnabled) {
-                        eleSettings.effectSettings.blur = {
-                            'from': 'blur(' + settings.tmpcoder_fe_blur_val.sizes.from + 'px)',
-                            'to': 'blur(' + settings.tmpcoder_fe_blur_val.sizes.to + 'px)',
-                            'duration': settings.tmpcoder_fe_blur_duration.size,
-                            'delay': settings.tmpcoder_fe_blur_delay.size,
-                        }
-                    }
+				if (translateEnabled) {
+					eleSettings.effectSettings.translate = {
+						'x_param_from': settings.tmpcoder_fe_Xtranslate.sizes.from,
+						'x_param_to': settings.tmpcoder_fe_Xtranslate.sizes.to,
+						'y_param_from': settings.tmpcoder_fe_Ytranslate.sizes.from,
+						'y_param_to': settings.tmpcoder_fe_Ytranslate.sizes.to,
+						'duration': settings.tmpcoder_fe_trans_duration.size,
+						'delay': settings.tmpcoder_fe_trans_delay.size,
+					}
+				}
 
-                    if (contrastEnabled) {
-                        eleSettings.effectSettings.contrast = {
-                            'from': 'contrast(' + settings.tmpcoder_fe_contrast_val.sizes.from + '%)',
-                            'to': 'contrast(' + settings.tmpcoder_fe_contrast_val.sizes.to + '%)',
-                            'duration': settings.tmpcoder_fe_contrast_duration.size,
-                            'delay': settings.tmpcoder_fe_contrast_delay.size,
-                        }
-                    }
+				if (rotateEnabled) {
+					eleSettings.effectSettings.rotate = {
+						'x_param_from': settings.tmpcoder_fe_Xrotate.sizes.from,
+						'x_param_to': settings.tmpcoder_fe_Xrotate.sizes.to,
+						'y_param_from': settings.tmpcoder_fe_Yrotate.sizes.from,
+						'y_param_to': settings.tmpcoder_fe_Yrotate.sizes.to,
+						'z_param_from': settings.tmpcoder_fe_Zrotate.sizes.from,
+						'z_param_to': settings.tmpcoder_fe_Zrotate.sizes.to,
+						'duration': settings.tmpcoder_fe_rotate_duration.size,
+						'delay': settings.tmpcoder_fe_rotate_delay.size,
+					}
+				}
 
-                    if (gScaleEnabled) {
-                        eleSettings.effectSettings.gScale = {
-                            'from': 'grayscale(' + settings.tmpcoder_fe_gScale_val.sizes.from + '%)',
-                            'to': 'grayscale(' + settings.tmpcoder_fe_gScale_val.sizes.to + '%)',
-                            'duration': settings.tmpcoder_fe_gScale_duration.size,
-                            'delay': settings.tmpcoder_fe_gScale_delay.size,
-                        }
-                    }
+				if (scaleEnabled) {
+					eleSettings.effectSettings.scale = {
+						'x_param_from': settings.tmpcoder_fe_Xscale.sizes.from,
+						'x_param_to': settings.tmpcoder_fe_Xscale.sizes.to,
+						'y_param_from': settings.tmpcoder_fe_Yscale.sizes.from,
+						'y_param_to': settings.tmpcoder_fe_Yscale.sizes.to,
+						'duration': settings.tmpcoder_fe_scale_duration.size,
+						'delay': settings.tmpcoder_fe_scale_delay.size,
+					}
+				}
 
-                    if (hueEnabled) {
-                        eleSettings.effectSettings.hue = {
-                            'from': 'hue-rotate(' + settings.tmpcoder_fe_hue_val.sizes.from + 'deg)',
-                            'to': 'hue-rotate(' + settings.tmpcoder_fe_hue_val.sizes.to + 'deg)',
-                            'duration': settings.tmpcoder_fe_hue_duration.size,
-                            'delay': settings.tmpcoder_fe_hue_delay.size,
-                        }
-                    }
+				if (skewEnabled) {
+					eleSettings.effectSettings.skew = {
+						'x_param_from': settings.tmpcoder_fe_Xskew.sizes.from,
+						'x_param_to': settings.tmpcoder_fe_Xskew.sizes.to,
+						'y_param_from': settings.tmpcoder_fe_Yskew.sizes.from,
+						'y_param_to': settings.tmpcoder_fe_Yskew.sizes.to,
+						'duration': settings.tmpcoder_fe_skew_duration.size,
+						'delay': settings.tmpcoder_fe_skew_delay.size,
+					}
+				}
 
-                    if (brightEnabled) {
-                        eleSettings.effectSettings.bright = {
-                            'from': 'brightness(' + settings.tmpcoder_fe_brightness_val.sizes.from + '%)',
-                            'to': 'brightness(' + settings.tmpcoder_fe_brightness_val.sizes.to + '%)',
-                            'duration': settings.tmpcoder_fe_brightness_duration.size,
-                            'delay': settings.tmpcoder_fe_brightness_delay.size,
-                        }
-                    }
+				if (TmpcoderFESettings.papro_installed) {
+					if (opacityEnabled) {
+						eleSettings.effectSettings.opacity = {
+							'from': settings.tmpcoder_fe_opacity.sizes.from / 100,
+							'to': settings.tmpcoder_fe_opacity.sizes.to / 100,
+							'duration': settings.tmpcoder_fe_opacity_duration.size,
+							'delay': settings.tmpcoder_fe_opacity_delay.size
+						};
+					}
 
-                    if (satEnabled) {
-                        eleSettings.effectSettings.sat = {
-                            'from': 'saturate(' + settings.tmpcoder_fe_saturate_val.sizes.from + '%)',
-                            'to': 'saturate(' + settings.tmpcoder_fe_saturate_val.sizes.to + '%)',
-                            'duration': settings.tmpcoder_fe_saturate_duration.size,
-                            'delay': settings.tmpcoder_fe_saturate_delay.size,
-                        }
-                    }
+					if (bgColorEnabled) {
+						eleSettings.effectSettings.bgColor = {
+							'from': settings.tmpcoder_fe_bg_color_from,
+							'to': settings.tmpcoder_fe_bg_color_to,
+							'duration': settings.tmpcoder_fe_bg_color_duration.size,
+							'delay': settings.tmpcoder_fe_bg_color_delay.size,
+						}
+					}
 
-                }
+					if (blurEnabled) {
+						eleSettings.effectSettings.blur = {
+							'from': 'blur(' + settings.tmpcoder_fe_blur_val.sizes.from + 'px)',
+							'to': 'blur(' + settings.tmpcoder_fe_blur_val.sizes.to + 'px)',
+							'duration': settings.tmpcoder_fe_blur_duration.size,
+							'delay': settings.tmpcoder_fe_blur_delay.size,
+						}
+					}
 
-                return eleSettings;
-            },
+					if (contrastEnabled) {
+						eleSettings.effectSettings.contrast = {
+							'from': 'contrast(' + settings.tmpcoder_fe_contrast_val.sizes.from + '%)',
+							'to': 'contrast(' + settings.tmpcoder_fe_contrast_val.sizes.to + '%)',
+							'duration': settings.tmpcoder_fe_contrast_duration.size,
+							'delay': settings.tmpcoder_fe_contrast_delay.size,
+						}
+					}
 
-            applyEffects: function (eleSettings) {
-                var settings = eleSettings,
-                    effectSettings = settings.effectSettings,
-                    $widgetContainer = this.$element.find('.elementor-widget-container')[0],
-                    filterArr = [];
+					if (gScaleEnabled) {
+						eleSettings.effectSettings.gScale = {
+							'from': 'grayscale(' + settings.tmpcoder_fe_gScale_val.sizes.from + '%)',
+							'to': 'grayscale(' + settings.tmpcoder_fe_gScale_val.sizes.to + '%)',
+							'duration': settings.tmpcoder_fe_gScale_duration.size,
+							'delay': settings.tmpcoder_fe_gScale_delay.size,
+						}
+					}
 
-                if (settings.general.target) {
-                    var targetSelector = settings.general.target;
+					if (hueEnabled) {
+						eleSettings.effectSettings.hue = {
+							'from': 'hue-rotate(' + settings.tmpcoder_fe_hue_val.sizes.from + 'deg)',
+							'to': 'hue-rotate(' + settings.tmpcoder_fe_hue_val.sizes.to + 'deg)',
+							'duration': settings.tmpcoder_fe_hue_duration.size,
+							'delay': settings.tmpcoder_fe_hue_delay.size,
+						}
+					}
 
-                    // If the selector does not exists in the current widget, then search in the whole page.
-                    $widgetContainer = this.$element.find(targetSelector).length > 0 ? '.elementor-element-' + this.$element.data('id') + ' ' + targetSelector : targetSelector;
-                }
+					if (brightEnabled) {
+						eleSettings.effectSettings.bright = {
+							'from': 'brightness(' + settings.tmpcoder_fe_brightness_val.sizes.from + '%)',
+							'to': 'brightness(' + settings.tmpcoder_fe_brightness_val.sizes.to + '%)',
+							'duration': settings.tmpcoder_fe_brightness_duration.size,
+							'delay': settings.tmpcoder_fe_brightness_delay.size,
+						}
+					}
 
-                var animeSettings = {
-                    targets: $widgetContainer,
-                    loop: settings.general.loop,
-                    direction: settings.general.direction,
-                    easing: settings.general.easing,
-                };
+					if (satEnabled) {
+						eleSettings.effectSettings.sat = {
+							'from': 'saturate(' + settings.tmpcoder_fe_saturate_val.sizes.from + '%)',
+							'to': 'saturate(' + settings.tmpcoder_fe_saturate_val.sizes.to + '%)',
+							'duration': settings.tmpcoder_fe_saturate_duration.size,
+							'delay': settings.tmpcoder_fe_saturate_delay.size,
+						}
+					}
 
-                if (effectSettings.translate) {
-                    var translate = effectSettings.translate,
-                        x_translate = {
-                            value: [translate.x_param_from || 0, translate.x_param_to || 0],
-                            duration: translate.duration,
-                            delay: translate.delay || 0
-                        },
-                        y_translate = {
-                            value: [translate.y_param_from || 0, translate.y_param_to || 0],
-                            duration: translate.duration,
-                            delay: translate.delay || 0,
-                        };
+				}
 
-                    animeSettings.translateX = x_translate;
-                    animeSettings.translateY = y_translate;
-                }
+				return eleSettings;
+			},
 
-                if (effectSettings.rotate) {
-                    var rotate = effectSettings.rotate,
-                        x_rotate = {
-                            duration: rotate.duration,
-                            delay: rotate.delay || 0,
-                            value: [rotate.x_param_from || 0, rotate.x_param_to || 0],
-                        },
-                        y_rotate = {
-                            duration: rotate.duration,
-                            delay: rotate.delay || 0,
-                            value: [rotate.y_param_from || 0, rotate.y_param_to || 0],
-                        },
-                        z_rotate = {
-                            duration: rotate.duration,
-                            delay: rotate.delay || 0,
-                            value: [rotate.z_param_from || 0, rotate.z_param_to || 0],
-                        };
+			applyEffects: function (eleSettings) {
 
-                    animeSettings.rotateX = x_rotate;
-                    animeSettings.rotateY = y_rotate;
-                    animeSettings.rotateZ = z_rotate;
-                }
+				var settings = eleSettings,
+					effectSettings = settings.effectSettings,
+					filterArr = [];
 
-                if (effectSettings.scale) {
-                    var scale = effectSettings.scale,
-                        x_scale = {
-                            value: [scale.x_param_from || 0, scale.x_param_to || 0],
-                            duration: scale.duration,
-                            delay: scale.delay || 0
-                        },
-                        y_scale = {
-                            value: [scale.y_param_from || 0, scale.y_param_to || 0],
-                            duration: scale.duration,
-                            delay: scale.delay || 0,
-                        };
+				var animeSettings = {
+					targets: this.floatingTarget,
+					loop: settings.general.loop,
+					direction: settings.general.direction,
+					easing: settings.general.easing,
+				};
 
-                    animeSettings.scaleX = x_scale;
-                    animeSettings.scaleY = y_scale;
-                }
+				if (effectSettings.translate) {
+					var translate = effectSettings.translate,
+						x_translate = {
+							value: [translate.x_param_from || 0, translate.x_param_to || 0],
+							duration: translate.duration,
+							delay: translate.delay || 0
+						},
+						y_translate = {
+							value: [translate.y_param_from || 0, translate.y_param_to || 0],
+							duration: translate.duration,
+							delay: translate.delay || 0,
+						};
 
-                if (effectSettings.skew) {
-                    var skew = effectSettings.skew,
-                        x_skew = {
-                            value: [skew.x_param_from || 0, skew.x_param_to || 0],
-                            duration: skew.duration,
-                            delay: skew.delay || 0
-                        },
-                        y_skew = {
-                            value: [skew.y_param_from || 0, skew.y_param_to || 0],
-                            duration: skew.duration,
-                            delay: skew.delay || 0,
-                        };
+					animeSettings.translateX = x_translate;
+					animeSettings.translateY = y_translate;
+				}
 
-                    animeSettings.skewX = x_skew;
-                    animeSettings.skewY = y_skew;
-                }
+				if (effectSettings.rotate) {
+					var rotate = effectSettings.rotate,
+						x_rotate = {
+							duration: rotate.duration,
+							delay: rotate.delay || 0,
+							value: [rotate.x_param_from || 0, rotate.x_param_to || 0],
+						},
+						y_rotate = {
+							duration: rotate.duration,
+							delay: rotate.delay || 0,
+							value: [rotate.y_param_from || 0, rotate.y_param_to || 0],
+						},
+						z_rotate = {
+							duration: rotate.duration,
+							delay: rotate.delay || 0,
+							value: [rotate.z_param_from || 0, rotate.z_param_to || 0],
+						};
 
-                if (effectSettings.opacity) {
-                    var opacity = effectSettings.opacity;
+					animeSettings.rotateX = x_rotate;
+					animeSettings.rotateY = y_rotate;
+					animeSettings.rotateZ = z_rotate;
+				}
 
-                    animeSettings.opacity = {
-                        value: [opacity.from || 0, opacity.to || 0],
-                        duration: opacity.duration,
-                        delay: opacity.delay || 0
-                    };
-                }
+				if (effectSettings.scale) {
+					var scale = effectSettings.scale,
+						x_scale = {
+							value: [scale.x_param_from || 0, scale.x_param_to || 0],
+							duration: scale.duration,
+							delay: scale.delay || 0
+						},
+						y_scale = {
+							value: [scale.y_param_from || 0, scale.y_param_to || 0],
+							duration: scale.duration,
+							delay: scale.delay || 0,
+						};
 
-                if (effectSettings.bgColor) {
-                    var bgColor = effectSettings.bgColor;
+					animeSettings.scaleX = x_scale;
+					animeSettings.scaleY = y_scale;
+				}
 
-                    animeSettings.backgroundColor = {
-                        value: [bgColor.from || 0, bgColor.to || 0],
-                        duration: bgColor.duration,
-                        delay: bgColor.delay || 0
-                    };
-                }
+				if (effectSettings.skew) {
+					var skew = effectSettings.skew,
+						x_skew = {
+							value: [skew.x_param_from || 0, skew.x_param_to || 0],
+							duration: skew.duration,
+							delay: skew.delay || 0
+						},
+						y_skew = {
+							value: [skew.y_param_from || 0, skew.y_param_to || 0],
+							duration: skew.duration,
+							delay: skew.delay || 0,
+						};
 
-                if (effectSettings.blur) {
-                    var blur = effectSettings.blur,
-                        blurEffect = {
-                            value: [blur.from || 0, blur.to || 0],
-                            duration: blur.duration,
-                            delay: blur.delay || 0
-                        };
+					animeSettings.skewX = x_skew;
+					animeSettings.skewY = y_skew;
+				}
 
-                    filterArr.push(blurEffect);
-                }
+				if (effectSettings.opacity) {
+					var opacity = effectSettings.opacity;
 
-                if (effectSettings.hue) {
-                    var hue = effectSettings.hue,
-                        hueEffect = {
-                            value: [hue.from || 0, hue.to || 0],
-                            duration: hue.duration,
-                            delay: hue.delay || 0
-                        };
+					animeSettings.opacity = {
+						value: [opacity.from || 0, opacity.to || 0],
+						duration: opacity.duration,
+						delay: opacity.delay || 0
+					};
+				}
 
-                    filterArr.push(hueEffect);
-                }
+				if (effectSettings.bgColor) {
+					var bgColor = effectSettings.bgColor;
 
-                if (effectSettings.gScale) {
-                    var gScale = effectSettings.gScale,
-                        gScaleEffect = {
-                            value: [gScale.from || 0, gScale.to || 0],
-                            duration: gScale.duration,
-                            delay: gScale.delay || 0
-                        };
+					animeSettings.backgroundColor = {
+						value: [bgColor.from || 0, bgColor.to || 0],
+						duration: bgColor.duration,
+						delay: bgColor.delay || 0
+					};
+				}
 
-                    filterArr.push(gScaleEffect);
-                }
+				if (effectSettings.blur) {
+					var blur = effectSettings.blur,
+						blurEffect = {
+							value: [blur.from || 0, blur.to || 0],
+							duration: blur.duration,
+							delay: blur.delay || 0
+						};
 
-                if (effectSettings.contrast) {
-                    var contrast = effectSettings.contrast,
-                        contrastEffect = {
-                            value: [contrast.from || 0, contrast.to || 0],
-                            duration: contrast.duration,
-                            delay: contrast.delay || 0
-                        };
+					filterArr.push(blurEffect);
+				}
 
-                    filterArr.push(contrastEffect);
-                }
+				if (effectSettings.hue) {
+					var hue = effectSettings.hue,
+						hueEffect = {
+							value: [hue.from || 0, hue.to || 0],
+							duration: hue.duration,
+							delay: hue.delay || 0
+						};
 
-                if (effectSettings.bright) {
-                    var bright = effectSettings.bright,
-                        brightEffect = {
-                            value: [bright.from || 0, bright.to || 0],
-                            duration: bright.duration,
-                            delay: bright.delay || 0
-                        };
+					filterArr.push(hueEffect);
+				}
 
-                    filterArr.push(brightEffect);
-                }
+				if (effectSettings.gScale) {
+					var gScale = effectSettings.gScale,
+						gScaleEffect = {
+							value: [gScale.from || 0, gScale.to || 0],
+							duration: gScale.duration,
+							delay: gScale.delay || 0
+						};
 
-                if (effectSettings.sat) {
-                    var sat = effectSettings.sat,
-                        satEffect = {
-                            value: [sat.from || 0, sat.to || 0],
-                            duration: sat.duration,
-                            delay: sat.delay || 0
-                        };
+					filterArr.push(gScaleEffect);
+				}
 
-                    filterArr.push(satEffect);
-                }
+				if (effectSettings.contrast) {
+					var contrast = effectSettings.contrast,
+						contrastEffect = {
+							value: [contrast.from || 0, contrast.to || 0],
+							duration: contrast.duration,
+							delay: contrast.delay || 0
+						};
 
-                //add filter settings to animation settings
-                if (filterArr.length !== 0) {
-                    animeSettings.filter = filterArr;
-                }
+					filterArr.push(contrastEffect);
+				}
 
-                anime(animeSettings);
-            }
-        });
+				if (effectSettings.bright) {
+					var bright = effectSettings.bright,
+						brightEffect = {
+							value: [bright.from || 0, bright.to || 0],
+							duration: bright.duration,
+							delay: bright.delay || 0
+						};
 
-        elementorFrontend.hooks.addAction('frontend/element_ready/widget', function ($scope) {
-            elementorFrontend.elementsHandler.addHandler(paFloatingEffects, {
-                $element: $scope
-            });
-        });
+					filterArr.push(brightEffect);
+				}
 
-    });
+				if (effectSettings.sat) {
+					var sat = effectSettings.sat,
+						satEffect = {
+							value: [sat.from || 0, sat.to || 0],
+							duration: sat.duration,
+							delay: sat.delay || 0
+						};
+
+					filterArr.push(satEffect);
+				}
+
+				//add filter settings to animation settings
+				if (filterArr.length !== 0) {
+					animeSettings.filter = filterArr;
+				}
+
+				anime(animeSettings);
+			}
+		});
+
+		elementorFrontend.hooks.addAction('frontend/element_ready/widget', function ($scope) {
+			elementorFrontend.elementsHandler.addHandler(tmpcoderFloatingEffects, {
+				$element: $scope
+			});
+		});
+
+	});
 
 })(jQuery);

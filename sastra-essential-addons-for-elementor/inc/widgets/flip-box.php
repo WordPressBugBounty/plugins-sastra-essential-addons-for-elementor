@@ -1862,41 +1862,43 @@ class TMPCODER_Flip_Box extends Widget_Base {
 	protected function render() {
 
 		$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 
 		// $front_image_src = Group_Control_Image_Size::get_attachment_image_src( $settings['front_image']['id'], 'front_image_size', $settings );
 
-		$settings[ 'front_image_size' ] = ['id' => $settings['front_image']['id']];
+		$settings[ 'front_image_size' ] = ['id' => $settings['front_image']['id'] ?? 0];
 		$front_image_html = Group_Control_Image_Size::get_attachment_image_html( $settings, 'front_image_size' );
 
 
 		// $back_image_src = Group_Control_Image_Size::get_attachment_image_src( $settings['back_image']['id'], 'back_image_size', $settings );
 
-		$settings[ 'back_image_size' ] = ['id' => $settings['back_image']['id']];
+		$settings[ 'back_image_size' ] = ['id' => $settings['back_image']['id'] ?? 0];
 		$back_image_html = Group_Control_Image_Size::get_attachment_image_html( $settings, 'back_image_size' );
 
 		$back_btn_element = 'div';
-		$back_link = $settings['back_link']['url'];
+		$back_link = $settings['back_link']['url'] ?? '';
 
 		if ( '' !== $back_link ) {
 
 			$back_btn_element = 'a';
 
-			$this->add_render_attribute( 'link_attribute', 'href', $settings['back_link']['url'] );
+			$this->add_render_attribute( 'link_attribute', 'href', $settings['back_link']['url'] ?? '' );
 
-			if ( $settings['back_link']['is_external'] ) {
+			if ( $settings['back_link']['is_external'] ?? false ) {
 				$this->add_render_attribute( 'link_attribute', 'target', '_blank' );
 			}
 
-			if ( $settings['back_link']['nofollow'] ) {
+			if ( $settings['back_link']['nofollow'] ?? false ) {
 				$this->add_render_attribute( 'link_attribute', 'nofollow', '' );
 			}
 		}
 
 		?>
 			
-		<div class="tmpcoder-flip-box" data-trigger="<?php echo esc_attr( $settings['front_trigger'] ); ?>">
+		<div class="tmpcoder-flip-box" data-trigger="<?php echo esc_attr( $settings['front_trigger'] ?? '' ); ?>">
 			
-			<div class="tmpcoder-flip-box-item tmpcoder-flip-box-front tmpcoder-anim-timing-<?php echo esc_attr( $settings['box_anim_timing'] ); ?>">
+			<div class="tmpcoder-flip-box-item tmpcoder-flip-box-front tmpcoder-anim-timing-<?php echo esc_attr( $settings['box_anim_timing'] ?? '' ); ?>">
 
 				<div class="tmpcoder-flip-box-overlay"></div>
 
@@ -1904,12 +1906,12 @@ class TMPCODER_Flip_Box extends Widget_Base {
 					
 					<?php
 					ob_start();
-			        \Elementor\Icons_Manager::render_icon( $settings['front_icon'], [ 'aria-hidden' => 'true' ] );
+			        \Elementor\Icons_Manager::render_icon( $settings['front_icon'] ?? '', [ 'aria-hidden' => 'true' ] );
 			        $custom_icon = ob_get_clean();
 			        $custom_icon_wrapper = !empty($settings['front_icon']) ? $custom_icon : '';
 					?>
 
-					<?php if ( 'icon' === $settings['front_icon_type'] && '' !== $settings['front_icon']['value'] ) : ?>
+					<?php if ( 'icon' === ($settings['front_icon_type'] ?? '') && (!empty($settings['front_icon']['value']) && '' !== ($settings['front_icon']['value'] ?? '')) ) : ?>
 					<div class="tmpcoder-flip-box-icon">
 					
 					<?php if (isset($settings['front_icon']['value']) && is_array($settings['front_icon']['value']) ) {
@@ -1918,35 +1920,35 @@ class TMPCODER_Flip_Box extends Widget_Base {
 
 						}else{ ?>
 
-						<i class="<?php echo esc_attr( $settings['front_icon']['value'] ); ?>"></i>
+						<i class="<?php echo esc_attr( $settings['front_icon']['value'] ?? '' ); ?>"></i>
 
 					<?php } ?>
 
 					</div>
-					<?php elseif ( 'image' === $settings['front_icon_type'] && $front_image_html ) : ?>
+					<?php elseif ( 'image' === ($settings['front_icon_type'] ?? '') && $front_image_html ) : ?>
 					<div class="tmpcoder-flip-box-image">
 						<?php echo wp_kses_post($front_image_html); ?> 
 					</div>
 					<?php endif; ?>
 					
-					<?php if ( '' !== $settings['front_title'] ) : ?>
-						<h3 class="tmpcoder-flip-box-title"><?php echo wp_kses_post($settings['front_title']); ?></h3>
+					<?php if ( !empty($settings['front_title']) && '' !== ($settings['front_title'] ?? '') ) : ?>
+						<h3 class="tmpcoder-flip-box-title"><?php echo wp_kses_post($settings['front_title'] ?? ''); ?></h3>
 					<?php endif; ?>
 
-					<?php if ( '' !== $settings['front_description'] ) : ?>
-						<div class="tmpcoder-flip-box-description"><?php echo wp_kses_post($settings['front_description']); ?></div>						
+					<?php if ( !empty($settings['front_description']) && '' !== ($settings['front_description'] ?? '') ) : ?>
+						<div class="tmpcoder-flip-box-description"><?php echo wp_kses_post($settings['front_description'] ?? ''); ?></div>						
 					<?php endif; ?>	
 
-					<?php if ( 'btn' === $settings['front_trigger'] ) : ?>
+					<?php if ( 'btn' === ($settings['front_trigger'] ?? '') ) : ?>
 						<div class="tmpcoder-flip-box-btn-wrap">
 							<div class="tmpcoder-flip-box-btn">
-								<?php if ( '' !== $settings['front_btn_text'] ) : ?>
-								<span class="tmpcoder-flip-box-btn-text"><?php echo esc_html($settings['front_btn_text']); ?></span>		
+								<?php if ( !empty($settings['front_btn_text']) && '' !== ($settings['front_btn_text'] ?? '') ) : ?>
+								<span class="tmpcoder-flip-box-btn-text"><?php echo esc_html($settings['front_btn_text'] ?? ''); ?></span>		
 								<?php endif; ?>
 
-								<?php if ( '' !== $settings['front_btn_icon']['value'] ) : ?>
+								<?php if ( !empty($settings['front_btn_icon']['value']) && '' !== ($settings['front_btn_icon']['value'] ?? '') ) : ?>
 								<span class="tmpcoder-flip-box-btn-icon">
-									<i class="<?php echo esc_attr( $settings['front_btn_icon']['value'] ); ?>"></i>
+									<i class="<?php echo esc_attr( $settings['front_btn_icon']['value'] ?? '' ); ?>"></i>
 								</span>
 								<?php endif; ?>
 							</div>	
@@ -1973,7 +1975,7 @@ class TMPCODER_Flip_Box extends Widget_Base {
 				        $custom_icon_wrapper = !empty($settings['back_icon']) ? $custom_icon : '';
 					?>
 
-					<?php if ( 'icon' === $settings['back_icon_type'] && '' !== $settings['back_icon']['value'] ) : ?>
+					<?php if ( 'icon' === $settings['back_icon_type'] && (!empty($settings['back_icon']['value']) && '' !== $settings['back_icon']['value']) ) : ?>
 					<div class="tmpcoder-flip-box-icon">
 
 						<?php if ( $settings['back_icon']['value'] != '' && is_array($settings['back_icon']['value'])) {
@@ -1991,7 +1993,7 @@ class TMPCODER_Flip_Box extends Widget_Base {
 						</div>
 					<?php endif; ?>
 					
-					<?php if ( '' !== $settings['back_title'] ) : ?>
+					<?php if ( !empty($settings['back_title']) && '' !== $settings['back_title'] ) : ?>
 						<h3 class="tmpcoder-flip-box-title">
 							<?php
 							if ( 'title' === $settings['back_link_type'] || 'btn-title' === $settings['back_link_type']  ) {
@@ -2007,7 +2009,7 @@ class TMPCODER_Flip_Box extends Widget_Base {
 						</h3>
 					<?php endif; ?>
 
-					<?php if ( '' !== $settings['back_description'] ) : ?>
+					<?php if ( !empty($settings['back_description']) && '' !== $settings['back_description'] ) : ?>
 						<div class="tmpcoder-flip-box-description"><?php echo wp_kses_post($settings['back_description']); ?></div>						
 					<?php endif; ?>	
 
@@ -2016,11 +2018,11 @@ class TMPCODER_Flip_Box extends Widget_Base {
 						<div class="tmpcoder-flip-box-btn-wrap">
 							<?php echo wp_kses_post('<'. esc_html($back_btn_element) .' class="tmpcoder-flip-box-btn" '. $this->get_render_attribute_string( 'link_attribute' ) .'>'); ?>
 
-								<?php if ( '' !== $settings['back_btn_text'] ) : ?>
+								<?php if ( !empty($settings['back_btn_text']) && '' !== $settings['back_btn_text'] ) : ?>
 								<span class="tmpcoder-flip-box-btn-text"><?php echo esc_html($settings['back_btn_text']); ?></span>		
 								<?php endif; ?>
 
-								<?php if ( '' !== $settings['back_btn_icon']['value'] ) : ?>
+								<?php if ( !empty($settings['back_btn_icon']['value']) && '' !== $settings['back_btn_icon']['value'] ) : ?>
 								<span class="tmpcoder-flip-box-btn-icon">
 									<i class="<?php echo esc_attr( $settings['back_btn_icon']['value'] ); ?>"></i>
 								</span>

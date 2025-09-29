@@ -43,7 +43,9 @@ class TMPCODER_Pricing_Table extends Widget_Base {
 		$depends = [ 'tmpcoder-button-animations-css' => true, 'tmpcoder-pricing-table' => true ];
 
 		if ( ! tmpcoder_elementor()->preview->is_preview_mode() ) {
-			$settings = $this->get_settings_for_display();
+			$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 
 			if ( $settings['btn_animation'] == 'tmpcoder-button-none' ) {
 				unset( $depends['tmpcoder-button-animations-css'] );
@@ -2509,6 +2511,8 @@ class TMPCODER_Pricing_Table extends Widget_Base {
 	protected function render() {
 
 	$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 	$item_count = 0;
 
 	if ( empty( $settings['pricing_items'] ) ) {

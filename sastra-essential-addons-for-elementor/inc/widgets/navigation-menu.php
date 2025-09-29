@@ -43,7 +43,9 @@ class TMPCODER_Navigation_Menu extends Widget_Base {
 		$depends = [ 'tmpcoder-link-animations-css' => true, 'tmpcoder-nav-menu' => true ];
 
 		if ( !tmpcoder_elementor()->preview->is_preview_mode() ) {
-			$settings = $this->get_settings_for_display();
+			$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 
 			if ( $settings['menu_items_pointer'] == 'none' ) {
 				unset( $depends['tmpcoder-link-animations-css'] );

@@ -73,8 +73,10 @@ class TMPCODER_Elementor_Template extends Widget_Base {
 	protected function render() {
 		// Get Settings
 		$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 
-		if ( '' !== $settings['select_template'] ) {
+		if ( !empty($settings['select_template']) && '' !== $settings['select_template'] ) {
 			$id = $settings['select_template'];
 
 			if ( defined('ICL_LANGUAGE_CODE') ) {

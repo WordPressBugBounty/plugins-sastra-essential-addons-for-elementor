@@ -178,7 +178,7 @@ class TMPCODER_Sticky_Section {
                     'selectors' => [
                         '{{WRAPPER}}' => 'top: auto; bottom: auto; {{position_location.VALUE}}: {{VALUE}}px;',
                         '{{WRAPPER}} + .tmpcoder-hidden-header' => 'top: {{VALUE}}px;',
-                        '{{WRAPPER}} + .tmpcoder-adminbar-replace-header' => 'top: 32px;'
+                        // '{{WRAPPER}} + .tmpcoder-adminbar-replace-header' => 'top: 32px;'
                     ],
 					'condition' => [
 						'enable_sticky_section' => 'yes'

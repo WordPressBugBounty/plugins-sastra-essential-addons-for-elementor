@@ -128,15 +128,15 @@ class TMPCODER_Main_Menu_Walker extends \Walker_Nav_Menu {
                 // If has Settings
                 if ( $settings ) {
                     // Icon
-                    if ( tmpcoder_is_availble() && '' !== $settings['tmpcoder_mm_icon_picker'] ) {
-                        $color = '' !== $settings['tmpcoder_mm_icon_color'] ? ' color: '. $settings['tmpcoder_mm_icon_color'] : ';';
-                        $font_size = '' !== $settings['tmpcoder_mm_icon_size'] ? 'font-size: '. $settings['tmpcoder_mm_icon_size'] .'px;' : '';
+                    if ( tmpcoder_is_availble() && (!empty($settings['tmpcoder_mm_icon_picker']) && '' !== $settings['tmpcoder_mm_icon_picker']) ) {
+                        $color = (!empty($settings['tmpcoder_mm_icon_color']) && '' !== $settings['tmpcoder_mm_icon_color']) ? ' color: '. $settings['tmpcoder_mm_icon_color'] : ';';
+                        $font_size = (!empty($settings['tmpcoder_mm_icon_size']) && '' !== $settings['tmpcoder_mm_icon_size']) ? 'font-size: '. $settings['tmpcoder_mm_icon_size'] .'px;' : '';
                         $item_icon_style = ( '' !== $font_size || '' !== $color || '' !== $distance ) ? ' style="'. $font_size . $color .'"' : '';
                         $item_icon_html = '<i class="tmpcoder-mega-menu-icon '. $settings['tmpcoder_mm_icon_picker'] .'"'. $item_icon_style .'></i>';
                     }
 
                     // Badge
-                    if ( tmpcoder_is_availble() && '' !== $settings['tmpcoder_mm_badge_text'] ) {
+                    if ( tmpcoder_is_availble() && (!empty($settings['tmpcoder_mm_badge_text']) && '' !== $settings['tmpcoder_mm_badge_text']) ) {
 						$item_badge_class = 'true' === $settings['tmpcoder_mm_badge_animation'] ? ' tmpcoder-mega-menu-badge-animation' : '';
                         $item_badge_style = 'color: '. $settings['tmpcoder_mm_badge_color'] .';';
                         $item_badge_style .= 'background-color: '. $settings['tmpcoder_mm_badge_bg_color'] .';';

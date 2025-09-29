@@ -320,8 +320,12 @@ class TMPCODER_Advanced_Slider extends Widget_Base {
 				'dynamic' => [
 					'active' => true,
 				],
-				'selectors' => [
-					'{{WRAPPER}} {{CURRENT_ITEM}} .tmpcoder-slider-item-bg' => 'background-image: url({{URL}})',
+				'default' => [
+					'url' => '',
+					'id' => 0,
+				],
+				'condition' => [
+					'slider_content_type' => 'custom'
 				],
 			]
 		);
@@ -3024,6 +3028,8 @@ class TMPCODER_Advanced_Slider extends Widget_Base {
 
 	protected function render() {
 		$settings = $this->get_settings();
+		$settings_new = $this->get_settings_for_display();
+		$settings = array_merge( $settings, $settings_new );
 		$slider_html = '';
 		$item_count = 0;
 
@@ -3032,6 +3038,11 @@ class TMPCODER_Advanced_Slider extends Widget_Base {
 		}
 		
 		foreach ( $settings['slider_items'] as $key => $item ) {
+
+			// Skip if item is not valid array
+			if ( !is_array($item) ) {
+				continue;
+			}
 
 			if ( ! tmpcoder_is_availble() && $key === 4 ) {
 				break;
@@ -3060,69 +3071,72 @@ class TMPCODER_Advanced_Slider extends Widget_Base {
 					$item['slider_item_link_type'] = 'none';
 				}
 
-				$item_type = $item['slider_item_link_type'];
-				$item_url = $item['slider_item_bg_image_url']['url'];
-				$btn_url_1 = $item['slider_item_btn_url_1']['url'];
+				$item_type = $item['slider_item_link_type'] ?? '';
+				$item_url = $item['slider_item_bg_image_url']['url'] ?? '';
+				$btn_url_1 = $item['slider_item_btn_url_1']['url'] ?? '';
 				$btn_element_1 = 'div';
 				$btn_attribute_1 = '';
-				$icon_html_1 = $item['slider_item_btn_text_1'];
-				$btn_url_2 = $item['slider_item_btn_url_2']['url'];
+				$icon_html_1 = $item['slider_item_btn_text_1'] ?? '';
+				$btn_url_2 = $item['slider_item_btn_url_2']['url'] ?? '';
 				$btn_element_2 = 'div';
 				$btn_attribute_2 = '';
-				$icon_html_2 = $item['slider_item_btn_text_2'];
+				$icon_html_2 = $item['slider_item_btn_text_2'] ?? '';
 				$ken_burn_class = '';
-				if( isset($item['slider_item_bg_image']['source']) && $item['slider_item_bg_image']['source'] == 'url' ) {
-					$item_bg_image_url = $item['slider_item_bg_image']['url'];
+				$item_bg_image_url = '';
+				$item_bg_image_html = '';
+				
+				if( isset($item['slider_item_bg_image']) && !empty($item['slider_item_bg_image']) && isset($item['slider_item_bg_image']['source']) && ($item['slider_item_bg_image']['source'] ?? '') == 'url' ) {
+					$item_bg_image_url = $item['slider_item_bg_image']['url'] ?? '';
 
-					$settings['slider_image_size'] = ['id' => $item['slider_item_bg_image']['id']];
+					$settings['slider_image_size'] = ['id' => $item['slider_item_bg_image']['id'] ?? 0];
 					$item_bg_image_html = Group_Control_Image_Size::get_attachment_image_html($settings, 'slider_image_size');
-				} else {
+				} elseif( isset($item['slider_item_bg_image']) && !empty($item['slider_item_bg_image']) ) {
 
-					$item_bg_image_url = Group_Control_Image_Size::get_attachment_image_src( $item['slider_item_bg_image']['id'], 'slider_image_size', $settings );
+					$item_bg_image_url = Group_Control_Image_Size::get_attachment_image_src( $item['slider_item_bg_image']['id'] ?? 0, 'slider_image_size', $settings );
 
-					$settings['slider_image_size'] = ['id' => $item['slider_item_bg_image']['id']];
+					$settings['slider_image_size'] = ['id' => $item['slider_item_bg_image']['id'] ?? 0];
 					$item_bg_image_html = Group_Control_Image_Size::get_attachment_image_html($settings, 'slider_image_size');
 				}
 
-				$item_video_src = $item['slider_item_video_src'];
-				$item_video_start = $item['slider_item_video_start'];
-				$item_video_end = $item['slider_item_video_end'];
+				$item_video_src = $item['slider_item_video_src'] ?? '';
+				$item_video_start = $item['slider_item_video_start'] ?? '';
+				$item_video_end = $item['slider_item_video_end'] ?? '';
 
 				if ( $item_type === 'video-media' ) {
-					$item_video_src = $item['hosted_url']['url'];
+					$item_video_src = $item['hosted_url']['url'] ?? '';
 				}
 
-				if ( '' !== $item['slider_item_btn_icon_1']['value'] ) {
+				if ( '' !== ($item['slider_item_btn_icon_1']['value'] ?? '') ) {
 					ob_start();
 					Icons_Manager::render_icon( $item['slider_item_btn_icon_1'], [ 'aria-hidden' => 'true' ] );
 					$icon_html_1 .= ob_get_clean();
 				}
 
-				if ( '' !== $item['slider_item_btn_icon_2']['value'] ) {
+				if ( '' !== ($item['slider_item_btn_icon_2']['value'] ?? '') ) {
 					ob_start();
 					Icons_Manager::render_icon( $item['slider_item_btn_icon_2'], [ 'aria-hidden' => 'true' ] );
 					$icon_html_2 .= ob_get_clean();	
 				}
 
 				// Slider Ken Burns Effect
-				if ( $item['slider_item_bg_kenburns'] === 'yes' ) {
-					$ken_burn_class = ' tmpcoder-ken-burns-'. $item['slider_item_bg_zoom'];
+				if ( ($item['slider_item_bg_kenburns'] ?? '') === 'yes' ) {
+					$ken_burn_class = ' tmpcoder-ken-burns-'. ($item['slider_item_bg_zoom'] ?? '');
 				}
 
-				$this->add_render_attribute( 'slider_item'. $item_count, 'class', 'tmpcoder-slider-item elementor-repeater-item-'. $item['_id'] );
+				$this->add_render_attribute( 'slider_item'. $item_count, 'class', 'tmpcoder-slider-item elementor-repeater-item-'. ($item['_id'] ?? '') );
 
 				if ( strpos( $item_type, 'video' ) !== false && ! empty( $item_video_src ) ) {
 
 					$this->add_render_attribute( 'slider_item'. $item_count, 'class', 'tmpcoder-slider-video-item' );
 
-					$this->add_render_attribute( 'slider_item'. $item_count, 'data-video-autoplay', $item['slider_item_video_autoplay'] );
+					$this->add_render_attribute( 'slider_item'. $item_count, 'data-video-autoplay', $item['slider_item_video_autoplay'] ?? '' );
 
 					if ( $item_type === 'video-youtube' ) {
 						preg_match('![?&]{1}v=([^&]+)!', $item_video_src, $item_video_id );
 
 						$item_bg_image_url = 'https://i.ytimg.com/vi_webp/'. $item_video_id[1] .'/maxresdefault.webp';
 						
-						if ( 'yes' === $item['slider_item_video_autoplay'] ) {
+						if ( 'yes' === ($item['slider_item_video_autoplay'] ?? '') ) {
 							$item_video_src = 'https://www.youtube.com/embed/'. $item_video_id[1] .'?autoplay=1';
 						} else {
 							$item_video_src = 'https://www.youtube.com/embed/'. $item_video_id[1] . '?enablejsapi=1';
@@ -3192,7 +3206,11 @@ class TMPCODER_Advanced_Slider extends Widget_Base {
 
 				} else {
 					// Slider Background Image
-					$slider_html .= '<div class="tmpcoder-slider-item-bg '. esc_attr($ken_burn_class) .'"></div>';
+					$bg_style = '';
+					if ( !empty($item_bg_image_url) ) {
+						$bg_style = ' style="background-image: url(' . esc_url($item_bg_image_url) . ');"';
+					}
+					$slider_html .= '<div class="tmpcoder-slider-item-bg '. esc_attr($ken_burn_class) .'"' . $bg_style . '></div>';
 				}
 
 				if ( 'slide_vertical' === $settings['slider_effect'] ) {
@@ -3203,9 +3221,9 @@ class TMPCODER_Advanced_Slider extends Widget_Base {
 
 				// Slider Overlay
 				$slider_overlay_html = '';
-				if ( $item['slider_item_overlay'] === 'yes' ) {
+				if ( ($item['slider_item_overlay'] ?? '') === 'yes' ) {
 					// if ( $slider_amount === 1 || $item['slider_item_blend_mode'] !== 'normal' ) {
-					if ( $slider_amount === 1 || (isset($item['slider_item_blend_mode']) && $item['slider_item_blend_mode'] !== 'normal') ) { 	
+					if ( $slider_amount === 1 || (isset($item['slider_item_blend_mode']) && ($item['slider_item_blend_mode'] ?? '') !== 'normal') ) { 	
 						$slider_html .= '<div class="tmpcoder-slider-item-overlay"></div>';
 					} else {
 						$slider_overlay_html = '<div class="tmpcoder-slider-item-overlay"></div>';
@@ -3224,7 +3242,7 @@ class TMPCODER_Advanced_Slider extends Widget_Base {
 					if ( $slider_amount === 1 ) {
 						$this->add_render_attribute( 'slider_container'. $item_count, 'class', 'tmpcoder-slider-animation' );
 						$this->add_render_attribute( 'slider_outer'. $item_count, 'class', 'tmpcoder-anim-transparency tmpcoder-anim-size-'. $settings['slider_content_anim_size'] .' tmpcoder-overlay-'. $settings['slider_content_animation'] );
-					} elseif ( !empty( $item_bg_image_url ) && $item['slider_item_video_autoplay'] !== 'yes' ) {
+					} elseif ( !empty( $item_bg_image_url ) && ($item['slider_item_video_autoplay'] ?? '') !== 'yes' ) {
 						$this->add_render_attribute( 'slider_container'. $item_count, 'class', 'tmpcoder-slider-animation tmpcoder-animation-wrap' );
 						$this->add_render_attribute( 'slider_outer'. $item_count, 'class', 'tmpcoder-anim-transparency tmpcoder-anim-size-'. $settings['slider_content_anim_size'] .' tmpcoder-overlay-'. $settings['slider_content_animation'] );
 					}
@@ -3238,13 +3256,13 @@ class TMPCODER_Advanced_Slider extends Widget_Base {
 
 						$this->add_render_attribute( 'slider_item_url'. $item_count, 'href', $item_url );
 
-						if ( $item['slider_item_bg_image_url']['is_external'] ) {
-							$this->add_render_attribute( 'slider_item_url'. $item_count, 'target', '_blank' );
-						}
+					if ( $item['slider_item_bg_image_url']['is_external'] ?? false ) {
+						$this->add_render_attribute( 'slider_item_url'. $item_count, 'target', '_blank' );
+					}
 
-						if ( $item['slider_item_bg_image_url']['nofollow'] ) {
-							$this->add_render_attribute( 'slider_item_url'. $item_count, 'nofollow', '' );
-						}
+					if ( $item['slider_item_bg_image_url']['nofollow'] ?? false ) {
+						$this->add_render_attribute( 'slider_item_url'. $item_count, 'nofollow', '' );
+					}
 
 						$slider_html .= '<a class="tmpcoder-slider-item-url" '. $this->get_render_attribute_string( 'slider_item_url'. $item_count ) .'></a>';
 

@@ -656,21 +656,24 @@ class TMPCODER_Button extends Widget_Base {
 	}
 
 	protected function render() {
+		
 		// Get Settings
 		$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 		
 		$btn_element = 'div';
 		$btn_url =  $settings['button_url']['url'];
 
 	?>
 	
-	<?php if ( '' !== $settings['button_text'] || '' !== $settings['select_icon']['value'] ) : ?>
+	<?php if ( (!empty($settings['button_text']) && '' !== $settings['button_text']) || (!empty($settings['select_icon']['value']) && '' !== $settings['select_icon']['value']) ) : ?>
 		
 		<?php 	
 		
 		$this->add_render_attribute( 'button_attribute', 'class', 'tmpcoder-button tmpcoder-button-effect '. $settings['button_hover_animation'] );
 			
-		if ( '' !== $settings['button_hover_animation_text'] ) {
+		if ( !empty($settings['button_hover_animation_text']) && '' !== $settings['button_hover_animation_text'] ) {
 			$this->add_render_attribute( 'button_attribute', 'data-text', $settings['button_hover_animation_text'] );
 		}	
 
@@ -689,13 +692,13 @@ class TMPCODER_Button extends Widget_Base {
 			}
 		}
 
-		if ( '' !== $settings['button_id'] ) {
+		if ( !empty($settings['button_id']) && '' !== $settings['button_id'] ) {
 			$this->add_render_attribute( 'button_attribute', 'id', $settings['button_id']  );
 		}
 
 		$this->add_render_attribute( 'button_class_attribute', 'class', 'tmpcoder-button-wrap elementor-clearfix'  );
 
-		if ( '' !== $settings['button_width']['size'] ) {
+		if ( !empty($settings['button_width']['size']) && '' !== $settings['button_width']['size'] ) {
 			$this->add_render_attribute( 'button_class_attribute', 'class', 'tmpcoder-button-custom-width'  );
 		}
 
@@ -705,11 +708,11 @@ class TMPCODER_Button extends Widget_Base {
 		<?php echo wp_kses_post('<'.esc_html($btn_element).' '.$this->get_render_attribute_string( 'button_attribute' ).'>');
         ?>	
 			<span class="tmpcoder-button-content">
-				<?php if ( '' !== $settings['button_text'] ) : ?>
+				<?php if ( !empty($settings['button_text']) && '' !== $settings['button_text'] ) : ?>
 					<span class="tmpcoder-button-text"><?php echo esc_html( $settings['button_text'] ); ?></span>
 				<?php endif; ?>
 				
-				<?php if ( '' !== $settings['select_icon']['value'] ) : ?>
+				<?php if ( !empty($settings['select_icon']['value']) && '' !== $settings['select_icon']['value'] ) : ?>
 					<span class="tmpcoder-button-icon"><?php \Elementor\Icons_Manager::render_icon( $settings['select_icon'] ); ?></span>
 				<?php endif; ?>
 			</span>

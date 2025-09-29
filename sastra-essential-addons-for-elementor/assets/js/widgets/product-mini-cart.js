@@ -9,7 +9,7 @@
 
         var animationSpeed = $scope.find('.tmpcoder-mini-cart-wrap').length != 0 ? $scope.find('.tmpcoder-mini-cart-wrap').data('animation') : 600;
 
-        /* Update QTY Code in Mini cart Sidebar -  start */
+        /* Update QTY Code in Mini cart Sidebar - start */
 
         $('body').on('click', '.mini-cart-plus, .mini-cart-minus', function(e){
             e.preventDefault();
@@ -42,31 +42,33 @@
             });
         });
 
-        jQuery(document.body).on('wc_fragments_loaded wc_fragments_refreshed', function () {
-            jQuery('.widget_shopping_cart_content .woocommerce-mini-cart-item').each(function () {
-                const $item = jQuery(this);
-                const cart_item_key = $item.data('cart_item_key');
+        if ($scope.find('#tmpcoder-mini-cart').data('update-qty')) {
 
-                // Replace quantity block with custom markup
-                const quantityText = $item.find('.quantity').text().trim();
-                const quantity = parseInt(quantityText.split('×')[0].trim());
+            jQuery(document.body).on('wc_fragments_loaded wc_fragments_refreshed', function () {
+                jQuery('.widget_shopping_cart_content .woocommerce-mini-cart-item').each(function () {
+                    const $item = jQuery(this);
+                    const cart_item_key = $item.data('cart_item_key');
 
-                console.log(quantity);
-                console.log($item);
+                    // Replace quantity block with custom markup
+                    const quantityText = $item.find('.quantity').text().trim();
+                    const quantity = parseInt(quantityText.split('×')[0].trim());
 
-                const customQtyHTML = `
-                    <div class="mini-cart-quantity mini-cart-qty-wrap">
-                        <button class="mini-cart-minus" data-key="${cart_item_key}">-</button>
-                        <input type="number" class="mini-cart-qty-input" value="${quantity}" data-key="${cart_item_key}" min="1">
-                        <button class="mini-cart-plus" data-key="${cart_item_key}">+</button>
-                        <span class="mini-cart-loader" style="display:none;"></span>
-                    </div>
-                `;
+                    console.log('ssws');
 
-                $item.find('.quantity').replaceWith(customQtyHTML);
+                    const customQtyHTML = `
+                        <div class="mini-cart-quantity mini-cart-qty-wrap">
+                            <button class="mini-cart-minus" data-key="${cart_item_key}">-</button>
+                            <input type="number" class="mini-cart-qty-input" value="${quantity}" data-key="${cart_item_key}" min="1">
+                            <button class="mini-cart-plus" data-key="${cart_item_key}">+</button>
+                            <span class="mini-cart-loader" style="display:none;"></span>
+                        </div>
+                    `;
+
+                    $item.find('.quantity').replaceWith(customQtyHTML);
+                });
             });
-        });
-
+        }
+        
         $('body').on('change', '.mini-cart-qty-input', function(){
             var $input = $(this);
             var qty = parseInt($input.val());

@@ -1706,16 +1706,18 @@ class TMPCODER_Team_Member extends Widget_Base {
 	protected function team_member_social_media() {
 		// Get Settings
 		$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 		
-		if ( '' !== $settings['social_icon_1']['value'] || '' !== $settings['social_icon_2']['value'] || '' !== $settings['social_icon_3']['value'] || '' !== $settings['social_icon_4']['value'] || '' !== $settings['social_icon_5']['value'] ) : 
+		if ( (!empty($settings['social_icon_1']['value']) && '' !== $settings['social_icon_1']['value']) || (!empty($settings['social_icon_2']['value']) && '' !== $settings['social_icon_2']['value']) || (!empty($settings['social_icon_3']['value']) && '' !== $settings['social_icon_3']['value']) || (!empty($settings['social_icon_4']['value']) && '' !== $settings['social_icon_4']['value']) || (!empty($settings['social_icon_5']['value']) && '' !== $settings['social_icon_5']['value']) ) : 
 		
 		$this->add_render_attribute( 'social_attribute', 'class', 'tmpcoder-member-social' );
 				
-		if ( $settings['social_media_is_external'] ) {
+		if ( $settings['social_media_is_external'] ?? false ) {
 			$this->add_render_attribute( 'social_attribute', 'target', '_blank' );
 		}
 
-		if ( $settings['social_media_nofollow'] ) {
+		if ( $settings['social_media_nofollow'] ?? false ) {
 			$this->add_render_attribute( 'social_attribute', 'nofollow', '' );
 		}
 
@@ -1723,75 +1725,75 @@ class TMPCODER_Team_Member extends Widget_Base {
 
 		<div class="tmpcoder-member-social-media">
 			
-			<?php if ( $settings['social_icon_1']['value'] ) : ?>
-				<?php echo wp_kses_post('<a href="'.esc_url( $settings['social_url_1']['url'] ).' " '.$this->get_render_attribute_string( 'social_attribute' ).'>'); ?>
+			<?php if ( $settings['social_icon_1']['value'] ?? '' ) : ?>
+				<?php echo wp_kses_post('<a href="'.esc_url( $settings['social_url_1']['url'] ?? '' ).' " '.$this->get_render_attribute_string( 'social_attribute' ).'>'); ?>
 
 					<?php 
 
-					if (is_array($settings['social_icon_1']['value'])) {
-						echo wp_kses(tmpcoder_render_svg_icon($settings['social_icon_1']),tmpcoder_wp_kses_allowed_html());
+					if (is_array($settings['social_icon_1']['value'] ?? '')) {
+						echo wp_kses(tmpcoder_render_svg_icon($settings['social_icon_1'] ?? ''),tmpcoder_wp_kses_allowed_html());
 					}
 					else
 					{
 					?>
-					<i class="<?php echo esc_html( $settings['social_icon_1']['value'] ); ?>"></i>
+					<i class="<?php echo esc_html( $settings['social_icon_1']['value'] ?? '' ); ?>"></i>
 					<?php } ?>
 
 				</a>
 			<?php endif; ?>
 		
-			<?php if ( $settings['social_icon_2']['value'] ) : ?>
-				<?php echo wp_kses_post('<a href="'.esc_url( $settings['social_url_2']['url'] ).' " '.$this->get_render_attribute_string( 'social_attribute' ).'>'); ?>
+			<?php if ( $settings['social_icon_2']['value'] ?? '' ) : ?>
+				<?php echo wp_kses_post('<a href="'.esc_url( $settings['social_url_2']['url'] ?? '' ).' " '.$this->get_render_attribute_string( 'social_attribute' ).'>'); ?>
 					<?php 
-					if (is_array($settings['social_icon_2']['value'])) {
-						echo wp_kses(tmpcoder_render_svg_icon($settings['social_icon_2']),tmpcoder_wp_kses_allowed_html());
+					if (is_array($settings['social_icon_2']['value'] ?? '')) {
+						echo wp_kses(tmpcoder_render_svg_icon($settings['social_icon_2'] ?? ''),tmpcoder_wp_kses_allowed_html());
 					}
 					else
 					{ ?>
-					<i class="<?php echo esc_html( $settings['social_icon_2']['value'] ); ?>"></i>
+					<i class="<?php echo esc_html( $settings['social_icon_2']['value'] ?? '' ); ?>"></i>
 					<?php } ?>
 				</a>
 			<?php endif; ?>
 
-			<?php if ( $settings['social_icon_3']['value'] ) : ?>
-				<?php echo wp_kses_post('<a href="'.esc_url( $settings['social_url_3']['url'] ).' " '.$this->get_render_attribute_string( 'social_attribute' ).'>'); ?>
+			<?php if ( $settings['social_icon_3']['value'] ?? '' ) : ?>
+				<?php echo wp_kses_post('<a href="'.esc_url( $settings['social_url_3']['url'] ?? '' ).' " '.$this->get_render_attribute_string( 'social_attribute' ).'>'); ?>
 					<?php
-					if (is_array($settings['social_icon_3']['value'])) {
-						echo wp_kses(tmpcoder_render_svg_icon($settings['social_icon_3']),tmpcoder_wp_kses_allowed_html());
+					if (is_array($settings['social_icon_3']['value'] ?? '')) {
+						echo wp_kses(tmpcoder_render_svg_icon($settings['social_icon_3'] ?? ''),tmpcoder_wp_kses_allowed_html());
 					}
 					else
 					{
 						?>
-						<i class="<?php echo esc_html( $settings['social_icon_3']['value'] ); ?>"></i>
+						<i class="<?php echo esc_html( $settings['social_icon_3']['value'] ?? '' ); ?>"></i>
 						<?php
 					} 
 					?>
 				</a>
 			<?php endif; ?>
 
-			<?php if ( $settings['social_icon_4']['value'] ) : ?>
-				<?php echo wp_kses_post('<a href="'.esc_url( $settings['social_url_4']['url'] ).' " '.$this->get_render_attribute_string( 'social_attribute' ).'>'); ?>
+			<?php if ( $settings['social_icon_4']['value'] ?? '' ) : ?>
+				<?php echo wp_kses_post('<a href="'.esc_url( $settings['social_url_4']['url'] ?? '' ).' " '.$this->get_render_attribute_string( 'social_attribute' ).'>'); ?>
 
 					<?php
-					if (is_array($settings['social_icon_4']['value'])) {
-						echo wp_kses(tmpcoder_render_svg_icon($settings['social_icon_4']),tmpcoder_wp_kses_allowed_html());
+					if (is_array($settings['social_icon_4']['value'] ?? '')) {
+						echo wp_kses(tmpcoder_render_svg_icon($settings['social_icon_4'] ?? ''),tmpcoder_wp_kses_allowed_html());
 					}
 					else
 					{ ?>
-					<i class="<?php echo esc_html( $settings['social_icon_4']['value'] ); ?>"></i>
+					<i class="<?php echo esc_html( $settings['social_icon_4']['value'] ?? '' ); ?>"></i>
 					<?php } ?>
 				</a>
 			<?php endif; ?>
 
-			<?php if ( $settings['social_icon_5']['value'] ) : ?>
-				<?php echo wp_kses_post('<a href="'.esc_url( $settings['social_url_5']['url'] ).' " '.$this->get_render_attribute_string( 'social_attribute' ).'>'); ?>
+			<?php if ( $settings['social_icon_5']['value'] ?? '' ) : ?>
+				<?php echo wp_kses_post('<a href="'.esc_url( $settings['social_url_5']['url'] ?? '' ).' " '.$this->get_render_attribute_string( 'social_attribute' ).'>'); ?>
 					<?php
-					if (is_array($settings['social_icon_5']['value'])) {
-						echo wp_kses(tmpcoder_render_svg_icon($settings['social_icon_5']),tmpcoder_wp_kses_allowed_html());
+					if (is_array($settings['social_icon_5']['value'] ?? '')) {
+						echo wp_kses(tmpcoder_render_svg_icon($settings['social_icon_5'] ?? ''),tmpcoder_wp_kses_allowed_html());
 					}
 					else
 					{ ?>
-					<i class="<?php echo esc_html( $settings['social_icon_5']['value'] ); ?>"></i>
+					<i class="<?php echo esc_html( $settings['social_icon_5']['value'] ?? '' ); ?>"></i>
 					<?php } ?>
 				</a>
 			<?php endif; ?>
@@ -1804,23 +1806,25 @@ class TMPCODER_Team_Member extends Widget_Base {
 	protected function team_member_button() {
 		// Get Settings 
 		$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 		
-		if ( '' !== $settings['member_btn_text'] ) {
+		if ( !empty($settings['member_btn_text']) && '' !== ($settings['member_btn_text'] ?? '') ) {
 
 			$this->add_render_attribute( 'btn_attribute', 'class', 'tmpcoder-member-btn tmpcoder-button-effect '. $this->get_settings()['btn_animation'] );
-			$this->add_render_attribute( 'btn_attribute', 'href', $settings['member_btn_url']['url'] );
+			$this->add_render_attribute( 'btn_attribute', 'href', $settings['member_btn_url']['url'] ?? '' );
 
-			if ( $settings['member_btn_url']['is_external'] ) {
+			if ( $settings['member_btn_url']['is_external'] ?? false ) {
 				$this->add_render_attribute( 'btn_attribute', 'target', '_blank' );
 			}
 
-			if ( $settings['member_btn_url']['nofollow'] ) {
+			if ( $settings['member_btn_url']['nofollow'] ?? false ) {
 				$this->add_render_attribute( 'btn_attribute', 'nofollow', '' );
 			}
 
 			echo '<div class="tmpcoder-member-btn-wrap">';
 				echo wp_kses_post('<a '. $this->get_render_attribute_string( 'btn_attribute' ) .'>');
-					echo '<span>'. esc_html($settings['member_btn_text']) .'</span>';
+					echo '<span>'. esc_html($settings['member_btn_text'] ?? '') .'</span>';
 				echo '</a>';
 			echo '</div>';
 
@@ -1830,6 +1834,8 @@ class TMPCODER_Team_Member extends Widget_Base {
 	protected function team_member_content() {
 		// Get Settings 
 		$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 
 		if ( ! tmpcoder_is_availble() ) {
 			$settings['member_name_location'] = 'below';
@@ -1840,15 +1846,15 @@ class TMPCODER_Team_Member extends Widget_Base {
 			$settings['member_divider_location'] = 'below';
 		}
 		
-		if ( ( '' !== $settings['member_name'] && 'below' === $settings['member_name_location'] ) || 
-			( '' !== $settings['member_job'] && 'below' === $settings['member_job_location'] ) || 
-			( '' !== $settings['member_description'] && 'below' === $settings['member_description_location'] ) || 
+		if ( ( (!empty($settings['member_name']) && '' !== $settings['member_name']) && 'below' === $settings['member_name_location'] ) || 
+			( (!empty($settings['member_job']) && '' !== $settings['member_job']) && 'below' === $settings['member_job_location'] ) || 
+			( (!empty($settings['member_description']) && '' !== $settings['member_description']) && 'below' === $settings['member_description_location'] ) || 
 			( 'yes' === $settings['social_media'] && 'below' === $settings['member_social_media_location'] ) || 
 			( 'yes' === $settings['member_btn'] && 'below' === $settings['member_btn_location'] ) ) : ?>
 
 		<div class="tmpcoder-member-content">
 			<?php
-				if ( '' !== $settings['member_name'] && 'below' === $settings['member_name_location'] ) {
+				if ( (!empty($settings['member_name']) && '' !== $settings['member_name']) && 'below' === $settings['member_name_location'] ) {
 					echo '<'. esc_attr( tmpcoder_validate_html_tag($settings['member_name_tag']) ) .' class="tmpcoder-member-name">';
 						echo wp_kses_post( $settings['member_name'] );
 					echo '</'. esc_attr( tmpcoder_validate_html_tag($settings['member_name_tag']) ) .'>';
@@ -1859,7 +1865,7 @@ class TMPCODER_Team_Member extends Widget_Base {
 				<div class="tmpcoder-member-divider"></div>
 			<?php endif; ?>
 
-			<?php if ( '' !== $settings['member_job'] && 'below' === $settings['member_job_location'] ) : ?>
+			<?php if ( (!empty($settings['member_job']) && '' !== $settings['member_job']) && 'below' === $settings['member_job_location'] ) : ?>
 				<div class="tmpcoder-member-job"><?php echo esc_html( $settings['member_job'] ); ?></div>
 			<?php endif; ?>
 
@@ -1867,7 +1873,7 @@ class TMPCODER_Team_Member extends Widget_Base {
 				<div class="tmpcoder-member-divider"></div>
 			<?php endif; ?>
 
-			<?php if ( '' !== $settings['member_description'] && 'below' === $settings['member_description_location'] ) : ?>
+			<?php if ( (!empty($settings['member_description']) && '' !== $settings['member_description']) && 'below' === $settings['member_description_location'] ) : ?>
 				<div class="tmpcoder-member-description"><?php echo wp_kses_post( $settings['member_description'] ); ?></div>
 			<?php endif; ?>
 			
@@ -1891,12 +1897,14 @@ class TMPCODER_Team_Member extends Widget_Base {
 	protected function render() {
 	// Get Settings 
 	$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 	
 	?>
 
 	<div class="tmpcoder-team-member">
 		
-		<?php if ( '' !== $settings['member_image']['url'] ) : ?>
+		<?php if ( !empty($settings['member_image']['url']) && '' !== $settings['member_image']['url'] ) : ?>
 			<?php 
 
 				$src = $settings['member_image']['url'];

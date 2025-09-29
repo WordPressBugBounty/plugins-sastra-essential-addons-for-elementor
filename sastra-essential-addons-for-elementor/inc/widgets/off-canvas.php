@@ -1023,7 +1023,9 @@ class TMPCODER_Offcanvas extends Widget_Base {
     }
 
     protected function render() {
-        $settings = $this->get_settings_for_display();
+        $settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 
 		if ( ! tmpcoder_is_availble() ) {
 			$settings['offcanvas_position'] = 'right';

@@ -615,7 +615,9 @@ class TMPCODER_Taxonomy_List extends Widget_Base {
 
     protected function render() {
 		// Get Settings
-        $settings = $this->get_settings_for_display();
+        $settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 
 		$open_in_new_page = $settings['open_in_new_page'] ? '_blank' : '_self';
 

@@ -2747,7 +2747,9 @@ class TMPCODER_Woo_Add_To_Cart extends Widget_Base {
 
 	function woocommerce_add_to_cart_button_text_archives() {
 		// Get Settings
-		$settings = $this->get_settings_for_display();
+		$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 
 		$instance = $this;
 
@@ -2798,7 +2800,9 @@ class TMPCODER_Woo_Add_To_Cart extends Widget_Base {
 		}
 
 		// Get Settings
-		$settings = $this->get_settings_for_display();
+		$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 		
 		$icon_class = '';
 		$icon_fa_plus = 'fa-plus';
@@ -2882,7 +2886,7 @@ class TMPCODER_Woo_Add_To_Cart extends Widget_Base {
 			do_action( 'woocommerce_before_single_product' ); // locate it in condition if ajax activated
 		}
 
-		if (isset($settings['qty_label']) && $settings['qty_label'] != '') {
+		if (isset($settings['qty_label']) && !empty($settings['qty_label']) && $settings['qty_label'] != '') {
 
 			$label = $settings['qty_label'];
 

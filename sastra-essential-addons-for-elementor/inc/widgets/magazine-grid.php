@@ -51,7 +51,9 @@ class TMPCODER_Magazine_Grid extends Widget_Base {
 		// $depends = [ 'tmpcoder-isotope' => true, 'tmpcoder-slick' => true, 'tmpcoder-magazine-grid' => true ];
 
 		if ( ! tmpcoder_elementor()->preview->is_preview_mode() ) {
-			$settings = $this->get_settings_for_display();
+			$settings = $this->get_settings();
+			$settings_new = $this->get_settings_for_display();
+			$settings = array_merge( $settings, $settings_new );
 
 			if ( isset($settings['slider_enable']) && $settings['slider_enable'] != 'yes' ) {
 				unset( $depends['tmpcoder-slick'] );
@@ -5024,6 +5026,8 @@ class TMPCODER_Magazine_Grid extends Widget_Base {
 	// Main Query Args
 	public function get_main_query_args( $slide_offset ) {
 		$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 		$author = ! empty( $settings[ 'query_author' ] ) ? implode( ',', $settings[ 'query_author' ] ) : '';
 
 		// Get Paged
@@ -5068,7 +5072,7 @@ class TMPCODER_Magazine_Grid extends Widget_Base {
 		}
 
 		$offset = ( $paged - 1 ) * $query_posts_per_page + $settings[ 'query_offset' ];
-		$query_order_by = '' != $settings['query_randomize'] ? $settings['query_randomize'] : $settings['order_posts'];
+		$query_order_by = (!empty($settings['query_randomize']) && '' != $settings['query_randomize']) ? $settings['query_randomize'] : $settings['order_posts'];
 
 		if ( 'yes' === $settings['slider_enable'] ) {
 			$offset = $offset + $query_posts_per_page * $slide_offset;
@@ -5181,6 +5185,8 @@ class TMPCODER_Magazine_Grid extends Widget_Base {
 	// Taxonomy Query Args
 	public function get_tax_query_args() {
 		$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 		$tax_query = [];
 
 		if ( 'related' === $settings[ 'query_source' ] ) {
@@ -5300,7 +5306,7 @@ class TMPCODER_Magazine_Grid extends Widget_Base {
 		echo '<div class="tmpcoder-grid-media-hover-bg '. esc_attr($this->get_animation_class( $settings, 'overlay' )) .'" data-url="'. esc_url( get_the_permalink( get_the_ID() ) ) .'">';
 
 			if ( tmpcoder_is_availble() ) {
-				if ( '' !== $settings['overlay_image']['url'] ) {
+				if ( !empty($settings['overlay_image']['url']) && '' !== $settings['overlay_image']['url'] ) {
 					$settings['overlay_image'] = ['id' => $settings['overlay_image']['id']];
 					$image_html = Group_Control_Image_Size::get_attachment_image_html( $settings, 'overlay_image' );
 					echo wp_kses_post($image_html);
@@ -5921,6 +5927,9 @@ class TMPCODER_Magazine_Grid extends Widget_Base {
 	protected function render() {
 		// Get Settings
 		$settings = $this->get_settings();
+		$settings_new = $this->get_settings_for_display();
+		$settings = array_merge( $settings, $settings_new );
+		$this->set_settings( $settings );
 		$render_attribute = '';
 
 		if ( ! tmpcoder_is_availble() ) {
@@ -5935,7 +5944,7 @@ class TMPCODER_Magazine_Grid extends Widget_Base {
 		}
 
 		// Grid/Slider Wrap
-		echo '<div class="tmpcoder-magazine-grid-wrap" '.  wp_kses_post($render_attribute) .' data-slide-effect="'. wp_kses_post($settings['slider_effect']) .'">';
+		echo '<div class="tmpcoder-magazine-grid-wrap" '.  wp_kses_post($render_attribute ?? '') .' data-slide-effect="'. wp_kses_post($settings['slider_effect'] ?? '') .'">';
 
 		// Slider
 		if ( 'yes' === $settings['slider_enable'] ) {

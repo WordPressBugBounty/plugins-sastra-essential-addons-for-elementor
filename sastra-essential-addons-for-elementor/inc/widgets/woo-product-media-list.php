@@ -111,7 +111,9 @@ class TMPCODER_Product_Media_List extends Widget_Base {
     }
 
     public function render() {
-        $settings = $this->get_settings_for_display();
+        $settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
     
         global $product;
         if ( ! is_a( $product, 'WC_Product' ) ) {

@@ -2441,7 +2441,7 @@ class TMPCODER_Form_Styler extends Widget_Base {
 	}
 
 	public function render_cf7_template( $settings ) {
-        $contact_form_by_name = $settings['cf7_templates_label'] != "" ? 'title="'.$settings['cf7_templates_label'].'"' : '';
+        $contact_form_by_name = !empty($settings['cf7_templates_label']) && $settings['cf7_templates_label'] != "" ? 'title="'.$settings['cf7_templates_label'].'"' : '';
         echo do_shortcode( '[contact-form-7 id="'. esc_attr($settings['cf7_templates']) .'" '.$contact_form_by_name.']' );
 	}
 
@@ -2460,6 +2460,8 @@ class TMPCODER_Form_Styler extends Widget_Base {
 	protected function render() {
 		// Get Settings
 		$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 
 		// Custom Checkbox and Radio Buttons
 		$class = 'yes' === $settings['checkbox_radio_custom'] ? ' tmpcoder-custom-chk-radio' : '';

@@ -44,7 +44,9 @@ class TMPCODER_Media_Grid extends Widget_Base {
 		$depends = [ 'tmpcoder-isotope' => true, 'tmpcoder-slick' => true, 'tmpcoder-lightgallery' => true, 'tmpcoder-grid-widgets' => true ];
 
 		if ( ! tmpcoder_elementor()->preview->is_preview_mode() ) {
-			$settings = $this->get_settings_for_display();
+			$settings = $this->get_settings();
+			$settings_new = $this->get_settings_for_display();
+			$settings = array_merge( $settings, $settings_new );
 
 			if ( $settings['layout_select'] != 'slider' ) {
 				unset( $depends['tmpcoder-slick'] );
@@ -70,7 +72,9 @@ class TMPCODER_Media_Grid extends Widget_Base {
 
 		if ( !tmpcoder_elementor()->preview->is_preview_mode() ) {
 
-			$settings = $this->get_settings_for_display();
+			$settings = $this->get_settings();
+			$settings_new = $this->get_settings_for_display();
+			$settings = array_merge( $settings, $settings_new );
 			$filtered = array_filter($settings['grid_elements'], function($element) {
 			    return isset($element['element_select']) && $element['element_select'] === 'lightbox';
 			});
@@ -1058,6 +1062,7 @@ class TMPCODER_Media_Grid extends Widget_Base {
 					'slider' => esc_html__( 'Slider / Carousel', 'sastra-essential-addons-for-elementor' ),
 				],
 				'label_block' => true,
+				'frontend_available' => true
 			]
 		);
 
@@ -1360,6 +1365,7 @@ class TMPCODER_Media_Grid extends Widget_Base {
 					'{{WRAPPER}} .tmpcoder-grid-slider-arrow' => 'display:{{VALUE}} !important;',
 				],
 				'separator' => 'before',
+				'frontend_available' => true,
 				'condition' => [
 					'layout_select' => 'slider',
 				]
@@ -1447,7 +1453,7 @@ class TMPCODER_Media_Grid extends Widget_Base {
 					'fade' => esc_html__( 'Fade', 'sastra-essential-addons-for-elementor' ),
 				],
 				'condition' => [
-					'layout_slider_amount' => 1,
+					// 'layout_slider_amount' => 1,
 					'layout_select' => 'slider',
 				],
 			]
@@ -1463,7 +1469,7 @@ class TMPCODER_Media_Grid extends Widget_Base {
 				'max' => 5,
 				'step' => 0.1,
 				'condition' => [
-					'layout_slider_amount' => 1,
+					// 'layout_slider_amount' => 1,
 					'layout_select' => 'slider',
 				],
 			]
@@ -6555,7 +6561,9 @@ class TMPCODER_Media_Grid extends Widget_Base {
 
 	// Main Query Args
 	public function get_main_query_args() {
-		$settings = $this->get_settings_for_display();
+		$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 		$author = ! empty( $settings[ 'query_author' ] ) ? implode( ',', $settings[ 'query_author' ] ) : '';
 
 		// Get Paged
@@ -6578,7 +6586,7 @@ class TMPCODER_Media_Grid extends Widget_Base {
 			$settings['order_posts'] = 'date';
 		}
 
-		$query_order_by = '' != $settings['query_randomize'] ? $settings['query_randomize'] : $settings['order_posts'];
+		$query_order_by = (!empty($settings['query_randomize']) && '' != $settings['query_randomize']) ? $settings['query_randomize'] : $settings['order_posts'];
 
 		if ( 'manual' === $settings[ 'query_selection' ] ) {
 			$query_order_by = 'post__in';
@@ -6627,7 +6635,7 @@ class TMPCODER_Media_Grid extends Widget_Base {
 				array_push( $post_ids, $settings['query_manual_attachment'][$i]['id'] );
 			}
 
-			$orderby = '' === $settings[ 'query_randomize' ] ? 'post__in' : 'rand';
+			$orderby = (empty($settings[ 'query_randomize' ]) || '' === $settings[ 'query_randomize' ]) ? 'post__in' : 'rand';
 
 			$args = [
 				'post_type' => 'attachment',
@@ -6650,6 +6658,8 @@ class TMPCODER_Media_Grid extends Widget_Base {
 	// Taxonomy Query Args
 	public function get_tax_query_args() {
 		$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 		$tax_query = [];
 
 		foreach ( get_object_taxonomies( 'attachment' ) as $tax ) {
@@ -6730,7 +6740,7 @@ class TMPCODER_Media_Grid extends Widget_Base {
 		echo '<div class="tmpcoder-grid-media-hover-bg '. esc_attr($this->get_animation_class( $settings, 'overlay' )) .'" data-url="'. esc_url( get_the_permalink( get_the_ID() ) ) .'">';
 
 			if ( tmpcoder_is_availble() ) {
-				if ( '' !== $settings['overlay_image']['url'] ) {
+				if ( !empty($settings['overlay_image']['url']) && '' !== $settings['overlay_image']['url'] ) {
 					$overlay_image = Group_Control_Image_Size::get_attachment_image_html( $settings, 'thumbnail', 'overlay_image' );
 					echo wp_kses_post($overlay_image);
 				}
@@ -7678,6 +7688,8 @@ class TMPCODER_Media_Grid extends Widget_Base {
 	protected function render() {
 		// Get Settings
 		$settings = $this->get_settings();
+		$settings_new = $this->get_settings_for_display();
+		$settings = array_merge( $settings, $settings_new );
 		// Get Posts
 		$posts = new \WP_Query( $this->get_main_query_args() );
 
@@ -7767,11 +7779,14 @@ class TMPCODER_Media_Grid extends Widget_Base {
 		echo '</section>';
 
 		if ( 'slider' === $settings['layout_select'] ) {
-			// Slider Navigation
-			echo '<div class="tmpcoder-grid-slider-arrow-container">';
-				echo '<div class="tmpcoder-grid-slider-prev-arrow tmpcoder-grid-slider-arrow" id="tmpcoder-grid-slider-prev-'. esc_attr($this->get_id()).'">'.wp_kses(tmpcoder_get_icon( $settings['layout_slider_nav_icon'], '' ), tmpcoder_wp_kses_allowed_html()) .'</div>'; 
-				echo '<div class="tmpcoder-grid-slider-next-arrow tmpcoder-grid-slider-arrow" id="tmpcoder-grid-slider-next-'. esc_attr($this->get_id()).'">'.wp_kses(tmpcoder_get_icon( $settings['layout_slider_nav_icon'], '' ),tmpcoder_wp_kses_allowed_html()).'</div>'; 
-			echo '</div>';
+			// Slider Navigation (only when enabled)
+			if ( $settings['layout_slider_nav'] === 'yes' ) {
+				echo '<div class="tmpcoder-grid-slider-arrow-container">';
+					$nav_icon = isset($settings['layout_slider_nav_icon']) ? $settings['layout_slider_nav_icon'] : 'svg-angle-1-left';
+					echo '<div class="tmpcoder-grid-slider-prev-arrow tmpcoder-grid-slider-arrow" id="tmpcoder-grid-slider-prev-'. esc_attr($this->get_id()).'">'.wp_kses(tmpcoder_get_icon( $nav_icon, '' ), tmpcoder_wp_kses_allowed_html()) .'</div>'; 
+					echo '<div class="tmpcoder-grid-slider-next-arrow tmpcoder-grid-slider-arrow" id="tmpcoder-grid-slider-next-'. esc_attr($this->get_id()).'">'.wp_kses(tmpcoder_get_icon( $nav_icon, '' ),tmpcoder_wp_kses_allowed_html()).'</div>'; 
+				echo '</div>';
+			}
 
 			// Slider Dots
 			echo '<div class="tmpcoder-grid-slider-dots"></div>';

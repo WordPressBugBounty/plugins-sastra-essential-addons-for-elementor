@@ -689,7 +689,9 @@ class TMPCODER_Site_Logo extends Widget_Base {
 	 * @access public
 	 */
 	public function site_image_url( $size ) {
-		$settings = $this->get_settings_for_display();
+		$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 		if ( ! empty( $settings['custom_image']['url'] ) ) {
 			$logo = wp_get_attachment_image_src( $settings['custom_image']['id'], $size, true );
 		}else if( function_exists('tmpcoder_get_theme_logo') && ! empty( tmpcoder_get_theme_logo() ) ){
@@ -713,7 +715,9 @@ class TMPCODER_Site_Logo extends Widget_Base {
 	 */
 	protected function render() {
 		$link     = '';
-		$settings = $this->get_settings_for_display();
+		$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 		$has_caption = $this->has_caption( $settings );
 		$site_image = $this->site_image_url($settings['site_logo_size_size']);
 

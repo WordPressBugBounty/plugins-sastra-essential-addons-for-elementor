@@ -667,7 +667,9 @@ class TMPCODER_Product_Mini_Cart extends Widget_Base {
 			return;
 		}
     	
-		$settings = $this->get_settings_for_display();
+		$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 
 		if (isset($settings['show_mini_cart_update_qty']) && $settings['show_mini_cart_update_qty'] == 'yes') {
 			
@@ -691,7 +693,9 @@ class TMPCODER_Product_Mini_Cart extends Widget_Base {
 		$this->add_render_attribute(
 			'mini_cart_attributes',
 			[
-				'data-animation' => (tmpcoder_is_availble() && isset($settings['mini_cart_entrance_speed'])) ? esc_html($settings['mini_cart_entrance_speed'], 'sastra-essential-addons-for-elementor') : ''
+				'data-animation' => (tmpcoder_is_availble() && isset($settings['mini_cart_entrance_speed'])) ? esc_html($settings['mini_cart_entrance_speed'], 'sastra-essential-addons-for-elementor') : '',
+				'data-update-qty' => isset($settings['show_mini_cart_update_qty']) && $settings['show_mini_cart_update_qty'] == 'yes' ? true : false,
+
 			]
 		);
 

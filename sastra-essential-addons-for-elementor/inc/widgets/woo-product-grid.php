@@ -53,7 +53,9 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 		$depends = [ 'tmpcoder-isotope' => true, 'tmpcoder-slick' => true, 'tmpcoder-lightgallery' => true, 'tmpcoder-grid-widgets' => true ];
 
 		if ( ! tmpcoder_elementor()->preview->is_preview_mode() ) {
-			$settings = $this->get_settings_for_display();
+			$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 
 			if ( $settings['layout_select'] != 'slider' ) {
 				unset( $depends['tmpcoder-slick'] );
@@ -79,7 +81,9 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 
 		if ( !tmpcoder_elementor()->preview->is_preview_mode() ) {
 
-			$settings = $this->get_settings_for_display();
+			$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 			$filtered = array_filter($settings['grid_elements'], function($element) {
 			    return isset($element['element_select']) && $element['element_select'] === 'lightbox';
 			});
@@ -1913,7 +1917,7 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 				'max' => 5,
 				'step' => 0.1,
 				'condition' => [
-					'layout_slider_amount' => 1,
+					// 'layout_slider_amount' => 1,
 					'layout_select' => 'slider',
 				],
 			]
@@ -8503,6 +8507,8 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 	// Main Query Args
 	public function get_main_query_args() {
 		$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 
 		if ( ! tmpcoder_is_availble() ) {
 			$settings['query_selection'] = 'pro-cr' == $settings['query_selection'] ? 'dynamic' : $settings['query_selection'];
@@ -8884,6 +8890,8 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 		// Grid Query
 		} else {
 			$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 
 			if ( isset($_GET['tmpcoder_select_product_cat']) ) {// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 				if ( $_GET['tmpcoder_select_product_cat'] != '0' ) {// phpcs:ignore WordPress.Security.NonceVerification.Recommended
@@ -9106,7 +9114,7 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 		echo '<div class="tmpcoder-grid-media-hover-bg '. esc_attr($this->get_animation_class( $settings, 'overlay' )) .'" data-url="'. esc_url( get_the_permalink( get_the_ID() ) ) .'">';
 
 			if ( tmpcoder_is_availble() ) {
-				if ( '' !== $settings['overlay_image']['url'] ) {
+				if ( !empty($settings['overlay_image']['url']) && '' !== $settings['overlay_image']['url'] ) {
 					$overlay_image = Group_Control_Image_Size::get_attachment_image_html( $settings, 'thumbnail', 'overlay_image' );
 					echo wp_kses_post($overlay_image);
 				}
@@ -9812,7 +9820,7 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 					echo '<span class="tmpcoder-sale-dates">';
 		
 						// Text: Before
-						if ( '' !== $settings['element_sale_starts_text'] && !empty($sale_price_dates_from) ) {
+						if ( (!empty($settings['element_sale_starts_text']) && '' !== $settings['element_sale_starts_text']) && !empty($sale_price_dates_from) ) {
 							echo '<span class="tmpcoder-grid-extra-text-left">'. esc_html( $settings['element_sale_starts_text'] ) .'</span> ';
 						}
 						
@@ -9832,7 +9840,7 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 						}
 		
 						// Text: Before
-						if ( '' !== $settings['element_sale_ends_text'] && !empty($sale_price_dates_to) ) {
+						if ( (!empty($settings['element_sale_ends_text']) && '' !== $settings['element_sale_ends_text']) && !empty($sale_price_dates_to) ) {
 							echo '<span class="tmpcoder-grid-extra-text-left">'. esc_html( $settings['element_sale_ends_text'] ) .'</span> ';
 						}
 
@@ -9927,8 +9935,8 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 		$locations = [];
 
 		foreach ( $settings['grid_elements'] as $data ) {
-			$place = $data['element_location'];
-			$align_vr = $data['element_align_vr'];
+			$place = $data['element_location'] ?? '';
+			$align_vr = $data['element_align_vr'] ?? '';
 
 			if ( ! tmpcoder_is_availble() ) {
 				$align_vr = 'middle';
@@ -9961,14 +9969,14 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 						foreach ( $elements as $data ) {
 							
 							// Get Class
-							$class  = 'tmpcoder-grid-item-'. $data['element_select'];
-							$class .= ' elementor-repeater-item-'. $data['_id'];
-							$class .= ' tmpcoder-grid-item-display-'. $data['element_display'];
-							$class .= ' tmpcoder-grid-item-align-'. $data['element_align_hr'];
+							$class  = 'tmpcoder-grid-item-'. ($data['element_select'] ?? '');
+							$class .= ' elementor-repeater-item-'. ($data['_id'] ?? '');
+							$class .= ' tmpcoder-grid-item-display-'. ($data['element_display'] ?? '');
+							$class .= ' tmpcoder-grid-item-align-'. ($data['element_align_hr'] ?? '');
 							$class .= $this->get_animation_class( $data, 'element' );
 
 							// Element
-							$this->get_elements( $data['element_select'], $data, $class, $post_id );
+							$this->get_elements( $data['element_select'] ?? '', $data, $class, $post_id );
 						}
 					echo '</div>';
 
@@ -9981,13 +9989,13 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 					foreach ( $locations[$location] as $data ) {
 
 						// Get Class
-						$class  = 'tmpcoder-grid-item-'. $data['element_select'];
-						$class .= ' elementor-repeater-item-'. $data['_id'];
-						$class .= ' tmpcoder-grid-item-display-'. $data['element_display'];
-						$class .= ' tmpcoder-grid-item-align-'. $data['element_align_hr'];
+						$class  = 'tmpcoder-grid-item-'. ($data['element_select'] ?? '');
+						$class .= ' elementor-repeater-item-'. ($data['_id'] ?? '');
+						$class .= ' tmpcoder-grid-item-display-'. ($data['element_display'] ?? '');
+						$class .= ' tmpcoder-grid-item-align-'. ($data['element_align_hr'] ?? '');
 
 						// Element
-						$this->get_elements( $data['element_select'], $data, $class, $post_id );
+						$this->get_elements( $data['element_select'] ?? '', $data, $class, $post_id );
 					}
 				echo '</div>';
 			}
@@ -10000,7 +10008,7 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 
 	// Render Grid Filters
 	public function render_grid_filters( $settings ) {
-		$taxonomy = $settings['filters_select'];
+		$taxonomy = $settings['filters_select'] ?? '';
 
 		// Return if Disabled
 		if ( '' === $taxonomy || ! isset( $settings[ 'query_taxonomy_'. $taxonomy ] ) ) {
@@ -10253,7 +10261,9 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 
 		// Numbered
 		} elseif ( 'numbered' === $settings['pagination_type'] ) {
-			$range = $settings['pagination_range'];
+
+			$range = intval($settings['pagination_range']);
+
 			$showitems = ( $range * 2 ) + 1;
 
 			if ( 1 !== $pages ) {
@@ -10574,6 +10584,8 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 	protected function render() {
 		// Get Settings
 		$settings = $this->get_settings();
+		$settings_new = $this->get_settings_for_display();
+		$settings = array_merge( $settings, $settings_new );
 
 		if ( ! class_exists( 'WooCommerce' ) ) {
 			echo '<h2>'. esc_html__( 'WooCommerce is NOT active!', 'sastra-essential-addons-for-elementor' ) .'</h2>';
@@ -10587,7 +10599,7 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 
 		$post_index = 0;
 
-		if ( ('upsell' === $settings['query_selection'] && '' !== $settings['grid_linked_products_heading']) || ('cross-sell' === $settings['query_selection'])  && '' !== $settings['grid_linked_products_heading'] || ('related-product' === $settings['query_selection'])  && '' !== $settings['grid_linked_products_heading']) {
+		if ( ('upsell' === $settings['query_selection'] && (!empty($settings['grid_linked_products_heading']) && '' !== $settings['grid_linked_products_heading'])) || ('cross-sell' === $settings['query_selection'])  && (!empty($settings['grid_linked_products_heading']) && '' !== $settings['grid_linked_products_heading']) || ('related-product' === $settings['query_selection'])  && (!empty($settings['grid_linked_products_heading']) && '' !== $settings['grid_linked_products_heading'])) {
 			echo '<div class="tmpcoder-grid-linked-products-heading">';
 				echo '<'. tag_escape( tmpcoder_validate_html_tag($settings['grid_linked_products_heading_tag']) ) .'>'. esc_html( $settings['grid_linked_products_heading'] ) .'</'. tag_escape( tmpcoder_validate_html_tag($settings['grid_linked_products_heading_tag']) ).'>';
 			echo '</div>';
@@ -10681,11 +10693,14 @@ class TMPCODER_Woo_Grid extends Widget_Base {
 
 		if ( 'slider' === $settings['layout_select'] ) {
 			if ( $posts->found_posts > (int) $settings['layout_slider_amount'] &&  (int) $settings['layout_slider_amount'] < $settings['query_posts_per_page'] ) {
-				// Slider Navigation
-				echo '<div class="tmpcoder-grid-slider-arrow-container">';
-					echo '<div class="tmpcoder-grid-slider-prev-arrow tmpcoder-grid-slider-arrow" id="tmpcoder-grid-slider-prev-'. esc_attr($this->get_id()) .'">'. wp_kses(tmpcoder_get_icon( $settings['layout_slider_nav_icon'], '' ), tmpcoder_wp_kses_allowed_html()) .'</div>';
-					echo '<div class="tmpcoder-grid-slider-next-arrow tmpcoder-grid-slider-arrow" id="tmpcoder-grid-slider-next-'. esc_attr($this->get_id()) .'">'. wp_kses(tmpcoder_get_icon( $settings['layout_slider_nav_icon'], '' ), tmpcoder_wp_kses_allowed_html()) .'</div>';
-				echo '</div>';
+				// Slider Navigation (only when enabled)
+				if ( $settings['layout_slider_nav'] === 'yes' ) {
+					echo '<div class="tmpcoder-grid-slider-arrow-container">';
+						$nav_icon = isset($settings['layout_slider_nav_icon']) ? $settings['layout_slider_nav_icon'] : 'svg-angle-1-left';
+						echo '<div class="tmpcoder-grid-slider-prev-arrow tmpcoder-grid-slider-arrow" id="tmpcoder-grid-slider-prev-'. esc_attr($this->get_id()) .'">'. wp_kses(tmpcoder_get_icon( $nav_icon, '' ), tmpcoder_wp_kses_allowed_html()) .'</div>';
+						echo '<div class="tmpcoder-grid-slider-next-arrow tmpcoder-grid-slider-arrow" id="tmpcoder-grid-slider-next-'. esc_attr($this->get_id()) .'">'. wp_kses(tmpcoder_get_icon( $nav_icon, '' ), tmpcoder_wp_kses_allowed_html()) .'</div>';
+					echo '</div>';
+				}
 
 				// Slider Dots
 				echo '<div class="tmpcoder-grid-slider-dots"></div>';

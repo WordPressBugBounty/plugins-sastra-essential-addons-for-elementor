@@ -291,7 +291,9 @@ class TMPCODER_Product_Meta extends Widget_Base {
 			return;
 		}
 
-        $settings = $this->get_settings_for_display();
+        $settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 		
         global $product;
 

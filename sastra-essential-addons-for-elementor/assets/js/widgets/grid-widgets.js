@@ -1351,7 +1351,8 @@
 
             // Set a Default Filter
             if (!$scope.hasClass('elementor-widget-tmpcoder-woo-category-grid-pro') && !$scope.hasClass('elementor-widget-tmpcoder-category-grid-pro')) {
-                if ('' !== settings.filters_default_filter) {
+
+                if ('' !== settings.filters_default_filter && settings.filters_default_filter) {
                     setTimeout(function () {
                         $scope.find('.tmpcoder-grid-filters').find('span[data-filter*="-' + settings.filters_default_filter + '"]')[0].click();
                     }, 100)

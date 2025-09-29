@@ -48,7 +48,9 @@ class TMPCODER_Product_Media extends Widget_Base {
         $depends = [ 'flexslider' => true, 'zoom' => true, 'wc-single-product' => true, 'photoswipe' => true, 'photoswipe-ui-default' => true, 'tmpcoder-lightgallery' => true, 'tmpcoder-product-script' => true, 'tmpcoder-product-media' => true ];
 
 		if ( ! tmpcoder_elementor()->preview->is_preview_mode() ) {
-			$settings = $this->get_settings_for_display();
+			$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 
 			if ( !$settings['product_media_lightbox'] ) {
 				unset( $depends['tmpcoder-lightgallery'] );
@@ -63,7 +65,9 @@ class TMPCODER_Product_Media extends Widget_Base {
 		$depends = [ 'woocommerce_prettyPhoto_css' => true, 'photoswipe' => true, 'photoswipe-default-skin' => true, 'tmpcoder-lightgallery-css' => true];
 
 		if ( ! tmpcoder_elementor()->preview->is_preview_mode() ) {
-			$settings = $this->get_settings_for_display();
+			$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 
 			if ( !$settings['product_media_lightbox'] ) {
 				unset( $depends['tmpcoder-lightgallery-css'] );
@@ -1565,6 +1569,8 @@ class TMPCODER_Product_Media extends Widget_Base {
 		
 		// Get Settings
 		$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 		
 		global $product;
 
@@ -1618,7 +1624,7 @@ class TMPCODER_Product_Media extends Widget_Base {
 		}
 
 		// Lightbox Icon
-		if ( 'yes' === $settings['product_media_lightbox'] && 'yes' === $settings['lightbox_extra_icon'] && '' !== $settings['choose_lightbox_extra_icon'] ) {
+		if ( 'yes' === $settings['product_media_lightbox'] && 'yes' === $settings['lightbox_extra_icon'] && (!empty($settings['choose_lightbox_extra_icon']) && '' !== $settings['choose_lightbox_extra_icon']) ) {
 			
 			echo '<div class="tmpcoder-product-media-lightbox">';
 				\Elementor\Icons_Manager::render_icon( $settings['choose_lightbox_extra_icon'], [ 'aria-hidden' => 'true' ] );

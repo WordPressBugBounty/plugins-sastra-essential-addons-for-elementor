@@ -1,7 +1,7 @@
 === Spexo Addons for Elementor - Free Elementor Addons, Widgets and Templates ===
 Contributors: templatescoderthemes, skywebtech
 Tags: elementor, elementor addons, elementor templates, elementor widgets, woocommerce elementor
-Stable tag: 1.0.25
+Stable tag: 1.0.26
 Requires at least: 5.0
 Tested up to: 6.8
 Requires PHP: 7.4
@@ -118,53 +118,56 @@ Our Lottie animation widget gives you the ability to easily add Lottie Animation
 -- [Caldera Forms Styler for Elementor](https://spexoaddons.com/widgets/caldera-forms-styler-elementor/)
 
 ### [Elementor Themes & Templates Kits](https://spexoaddons.com/spexo-elementor-theme/):
-- [AI Software Agency](https://spexoaddons.com/preview/ai-software-agency-elementor-template/)
-- [AI SaaS Agency](https://spexoaddons.com/preview/ai-saas-agency-elementor-template/)
-- [Classic Blog](https://spexoaddons.com/preview/classic-blog-elementor-template/)
-- [Beer & Brewery](https://spexoaddons.com/preview/beer-brewery-elementor-template/)
-- [Business Corporate](https://spexoaddons.com/preview/business-corporate-elementor-template/)
-- [Business Startup](https://spexoaddons.com/preview/business-startup-elementor-template/)
-- [Cleaning Service](https://spexoaddons.com/preview/cleaning-service-elementor-template/)
-- [Consultancy Firm](https://spexoaddons.com/preview/consultancy-firm-elementor-template/)
-- [Design Agency](https://spexoaddons.com/preview/design-agency-elementor-template/)
-- [Digital Agency](https://spexoaddons.com/preview/digital-agency-elementor-template/)
-- [Fitness](https://spexoaddons.com/preview/fitness-elementor-template/)
-- [GYM](https://spexoaddons.com/preview/gym-elementor-template/)
-- [Industrial](https://spexoaddons.com/preview/industrial-elementor-template/)
-- [Magazine](https://spexoaddons.com/preview/magazine-elementor-template/)
-- [Medical](https://spexoaddons.com/preview/medical-elementor-template/)
-- [News & Blog](https://spexoaddons.com/preview/news-blog-elementor-template/)
-- [News Portal](https://spexoaddons.com/preview/news-portal-elementor-template/)
-- [Personal Portfolio](https://spexoaddons.com/preview/personal-portfolio-elementor-template/)
-- [Property](https://spexoaddons.com/preview/property-elementor-template/)
-- [Real Estate](https://spexoaddons.com/preview/real-estate-elementor-template/)
-- [Single Property](https://spexoaddons.com/preview/single-property-elementor-template/)
-- [Travel Agency](https://spexoaddons.com/preview/travel-agency-elementor-template/)
-- [Yoga Studio](https://spexoaddons.com/preview/yoga-studio-elementor-template/)
-- [Freelancer Portfolio](https://spexoaddons.com/preview/freelancer-portfolio-elementor-template/)
-- [Tech Company Elementor Template](https://spexoaddons.com/preview/tech-company-elementor-template/)
-- [Spa Elementor Template](https://spexoaddons.com/preview/spa-elementor-template/)
-- [Photography Portfolio](https://spexoaddons.com/preview/photography-portfolio-elementor-template/)
-- [Personal Blog Template](https://spexoaddons.com/preview/personal-blog-elementor-template/)
+- [AI Software Agency](https://spexoaddons.com/templates/ai-software-agency-elementor-template/)
+- [AI Automation](https://spexoaddons.com/templates/ai-automation-elementor-template/)
+- [Wildlife Safari](https://spexoaddons.com/templates/wildlife-safari-elementor-template/)
+- [Classic Blog](https://spexoaddons.com/templates/classic-blog-elementor-template/)
+- [AI SaaS Agency](https://spexoaddons.com/templates/ai-saas-agency-elementor-template/)
+- [Tech Company](https://spexoaddons.com/templates/tech-company-elementor-template/)
+- [Spa](https://spexoaddons.com/templates/spa-elementor-template/)
+- [Photography Portfolio](https://spexoaddons.com/templates/photography-portfolio-elementor-template/)
+- [Freelancer Portfolio](https://spexoaddons.com/templates/freelancer-portfolio-elementor-template/)
+- [Personal Blog](https://spexoaddons.com/templates/personal-blog-elementor-template/)
+- [Finance](https://spexoaddons.com/templates/finance-elementor-template/)
+- [Fitness](https://spexoaddons.com/templates/fitness-elementor-template/)
+- [Consultancy Firm](https://spexoaddons.com/templates/consultancy-firm-elementor-template/)
+- [Business Corporate](https://spexoaddons.com/templates/business-corporate-elementor-template/)
+- [Business Startup](https://spexoaddons.com/templates/business-startup-elementor-template/)
+- [News and Blog](https://spexoaddons.com/templates/news-blog-elementor-template/)
+- [Single Property](https://spexoaddons.com/templates/single-property-elementor-template/)
+- [GYM](https://spexoaddons.com/templates/gym-elementor-template/)
+- [Property](https://spexoaddons.com/templates/property-elementor-template/)
+- [Travel Agency](https://spexoaddons.com/templates/travel-agency-elementor-template/)
+- [Digital Agency](https://spexoaddons.com/templates/digital-agency-elementor-template/)
+- [Design Agency](https://spexoaddons.com/templates/design-agency-elementor-template/)
+- [Cleaning Service](https://spexoaddons.com/templates/cleaning-service-elementor-template/)
+- [News Portal](https://spexoaddons.com/templates/news-portal-elementor-template/)
+- [Medical](https://spexoaddons.com/templates/medical-elementor-template/)
+- [Industrial](https://spexoaddons.com/templates/industrial-elementor-template/)
+- [Yoga Studio](https://spexoaddons.com/templates/yoga-studio-elementor-template/)
+- [Beer & Brewery](https://spexoaddons.com/templates/beer-brewery-elementor-template/)
+- [Personal Portfolio](https://spexoaddons.com/templates/personal-portfolio-elementor-template/)
+- [Real Estate](https://spexoaddons.com/templates/real-estate-elementor-template/)
+- [Magazine](https://spexoaddons.com/templates/magazine-elementor-template/)
 
 ### [WooCommerce Elementor Themes & Templates Kits](https://spexoaddons.com/spexo-elementor-theme/):
-- [Furniture Store](https://spexoaddons.com/preview/furniture-store-elementor-template/)
-- [Fashion eCommerce](https://spexoaddons.com/preview/fashion-ecommerce-elementor-template/)
-- [Fashion Store](https://spexoaddons.com/preview/fashion-store-elementor-template/)
-- [Cosmetic eCommerce Store](https://spexoaddons.com/preview/cosmetic-elementor-template/)
-- [Organic Store](https://spexoaddons.com/preview/organic-store-elementor-template/)
-- [Jewellery Shop](https://spexoaddons.com/preview/jewellery-shop-elementor-template/)
-- [Trendy Fashion eCommerce Store](https://spexoaddons.com/preview/trendy-fashion-elementor-template/)
-- [Fashion Shop](https://spexoaddons.com/preview/fashion-shop-elementor-template/)
-- [Clothing Store](https://spexoaddons.com/preview/clothing-store-elementor-template/)
-- [Mega Store eCommerce Template](https://spexoaddons.com/preview/mega-store-elementor-template/)
-- [Restaurant Elementor Template](https://spexoaddons.com/preview/restaurant-elementor-template/)
-- [Craft Beer](https://spexoaddons.com/preview/craft-beer-elementor-template/)
-- [Clothes Store](https://spexoaddons.com/preview/clothes-store-elementor-template/)
-- [Electronics Store](https://spexoaddons.com/preview/electronics-store-elementor-template/)
-- [Furniture Shop eCommerce Template](https://spexoaddons.com/preview/furniture-shop-elementor-template/)
-- [Smart Watch Single Product Elementor Template](https://spexoaddons.com/preview/smart-watch-elementor-template/)
-- [Drone Single Product Elementor Template](https://spexoaddons.com/preview/drone-elementor-template/)
+- [Furniture Store](https://spexoaddons.com/templates/furniture-store-elementor-template/)
+- [Fashion eCommerce](https://spexoaddons.com/templates/fashion-ecommerce-elementor-template/)
+- [Fashion Store](https://spexoaddons.com/templates/fashion-store-elementor-template/)
+- [Cosmetic eCommerce Store](https://spexoaddons.com/templates/cosmetic-elementor-template/)
+- [Organic Store](https://spexoaddons.com/templates/organic-store-elementor-template/)
+- [Jewellery Shop](https://spexoaddons.com/templates/jewellery-shop-elementor-template/)
+- [Trendy Fashion eCommerce Store](https://spexoaddons.com/templates/trendy-fashion-elementor-template/)
+- [Fashion Shop](https://spexoaddons.com/templates/fashion-shop-elementor-template/)
+- [Clothing Store](https://spexoaddons.com/templates/clothing-store-elementor-template/)
+- [Mega Store eCommerce Template](https://spexoaddons.com/templates/mega-store-elementor-template/)
+- [Restaurant Elementor Template](https://spexoaddons.com/templates/restaurant-elementor-template/)
+- [Craft Beer](https://spexoaddons.com/templates/craft-beer-elementor-template/)
+- [Clothes Store](https://spexoaddons.com/templates/clothes-store-elementor-template/)
+- [Electronics Store](https://spexoaddons.com/templates/electronics-store-elementor-template/)
+- [Furniture Shop eCommerce Template](https://spexoaddons.com/templates/furniture-shop-elementor-template/)
+- [Smart Watch Single Product Elementor Template](https://spexoaddons.com/templates/smart-watch-elementor-template/)
+- [Drone Single Product Elementor Template](https://spexoaddons.com/templates/drone-elementor-template/)
 
 This plugin works best with [Spexo Theme](https://spexoaddons.com/spexo-elementor-theme/) for pre-built websites.
 
@@ -308,6 +311,10 @@ Feel free to contact us anytime via [Support](https://templatescoder.com/support
 
 == Changelog ==
 
+= 1.0.26 - 2025-09-27 =
+
+* Improved: Minor bug fixes and overall performance enhancements.
+
 = v1.0.25 - 2025-09-03 =
 
 * Improved : Button Widget Compatibility with the latest Elementor versions.
@@ -364,25 +371,5 @@ Feel free to contact us anytime via [Support](https://templatescoder.com/support
 = Educational Resources =
 * Display of curated blog articles on the dashboard to assist with setup and troubleshooting.
 * Embedded introductory video on the dashboard to guide new users.
-
-= v1.0.21 - 2025-04-24 =
-
-* Added : 'Even' option in "Image Grid/Slider Widget" for display all images in same height
-* Added : New Widget Archive Title/Description for site archive layout. This widget allows users to easily display customized titles and descriptions for archive pages, enhancing the content presentation on category, tag, and custom archive pages.
-* Improved : Post Grid, Woo Product Grid, Image Grid, Magazine Grid - Design and UI / UX
-* Improved : Tweaked WP admin dashboard design, including header and confirmation box, for a smoother experience.
-* Improved : Magazine Grid/Slider and Post Grid/Slider/Carousel widgets now display correct previews when editing Archive Layouts and Single Post Layouts in Elementor.
-* Improved : Woo Grid/Slider/Carousel widget now renders proper previews of Related Products when editing Single Product Layouts in Elementor.
-* Improved : Remove extra notices from plugin wizard setup page.
-* Fixed : Notice textdomain was triggered too early. 
-* Fixed : Site bulider layout editor not open without fluse rewrite rules.
-* Fixed : Parallax background images not visible in frontend after import in multisite wordpress setup.
-
-
-= v1.0.20 - 2025-03-22 =
-
-* Enhanced : Dynamic CSS generation method to resolve issues caused by permission restrictions, ensuring more reliable stylesheet rendering.
-* Enhanced : Priority for enqueueing header CSS to prevent header content from flickering or blanking after page load.
-* Fixed : Issue where images wouldn't load after clicking "Load More Posts" when W3 Total Cache's lazy load feature was enabled.
 
 [See changelog for all versions.](https://spexoaddons.com/changelog/)

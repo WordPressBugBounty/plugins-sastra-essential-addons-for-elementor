@@ -688,6 +688,8 @@ class TMPCODER_Back_To_Top extends Widget_Base {
 	protected function render() {
 	// Get Settings
 	$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 
 	// Widget JSON Settings
 	$stt_settings = [
@@ -703,13 +705,13 @@ class TMPCODER_Back_To_Top extends Widget_Base {
 	echo '<div class="tmpcoder-stt-wrapper">';
 	echo "<div class='tmpcoder-stt-btn' data-settings='". wp_json_encode($stt_settings) ."'>";
 
-	if ( '' !== $settings['select_icon']['value'] ) {
+	if ( !empty($settings['select_icon']['value']) && '' !== $settings['select_icon']['value'] ) {
 		echo '<span class="tmpcoder-stt-icon">';
 		 \Elementor\Icons_Manager::render_icon( $settings['select_icon'] );
 	echo '</span>';
 		}
 
-	if ( '' !== $settings['button_text'] && $settings['button_txt_show'] == 'yes' ) {
+	if ( (!empty($settings['button_text']) && '' !== $settings['button_text']) && $settings['button_txt_show'] == 'yes' ) {
 		echo '<div class="tmpcoder-stt-content">'.  esc_html($settings['button_text']) .'</div>';
 	}
 			

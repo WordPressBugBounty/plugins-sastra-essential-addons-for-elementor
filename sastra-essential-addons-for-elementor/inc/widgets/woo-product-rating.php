@@ -311,7 +311,9 @@ class TMPCODER_Product_Rating extends Widget_Base {
 		}
 
         // Get Settings
-        $settings = $this->get_settings_for_display();
+        $settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
         global $product;
 
         // Get Product

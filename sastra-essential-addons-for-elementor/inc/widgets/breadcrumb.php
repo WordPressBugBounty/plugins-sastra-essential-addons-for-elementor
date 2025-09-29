@@ -297,7 +297,7 @@ class TMPCODER_Breadcrumb  extends Widget_Base{
     protected function render(){
 
         $settings   = $this->get_settings_for_display();
-        $show_title = $settings['show_title'] != ''?$settings['show_title']:'notshow';
+        $show_title = !empty($settings['show_title']) && $settings['show_title'] != ''?$settings['show_title']:'notshow';
 
         ?>
 

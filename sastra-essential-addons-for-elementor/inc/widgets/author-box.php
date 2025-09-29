@@ -825,6 +825,8 @@ class TMPCODER_Author_Box extends Widget_Base {
 	protected function render() {
 		// Get Settings
 		$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 
 		if ( !tmpcoder_is_availble() ) {
 			$settings['author_bio'] = 'yes';
@@ -862,7 +864,7 @@ class TMPCODER_Author_Box extends Widget_Base {
 		echo '<div class="tmpcoder-author-box">';
 
 			// Avatar
-			if ( '' !== $settings['author_avatar'] && false !== $avatar ) {
+			if ( (!empty($settings['author_avatar']) && '' !== $settings['author_avatar']) && false !== $avatar ) {
 				echo '<div class="tmpcoder-author-box-image">';
 					if ( 'posts' === $settings['author_name_links_to'] || $author_name_has_website ) {
 						echo '<a href="'. esc_url( $author_name_link ) .'" target="'. esc_attr($author_name_target) .'">'. wp_kses_post($avatar) .'</a>';
@@ -876,7 +878,7 @@ class TMPCODER_Author_Box extends Widget_Base {
 			echo '<div class="tmpcoder-author-box-text">';
 
 			// Author Name
-			if ( '' !== $settings['author_name'] && '' !== $name ) {
+			if ( (!empty($settings['author_name']) && '' !== $settings['author_name']) && (!empty($name) && '' !== $name) ) {
 				echo '<'. esc_attr( tmpcoder_validate_html_tag($settings['author_name_tag']) ) .' class="tmpcoder-author-box-name">';
 					if ( 'posts' === $settings['author_name_links_to'] || $author_name_has_website ) {
 						echo '<a href="'. esc_url( $author_name_link ) .'" target="'. esc_attr($author_name_target) .'">'. esc_html($name) .'</a>';
@@ -898,12 +900,12 @@ class TMPCODER_Author_Box extends Widget_Base {
 			}
 
 			// Author Biography
-			if ( '' !== $settings['author_bio'] && '' !== $biography ) {
+			if ( (!empty($settings['author_bio']) && '' !== $settings['author_bio']) && (!empty($biography) && '' !== $biography) ) {
 				echo '<p class="tmpcoder-author-box-bio">'. wp_kses_post($biography) .'</p>';
 			}
 
 			// Author Posts Link
-			if ( '' !== $settings['author_posts_link'] && '' !== $name ) {
+			if ( (!empty($settings['author_posts_link']) && '' !== $settings['author_posts_link']) && (!empty($name) && '' !== $name) ) {
 				echo '<a href="'. esc_url( $archive_url ) .'" class="tmpcoder-author-box-btn">';
 					echo esc_html( $settings['author_posts_link_text'] );
 				echo '</a>';

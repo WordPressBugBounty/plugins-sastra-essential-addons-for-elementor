@@ -42,7 +42,9 @@ class TMPCODER_Advanced_Text extends Widget_Base {
 		$depends = [ 'tmpcoder-text-animations-css' => true, 'tmpcoder-advanced-text' => true ];
 
 		if ( ! tmpcoder_elementor()->preview->is_preview_mode() ) {
-			$settings = $this->get_settings_for_display();
+			$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 
 			if ( $settings['text_style'] != 'animated' ) {
 				unset( $depends['tmpcoder-text-animations-css'] );
@@ -772,6 +774,8 @@ class TMPCODER_Advanced_Text extends Widget_Base {
 
 	public function tmpcoder_highlighted_text() {
 		$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 		$svg_arr = [
 			'circle' 			=> [ 'M284.72,15.61C276.85,14.43,2-2.85,2,80.46c0,34.09,45.22,58.86,196.31,62.81C719.59,154.18,467-74.85,109,29.15' ],
 			'curly' 			=> [ 'M1.15,18C64.07,44.13,108.42,1.4,169.63,3.1,182.11,3.76,191.39,6.58,201,10c71.41,33.39,112-8.7,188.65-7,35.22,1.74,69.81,22.6,103,17' ],
@@ -803,6 +807,8 @@ class TMPCODER_Advanced_Text extends Widget_Base {
 	public function tmpcoder_animated_text() {
 
 		$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 	
 		$animated_text = array_filter( explode( "\n", $settings['animated_text'] ) );
 		$anim_duration_value = $settings['highlighted_duration'];
@@ -853,21 +859,25 @@ class TMPCODER_Advanced_Text extends Widget_Base {
 	public function tmpcoder_animated_text_cursor() {
 		// Get Settings
 		$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 		
-		if ( '' !== $settings['anim_cursor_content'] && 'animated' === $settings['text_style'] && $settings['anim_cursor'] && ( 'typing' == $settings['text_type'] || 'clip' == $settings['text_type'] ) ) {
+		if ( !empty($settings['anim_cursor_content']) && '' !== $settings['anim_cursor_content'] && 'animated' === $settings['text_style'] && $settings['anim_cursor'] && ( 'typing' == $settings['text_type'] || 'clip' == $settings['text_type'] ) ) {
 			echo '<span class="tmpcoder-anim-text-cursor">'. esc_html( $settings['anim_cursor_content'] ) .'</span>';
 		}
 	}
 
 	protected function render() {
 		// Get Settings
-		$settings = $this->get_settings();	?>
+		$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );	?>
 
 		<<?php echo esc_attr( tmpcoder_validate_html_tag($settings['text_tag']) ); ?> class="tmpcoder-advanced-text">
 
 			<?php
 
-			if ( '' !== $settings['text_link']['url'] ) {
+			if ( !empty($settings['text_link']['url']) && '' !== $settings['text_link']['url'] ) {
 				$this->add_render_attribute( 'text_link', 'href', $settings['text_link']['url'] );
 
 				if ( $settings['text_link']['is_external'] ) {
@@ -889,7 +899,7 @@ class TMPCODER_Advanced_Text extends Widget_Base {
 
 			?>
 		
-			<?php if ( '' !== $settings['prefix_text'] ) : ?>
+			<?php if ( !empty($settings['prefix_text']) && '' !== $settings['prefix_text'] ) : ?>
 				<span class="tmpcoder-advanced-text-preffix"><?php echo wp_kses_post($settings['prefix_text']); ?></span>
 			<?php endif;
 
@@ -901,11 +911,11 @@ class TMPCODER_Advanced_Text extends Widget_Base {
 				$this->tmpcoder_clipped_text();
 			}
 
-			if ( '' !== $settings['suffix_text'] ) : ?>
+			if ( !empty($settings['suffix_text']) && '' !== $settings['suffix_text'] ) : ?>
 				<span class="tmpcoder-advanced-text-suffix"><?php echo wp_kses_post($settings['suffix_text']); ?></span>
 			<?php endif;
 
-			if ( '' !== $settings['text_link']['url'] ) {
+			if ( !empty($settings['text_link']['url']) && '' !== $settings['text_link']['url'] ) {
 				echo '</a>';
 			}
 

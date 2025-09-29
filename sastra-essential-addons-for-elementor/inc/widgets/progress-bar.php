@@ -1137,6 +1137,8 @@ class TMPCODER_Progress_Bar extends Widget_Base {
 	protected function render_progress_bar_circle( $persent ) {
 		// Get Settings
 		$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 
 		$circle_stocke_bg = $settings['circle_prline_bg_color'];
 
@@ -1256,9 +1258,11 @@ class TMPCODER_Progress_Bar extends Widget_Base {
 	protected function render_progress_bar_content( $position ) {
 		
 		$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 		$is_counter = ( 'yes' === $settings['counter_switcher'] && $position === $settings['counter_position'] );
-		$is_title = ( '' !== $settings['title'] && $position === $settings['title_position'] );
-		$is_subtitle = ( '' !== $settings['subtitle'] && $position === $settings['title_position'] );
+		$is_title = ( (!empty($settings['title']) && '' !== $settings['title']) && $position === $settings['title_position'] );
+		$is_subtitle = ( (!empty($settings['subtitle']) && '' !== $settings['subtitle']) && $position === $settings['title_position'] );
 		$do_follow = 'yes' === $this->get_settings_for_display('counter_follow_line') && 'inside' === $settings['counter_position'] ? true : false;
 
 		if ( $is_title || $is_subtitle || $is_counter ) {
@@ -1288,20 +1292,22 @@ class TMPCODER_Progress_Bar extends Widget_Base {
 	protected function render_progress_bar_counter() {
 		// Get Settings
 		$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 
 		?>
 
 		<div class="tmpcoder-prbar-counter">
 
-			<?php if ( '' !== $settings['counter_prefix'] ) : ?>
+			<?php if ( !empty($settings['counter_prefix']) && '' !== $settings['counter_prefix'] ) : ?>
 			<span class="tmpcoder-prbar-counter-value-prefix"><?php echo esc_html( $settings['counter_prefix'] ); ?></span>
 			<?php endif; ?>
 
-			<?php if ( '' !== $settings['counter_value'] ) : ?>
+			<?php if ( !empty($settings['counter_value']) && '' !== $settings['counter_value'] ) : ?>
 			<span class="tmpcoder-prbar-counter-value">0</span>
 			<?php endif; ?>
 
-			<?php if ( '' !== $settings['counter_suffix'] ) : ?>
+			<?php if ( !empty($settings['counter_suffix']) && '' !== $settings['counter_suffix'] ) : ?>
 			<span class="tmpcoder-prbar-counter-value-suffix"><?php echo esc_html( $settings['counter_suffix'] ); ?></span>
 			<?php endif; ?>
 
@@ -1313,6 +1319,8 @@ class TMPCODER_Progress_Bar extends Widget_Base {
 	protected function render_progress_bar_hr_line() {
 		// Get Settings
 		$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 
 		$this->render_progress_bar_content('outside');
 
@@ -1337,7 +1345,9 @@ class TMPCODER_Progress_Bar extends Widget_Base {
 
 	protected function render() {
 		// Get Settings
-		$settings = $this->get_settings_for_display();
+		$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 
 		$prbar_counter_persent = round( ( $settings['counter_value'] / $settings['max_value'] ) * 100 );
 

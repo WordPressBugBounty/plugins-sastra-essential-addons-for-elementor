@@ -935,7 +935,9 @@ class TMPCODER_Feature_List extends Widget_Base {
     }
 
     protected function render() {
-        $settings = $this->get_settings_for_display();
+        $settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 
         if ( $settings['list'] ) {
 			$count_items = 0;

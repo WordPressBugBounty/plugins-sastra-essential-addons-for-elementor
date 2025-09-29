@@ -42,7 +42,9 @@ class TMPCODER_Data_Table extends Widget_Base {
 		$depends = [ 'tmpcoder-table-to-excel-js' => true, 'tmpcoder-data-table' => true ];
 
 		if ( !tmpcoder_elementor()->preview->is_preview_mode() ) {
-			$settings = $this->get_settings_for_display();
+			$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 
 			if ( $settings['enable_table_export'] != 'yes' ) {
 				unset( $depends['tmpcoder-table-to-excel-js'] );
@@ -1832,17 +1834,19 @@ class TMPCODER_Data_Table extends Widget_Base {
 
 	public function render_th_icon($item) {
 		ob_start();
-		\Elementor\Icons_Manager::render_icon($item['choose_header_col_icon'], ['aria-hidden' => 'true']);
+		\Elementor\Icons_Manager::render_icon($item['choose_header_col_icon'] ?? '', ['aria-hidden' => 'true']);
 		return ob_get_clean();
 	}
 
 	public function render_th_icon_or_image($item, $i) {
-		if ( $item['header_icon'] === 'yes' && $item['header_icon_type'] === 'icon' ) {
+		$header_icon = '';
+		
+		if ( ($item['header_icon'] ?? '') === 'yes' && ($item['header_icon_type'] ?? '') === 'icon' ) {
 			$header_icon = '<span class="tmpcoder-header-icon" style="display: inline-block; vertical-align: middle;">'. $this->render_th_icon($item) . '</span>';
 		}
 
-		if( $item['header_icon'] == 'yes' && $item['header_icon_type'] == 'image' ) {
-			$settings['tmpcoder_table_th_img'.$i] = ['id' => $item['header_col_img']['id']];
+		if( ($item['header_icon'] ?? '') == 'yes' && ($item['header_icon_type'] ?? '') == 'image' ) {
+			$settings['tmpcoder_table_th_img'.$i] = ['id' => $item['header_col_img']['id'] ?? 0];
 			$header_icon = Group_Control_Image_Size::get_attachment_image_html( $settings, 'tmpcoder_table_th_img'.$i);
 			$header_icon = str_replace( '<img', '<img class="tmpcoder-data-table-th-img"', $header_icon );
 		}
@@ -1852,17 +1856,19 @@ class TMPCODER_Data_Table extends Widget_Base {
 
 	public function render_td_icon($table_td, $j) {
 		ob_start();
-		\Elementor\Icons_Manager::render_icon($table_td[$j]['icon_item'], ['aria-hidden' => 'true']);
+		\Elementor\Icons_Manager::render_icon($table_td[$j]['icon_item'] ?? '', ['aria-hidden' => 'true']);
 		return ob_get_clean();
 	}
 
 	public function render_td_icon_or_image($table_td, $j) {
-		if ( $table_td[$j]['icon'] === 'yes' && $table_td[$j]['icon_type'] == 'icon' ) {
+		$tbody_icon = '';
+		
+		if ( ($table_td[$j]['icon'] ?? '') === 'yes' && ($table_td[$j]['icon_type'] ?? '') == 'icon' ) {
 			$tbody_icon = '<span class="tbl-heading-icon" style="display: inline-block; vertical-align: middle;">'. $this->render_td_icon($table_td, $j) . '</span>';
 		}
 
-		if ( $table_td[$j]['icon'] == 'yes' && $table_td[$j]['icon_type'] == 'image' ) { 
-            $settings['tmpcoder_table_td_img'.$j] = ['id' => $table_td[$j]['col_img']['id']];
+		if ( ($table_td[$j]['icon'] ?? '') == 'yes' && ($table_td[$j]['icon_type'] ?? '') == 'image' ) { 
+            $settings['tmpcoder_table_td_img'.$j] = ['id' => $table_td[$j]['col_img']['id'] ?? 0];
 			$tbody_icon = Group_Control_Image_Size::get_attachment_image_html( $settings, 'tmpcoder_table_td_img'.$j);
 			$tbody_icon = str_replace( '<img', '<img class="tmpcoder-data-table-th-img"', $tbody_icon );
 		}
@@ -1872,7 +1878,9 @@ class TMPCODER_Data_Table extends Widget_Base {
 	public function render_search_export() {}
 
     protected function render() {
-		$settings = $this->get_settings_for_display(); 
+		$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new ); 
 
 		$table_tr = [];
 		$table_td = [];
@@ -1938,21 +1946,21 @@ class TMPCODER_Data_Table extends Widget_Base {
 
 					$table_td[] = [
 						'row_id' => isset($table_tr[$last_key]['id']) ? $table_tr[$last_key]['id'] : '',
-						'type' => $content_row['table_content_row_type'],
-						'content' => $content_row['table_td'],
-						'colspan' => $content_row['table_content_row_colspan'],
-						'rowspan' => $content_row['table_content_row_rowspan'],
-						'link' => $content_row['cell_link'],
-						'external' => $content_row['cell_link']['is_external'] == true ? '_blank' : '_self',
-						'icon_type' => $content_row['td_icon_type'],
-						'icon' => $content_row['td_icon'],
-						'icon_position' => $content_row['td_icon_position'],
-						'icon_item' => $content_row['choose_td_icon'],
-						'col_img' => $content_row['td_col_img'],
-						'class' => ['elementor-repeater-item-'. esc_attr($content_row['_id']), 'tmpcoder-table-td'],
-						'content_tooltip' => $content_row['content_tooltip'],
-						'content_tooltip_text' => $content_row['content_tooltip_text'],
-						'content_tooltip_show_icon' => $content_row['content_tooltip_show_icon']
+						'type' => $content_row['table_content_row_type'] ?? '',
+						'content' => $content_row['table_td'] ?? '',
+						'colspan' => $content_row['table_content_row_colspan'] ?? '',
+						'rowspan' => $content_row['table_content_row_rowspan'] ?? '',
+						'link' => $content_row['cell_link'] ?? '',
+						'external' => ($content_row['cell_link']['is_external'] ?? false) == true ? '_blank' : '_self',
+						'icon_type' => $content_row['td_icon_type'] ?? '',
+						'icon' => $content_row['td_icon'] ?? '',
+						'icon_position' => $content_row['td_icon_position'] ?? '',
+						'icon_item' => $content_row['choose_td_icon'] ?? '',
+						'col_img' => $content_row['td_col_img'] ?? '',
+						'class' => ['elementor-repeater-item-'. esc_attr($content_row['_id'] ?? ''), 'tmpcoder-table-td'],
+						'content_tooltip' => $content_row['content_tooltip'] ?? '',
+						'content_tooltip_text' => $content_row['content_tooltip_text'] ?? '',
+						'content_tooltip_show_icon' => $content_row['content_tooltip_show_icon'] ?? ''
 					];
 				}
 			} 

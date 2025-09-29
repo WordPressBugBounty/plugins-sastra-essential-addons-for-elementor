@@ -161,6 +161,8 @@ class Assets_Cache {
 			$files_name = 'my-account-page-pro';
 		}if ($files_name == 'page-checkout' ) {
 			$files_name = 'page-checkout-pro';
+		}if ($files_name == 'product-notice' ) {
+			$files_name = 'product-notice-pro';
 		}
 
 		$files_name = $files_name.tmpcoder_script_suffix(); 

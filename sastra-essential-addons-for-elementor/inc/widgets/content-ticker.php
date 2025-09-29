@@ -55,7 +55,9 @@ class TMPCODER_Content_Ticker extends Widget_Base {
 		$depends = [ 'tmpcoder-slick' => true, 'tmpcoder-marquee' => true, 'tmpcoder-content-ticker' => true ];
 
 		if ( ! tmpcoder_elementor()->preview->is_preview_mode() ) {
-			$settings = $this->get_settings_for_display();
+			$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 
 			if ( $settings['type_select'] != 'slider' ) {
 				unset( $depends['tmpcoder-slick'] );
@@ -1863,6 +1865,8 @@ class TMPCODER_Content_Ticker extends Widget_Base {
 	// Main Query Args
 	public function get_main_query_args() {
 		$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 		$author = ! empty( $settings[ 'query_author' ] ) ? implode( ',', $settings[ 'query_author' ] ) : '';
 
 		in_array( $settings[ 'query_source' ], ['pro-pd', 'pro-ft', 'pro-sl'] ) ? $settings[ 'query_source' ] = 'post' : '';
@@ -1973,6 +1977,8 @@ class TMPCODER_Content_Ticker extends Widget_Base {
 	// Taxonomy Query Args
 	public function get_tax_query_args() {
 		$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 		$tax_query = [];
 
 		if ( 'related' === $settings[ 'query_source' ] ) {
@@ -2002,6 +2008,8 @@ class TMPCODER_Content_Ticker extends Widget_Base {
 	public function tmpcoder_content_ticker_dynamic() {
 		//  Get Settings
 		$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 	
 		// Get Posts
 		$posts = new \WP_Query( $this->get_main_query_args() );
@@ -2083,6 +2091,8 @@ class TMPCODER_Content_Ticker extends Widget_Base {
 
 		// Get Settings
 		$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 		$heading_element = 'div';
 		$heading_link =  $settings['heading_link']['url'];
 
@@ -2129,6 +2139,8 @@ class TMPCODER_Content_Ticker extends Widget_Base {
 		
 		// Get Settings
 		$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 		$slider_is_rtl = is_rtl();
 		$slider_direction = $slider_is_rtl ? 'rtl' : 'ltr';
 		if ( ! tmpcoder_is_availble() ) {
@@ -2151,8 +2163,8 @@ class TMPCODER_Content_Ticker extends Widget_Base {
 
 		if ( $settings['slider_nav'] === 'yes' ) {
 			$slider_options['arrows'] = true;
-			$slider_options['prevArrow'] = '<div class="tmpcoder-ticker-prev-arrow tmpcoder-ticker-arrow"><i class="'. esc_attr($settings['slider_nav_icon']) .'"></i></div>';
-			$slider_options['nextArrow'] = '<div class="tmpcoder-ticker-next-arrow tmpcoder-ticker-arrow"><i class="'. esc_attr($settings['slider_nav_icon']) .'"></i></div>';
+			$slider_options['prevArrow'] = '<div class="tmpcoder-ticker-prev-arrow tmpcoder-ticker-arrow"><i class="'. esc_attr($settings['slider_nav_icon'] ?? '') .'"></i></div>';
+			$slider_options['nextArrow'] = '<div class="tmpcoder-ticker-next-arrow tmpcoder-ticker-arrow"><i class="'. esc_attr($settings['slider_nav_icon'] ?? '') .'"></i></div>';
 		}
 
 		$this->add_render_attribute( 'ticker-slider-attribute', [
@@ -2172,7 +2184,7 @@ class TMPCODER_Content_Ticker extends Widget_Base {
 
 		?>
 
-		<?php echo wp_kses_post('<div '. $this->get_render_attribute_string( 'ticker-slider-attribute' ).' data-slide-effect="'. esc_attr($settings['slider_effect']).'">'); ?>
+		<?php echo wp_kses_post('<div '. $this->get_render_attribute_string( 'ticker-slider-attribute' ).' data-slide-effect="'. esc_attr($settings['slider_effect'] ?? '').'">'); ?>
 			<?php
 				if ( 'dynamic' === $settings['post_type'] ) {
 					$this->tmpcoder_content_ticker_dynamic();
@@ -2194,6 +2206,8 @@ class TMPCODER_Content_Ticker extends Widget_Base {
 
 		// Get Settings
 		$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 
 		?>
 
@@ -2202,7 +2216,7 @@ class TMPCODER_Content_Ticker extends Widget_Base {
 
 			<?php
 
-			if ( '' !== $settings['heading_text'] || 'none' !== $settings['heading_icon_type'] ) {
+			if ( (!empty($settings['heading_text']) && '' !== $settings['heading_text']) || 'none' !== $settings['heading_icon_type'] ) {
 				$this->tmpcoder_content_ticker_heading(); 
 			}
 

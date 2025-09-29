@@ -456,7 +456,9 @@ class TMPCODER_Product_AdditionalInformation extends Widget_Base {
 
         echo '<div class="tmpcoder-product-additional-information">';
 
-    		$settings = $this->get_settings_for_display();
+    		$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 
         	if ( 'yes' === $settings['show_product_brand'] ) {
 			    $brand_names = wp_get_post_terms( $product->get_id(), 'product_brand', [ 'fields' => 'names' ] );

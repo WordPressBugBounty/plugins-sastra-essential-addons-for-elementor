@@ -52,7 +52,9 @@ class TMPCODER_Post_Grid extends Widget_Base {
 		$depends = [ 'tmpcoder-isotope' => true, 'tmpcoder-slick' => true, 'tmpcoder-lightgallery' => true, 'tmpcoder-grid-widgets' => true ];
 
 		if ( ! tmpcoder_elementor()->preview->is_preview_mode() ) {
-			$settings = $this->get_settings_for_display();
+			$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 
 			if ( $settings['layout_select'] != 'slider' ) {
 				unset( $depends['tmpcoder-slick'] );
@@ -78,7 +80,9 @@ class TMPCODER_Post_Grid extends Widget_Base {
 
 		if ( !tmpcoder_elementor()->preview->is_preview_mode() ) {
 
-			$settings = $this->get_settings_for_display();
+			$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 			$filtered = array_filter($settings['grid_elements'], function($element) {
 			    return isset($element['element_select']) && $element['element_select'] === 'lightbox';
 			});
@@ -2041,6 +2045,7 @@ class TMPCODER_Post_Grid extends Widget_Base {
 					'svg-icons' => esc_html__( 'SVG Icons -----', 'sastra-essential-addons-for-elementor' ),
 				] ),
 				'separator' => 'after',
+				'frontend_available' => true,
 				'condition' => [
 					'layout_slider_nav' => 'yes',
 					'layout_select' => 'slider',
@@ -2124,7 +2129,7 @@ class TMPCODER_Post_Grid extends Widget_Base {
 				'max' => 5,
 				'step' => 0.1,
 				'condition' => [
-					'layout_slider_amount' => 1,
+					// 'layout_slider_amount' => 1,
 					'layout_select' => 'slider',
 				],
 			]
@@ -8425,6 +8430,8 @@ class TMPCODER_Post_Grid extends Widget_Base {
 	// Main Query Args
 	public function get_main_query_args() {
 		$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 		$author = ! empty( $settings[ 'query_author' ] ) ? implode( ',', $settings[ 'query_author' ] ) : '';
 
 		// if ( is_user_logged_in() ){
@@ -8468,7 +8475,7 @@ class TMPCODER_Post_Grid extends Widget_Base {
 			$settings['order_posts'] = 'date';
 		}
 
-		$query_order_by = '' != $settings['query_randomize'] ? $settings['query_randomize'] : $settings['order_posts'];
+		$query_order_by = (!empty($settings['query_randomize']) && '' != $settings['query_randomize']) ? $settings['query_randomize'] : $settings['order_posts'];
 
 		$ids_array = '';
 
@@ -8498,7 +8505,23 @@ class TMPCODER_Post_Grid extends Widget_Base {
 		];
 
 		if ( $query_order_by == 'meta_value' ) {
+
 			$args['meta_key'] = $settings['order_posts_by_acf'];
+
+			// Check if this meta key usually holds numbers
+		 //    global $wpdb;
+		    
+		 //    $meta_value = $wpdb->get_var( $wpdb->prepare(
+		 //        "SELECT meta_value 
+		 //         FROM $wpdb->postmeta 
+		 //         WHERE meta_key = %s AND meta_value != '' 
+		 //         ORDER BY meta_id DESC LIMIT 1",
+		 //        $args['meta_key']
+		 //    ));
+
+			// if (is_numeric($meta_value)) {
+			// 	$args['orderby'] = 'meta_value_num';
+			// }
 		}
 
 		// Display Scheduled Posts
@@ -8628,6 +8651,8 @@ class TMPCODER_Post_Grid extends Widget_Base {
 	// Taxonomy Query Args
 	public function get_tax_query_args() {
 		$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 		$tax_query = [];
 
 		if ( 'related' === $settings[ 'query_source' ] ) {
@@ -8871,8 +8896,9 @@ class TMPCODER_Post_Grid extends Widget_Base {
 		echo '<div class="tmpcoder-grid-media-hover-bg '. esc_attr($this->get_animation_class( $settings, 'overlay' )) .'" data-url="'. esc_url( get_the_permalink( get_the_ID() ) ) .'">';
 
 			if ( tmpcoder_is_availble() ) {
-				if ( '' !== $settings['overlay_image']['url'] ) {
-					echo '<img data-no-lazy="1" src="'. esc_url( $settings['overlay_image']['url'] ) .'">';
+				if ( !empty($settings['overlay_image']['url']) && '' !== $settings['overlay_image']['url'] ) {
+					$overlay_image = Group_Control_Image_Size::get_attachment_image_html( $settings, 'thumbnail', 'overlay_image' );
+					echo wp_kses_post($overlay_image);
 				}
 			}
 
@@ -9258,7 +9284,7 @@ class TMPCODER_Post_Grid extends Widget_Base {
 					}
 
 					// Lightbox Icon
-					if( '' != $settings['element_extra_icon'] ) {
+					if( (!empty($settings['element_extra_icon']) && '' != $settings['element_extra_icon']) ) {
 						if (is_array($settings['element_extra_icon']['value'])) {
 							echo '<span class="tmpcoder-grid-extra-icon-left">';
 								echo wp_kses(tmpcoder_render_svg_icon($settings['element_extra_icon']), tmpcoder_wp_kses_allowed_html());
@@ -9440,8 +9466,8 @@ class TMPCODER_Post_Grid extends Widget_Base {
 		$locations = [];
 
 		foreach ( $settings['grid_elements'] as $data ) {
-			$place = $data['element_location'];
-			$align_vr = $data['element_align_vr'];
+			$place = $data['element_location'] ?? '';
+			$align_vr = $data['element_align_vr'] ?? '';
 
 			if ( ! tmpcoder_is_availble() ) {
 				$align_vr = 'middle';
@@ -9475,14 +9501,14 @@ class TMPCODER_Post_Grid extends Widget_Base {
 						foreach ( $elements as $data ) {
 							
 							// Get Class
-							$class  = 'tmpcoder-grid-item-'. $data['element_select'];
-							$class .= ' elementor-repeater-item-'. $data['_id'];
-							$class .= ' tmpcoder-grid-item-display-'. $data['element_display'];
-							$class .= ' tmpcoder-grid-item-align-'. $data['element_align_hr'];
+							$class  = 'tmpcoder-grid-item-'. ($data['element_select'] ?? '');
+							$class .= ' elementor-repeater-item-'. ($data['_id'] ?? '');
+							$class .= ' tmpcoder-grid-item-display-'. ($data['element_display'] ?? '');
+							$class .= ' tmpcoder-grid-item-align-'. ($data['element_align_hr'] ?? '');
 							$class .= $this->get_animation_class( $data, 'element' );
 
 							// Element
-							$this->get_elements( $data['element_select'], $data, $class, $post_id );
+							$this->get_elements( $data['element_select'] ?? '', $data, $class, $post_id );
 						}
 					echo '</div>';
 
@@ -9495,13 +9521,13 @@ class TMPCODER_Post_Grid extends Widget_Base {
 					foreach ( $locations[$location] as $data ) {
 
 						// Get Class
-						$class  = 'tmpcoder-grid-item-'. $data['element_select'];
-						$class .= ' elementor-repeater-item-'. $data['_id'];
-						$class .= ' tmpcoder-grid-item-display-'. $data['element_display'];
-						$class .= ' tmpcoder-grid-item-align-'. $data['element_align_hr'];
+						$class  = 'tmpcoder-grid-item-'. ($data['element_select'] ?? '');
+						$class .= ' elementor-repeater-item-'. ($data['_id'] ?? '');
+						$class .= ' tmpcoder-grid-item-display-'. ($data['element_display'] ?? '');
+						$class .= ' tmpcoder-grid-item-align-'. ($data['element_align_hr'] ?? '');
 
 						// Element
-						$this->get_elements( $data['element_select'], $data, $class, $post_id );
+						$this->get_elements( $data['element_select'] ?? '', $data, $class, $post_id );
 					}
 				echo '</div>';
 			}
@@ -10164,11 +10190,12 @@ class TMPCODER_Post_Grid extends Widget_Base {
 		'</div>';
 	}		
 	
-
 	protected function render() {
 
 		// Get Settings
 		$settings = $this->get_settings();
+		$settings_new = $this->get_settings_for_display();
+		$settings = array_merge( $settings, $settings_new );
 
 		// Get Posts
 		$posts = new \WP_Query( $this->get_main_query_args() );
@@ -10244,11 +10271,14 @@ class TMPCODER_Post_Grid extends Widget_Base {
 		wp_reset_postdata();
 
 		if ( 'slider' === $settings['layout_select'] ) {
-			// Slider Navigation
-			echo '<div class="tmpcoder-grid-slider-arrow-container">';
-				echo '<div class="tmpcoder-grid-slider-prev-arrow tmpcoder-grid-slider-arrow" id="tmpcoder-grid-slider-prev-'. esc_attr($this->get_id()) .'">'. wp_kses(tmpcoder_get_icon( $settings['layout_slider_nav_icon'], '' ), tmpcoder_wp_kses_allowed_html()) .'</div>'; 
-				echo '<div class="tmpcoder-grid-slider-next-arrow tmpcoder-grid-slider-arrow" id="tmpcoder-grid-slider-next-'. esc_attr($this->get_id()) .'">'. wp_kses(tmpcoder_get_icon( $settings['layout_slider_nav_icon'], '' ), tmpcoder_wp_kses_allowed_html()) .'</div>'; 
-			echo '</div>';
+			// Slider Navigation (only when enabled)
+			if ( $settings['layout_slider_nav'] === 'yes' ) {
+				echo '<div class="tmpcoder-grid-slider-arrow-container">';
+					$nav_icon = isset($settings['layout_slider_nav_icon']) ? $settings['layout_slider_nav_icon'] : 'svg-angle-1-left';
+					echo '<div class="tmpcoder-grid-slider-prev-arrow tmpcoder-grid-slider-arrow" id="tmpcoder-grid-slider-prev-'. esc_attr($this->get_id()) .'">'. wp_kses(tmpcoder_get_icon( $nav_icon, '' ), tmpcoder_wp_kses_allowed_html()) .'</div>'; 
+					echo '<div class="tmpcoder-grid-slider-next-arrow tmpcoder-grid-slider-arrow" id="tmpcoder-grid-slider-next-'. esc_attr($this->get_id()) .'">'. wp_kses(tmpcoder_get_icon( $nav_icon, '' ), tmpcoder_wp_kses_allowed_html()) .'</div>'; 
+				echo '</div>';
+			}
 
 			// Slider Dots
 			echo '<div class="tmpcoder-grid-slider-dots"></div>';

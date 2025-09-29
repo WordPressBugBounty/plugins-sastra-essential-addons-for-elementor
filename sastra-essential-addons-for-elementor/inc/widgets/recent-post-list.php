@@ -1060,7 +1060,9 @@ class TMPCODER_Post_List extends Widget_Base {
 
 	protected function render() {
 
-		$settings = $this->get_settings_for_display();
+		$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 
 		if ( ! $settings['post_type'] ) {
 			return;
@@ -1117,7 +1119,7 @@ class TMPCODER_Post_List extends Widget_Base {
 		}
 		$this->add_render_attribute( 'item', 'class', [ 'tmpcoder-post-list-item' ] );
 
-		$hover_animation = $settings['hover_animation']!=''?'elementor-animation-'.$settings['hover_animation']:'';
+		$hover_animation = !empty($settings['hover_animation']) && $settings['hover_animation']!=''?'elementor-animation-'.$settings['hover_animation']:'';
 
 		if ( count( $posts ) !== 0 ) :?>
 			<div <?php $this->print_render_attribute_string( 'wrapper' ); ?>>
@@ -1135,7 +1137,7 @@ class TMPCODER_Post_List extends Widget_Base {
 										}
 										else
 										{
-										 	if ( '' !== $settings['icon']['value'] ) : 
+										 	if ( !empty($settings['icon']['value']) && '' !== $settings['icon']['value'] ) : 
 										 		echo '<i class="'. esc_attr($settings['icon']['value']) .'"></i>';
 											endif;
 										}

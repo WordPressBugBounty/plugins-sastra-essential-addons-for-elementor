@@ -26,11 +26,38 @@
         nonce: SpexoAdmin.nonce,
         post_id: SpexoAdmin.post_id
       }).done(function (res) {
+
         $m.removeClass("tmpcoder-clear-cache--init").addClass("tmpcoder-clear-cache--done");
         if ($clearCache.hasClass("tools-btn")) {
           $('.welcome-backend-loader').fadeOut();
           $('.tmpcoder-theme-welcome').css('opacity','1');
           $('.tmpcoder-settings-saved').stop().fadeIn(500).delay(1000).fadeOut(1000);
+        }
+        else
+        {
+            if ($('#wpbody').length){
+                $('#wpbody').append('<div class="tmpcoder-css-regenerated tmpcoder-settings-saved"><span>Assets Regenerated</span><span class="dashicons dashicons-smiley"></span></div>');
+            }
+            else
+            {
+                $('body').append('<div class="tmpcoder-css-regenerated tmpcoder-settings-saved"><span>Assets Regenerated</span><span class="dashicons dashicons-smiley"></span></div>');
+            }
+
+            $('.tmpcoder-css-regenerated').css({
+                position: 'fixed',
+                zIndex: '99999',
+                top: '60px',
+                right: '30px',
+                padding: '15px 25px',
+                borderRadius: '3px',
+                color: '#fff',
+                background: '#562ad5',
+                boxShadow: '0 2px 10px 3px rgba(0, 0, 0, .2)',
+                textTransform: 'uppercase',
+                fontWeight: '600',
+                letterSpacing: '1px',
+            });
+            $('.tmpcoder-css-regenerated').stop().fadeIn(500).delay(1000).fadeOut(1000);
         }
       });
     });

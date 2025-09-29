@@ -430,6 +430,8 @@ class TMPCODER_Archive_Title extends Widget_Base {
 	protected function render() {
 		// Get Settings
 		$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 		$tax = get_queried_object();
 		
 		$tags_whitelist = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'div', 'span', 'p'];
@@ -465,7 +467,7 @@ class TMPCODER_Archive_Title extends Widget_Base {
 			}
 
 			if ( tmpcoder_is_availble() ) {
-				if ( isset($settings['archive_description']) && '' !== $description && '' !== $settings['archive_description'] ) {
+				if ( isset($settings['archive_description']) && (!empty($description) && '' !== $description) && (!empty($settings['archive_description']) && '' !== $settings['archive_description']) ) {
 					echo '<p class="tmpcoder-archive-description">'. wp_kses_post($description) .'</p>';
 				}
 			}

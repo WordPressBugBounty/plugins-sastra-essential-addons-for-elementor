@@ -193,7 +193,9 @@ class TMPCODER_Reading_Progress_Bar extends Widget_Base {
 	}
 
 	protected function render() {
-    	$settings = $this->get_settings_for_display();
+    	$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 
 		$this->add_render_attribute( 'tmpcoder-rpb-attrs', [
 			'class' => 'tmpcoder-reading-progress-bar-container',

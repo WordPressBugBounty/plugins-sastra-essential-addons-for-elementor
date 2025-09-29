@@ -709,6 +709,8 @@ class TMPCODER_Social_Share extends Widget_Base {
 	protected function render() {
 		// Get Settings
 		$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 
 		if ( ! tmpcoder_is_availble() ) {
 			$settings['sharing_custom_colors'] = '';
@@ -717,10 +719,10 @@ class TMPCODER_Social_Share extends Widget_Base {
 			$settings['sharing_show_icon'] = 'yes';
 		}
 
-		$class  = '' === $settings['sharing_custom_colors'] ? ' tmpcoder-sharing-official' : '';
-		$class .= '' === $settings['sharing_show_label'] ? ' tmpcoder-sharing-label-off' : '';
-		$class .= '' === $settings['sharing_icon_bg_tr'] ? ' tmpcoder-sharing-icon-tr' : '';
-		$class .= '' === $settings['sharing_label_bg'] ? ' tmpcoder-sharing-label-tr' : '';
+		$class  = (empty($settings['sharing_custom_colors']) || '' === $settings['sharing_custom_colors']) ? ' tmpcoder-sharing-official' : '';
+		$class .= (empty($settings['sharing_show_label']) || '' === $settings['sharing_show_label']) ? ' tmpcoder-sharing-label-off' : '';
+		$class .= (empty($settings['sharing_icon_bg_tr']) || '' === $settings['sharing_icon_bg_tr']) ? ' tmpcoder-sharing-icon-tr' : '';
+		$class .= (empty($settings['sharing_label_bg']) || '' === $settings['sharing_label_bg']) ? ' tmpcoder-sharing-label-tr' : '';
 
 		echo '<div class="tmpcoder-sharing-buttons elementor-grid'. esc_attr($class) .'">';
 		

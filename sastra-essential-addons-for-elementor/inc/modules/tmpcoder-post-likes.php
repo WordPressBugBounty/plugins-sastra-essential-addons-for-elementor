@@ -162,7 +162,7 @@ class TMPCODER_Post_Likes {
 		}
 
 		// Default Text
-		if ( '' === $settings['element_like_text'] ) {
+		if ( empty($settings['element_like_text']) || '' === $settings['element_like_text'] ) {
 			$default_text_class = ' tmpcoder-likes-no-default';
 		}
 

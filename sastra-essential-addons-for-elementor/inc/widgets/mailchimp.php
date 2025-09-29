@@ -1413,6 +1413,8 @@ class TMPCODER_Mailchimp extends Widget_Base {
 	protected function render() {
 		// Get Settings
 		$settings = $this->get_settings();
+$settings_new = $this->get_settings_for_display();
+$settings = array_merge( $settings, $settings_new );
 
 		if ( tmpcoder_is_availble() ) {
 			$clear_fields_on_submit = esc_attr($settings['clear_fields_on_submit']);
@@ -1436,7 +1438,7 @@ class TMPCODER_Mailchimp extends Widget_Base {
 				}
 				else
 				{
-			 		$form_icon = '' !== $settings['form_icon']['value'] ? '<i class="'. esc_attr($settings['form_icon']['value']) .'"></i>' : ''; 
+			 		$form_icon = (!empty($settings['form_icon']['value']) && '' !== $settings['form_icon']['value']) ? '<i class="'. esc_attr($settings['form_icon']['value']) .'"></i>' : ''; 
 				}
 
 				?>
@@ -1454,7 +1456,7 @@ class TMPCODER_Mailchimp extends Widget_Base {
 			<div class="tmpcoder-mailchimp-fields">
 				<!-- Email Input -->
 				<div class="tmpcoder-mailchimp-email">
-					<?php echo '' !== $settings['email_label'] ? '<label>'. esc_html($settings['email_label']) .'</label>' : ''; ?>
+					<?php echo (!empty($settings['email_label']) && '' !== $settings['email_label']) ? '<label>'. esc_html($settings['email_label']) .'</label>' : ''; ?>
 					<input type="email" name="tmpcoder_mailchimp_email" placeholder="<?php echo esc_attr($settings['email_placeholder']); ?>" required="required">
 				</div>
 
