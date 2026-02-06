@@ -309,10 +309,9 @@ class TMPCODER_Breadcrumb  extends Widget_Base{
                             if ($settings['show_title'] == 'yes') {
 
                                 echo '<'. esc_attr( tmpcoder_validate_html_tag($settings['post_title_tag']) ) .' class="sub-banner-title '.esc_attr($show_title).'">';
-                            }   
-
-                            echo esc_html( __('404', 'sastra-essential-addons-for-elementor' ) ); 
-                            echo '</'. esc_attr( tmpcoder_validate_html_tag($settings['post_title_tag']) ) .'>';
+                                echo esc_html( __('404', 'sastra-essential-addons-for-elementor' ) ); 
+                                echo '</'. esc_attr( tmpcoder_validate_html_tag($settings['post_title_tag']) ) .'>';
+                            }
                         
                         }else{
 
@@ -372,10 +371,9 @@ class TMPCODER_Breadcrumb  extends Widget_Base{
                                 if ($settings['show_title'] == 'yes') {
 
                                     echo '<'. esc_attr( tmpcoder_validate_html_tag($settings['post_title_tag']) ) .' class="sub-banner-title '.esc_attr($show_title).'">';
+                                    echo 'Search results for: '. get_search_query(); 
+                                    echo '</'. esc_attr( tmpcoder_validate_html_tag($settings['post_title_tag']) ) .'>';
                                 }
-
-                                echo 'Search results for: '. get_search_query(); 
-                                echo '</'. esc_attr( tmpcoder_validate_html_tag($settings['post_title_tag']) ) .'>';
                              
                             }else{
                                 if ($settings['show_title'] == 'yes') {

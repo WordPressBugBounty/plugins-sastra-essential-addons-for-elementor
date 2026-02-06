@@ -46,7 +46,7 @@
     background: #fff;
 }
 .tmpcoder-theme-welcome .nav-tab.nav-tab-active {
-    border-bottom-color: #fff;
+    border-bottom: solid 2px #5729d9;
 }
 
 /* proper positioning of the icons */
@@ -697,3 +697,255 @@
     background-color: #0000001c;
 }
 /*====== Prebuilt Websites lock section - END ======*/
+
+/* Settings Page Layout */
+.tmpcoder-settings-heading {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.tmpcoder-settings-subheading {
+    margin-bottom: 25px;
+    color: #646970;
+    font-size: 14px;
+}
+
+.settings-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.settings-box {
+    background: #fff;
+    border: 1px solid #dcdcde;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    padding: 25px;
+}
+
+.settings-box-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: #1d2327;
+}
+
+.settings-box-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.setting-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.setting-item-vertical {
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.setting-label {
+    font-size: 14px;
+    color: #646970;
+}
+
+.setting-input {
+    border: 1px solid #dcdcde;
+    border-radius: 4px;
+    padding: 6px 10px;
+    font-size: 14px;
+}
+
+.setting-full-width {
+    width: 100%;
+}
+
+/* Unified input and select styles for Settings page */
+.settings-box input[type="text"],
+.settings-box input[type="password"],
+.settings-box input[type="number"],
+.settings-box input[type="email"],
+.settings-box input[type="url"],
+.settings-box select,
+.settings-box .setting-input {
+    width: 100%;
+    max-width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #c3c4c7;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #2c3338;
+    background: white;
+    transition: all 0.2s ease;
+    box-shadow: 0 0 0 transparent;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+.settings-box input[type="text"]:focus,
+.settings-box input[type="password"]:focus,
+.settings-box input[type="number"]:focus,
+.settings-box input[type="email"]:focus,
+.settings-box input[type="url"]:focus,
+.settings-box select:focus,
+.settings-box .setting-input:focus {
+    outline: none;
+    border-color: #5729d9;
+    box-shadow: 0 0 0 1px #5729d9;
+}
+
+/* Dropdown arrow for all selects */
+.settings-box select {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' stroke='%23646970' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 12px 8px;
+    padding-right: 34px;
+}
+
+.settings-box select:focus {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' stroke='%235729d9' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+}
+
+/* Radio button positioning - move to right side of label */
+/* For form-table structure (AI Settings and other sections) */
+.settings-box .form-table td input[type="radio"] {
+    margin-left: 10px;
+    margin-right: 0;
+    float: none;
+}
+
+.settings-box .form-table td label {
+    display: inline-flex;
+    align-items: center;
+    flex-direction: row-reverse;
+    gap: 8px;
+    justify-content: flex-start;
+}
+
+.settings-box .form-table td label input[type="radio"] {
+    margin: 0;
+    order: 1;
+}
+
+/* Radio button groups - ensure proper alignment */
+.settings-box .form-table td fieldset,
+.settings-box .form-table td .radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.settings-box .form-table td fieldset label,
+.settings-box .form-table td .radio-group label {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-direction: row-reverse;
+    gap: 8px;
+}
+
+.settings-box .form-table td fieldset input[type="radio"],
+.settings-box .form-table td .radio-group input[type="radio"] {
+    margin: 0;
+    order: 1;
+}
+
+/* For inline radio buttons with labels */
+.settings-box .form-table td label + input[type="radio"],
+.settings-box .form-table td input[type="radio"] + label {
+    display: inline-flex;
+    align-items: center;
+    flex-direction: row-reverse;
+    gap: 8px;
+}
+
+.settings-breadcrumb {
+    background: #fff;
+    border: 1px solid #dcdcde;
+    border-radius: 6px;
+    padding: 15px 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.settings-breadcrumb-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+}
+
+.settings-breadcrumb-nav a {
+    color: #2271b1;
+    text-decoration: none;
+}
+
+.settings-breadcrumb-nav a:hover {
+    text-decoration: underline;
+}
+
+.settings-submit-row {
+    position: sticky;
+    bottom: 0;
+    background: #fff;
+    padding: 15px 0;
+    text-align: right;
+    margin-top: 30px;
+    border-top: 1px solid #dcdcde;
+    z-index: 5;
+}
+
+.settings-box .tmpcoder-settings-group,
+.settings-box .tmpcoder-settings-group-inner,
+.settings-box .tmpcoder-settings-group-tooltip {
+    width: 100%;
+}
+
+.settings-box .tmpcoder-settings-group {
+    padding-top: 0;
+}
+
+.settings-box .tmpcoder-settings-group-tooltip {
+    margin-bottom: 0;
+}
+
+.settings-box select {
+    max-width: 100%;
+}
+
+/* Ensure all selects in settings boxes have dropdown arrows */
+.settings-box .tmpcoder-settings-group select,
+.settings-box .tmpcoder-woo-template-info select,
+.settings-box #tmpcoder_wishlist_page,
+.settings-box #tmpcoder_compare_page {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' stroke='%23646970' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 12px 8px;
+    padding-right: 34px;
+}
+
+.settings-box .tmpcoder-settings-group select:focus,
+.settings-box .tmpcoder-woo-template-info select:focus,
+.settings-box #tmpcoder_wishlist_page:focus,
+.settings-box #tmpcoder_compare_page:focus {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' stroke='%235729d9' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+}
+
+@media (max-width: 768px) {
+    .setting-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+}

@@ -261,7 +261,7 @@ class TMPCODER_Media_Grid extends Widget_Base {
 				'prefix_class' => 'tmpcoder-grid-slider-dots-',
 				'render_type' => 'template',
 				'condition' => [
-					'layout_slider_dots' => 'yes',
+					// 'layout_slider_dots' => 'yes',
 					'layout_select' => 'slider',
 				],
 			]

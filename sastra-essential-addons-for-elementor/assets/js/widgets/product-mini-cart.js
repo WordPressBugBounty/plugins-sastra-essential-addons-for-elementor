@@ -36,8 +36,16 @@
             }, function(responce){
                 $loader.hide();
                 jQuery(document.body).trigger('wc_fragment_refresh');
-                jQuery('.woocommerce-Price-amount').html(responce.data.cart_subtotal);
+                
+                // Update cart count and subtotal
                 jQuery('.tmpcoder-mini-cart-icon-count span').text(responce.data.cart_count);
+                jQuery('.woocommerce-mini-cart__total .woocommerce-Price-amount').html(responce.data.cart_subtotal);
+                
+                // Update specific product price in mini cart
+                const $cartItem = jQuery(`[data-cart_item_key="${key}"]`);
+                if ($cartItem.length) {
+                    $cartItem.find('span.quantity.price-right').html(responce.data.product_price);
+                }
 
             });
         });
@@ -49,22 +57,67 @@
                     const $item = jQuery(this);
                     const cart_item_key = $item.data('cart_item_key');
 
-                    // Replace quantity block with custom markup
-                    const quantityText = $item.find('.quantity').text().trim();
-                    const quantity = parseInt(quantityText.split('×')[0].trim());
+                    // Only process items that don't already have custom quantity controls
+                    if ($item.find('.mini-cart-qty-wrap').length === 0) {
+                        // Replace quantity block with custom markup
+                        const quantityText = $item.find('.quantity').text().trim();
+                        const quantity = parseInt(quantityText.split('×')[0].trim());
+                        
+                        // Calculate line total (quantity × unit price)
+                        let lineTotal = '';
+                        if (quantityText.includes('×')) {
+                            // Extract unit price from "3 × $60.00" format
+                            const unitPriceText = quantityText.split('×')[1] ? quantityText.split('×')[1].trim() : '';
+                            if (unitPriceText) {
+                                // Extract numeric value from price string (e.g., "$60.00" -> 60.00)
+                                const unitPrice = parseFloat(unitPriceText.replace(/[^0-9.-]/g, ''));
+                                if (!isNaN(unitPrice) && !isNaN(quantity)) {
+                                    const total = unitPrice * quantity;
+                                    // Format the total with currency symbol
+                                    lineTotal = unitPriceText.replace(/[0-9.-]/g, '').trim() + total.toFixed(2);
+                                }
+                            }
+                        }
+                        
+                        // If calculation failed, try to get from cart fragments
+                        if (!lineTotal) {
+                            const cartData = jQuery('body').data('wc_cart_fragments');
+                            if (cartData && cartData['div.widget_shopping_cart_content']) {
+                                const tempDiv = jQuery('<div>').html(cartData['div.widget_shopping_cart_content']);
+                                const tempItem = tempDiv.find(`[data-cart_item_key="${cart_item_key}"]`);
+                                if (tempItem.length) {
+                                    const tempQuantityText = tempItem.find('.quantity').text().trim();
+                                    if (tempQuantityText.includes('×')) {
+                                        const tempUnitPrice = tempQuantityText.split('×')[1] ? tempQuantityText.split('×')[1].trim() : '';
+                                        const tempQuantity = parseInt(tempQuantityText.split('×')[0].trim());
+                                        if (tempUnitPrice && !isNaN(tempQuantity)) {
+                                            const tempPrice = parseFloat(tempUnitPrice.replace(/[^0-9.-]/g, ''));
+                                            if (!isNaN(tempPrice)) {
+                                                const total = tempPrice * tempQuantity;
+                                                lineTotal = tempUnitPrice.replace(/[0-9.-]/g, '').trim() + total.toFixed(2);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
 
-                    console.log('ssws');
+                        const customQtyHTML = `
+                            <div class="tmpcoder-mini-cart-quantity">
+                                <div class="mini-cart-quantity-row">
+                                    <div class="mini-cart-quantity mini-cart-qty-wrap">
+                                        <button class="mini-cart-minus" data-key="${cart_item_key}">-</button>
+                                        <input type="number" class="mini-cart-qty-input" value="${quantity}" data-key="${cart_item_key}" min="1">
+                                        <button class="mini-cart-plus" data-key="${cart_item_key}">+</button>
+                                        <span class="mini-cart-loader" style="display:none;"></span>
+                                    </div>
+                                    <span class="quantity price-right">${lineTotal}</span>
+                                </div>
+                            </div>
+                        `;
 
-                    const customQtyHTML = `
-                        <div class="mini-cart-quantity mini-cart-qty-wrap">
-                            <button class="mini-cart-minus" data-key="${cart_item_key}">-</button>
-                            <input type="number" class="mini-cart-qty-input" value="${quantity}" data-key="${cart_item_key}" min="1">
-                            <button class="mini-cart-plus" data-key="${cart_item_key}">+</button>
-                            <span class="mini-cart-loader" style="display:none;"></span>
-                        </div>
-                    `;
-
-                    $item.find('.quantity').replaceWith(customQtyHTML);
+                        $item.find('.quantity').replaceWith(customQtyHTML);
+                    }
                 });
             });
         }
@@ -88,8 +141,16 @@
             }, function(responce){
                 $loader.hide();
                 jQuery(document.body).trigger('wc_fragment_refresh');
-                jQuery('.woocommerce-Price-amount').html(responce.data.cart_subtotal);
+                
+                // Update cart count and subtotal
                 jQuery('.tmpcoder-mini-cart-icon-count span').text(responce.data.cart_count);
+                jQuery('.woocommerce-mini-cart__total .woocommerce-Price-amount').html(responce.data.cart_subtotal);
+                
+                // Update specific product price in mini cart
+                const $cartItem = jQuery(`[data-cart_item_key="${key}"]`);
+                if ($cartItem.length) {
+                    $cartItem.find('span.quantity.price-right').html(responce.data.product_price);
+                }
 
             });
         });

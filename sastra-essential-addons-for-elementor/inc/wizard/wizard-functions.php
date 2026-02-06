@@ -1,5 +1,9 @@
 <?php 
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit; // Exit if accessed directly.
+}
+
 if ( !function_exists('is_plugin_installed') ){
     function is_plugin_installed( $slug ) {
         if ( ! function_exists( 'get_plugins' ) ) {

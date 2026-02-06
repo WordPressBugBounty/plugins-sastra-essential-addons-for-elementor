@@ -57,6 +57,8 @@ if ( ! class_exists( 'TMPCODER_Importer' ) ) {
 
 			require_once TMPCODER_PLUGIN_DIR . 'inc/admin/import/importers/class-tmpcoder-plugin-options-import.php';
 
+			require_once TMPCODER_PLUGIN_DIR . 'inc/admin/import/importers/class-tmpcoder-plugin-woocommerce-attributes-importer.php';
+
 			// Import AJAX.
 			
 			add_action( 'wp_ajax_tmpcoder-plugin-import-prepare-xml', array( $this, 'prepare_xml_data' ) );
@@ -179,10 +181,26 @@ if ( ! class_exists( 'TMPCODER_Importer' ) ) {
 		    update_option( 'active_plugins', array_values($active_plugins) );
 
 		    // Get Current Theme
-		    $theme = get_option('stylesheet');
+		    $theme    = get_option( 'stylesheet' );
+		    $template = get_option( 'template' ); // Get parent theme
 
-		    // Activate Sastra Theme
-		    if ( 'spexo' !== $theme ) {
+		    $current_theme      = wp_get_theme();
+		    $current_textdomain = $current_theme->get( 'TextDomain' );
+		    $parent_textdomain  = $current_theme->parent() ? $current_theme->parent()->get( 'TextDomain' ) : '';
+
+		    $allowed_theme_textdomains = apply_filters(
+		    	'tmpcoder_allowed_theme_textdomains_for_import',
+		    	array(
+		    		'spexo',
+		    		'bellizawp',
+		    	)
+		    );
+
+		    $should_skip_switch =
+		    	in_array( $current_textdomain, $allowed_theme_textdomains, true ) ||
+		    	( $parent_textdomain && in_array( $parent_textdomain, $allowed_theme_textdomains, true ) );
+
+		    if ( ! $should_skip_switch && 'spexo' !== $theme ) {
 		        switch_theme( 'spexo' );
 		    }
 		}
@@ -198,10 +216,17 @@ if ( ! class_exists( 'TMPCODER_Importer' ) ) {
 		    
 		    // Get Current Theme
 		    $theme = get_option('stylesheet');
+		    $template = get_option('template'); // Get parent theme
 
 		    // Activate Sastra Theme
-	        switch_theme( 'spexo' );
-	        set_transient( 'sastra_activation_notice', true );
+		    // Don't switch if BellizaWP or BellizaWP Child theme is active
+		    $is_bellizawp_parent = ( $template === 'bellizawp' );
+		    $is_bellizawp_child = ( $theme !== 'bellizawp' && $template === 'bellizawp' && strpos( $theme, 'bellizawp' ) !== false );
+		    
+		    if ( ! $is_bellizawp_parent && ! $is_bellizawp_child ) {
+		        switch_theme( 'spexo' );
+		        set_transient( 'sastra_activation_notice', true );
+		    }
 		}
 		
 		public function tmpcoder_download_revslider_plugin()

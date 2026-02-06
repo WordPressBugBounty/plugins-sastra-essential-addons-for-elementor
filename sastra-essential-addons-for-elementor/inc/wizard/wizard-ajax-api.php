@@ -1,5 +1,9 @@
 <?php 
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit; // Exit if accessed directly.
+}
+
 add_action("wp_ajax_tmpcoder_theme_install_func", "tmpcoder_theme_install_func");
 add_action("wp_ajax_nopriv_tmpcoder_theme_install_func", "tmpcoder_theme_install_func");
 function tmpcoder_theme_install_func(){

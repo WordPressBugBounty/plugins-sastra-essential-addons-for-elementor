@@ -760,7 +760,7 @@ jQuery(document).ready(function( $ ) {
 	/*
 	** Save Options with Ajax -------------------------
 	*/
-	$('.tmpcoder-settings-page form').submit(function () {
+	$('.tmpcoder-settings-page form, .spexo-settings-page form, .spexo-settings-form').submit(function () {
 		var settings =  $(this).serialize();
 
 		$('.welcome-backend-loader').fadeIn();
@@ -780,7 +780,7 @@ jQuery(document).ready(function( $ ) {
 	});
 
 	$('.tmpcoder-element').find('input').on( 'change', function() {
-		$('.tmpcoder-settings-page form').submit();
+		$('.tmpcoder-settings-page form, .spexo-settings-page form, .spexo-settings-form').submit();
 	});
 
 	/*

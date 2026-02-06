@@ -1254,21 +1254,54 @@
         }
 
         function lazyLoadObserver() {
+            // Variables for scroll detection to prevent header jerk
+            var scrollTimer;
+            var isScrolling = false;
+            
+            // Track scroll state to prevent header jerk during active scroll
+            $(window).on('scroll.tmpcoder-lazyload', function() {
+                isScrolling = true;
+                clearTimeout(scrollTimer);
+                scrollTimer = setTimeout(function() {
+                    isScrolling = false;
+                }, 150);
+            });
+
             setTimeout(function () {
                 let lazyLoadObserver = new IntersectionObserver((entries, observer) => {
                     entries.forEach(entry => {
-                        // if (entry.isIntersecting && entry.target.src.includes('icon-256x256')) {
                         if (entry.isIntersecting) {
-                            setTimeout(function () {
-                                entry.target.src = entry.target.parentElement.dataset.src;
-                                // entry.target.classList.toggle('tmpcoder-hidden-image');
-                                entry.target.classList.remove('tmpcoder-hidden-image');
-                                $(window).trigger('resize');
-                            }, 100);
+                            var $target = $(entry.target);
+                            var parentDataSrc = $target.parent().attr('data-src');
+                            
+                            // Check if image needs lazy loading (has parent with data-src and current src is placeholder)
+                            if (parentDataSrc && 
+                                (entry.target.src.includes('icon-256x256') || 
+                                    entry.target.src.includes('data:image') || 
+                                    entry.target.src === '' ||
+                                    entry.target.src !== parentDataSrc)) {
+                                
+                                // Unobserve immediately to prevent re-triggering
+                                observer.unobserve(entry.target);
+                                
+                                // Load the image
+                                setTimeout(function () {
+                                    entry.target.src = parentDataSrc;
+                                    entry.target.classList.remove('tmpcoder-hidden-image');
+                                    
+                                    // Only trigger resize if NOT actively scrolling (prevents header jerk)
+                                    if (!isScrolling) {
+                                        $(window).trigger('resize');
+                                    }
+                                }, 100);
+                            } else {
+                                // Already loaded, stop observing
+                                observer.unobserve(entry.target);
+                            }
                         }
                     });
                 }, {});
-
+        
                 $scope.find('.tmpcoder-grid-image-wrap img:first-of-type, .tmpcoder-grid-video-wrap img:first-of-type').each(function () {
                     lazyLoadObserver.observe($(this)[0]);
                 });

@@ -1,68 +1,6 @@
 "use strict";
 (function ($) {
 
-  $(function () {
-    var $clearCache = $(".tmpcoderjs-clear-cache"),
-      $tmpcoderMenu = $("#toplevel_page_spexo-addons .toplevel_page_spexo-addons .wp-menu-name"),
-      menuText = $tmpcoderMenu.text();
-    $tmpcoderMenu.text(menuText.replace(/\s/, ""));
-    $clearCache.on("click", "a", function (e) {
-      e.preventDefault();
-      var type = "all",
-        $m = $(e.delegateTarget);
-      if ($m.hasClass("tmpcoder-clear-page-cache")) {
-        type = "page";
-      }
-      $m.addClass("tmpcoder-clear-cache--init");
-
-      if ($clearCache.hasClass("tools-btn")) {
-        $('.welcome-backend-loader').fadeIn();
-        $('.tmpcoder-theme-welcome').css('opacity','0.5');
-      }
-
-      $.post(SpexoAdmin.ajax_url, {
-        action: "tmpcoder_clear_cache",
-        type: type,
-        nonce: SpexoAdmin.nonce,
-        post_id: SpexoAdmin.post_id
-      }).done(function (res) {
-
-        $m.removeClass("tmpcoder-clear-cache--init").addClass("tmpcoder-clear-cache--done");
-        if ($clearCache.hasClass("tools-btn")) {
-          $('.welcome-backend-loader').fadeOut();
-          $('.tmpcoder-theme-welcome').css('opacity','1');
-          $('.tmpcoder-settings-saved').stop().fadeIn(500).delay(1000).fadeOut(1000);
-        }
-        else
-        {
-            if ($('#wpbody').length){
-                $('#wpbody').append('<div class="tmpcoder-css-regenerated tmpcoder-settings-saved"><span>Assets Regenerated</span><span class="dashicons dashicons-smiley"></span></div>');
-            }
-            else
-            {
-                $('body').append('<div class="tmpcoder-css-regenerated tmpcoder-settings-saved"><span>Assets Regenerated</span><span class="dashicons dashicons-smiley"></span></div>');
-            }
-
-            $('.tmpcoder-css-regenerated').css({
-                position: 'fixed',
-                zIndex: '99999',
-                top: '60px',
-                right: '30px',
-                padding: '15px 25px',
-                borderRadius: '3px',
-                color: '#fff',
-                background: '#562ad5',
-                boxShadow: '0 2px 10px 3px rgba(0, 0, 0, .2)',
-                textTransform: 'uppercase',
-                fontWeight: '600',
-                letterSpacing: '1px',
-            });
-            $('.tmpcoder-css-regenerated').stop().fadeIn(500).delay(1000).fadeOut(1000);
-        }
-      });
-    });
-  });
-
   /* Plugin Deactive Popup Js - Start */
 
     $(function () {
@@ -259,5 +197,137 @@
             }
         });
     });
+
+    /* ====================================================================== */
+    /* ======================== RATING NOTICE - START ======================= */
+    /* ====================================================================== */
+
+    jQuery(document).ready(function($) {
+
+        // ---------------------------------------------------------------
+        // 1. RATING LINK - Mark as Rated When User Clicks Rating Button
+        // ---------------------------------------------------------------
+        $(document).on('click', '.tmpcoder-rating-link', function(e) {
+            $.ajax({
+                url: ajaxurl,
+                type: 'POST',
+                data: {
+                    action: 'tmpcoder_rating_already_rated',
+                    nonce: SpexoAdmin._wpnonce_
+                }
+            });
+        });
+
+        // ---------------------------------------------------------------
+        // 2. "MAYBE LATER" - Snooze for 7 Days
+        // ---------------------------------------------------------------
+        $(document).on('click', '.tmpcoder-maybe-later', function(e) {
+            e.preventDefault();
+            var $notice = $(this).closest('.tmpcoder-notice-banner');
+            
+            $.ajax({
+                url: ajaxurl,
+                type: 'POST',
+                data: {
+                    action: 'tmpcoder_rating_maybe_later',
+                    nonce: SpexoAdmin._wpnonce_
+                },
+                success: function(response) {
+                    if (response.success) {
+                        $notice.slideUp(400, function() {
+                            $(this).remove();
+                        });
+                    }
+                },
+                error: function() {
+                    console.log('Error setting reminder');
+                }
+            });
+        });
+
+        // ---------------------------------------------------------------
+        // 3. "I ALREADY DID" - Mark as Rated (Never Show Again)
+        // ---------------------------------------------------------------
+        $(document).on('click', '.tmpcoder-already-rated', function(e) {
+            e.preventDefault();
+            var $notice = $(this).closest('.tmpcoder-notice-banner');
+            
+            $.ajax({
+                url: ajaxurl,
+                type: 'POST',
+                data: {
+                    action: 'tmpcoder_rating_already_rated',
+                    nonce: SpexoAdmin._wpnonce_
+                },
+                success: function(response) {
+                    if (response.success) {
+                        $notice.slideUp(400, function() {
+                            $(this).remove();
+                        });
+                    }
+                },
+                error: function() {
+                    console.log('Error marking as rated');
+                }
+            });
+        });
+
+        // ---------------------------------------------------------------
+        // 4. "HELP ME FIRST" - Open Link + Reset Timer
+        // ---------------------------------------------------------------
+        $(document).on('click', '.tmpcoder-need-support', function(e) {
+            var $notice = $(this).closest('.tmpcoder-notice-banner');
+        
+            $.ajax({
+                url: ajaxurl,
+                type: 'POST',
+                data: {
+                    action: 'tmpcoder_rating_need_help',
+                    nonce: SpexoAdmin._wpnonce_
+                },
+                success: function(response) {
+                    $notice.slideUp(400, function() {
+                        $(this).remove();
+                    });
+                }
+            });
+        });
+
+        // ---------------------------------------------------------------
+        // 5. DISMISS BUTTON (X) - Permanent Dismissal
+        // ---------------------------------------------------------------
+        $(document).on('click', '.tmpcoder-rating-notice-dismiss', function(e) {
+            e.preventDefault();
+            var $notice = $(this).closest('.tmpcoder-notice-banner');
+            
+            $.ajax({
+                url: ajaxurl,
+                type: 'POST',
+                data: {
+                    action: 'tmpcoder_rating_dismiss_notice',
+                    nonce: SpexoAdmin._wpnonce_
+                },
+                success: function(response) {
+                    if (response.success) {
+                        $notice.slideUp(400, function() {
+                            $(this).remove();
+                        });
+                    }
+                },
+                error: function() {
+                    console.log('Error dismissing rating notice permanently');
+                    // Still remove visually even if AJAX fails
+                    $notice.slideUp(400, function() {
+                        $(this).remove();
+                    });
+                }
+            });
+        });
+
+    });
+
+    /* ====================================================================== */
+    /* ========================= RATING NOTICE - END ======================== */
+    /* ====================================================================== */
 
 })(jQuery);

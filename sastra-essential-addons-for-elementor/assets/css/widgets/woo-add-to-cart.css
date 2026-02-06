@@ -152,7 +152,7 @@
 	align-self: flex-end;
 }
 
-.tmpcoder-product-qty-align-before .tmpcoder-quantity-wrapper i:first-child {
+/* .tmpcoder-product-qty-align-before .tmpcoder-quantity-wrapper i:first-child {
 	border-right: 0 !important;
 	border-bottom: 0 !important;
 }
@@ -176,7 +176,7 @@ body:not(.rtl) .tmpcoder-product-qty-align-both .tmpcoder-quantity-wrapper i:fir
 
 body:not(.rtl) .tmpcoder-product-qty-align-both .tmpcoder-quantity-wrapper i:last-child {
 	border-left: 0 !important;
-}
+} */
 
 .woocommerce div.product .tmpcoder-product-add-to-cart form.cart .group_table td {
 	vertical-align: middle;

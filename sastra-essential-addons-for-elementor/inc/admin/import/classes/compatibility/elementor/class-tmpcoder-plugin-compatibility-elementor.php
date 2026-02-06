@@ -56,8 +56,8 @@ if ( ! class_exists( 'TMPCODER_Compatibility_Elementor' ) ) :
 			 * Add Slashes
 			 *
 			 * @todo    Elementor already have below code which works on defining the constant `WP_LOAD_IMPORTERS`.
-			 *          After defining the constant `WP_LOAD_IMPORTERS` in WP CLI it was not works.
-			 *          Try to remove below duplicate code in future.
+			 * After defining the constant `WP_LOAD_IMPORTERS` in WP CLI it was not works.
+			 * Try to remove below duplicate code in future.
 			 */
 			
 			if ( ! wp_doing_ajax() || ( defined( 'ELEMENTOR_VERSION' ) && 
@@ -125,6 +125,7 @@ if ( ! class_exists( 'TMPCODER_Compatibility_Elementor' ) ) :
 		 *
 		 * Normalize Elementor post meta on import, We need the `wp_slash` in order
 		 * to avoid the unslashing during the `add_post_meta`.
+		 * Also converts serialized _elementor_data to JSON format as Elementor expects JSON.
 		 *
 		 * Fired by `wp_import_post_meta` filter.
 		 *
@@ -138,7 +139,37 @@ if ( ! class_exists( 'TMPCODER_Compatibility_Elementor' ) ) :
 		public function on_wp_import_post_meta( $post_meta ) {
 			foreach ( $post_meta as &$meta ) {
 				if ( '_elementor_data' === $meta['key'] ) {
-					$meta['value'] = wp_slash( $meta['value'] );
+					$value = $meta['value'];
+					
+					// Handle different data formats
+					if ( is_serialized( $value ) ) {
+						// Value is in PHP serialized format - convert to JSON
+						$unserialized_data = maybe_unserialize( $value );
+						
+						// Convert to JSON format as Elementor expects JSON, not serialized PHP arrays
+						if ( is_array( $unserialized_data ) || is_object( $unserialized_data ) ) {
+							$value = wp_json_encode( $unserialized_data );
+						}
+					} elseif ( is_array( $value ) || is_object( $value ) ) {
+						// Value is already an array/object (shouldn't happen normally, but handle it)
+						$value = wp_json_encode( $value );
+					} elseif ( is_string( $value ) ) {
+						// Value is already a string - verify it's valid JSON
+						$decoded = json_decode( $value, true );
+						if ( json_last_error() !== JSON_ERROR_NONE ) {
+							// Not valid JSON - might be corrupted, but we'll let Elementor handle it
+							// or it could be HTML/plain text which Elementor will convert
+						}
+						// If it's valid JSON, keep it as is (no need to re-encode)
+					}
+					
+					// Ensure value is a string before applying wp_slash
+					if ( ! is_string( $value ) ) {
+						$value = wp_json_encode( $value );
+					}
+					
+					// Apply wp_slash to prevent unslashing during add_post_meta
+					$meta['value'] = wp_slash( $value );
 					break;
 				}
 			}
@@ -151,6 +182,7 @@ if ( ! class_exists( 'TMPCODER_Compatibility_Elementor' ) ) :
 		 *
 		 * Normalize Elementor post meta on import with the new WP_importer, We need
 		 * the `wp_slash` in order to avoid the unslashing during the `add_post_meta`.
+		 * Also converts serialized _elementor_data to JSON format as Elementor expects JSON.
 		 *
 		 * Fired by `tmpcoder_importer.pre_process.post_meta` filter.
 		 *
@@ -163,7 +195,37 @@ if ( ! class_exists( 'TMPCODER_Compatibility_Elementor' ) ) :
 		 */
 		public function on_tmpcoder_importer_pre_process_post_meta( $post_meta ) {
 			if ( '_elementor_data' === $post_meta['key'] ) {
-				$post_meta['value'] = wp_slash( $post_meta['value'] );
+				$value = $post_meta['value'];
+				
+				// Handle different data formats
+				if ( is_serialized( $value ) ) {
+					// Value is in PHP serialized format - convert to JSON
+					$unserialized_data = maybe_unserialize( $value );
+					
+					// Convert to JSON format as Elementor expects JSON, not serialized PHP arrays
+					if ( is_array( $unserialized_data ) || is_object( $unserialized_data ) ) {
+						$value = wp_json_encode( $unserialized_data );
+					}
+				} elseif ( is_array( $value ) || is_object( $value ) ) {
+					// Value is already an array/object (shouldn't happen normally, but handle it)
+					$value = wp_json_encode( $value );
+				} elseif ( is_string( $value ) ) {
+					// Value is already a string - verify it's valid JSON
+					$decoded = json_decode( $value, true );
+					if ( json_last_error() !== JSON_ERROR_NONE ) {
+						// Not valid JSON - might be corrupted, but we'll let Elementor handle it
+						// or it could be HTML/plain text which Elementor will convert
+					}
+					// If it's valid JSON, keep it as is (no need to re-encode)
+				}
+				
+				// Ensure value is a string before applying wp_slash
+				if ( ! is_string( $value ) ) {
+					$value = wp_json_encode( $value );
+				}
+				
+				// Apply wp_slash to prevent unslashing during add_post_meta
+				$post_meta['value'] = wp_slash( $value );
 			}
 
 			return $post_meta;

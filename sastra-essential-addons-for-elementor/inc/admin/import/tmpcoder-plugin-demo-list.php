@@ -18,9 +18,7 @@ function tmpcoder_import_demo_list(){
     $current_active_demo = get_option('tmpcoder_current_active_demo');
 
     if( defined('TMPCODER_PRO_ADDONS_ASSETS_URL') ) {
-        $headers = get_headers(TMPCODER_PRO_ADDONS_ASSETS_URL . 'images/spexo-logo-web-pro.svg');
-        $import_header_logo = ($headers && strpos($headers[0], '200')) ? TMPCODER_PRO_ADDONS_ASSETS_URL.'images/spexo-logo-web-pro.svg' : TMPCODER_ADDONS_ASSETS_URL.'images/spexo-logo-web.svg' ;
-
+        $import_header_logo = TMPCODER_PRO_ADDONS_ASSETS_URL.'images/spexo-logo-web-pro.svg';
     } else {
         $import_header_logo = TMPCODER_ADDONS_ASSETS_URL.'images/spexo-logo-web.svg';
     }
@@ -32,25 +30,18 @@ function tmpcoder_import_demo_list(){
     ?>
 
     <div class="tmpcoder-import-demo-page">
-        <div class="tmpcoder-documentation-buttons-header">
-            <div class="tmpcoder-prebuilt-demo-doc-link">
-                <a href="<?php echo esc_url(TMPCODER_DOCUMENTATION_URL.'how-to-import-prebuilt-website') ?>" target="_blank" class="btn-link">
-                    <i class="dashicons dashicons-external"></i>
-                    <?php esc_html_e('How To Import Prebuilt Websites', 'sastra-essential-addons-for-elementor')?>
-                </a>
-            </div>
-            <!-- <div class="tmpcoder-upgrade-now-button tmpcoder-prebuilt-video-link">
-                <a href="#" target="_blank" class="btn-link">
-                    <i class="dashicons dashicons-video-alt3"></i>
-                    <?php // esc_html_e('Video Tutorial', 'sastra-essential-addons-for-elementor')?>
-                </a>
-            </div> -->
-        </div>
         <header>
             <div class="tmpcoder-import-demo-left">
                 <div class="tmpcoder-import-demo-logo">
                     <h1><?php esc_html_e('Prebuilt Websites', 'sastra-essential-addons-for-elementor'); ?></h1>
+                    <div class="tmpcoder-prebuilt-demo-doc-link">
+                        <a href="<?php echo esc_url(TMPCODER_DOCUMENTATION_URL.'how-to-import-prebuilt-website') ?>" target="_blank" class="btn-link">
+                            <i class="dashicons dashicons-external"></i>
+                            <?php esc_html_e('How To Import Prebuilt Websites', 'sastra-essential-addons-for-elementor')?>
+                        </a>
+                    </div>
                 </div>
+                
             </div>
 
             <div class="tmpcoder-import-demo-right">
@@ -176,6 +167,10 @@ function tmpcoder_import_demo_list(){
                             <span class="revslider-file-url" data-file=""></span>
                             <?php } ?>
 
+                            <?php if(isset($value['woocommerce-attributes-file-url'])){ ?>
+                            <span class="woocommerce-attributes-file-url" data-file="<?php echo esc_url($value['woocommerce-attributes-file-url'], 'sastra-essential-addons-for-elementor'); ?>"></span>
+                            <?php } ?>
+
                             <?php if(isset($value['register-cpt-data'])){ ?>
                             <span class="tmpcoder-cpt-data" data-file="<?php echo esc_attr($value['register-cpt-data'], 'sastra-essential-addons-for-elementor'); ?>"></span>
                             <?php } ?>
@@ -298,11 +293,15 @@ function tmpcoder_import_demo_list(){
                 </div>
             
                 <div id="import-process-complete-popup" class="white-popup-1 mfp-hide">
+                    <a class="popup-close popup-close-icon" href="javascript:void(0);" title="<?php esc_attr_e('Close', 'sastra-essential-addons-for-elementor'); ?>">
+                        <span class="dashicons dashicons-no-alt"></span>
+                    </a>
                     <h2 class="popup-heading"><span class="dashicons dashicons-yes-alt"></span> <?php esc_html_e('Congratulations!', 'sastra-essential-addons-for-elementor') ?></h2>
                     <div class="popup-content">
                         <p class="popup-message"></p>
-                        <div class="align-right-side">
-                            <a class="button button-primary popup-close"><?php esc_html_e('OK', 'sastra-essential-addons-for-elementor') ?></a>
+                        <div class="popup-buttons-wrapper">
+                            <a href="<?php echo esc_url(admin_url('admin.php?page=spexo_addons_global_settings')); ?>" class="button button-secondary visit-settings-button"><?php esc_html_e('Visit Settings', 'sastra-essential-addons-for-elementor') ?></a>
+                            <a href="<?php echo esc_url(home_url()); ?>" target="_blank" class="button button-secondary visit-site-button"><?php esc_html_e('Visit Site', 'sastra-essential-addons-for-elementor') ?></a>
                         </div>
                     </div>
                 </div>
@@ -378,7 +377,7 @@ if ( ! function_exists( 'tmpcoder_demo_import_scripts_func' ) ) :
             'importing_widgets_message' => __('Importing Widgets...', 'sastra-essential-addons-for-elementor'),
             'demo_import_success_message' => __('Demo imported successfully', 'sastra-essential-addons-for-elementor'),
             'import_process_sucess_message' => __('Import process success', 'sastra-essential-addons-for-elementor'),
-            'uninstall_process_sucess_message' => __('Uninstall process success', 'sastra-essential-addons-for-elementor'),
+            'uninstall_process_sucess_message' => __('Demo Uninstalled Successfully', 'sastra-essential-addons-for-elementor'),
             'import_revslider_data_message' => __('Import Revolution Slider Data ', 'sastra-essential-addons-for-elementor'),
             'import_revslider_failed_message' => __('Failed - Importing Revolution Slider Data ', 'sastra-essential-addons-for-elementor'),
             'install_plugin_failed_message' => __('Failed - Install/Active Required plugins', 'sastra-essential-addons-for-elementor'),
@@ -398,13 +397,13 @@ if (!function_exists('tmpcoder_get_theme_status')) {
         $theme = wp_get_theme();
 
         // Theme installed and activate.
-        if ( in_array($theme->name, array('SastraWP','Spexo') ) || in_array($theme->parent_theme, array('SastraWP','Spexo') ) ) {
+        if ( in_array($theme->name, array('SastraWP','Spexo', 'BellizaWP') ) || in_array($theme->parent_theme, array('SastraWP','Spexo', 'BellizaWP') ) ) {
             return 'req-theme-active';
         }
 
         // Theme installed but not activate.
         foreach ( (array) wp_get_themes() as $theme_dir => $theme ) {
-            if ( in_array($theme->name, array('SastraWP','Spexo') ) || in_array($theme->parent_theme, array('SastraWP','Spexo') ) ) {
+            if ( in_array($theme->name, array('SastraWP','Spexo', 'BellizaWP') ) || in_array($theme->parent_theme, array('SastraWP','Spexo', 'BellizaWP') ) ) {
                 return 'req-theme-inactive';
             }
         }

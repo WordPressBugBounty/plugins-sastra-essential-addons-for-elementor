@@ -297,7 +297,7 @@ class Product_Grid extends Widget_Base
                     'default' => '',
                     'separator' => 'before',
                     'condition' => ['tmpcoder_product_grid_layout' => 'grid'],
-                    'description'  => __( 'This option will only work with the grid layout; it will not work with list or masonry layouts.' )
+                    'description'  => __( 'This option will only work with the grid layout; it will not work with list or masonry layouts.', 'sastra-essential-addons-for-elementor' )
                 ]
             );
         }
@@ -316,7 +316,7 @@ class Product_Grid extends Widget_Base
                     'separator' => 'before',
                     'condition' => ['tmpcoder_product_grid_layout' => 'grid'],
                     'classes' => 'tmpcoder-pro-control no-distance',
-                    'description'  => __( 'This option will only work with the grid layout; it will not work with list or masonry layouts.' )
+                    'description'  => __( 'This option will only work with the grid layout; it will not work with list or masonry layouts.', 'sastra-essential-addons-for-elementor' )
                 ]
             );    
         }

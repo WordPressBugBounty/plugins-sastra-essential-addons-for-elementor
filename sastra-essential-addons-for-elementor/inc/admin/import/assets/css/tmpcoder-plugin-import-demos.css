@@ -102,14 +102,14 @@
 
 .tmpcoder-import-demo-logo h1 {
     margin: 0;
-    padding-left: 20px;
+    padding-left: 24px;
     font-size: 23px;
     line-height: 30px;
 }
 
 .tmpcoder-import-demo-logo div {
     padding: 17px 20px;
-    border-right: 1px solid #e8e8e8;
+    /* border-right: 1px solid #e8e8e8; */
 }
 
 .tmpcoder-import-demo-search {
@@ -155,7 +155,7 @@
     position: relative;
     width: 110px;
     height: 40px;
-    margin: 17px 20px 17px 25px;
+    margin: 17px 25px 17px 25px;
     border: 1px solid #e8e8e8;
     line-height: 40px;
     padding: 0 20px;
@@ -441,6 +441,63 @@ p {
     transition-duration: 0.3s;
 }
 
+/* Import Complete Popup Close Icon */
+#import-process-complete-popup {
+    position: relative;
+}
+
+#import-process-complete-popup .popup-close-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+    cursor: pointer;
+    z-index: 10;
+    text-decoration: none;
+    line-height: 1;
+}
+
+#import-process-complete-popup .popup-close-icon .dashicons {
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    color: #666;
+    transition: color 0.2s ease;
+}
+
+#import-process-complete-popup .popup-close-icon:hover .dashicons {
+    color: #000;
+}
+
+/* Import Complete Popup Buttons Layout */
+#import-process-complete-popup .popup-buttons-wrapper {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 20px;
+    align-items: center;
+}
+
+#import-process-complete-popup .popup-buttons-wrapper .button {
+    margin: 0;
+    white-space: nowrap;
+}
+
+@media screen and (max-width: 767px) {
+    #import-process-complete-popup .popup-buttons-wrapper {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    #import-process-complete-popup .popup-buttons-wrapper .button {
+        width: 100%;
+        text-align: center;
+    }
+}
+
 .import-data-note-2 {
     padding-top: 5px;
 }
@@ -520,11 +577,19 @@ p {
 .spexo-addons_page_tmpcoder-import-demo .tmpcoder-documentation-buttons-header .tmpcoder-prebuilt-video-link i {
     /*font-size: 15px;*/
 }
-.spexo-addons_page_tmpcoder-import-demo .tmpcoder-documentation-buttons-header .tmpcoder-prebuilt-demo-doc-link a {
+.spexo-addons_page_tmpcoder-import-demo .tmpcoder-prebuilt-demo-doc-link a {
     color: #bf1864;
     border: 1px solid #bf1864;
+    font-size: 14px;
 }
-.spexo-addons_page_tmpcoder-import-demo .tmpcoder-documentation-buttons-header .tmpcoder-prebuilt-demo-doc-link a:hover {
+.spexo-addons_page_tmpcoder-import-demo .tmpcoder-prebuilt-demo-doc-link a:hover {
     background: #bf1864;
     color:#fff;
 }
+.spexo-addons_page_tmpcoder-import-demo .tmpcoder-prebuilt-demo-doc-link i { font-size: 18px; height: 18px; width: 18px; margin-right: 8px; }
+.spexo-addons_page_tmpcoder-import-demo .tmpcoder-theme-welcome{ padding-bottom: 24px; }
+.spexo-addons_page_tmpcoder-import-demo .btn-link{ padding: 9px 15px; }
+.spexo-addons_page_tmpcoder-import-demo .plugin_box .action_bar{ padding: 20px; }
+.spexo-addons_page_tmpcoder-import-demo .plugin_box .action_button{ padding: 0px 20px 20px 20px;}
+.spexo-addons_page_tmpcoder-import-demo .plugin_box .action_button .button{ padding: 3px 10px; font-weight: 700; }
+.spexo-addons_page_tmpcoder-import-demo .plugin_box .action_button .button .dashicons{ font-size: 18px; height: 18px; width: 18px; margin-right: 3px;}

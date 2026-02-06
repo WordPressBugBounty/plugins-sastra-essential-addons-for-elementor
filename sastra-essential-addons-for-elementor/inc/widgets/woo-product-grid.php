@@ -2756,11 +2756,48 @@ $settings = array_merge( $settings, $settings_new );
 		);
 
 		$repeater->add_control(
+			'add_wishlist_icon',
+			[
+				'label' => esc_html__( 'Add Wishlist Icon', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::ICONS,
+				'skin' => 'inline',
+				'label_block' => false,
+				'default' => [
+					'value' => 'far fa-heart',
+					'library' => 'fa-solid',
+				],
+				'condition' => [
+					'element_select' => 'wishlist-button',
+					'show_icon' => 'yes'
+				]
+			]
+		);
+
+		$repeater->add_control(
+			'remove_wishlist_icon',
+			[
+				'label' => esc_html__( 'Remove Wishlist Icon', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::ICONS,
+				'skin' => 'inline',
+				'label_block' => false,
+				'default' => [
+					'value' => 'fas fa-heart',
+					'library' => 'fa-solid',
+				],
+				'condition' => [
+					'element_select' => 'wishlist-button',
+					'show_icon' => 'yes'
+				]
+			]
+		);
+
+		$repeater->add_control(
 			'show_text',
 			[
 				'label' => esc_html__( 'Show Text', 'sastra-essential-addons-for-elementor' ),
 				'type' => Controls_Manager::SWITCHER,
 				'return_value' => 'yes',
+				'separator' => 'before',
 				'condition' => [
 					'element_select' => [
 						'wishlist-button',
@@ -9591,19 +9628,47 @@ $settings = array_merge( $settings, $settings_new );
 		$button_add_title = '';
 		$button_remove_title = '';
 		$add_to_wishlist_content = '';
-		$remove_from_wishlist_content = '';
-		
+		$remove_from_wishlist_content = '';		
 
 		if ( 'yes' === $settings['show_icon'] ) {
-			$add_to_wishlist_content .= '<i class="far fa-heart"></i>';
-			$remove_from_wishlist_content .= '<i class="fas fa-heart"></i>';
+			// -------------------------------
+			// Add to Wishlist Icon
+			// -------------------------------
+			if ( ! empty( $settings['add_wishlist_icon']['value'] ) && is_array( $settings['add_wishlist_icon']['value'] ) ) {
+				// If a custom SVG icon is provided, render it safely
+				$add_to_wishlist_content .= wp_kses( tmpcoder_render_svg_icon( $settings['add_wishlist_icon'] ), tmpcoder_wp_kses_allowed_html() );
+			} else {
+				// Otherwise, use the provided class or fallback to default 'far fa-heart'
+				$add_wishlist_icon = ! empty( $settings['add_wishlist_icon']['value'] ) ? $settings['add_wishlist_icon']['value'] : 'far fa-heart';
+				$add_to_wishlist_content .= '<i class="' . esc_attr( $add_wishlist_icon ) . '"></i>';
+			}
+
+			// -------------------------------
+			// Remove from Wishlist Icon
+			// -------------------------------
+			if ( ! empty( $settings['remove_wishlist_icon']['value'] ) && is_array( $settings['remove_wishlist_icon']['value'] ) ) {
+				// If a custom SVG icon is provided, render it safely
+				$remove_from_wishlist_content .= wp_kses( tmpcoder_render_svg_icon( $settings['remove_wishlist_icon'] ), tmpcoder_wp_kses_allowed_html() );
+			} else {
+				// Otherwise, use the provided class or fallback to default 'fas fa-heart'
+				$remove_wishlist_icon = ! empty( $settings['remove_wishlist_icon']['value'] ) ? $settings['remove_wishlist_icon']['value'] : 'fas fa-heart';
+				$remove_from_wishlist_content .= '<i class="' . esc_attr( $remove_wishlist_icon ) . '"></i>';
+			}
 		}
 
 		if ( 'yes' === $settings['show_text'] ) {
 			$add_to_wishlist_content .= ' <span>'. esc_html($settings['add_to_wishlist_text']) .'</span>';
 		} else {
-			$button_add_title = 'title='. esc_attr($settings['add_to_wishlist_text']);
-			$button_remove_title = 'title='. esc_attr($settings['remove_from_wishlist_text']);
+			$add_to_wishlist_text = ! empty( $settings['add_to_wishlist_text'] ) 
+				? esc_attr( $settings['add_to_wishlist_text'] ) 
+				: __( 'Add to Wishlist', 'sastra-essential-addons-for-elementor' );
+
+			$remove_from_wishlist_text = ! empty( $settings['remove_from_wishlist_text'] ) 
+				? esc_attr( $settings['remove_from_wishlist_text'] ) 
+				: __( 'Remove from Wishlist', 'sastra-essential-addons-for-elementor' );
+
+			$button_add_title = 'title=' . $add_to_wishlist_text ;
+			$button_remove_title = 'title=' . $remove_from_wishlist_text ;
 		}
 
 		if ( 'yes' === $settings['show_text'] ) {
@@ -9617,8 +9682,9 @@ $settings = array_merge( $settings, $settings_new );
 			$add_button_hidden = in_array( $product->get_id(), $wishlist ) ? 'tmpcoder-button-hidden' : '';
 		
 			// '. implode( ' ', $wishlist_attributes ) .'
-			echo '<button class="tmpcoder-wishlist-add '. esc_attr($add_button_hidden) .'" '. esc_attr($button_add_title) .' data-product-id=' . esc_attr($product->get_id()) . ''. ' ' . esc_attr(implode( ' ', $wishlist_attributes )) .' >'. wp_kses_post($add_to_wishlist_content) .'</button>';
-			echo '<button class="tmpcoder-wishlist-remove '. esc_attr($remove_button_hidden) .'" '. esc_attr($button_remove_title) .' data-product-id="' . esc_attr($product->get_id()) . '">'. wp_kses_post($remove_from_wishlist_content) .'</button>';
+			echo '<button class="tmpcoder-wishlist-add '. esc_attr($add_button_hidden) .'" '. esc_attr($button_add_title) .' data-product-id=' . esc_attr($product->get_id()) . ''. ' ' . esc_attr(implode( ' ', $wishlist_attributes )) .' >'. wp_kses( $add_to_wishlist_content, tmpcoder_wp_kses_allowed_html() ) .'</button>';
+
+			echo '<button class="tmpcoder-wishlist-remove '. esc_attr($remove_button_hidden) .'" '. esc_attr($button_remove_title) .' data-product-id="' . esc_attr($product->get_id()) . '">'. wp_kses( $remove_from_wishlist_content, tmpcoder_wp_kses_allowed_html() ) .'</button>';
 
 			echo '</div>';
 		echo '</div>';
@@ -9700,6 +9766,17 @@ $settings = array_merge( $settings, $settings_new );
 		} else {
 			$button_add_title = 'title='. $settings['add_to_compare_text'].'';
 			$button_remove_title = 'title='. esc_attr($settings['remove_from_compare_text']) .'';
+
+			$add_to_compare_text = ! empty( $settings['add_to_compare_text'] ) 
+				? esc_attr( $settings['add_to_compare_text'] ) 
+				: __( 'Add to Compare', 'sastra-essential-addons-for-elementor' );
+
+			$remove_from_compare_text = ! empty( $settings['remove_from_compare_text'] ) 
+				? esc_attr( $settings['remove_from_compare_text'] ) 
+				: __( 'Remove from Compare', 'sastra-essential-addons-for-elementor' );
+
+			$button_add_title = 'title=' . $add_to_compare_text ;
+			$button_remove_title = 'title=' . $remove_from_compare_text ;
 		}
 
 		if ( 'yes' === $settings['show_text'] ) {

@@ -813,7 +813,7 @@ class TMPCODER_Woo_Add_To_Cart extends Widget_Base {
 					'left' => 1,
 				],
 				'selectors' => [
-					'{{WRAPPER}} .tmpcoder-product-add-to-cart .tmpcoder-quantity-wrapper i' => 'border-width: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					// '{{WRAPPER}} .tmpcoder-product-add-to-cart .tmpcoder-quantity-wrapper i' => 'border-width: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					'{{WRAPPER}} .tmpcoder-product-add-to-cart .quantity .qty' => 'border-width: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					'{{WRAPPER}} .woocommerce-grouped-product-list-item .button' => 'border-width: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					
@@ -838,18 +838,20 @@ class TMPCODER_Woo_Add_To_Cart extends Widget_Base {
 					'left' => 0,
 				],
 				'selectors' => [
-					'{{WRAPPER}}.tmpcoder-product-qty-align-before .qty' => 'border-radius: 0 {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} 0 !important;',
-					'{{WRAPPER}}.tmpcoder-product-qty-align-before .tmpcoder-quantity-wrapper i:first-child' => 'border-radius: {{TOP}}{{UNIT}} 0 0 0 !important;',
-					'{{WRAPPER}}.tmpcoder-product-qty-align-before .tmpcoder-quantity-wrapper i:last-child' => 'border-radius: 0 0 0 {{LEFT}}{{UNIT}} !important;',
+					// '{{WRAPPER}}.tmpcoder-product-qty-align-before .qty' => 'border-radius: 0 {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} 0 !important;',
+					// '{{WRAPPER}}.tmpcoder-product-qty-align-before .tmpcoder-quantity-wrapper i:first-child' => 'border-radius: {{TOP}}{{UNIT}} 0 0 0 !important;',
+					// '{{WRAPPER}}.tmpcoder-product-qty-align-before .tmpcoder-quantity-wrapper i:last-child' => 'border-radius: 0 0 0 {{LEFT}}{{UNIT}} !important;',
 					
-					'{{WRAPPER}}.tmpcoder-product-qty-align-after .qty' => 'border-radius: {{TOP}}{{UNIT}} 0 0 {{Left}}{{UNIT}} !important;',
-					// '{{WRAPPER}}.tmpcoder-product-qty-align-after .tmpcoder-quantity-wrapper i:first-child' => 'border-radius: 0 {{RIGHT}}{{UNIT}} 0 0 !important;',
-					// '{{WRAPPER}}.tmpcoder-product-qty-align-after .tmpcoder-quantity-wrapper i:last-child' => 'border-radius: 0 0 {{BOTTOM}}{{UNIT}} 0 !important;',
+					// '{{WRAPPER}}.tmpcoder-product-qty-align-after .qty' => 'border-radius: {{TOP}}{{UNIT}} 0 0 {{Left}}{{UNIT}} !important;',
+					// // '{{WRAPPER}}.tmpcoder-product-qty-align-after .tmpcoder-quantity-wrapper i:first-child' => 'border-radius: 0 {{RIGHT}}{{UNIT}} 0 0 !important;',
+					// // '{{WRAPPER}}.tmpcoder-product-qty-align-after .tmpcoder-quantity-wrapper i:last-child' => 'border-radius: 0 0 {{BOTTOM}}{{UNIT}} 0 !important;',
 
-					'{{WRAPPER}}.tmpcoder-product-qty-align-both .qty' => 'border-radius: 0 !important;',
-					'{{WRAPPER}}.tmpcoder-product-qty-align-both .tmpcoder-quantity-wrapper i:first-child' => 'border-radius: {{TOP}}{{UNIT}} 0 0 {{Left}}{{UNIT}} !important;',
-					'{{WRAPPER}}.tmpcoder-product-qty-align-both .tmpcoder-quantity-wrapper i:last-child' => 'border-radius: 0 {{Right}}{{UNIT}} {{BOTTOM}}{{UNIT}} 0 !important;',
+					// '{{WRAPPER}}.tmpcoder-product-qty-align-both .qty' => 'border-radius: 0 !important;',
+					// '{{WRAPPER}}.tmpcoder-product-qty-align-both .tmpcoder-quantity-wrapper i:first-child' => 'border-radius: {{TOP}}{{UNIT}} 0 0 {{Left}}{{UNIT}} !important;',
+					// '{{WRAPPER}}.tmpcoder-product-qty-align-both .tmpcoder-quantity-wrapper i:last-child' => 'border-radius: 0 {{Right}}{{UNIT}} {{BOTTOM}}{{UNIT}} 0 !important;',
 					'{{WRAPPER}} .woocommerce-grouped-product-list-item .button' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}} !important;',
+					// '{{WRAPPER}} .tmpcoder-product-add-to-cart .qty' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}} !important;',
+
 					'{{WRAPPER}} .tmpcoder-product-add-to-cart .qty' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}} !important;',
 				],
 			]
@@ -966,8 +968,8 @@ class TMPCODER_Woo_Add_To_Cart extends Widget_Base {
 				'type' => Controls_Manager::COLOR,
 				'default' => '#E0E0E0',
 				'selectors' => [
-					'{{WRAPPER}}.tmpcoder-product-qty-align-after .tmpcoder-quantity-wrapper i' => 'color: {{VALUE}}!important;',
-					'{{WRAPPER}}.tmpcoder-product-add-to-cart .tmpcoder-quantity-wrapper i' => 'color: {{VALUE}}!important;',
+					// '{{WRAPPER}}.tmpcoder-product-qty-align-after .tmpcoder-quantity-wrapper i' => 'color: {{VALUE}}!important;',
+					'{{WRAPPER}} .tmpcoder-product-add-to-cart .tmpcoder-quantity-wrapper i' => 'color: {{VALUE}}!important;',
 				],
 			]
 		);
@@ -979,8 +981,8 @@ class TMPCODER_Woo_Add_To_Cart extends Widget_Base {
 				'type' => Controls_Manager::COLOR,
 				'default' => '#E0E0E0',
 				'selectors' => [
-					'{{WRAPPER}}.tmpcoder-product-qty-align-after .tmpcoder-quantity-wrapper i:hover' => 'color: {{VALUE}}!important;',
-					'{{WRAPPER}}.tmpcoder-product-add-to-cart .tmpcoder-quantity-wrapper i:hover' => 'color: {{VALUE}}!important;',
+					// '{{WRAPPER}}.tmpcoder-product-qty-align-after .tmpcoder-quantity-wrapper i:hover' => 'color: {{VALUE}}!important;',
+					'{{WRAPPER}} .tmpcoder-product-add-to-cart .tmpcoder-quantity-wrapper i:hover' => 'color: {{VALUE}}!important;',
 				],
 			]
 		);
@@ -992,8 +994,8 @@ class TMPCODER_Woo_Add_To_Cart extends Widget_Base {
 				'type' => Controls_Manager::COLOR,
 				'default' => '#E0E0E0',
 				'selectors' => [
-					'{{WRAPPER}}.tmpcoder-product-qty-align-after .tmpcoder-quantity-wrapper i' => 'border-color: {{VALUE}}!important;',
-					'{{WRAPPER}}.tmpcoder-product-add-to-cart .tmpcoder-quantity-wrapper i' => 'border-color: {{VALUE}}!important;',
+					// '{{WRAPPER}}.tmpcoder-product-qty-align-after .tmpcoder-quantity-wrapper i' => 'border-color: {{VALUE}}!important;',
+					'{{WRAPPER}} .tmpcoder-product-add-to-cart .tmpcoder-quantity-wrapper i' => 'border-color: {{VALUE}}!important;',
 				],
 				'condition' => [
 					'trigger_border_type!' => 'none',
@@ -1045,7 +1047,8 @@ class TMPCODER_Woo_Add_To_Cart extends Widget_Base {
 				'default' => '',
 				'selectors' => [
 					'{{WRAPPER}}.tmpcoder-product-qty-align-after .tmpcoder-quantity-wrapper i:first-child' => 'border-style: {{VALUE}}!important;',
-					'{{WRAPPER}}.tmpcoder-product-add-to-cart .tmpcoder-quantity-wrapper i:first-child' => 'border-style: {{VALUE}}!important;',
+					'{{WRAPPER}}.tmpcoder-product-qty-align-both .tmpcoder-quantity-wrapper i:last-child' => 'border-style: {{VALUE}}!important;',
+					'{{WRAPPER}}.tmpcoder-product-qty-align-before .tmpcoder-quantity-wrapper i:first-child' => 'border-style: {{VALUE}}!important;',
 				],
 			]
 		);
@@ -1064,7 +1067,8 @@ class TMPCODER_Woo_Add_To_Cart extends Widget_Base {
 				],
 				'selectors' => [
 					'{{WRAPPER}}.tmpcoder-product-qty-align-after .tmpcoder-quantity-wrapper i:first-child' => 'border-width: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}!important;',
-					'{{WRAPPER}}.tmpcoder-product-add-to-cart .tmpcoder-quantity-wrapper i:first-child' => 'border-width: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}!important;',
+					'{{WRAPPER}}.tmpcoder-product-qty-align-both .tmpcoder-quantity-wrapper i:last-child' => 'border-width: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}!important;',
+					'{{WRAPPER}}.tmpcoder-product-qty-align-before .tmpcoder-quantity-wrapper i:first-child' => 'border-width: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}!important;',
 				],
 				'condition' => [
 					'trigger_border_type!' => 'none',
@@ -1086,7 +1090,8 @@ class TMPCODER_Woo_Add_To_Cart extends Widget_Base {
 				],
 				'selectors' => [
 					'{{WRAPPER}}.tmpcoder-product-qty-align-after .tmpcoder-quantity-wrapper i:first-child' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}!important;',
-					'{{WRAPPER}}.tmpcoder-product-add-to-cart .tmpcoder-quantity-wrapper i:first-child' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}!important;',
+					'{{WRAPPER}}.tmpcoder-product-qty-align-both .tmpcoder-quantity-wrapper i:last-child' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}!important;',
+					'{{WRAPPER}}.tmpcoder-product-qty-align-before .tmpcoder-quantity-wrapper i:first-child' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}!important;',
 				],
 			]
 		);
@@ -1117,7 +1122,8 @@ class TMPCODER_Woo_Add_To_Cart extends Widget_Base {
 				'default' => '',
 				'selectors' => [
 					'{{WRAPPER}}.tmpcoder-product-qty-align-after .tmpcoder-quantity-wrapper i:last-child' => 'border-style: {{VALUE}}!important;',
-					'{{WRAPPER}}.tmpcoder-product-add-to-cart .tmpcoder-quantity-wrapper i:last-child' => 'border-style: {{VALUE}}!important;',
+					'{{WRAPPER}}.tmpcoder-product-qty-align-both .tmpcoder-quantity-wrapper i:first-child' => 'border-style: {{VALUE}}!important;',
+					'{{WRAPPER}}.tmpcoder-product-qty-align-before .tmpcoder-quantity-wrapper i:last-child' => 'border-style: {{VALUE}}!important;',
 				],
 			]
 		);
@@ -1136,7 +1142,8 @@ class TMPCODER_Woo_Add_To_Cart extends Widget_Base {
 				],
 				'selectors' => [
 					'{{WRAPPER}}.tmpcoder-product-qty-align-after .tmpcoder-quantity-wrapper i:last-child' => 'border-width: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}!important;',
-					'{{WRAPPER}}.tmpcoder-product-add-to-cart .tmpcoder-quantity-wrapper i:last-child' => 'border-width: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}!important;',
+					'{{WRAPPER}}.tmpcoder-product-qty-align-both .tmpcoder-quantity-wrapper i:first-child' => 'border-width: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}!important;',
+					'{{WRAPPER}}.tmpcoder-product-qty-align-before .tmpcoder-quantity-wrapper i:last-child' => 'border-width: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}!important;',
 				],
 				'condition' => [
 					'trigger_border_type!' => 'none',
@@ -1158,7 +1165,8 @@ class TMPCODER_Woo_Add_To_Cart extends Widget_Base {
 				],
 				'selectors' => [
 					'{{WRAPPER}}.tmpcoder-product-qty-align-after .tmpcoder-quantity-wrapper i:last-child' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}!important;',
-					'{{WRAPPER}}.tmpcoder-product-add-to-cart .tmpcoder-quantity-wrapper i:last-child' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}!important;',
+					'{{WRAPPER}}.tmpcoder-product-qty-align-both .tmpcoder-quantity-wrapper i:first-child' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}!important;',
+					'{{WRAPPER}}.tmpcoder-product-qty-align-before .tmpcoder-quantity-wrapper i:last-child' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}!important;',
 				],
 			]
 		);

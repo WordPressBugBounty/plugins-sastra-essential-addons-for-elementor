@@ -141,6 +141,26 @@ var welcomeScreenFunctions = {
                 console.log(error);
             })
         });
+    },
+
+    settingsSmoothScroll: function(){
+        jQuery('.settings-breadcrumb-nav a').on('click', function(e){
+            var targetSelector = jQuery(this).attr('href');
+            if (!targetSelector || targetSelector.indexOf('#') === -1) {
+                return;
+            }
+
+            var hash = targetSelector.substring(targetSelector.indexOf('#'));
+            var $target = jQuery(hash);
+            if (!$target.length) {
+                return;
+            }
+
+            e.preventDefault();
+            jQuery('html, body').animate({
+                scrollTop: $target.offset().top - 80
+            }, 400);
+        });
     }
 };
 
@@ -148,6 +168,7 @@ jQuery( document ).ready( function() {
     welcomeScreenFunctions.desabledUnusedWidget();
     welcomeScreenFunctions.setGlobalFonts();
     welcomeScreenFunctions.upgradeProNotice();
+    welcomeScreenFunctions.settingsSmoothScroll();
 
     // var pluginMenuRef = jQuery('#adminmenuwrap #toplevel_page_spexo-welcome');
     // console.log('pluginMenuRef', pluginMenuRef);

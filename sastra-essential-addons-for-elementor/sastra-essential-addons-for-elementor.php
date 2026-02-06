@@ -2,11 +2,11 @@
 /**
  * Plugin Name: Spexo Addons for Elementor
  * Plugin URI: http://spexoaddons.com/
- * Description: Spexo Addons for Elementor is all in one solution for complete starter sites, single page templates, blocks & images. This plugin offers additional features needed by our theme.
- * Version: 1.0.26
+ * Description: Spexo Addons for Elementor is all in one solution for complete starter sites, single page templates, blocks & images. This plugin offers additional features needed by our theme, including AI-powered content generation and image creation.
+ * Version: 1.0.29
  * Author: TemplatesCoder
  * Author URI:  https://templatescoder.com/
- * Elementor tested up to: 3.31.3
+ * Elementor tested up to: 3.32.4
  * Text Domain: sastra-essential-addons-for-elementor
  * License: GPLv3
  *
@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 $theme = (is_object(wp_get_theme()->parent())) ? wp_get_theme()->parent() : wp_get_theme();
 
 if ( ! defined( 'TMPCODER_PLUGIN_VER' ) ) {
-    define( 'TMPCODER_PLUGIN_VER', '1.0.26' );
+    define( 'TMPCODER_PLUGIN_VER', '1.0.29' );
 }
 
 if ( ! defined( 'TMPCODER_PLUGIN_NAME' ) ) {
@@ -210,6 +210,12 @@ add_action('init',function(){
 	    /* Elementor Custom Controls */
 	    require_once (TMPCODER_PLUGIN_DIR . 'inc/elementor-controls.php');
 	    require_once (TMPCODER_PLUGIN_DIR . 'inc/header-footer-helper/tmpcoder-plugin-advanced-hooks-loader.php');
+	}
+
+	// Load AI Features
+	if (class_exists('Elementor\Plugin')) {
+		require_once (TMPCODER_PLUGIN_DIR . 'inc/modules/ai/class-spexo-ai-manager.php');
+		Spexo_Addons\AI\Spexo_AI_Manager::get_instance();
 	}
 });
 
@@ -453,7 +459,7 @@ add_action('admin_init', function(){
         $_wizard_page_redirect = get_option(TMPCODER_PLUGIN_KEY.'_wizard_page_redirect', 0);
         
         $wizard_run = get_option(TMPCODER_PLUGIN_KEY.'_wizard_page' , 0);
-        if ( $_wizard_page_redirect == 1 || $wizard_run == 0 ) {
+        if ( ($_wizard_page_redirect == 1 || $wizard_run == 0) && TMPCODER_CURRENT_THEME_NAME != 'BellizaWP' ) {
             delete_option(TMPCODER_PLUGIN_KEY.'_wizard_page_redirect');
             update_option(TMPCODER_PLUGIN_KEY.'_wizard_page', 1);
             update_option('sastrawp_wizard_page', 1);

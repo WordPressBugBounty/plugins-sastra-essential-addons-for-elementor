@@ -2511,7 +2511,7 @@ $settings = array_merge( $settings, $settings_new );
 				if ( !empty($this->item_bg_image_url) ) {
 					$bg_style = ' style="background-image: url(' . esc_url($this->item_bg_image_url) . ');"';
 				}
-				echo '<div class="tmpcoder-accordion-background"' . $bg_style . '></div>';
+				echo wp_kses_post('<div class="tmpcoder-accordion-background"' . $bg_style . '></div>');
 				?>
 					<?php
 						echo wp_kses_post('<div '. $render_attribute .'>');

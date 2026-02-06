@@ -33,9 +33,10 @@ class TMPCODER_Templates_Library_Blocks {
             'user-agent' => 'templatescoder-user-agent',
             'headers' => array( 'Referer' => site_url() ),
         ]);
+		
         if ( is_array( $response ) && ! is_wp_error( $response ) ) {
             $headers = $response['headers']; // array of http header lines
-            $req_body    = $response['body']; // use the content
+            $req_body = $response['body']; // use the content
             if ( ! isset($req_body['message']) ){
                 $blocks_template = json_decode($req_body, true);
             }
@@ -50,9 +51,9 @@ class TMPCODER_Templates_Library_Blocks {
 
 		<div class="tmpcoder-tplib-sidebar" data-license="<?php echo esc_attr($license); ?>">
 			<div class="tmpcoder-pre-text">
+				<h1><?php esc_html_e('Prebuilt Blocks', 'sastra-essential-addons-for-elementor'); ?></h1>
 			    <p>
-			        <img src="<?php echo esc_url(TMPCODER_ADDONS_ASSETS_URL.'images/prebuilt-block-2.svg'); ?>">
-			        <span><?php esc_html_e('Various ready to use blocks to speed up your desiging process..', 'sastra-essential-addons-for-elementor') ?></span>
+			        <span><?php esc_html_e('Ready to use blocks to speed up your desiging process..', 'sastra-essential-addons-for-elementor') ?></span>
 			    </p>
 			</div>
 			

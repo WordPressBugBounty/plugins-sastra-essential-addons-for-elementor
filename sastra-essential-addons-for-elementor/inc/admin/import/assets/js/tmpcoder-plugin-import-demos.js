@@ -21,11 +21,17 @@ jQuery(document).on('click','.import-demo-content', function(e){
     window.elementor_file_url = jQuery(this).closest('.import-demo-box').find('.elementor-file-url').attr('data-file');
     window.widget_file_url = jQuery(this).closest('.import-demo-box').find('.widget-file-url').attr('data-file');
     window.revslider_file_url = jQuery(this).closest('.import-demo-box').find('.revslider-file-url').attr('data-file');
+    window.woocommerce_attributes_file_url = jQuery(this).closest('.import-demo-box').find('.woocommerce-attributes-file-url').attr('data-file');
     window.tmpcoder_cpt_data = jQuery(this).closest('.import-demo-box').find('.tmpcoder-cpt-data').attr('data-file');
 
     if (!widget_file_url)
     {
         jQuery('[name="importlist[install_widgets]"').parent().parent().remove();
+    }
+
+    if (!woocommerce_attributes_file_url)
+    {
+        jQuery('[name="importlist[install_woocommerce_attributes]"').parent().parent().remove();
     }
     // if (!revslider_file_url)
     // {
@@ -179,7 +185,13 @@ const reset_posts = function()
             set_progress_value(progres,1);
             jQuery('[name="importlist[preparing_data]"').prop('checked', true);
             jQuery('#prepare-data-loader').addClass('hide-import-img-loader');
-            import_xml(xml_file_url, false, tmpcoder_cpt_data);
+            
+            // Import WooCommerce attributes before XML preparation
+            if (woocommerce_attributes_file_url) {
+                import_woocommerce_attributes_before_xml(woocommerce_attributes_file_url);
+            } else {
+                import_xml(xml_file_url, false, tmpcoder_cpt_data);
+            }
         }
     })
     .fail( function( error ) {
@@ -589,8 +601,7 @@ const import_widget_data = function(widget_file_url){
         {
             jQuery('[name="importlist[install_widgets]"').prop('checked', true);
             jQuery('#install-widget-loader').addClass('hide-import-img-loader');
-            set_progress_value(100,5);  
-
+            set_progress_value(100,5);
             jQuery('.import-demo-content').removeAttr('style');
             message_text.text(tmpcoder_ajax_object.demo_import_success_message);
             end_import();
@@ -657,7 +668,7 @@ const import_revslider_data = function(revslider_file_url) {
         {
             jQuery('[name="importlist[install_revslider_data]"').prop('checked', true);
             jQuery('#revslider-data-loader').addClass('hide-import-img-loader');
-            set_progress_value(100,5); 
+            set_progress_value(100,5);
             end_import();
         }
         else
@@ -845,6 +856,7 @@ const uninstall_demo = function()
             jQuery('#uninstall-demo-popup').find('.progress-bar').attr('aria-valuenow','100');
             jQuery('#uninstall-demo-popup').find('.progress-bar').attr('style','width:100%');
 
+            jQuery('#import-process-complete-popup .popup-heading').html('<span class="dashicons dashicons-yes-alt"></span>Completed');
             jQuery('#import-process-complete-popup .popup-content .popup-message').html(tmpcoder_ajax_object.uninstall_process_sucess_message);
 
             setTimeout(function(){
@@ -1112,6 +1124,109 @@ jQuery(document).on('click','.tmpcoder-retry-import', function(e){
     // jQuery(this).parent().css('display','none');    
     // jQuery(this).parent().next().css('display','none');    
 });
+
+/**
+ * Import WooCommerce Attributes Data Before XML.
+ */
+const import_woocommerce_attributes_before_xml = function(woocommerce_attributes_file_url) {
+
+    var woocommerce_attributes_file_url = woocommerce_attributes_file_url;
+    var import_data_action = 'tmpcoder-plugin-import-woocommerce-attributes';
+    var _nonce_key = tmpcoder_ajax_object.nonce
+
+    jQuery.ajax({
+        url: tmpcoder_ajax_object.ajax_url,
+        method: 'POST',
+        data: {
+            woocommerce_attributes_file_url: woocommerce_attributes_file_url,
+            action: import_data_action,
+            _ajax_nonce: _nonce_key,
+        },
+        beforeSend: function() {
+            message_text.text('Importing WooCommerce Attributes...');
+        }
+    })
+    .done(function(response) {
+
+        if (response.success == true) {
+            // Continue with XML import after attributes are imported
+            import_xml(xml_file_url, false, tmpcoder_cpt_data);
+        }
+        else {
+            // Even if attributes fail, continue with XML import
+            console.log('WooCommerce attributes import failed, continuing with XML import');
+            import_xml(xml_file_url, false, tmpcoder_cpt_data);
+        }
+    })
+    .fail(function(error) {
+        console.log(error);
+        // Even if attributes fail, continue with XML import
+        console.log('WooCommerce attributes import failed, continuing with XML import');
+        import_xml(xml_file_url, false, tmpcoder_cpt_data);
+    })
+}
+
+/**
+ * Import WooCommerce Attributes Data.
+ */
+const import_woocommerce_attributes = function(woocommerce_attributes_file_url) {
+
+    var woocommerce_attributes_file_url = woocommerce_attributes_file_url;
+    var import_data_action = 'tmpcoder-plugin-import-woocommerce-attributes';
+    var _nonce_key = tmpcoder_ajax_object.nonce
+
+    jQuery.ajax({
+        url: tmpcoder_ajax_object.ajax_url,
+        method: 'POST',
+        data: {
+            woocommerce_attributes_file_url: woocommerce_attributes_file_url,
+            action: import_data_action,
+            _ajax_nonce: _nonce_key,
+        },
+        beforeSend: function() {
+            jQuery('#install-woocommerce-attributes-loader').removeClass('hide-import-img-loader');
+            var progres = getRandomInt(96, 99);
+            set_progress_value(progres, 5);
+            message_text.text(tmpcoder_ajax_object.importing_woocommerce_attributes_message || 'Importing WooCommerce Attributes...');
+        }
+    })
+    .done(function(response) {
+
+        if (response.success == true) {
+            jQuery('[name="importlist[install_woocommerce_attributes]"]').prop('checked', true);
+            jQuery('#install-woocommerce-attributes-loader').addClass('hide-import-img-loader');
+            set_progress_value(100, 6);
+
+            jQuery('.import-demo-content').removeAttr('style');
+            message_text.text(tmpcoder_ajax_object.demo_import_success_message);
+            end_import();
+        }
+        else {
+            if (response.data) {
+                window.onbeforeunload = null;
+                message_text.html(response.data + ' <a href="">Close popup</a>');
+                message_text.addClass('notice notice-error');
+                jQuery('#install-woocommerce-attributes-loader').remove();
+                reference.text(reference.attr('data-id'));
+                jQuery('.import-demo-content').removeAttr('style');
+            }
+            else {
+                message_text.text(tmpcoder_ajax_object.import_woocommerce_attributes_failed_message || 'Failed to import WooCommerce attributes');
+                reference.text(reference.attr('data-id'));
+                jQuery('.import-demo-content').removeAttr('style');
+            }
+        }
+    })
+    .fail(function(error) {
+        console.log(error);
+        window.onbeforeunload = null;
+        message_text.html(' <a href="">Close popup</a>');
+        message_text.addClass('notice notice-error');
+        jQuery('#install-woocommerce-attributes-loader').remove();
+        reference.text(reference.attr('data-id'));
+        jQuery('.import-demo-content').removeAttr('style');
+    })
+}
 
 // installPluginViaAjax('revslider');
 // return;

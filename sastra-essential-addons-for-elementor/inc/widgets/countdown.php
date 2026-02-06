@@ -363,6 +363,7 @@ class TMPCODER_Countdown extends Widget_Base {
 				'label_block' => true,
 				'type' => Controls_Manager::SELECT2,
 				'options' => [
+					'restart-timer' => esc_html__( 'Restart Timer', 'sastra-essential-addons-for-elementor' ),
 					'hide-timer' => esc_html__( 'Hide Timer', 'sastra-essential-addons-for-elementor' ),
 					'hide-element' => esc_html__( 'Hide Element', 'sastra-essential-addons-for-elementor' ),
 					'message' => esc_html__( 'Display Message', 'sastra-essential-addons-for-elementor' ),
@@ -1023,6 +1024,9 @@ class TMPCODER_Countdown extends Widget_Base {
 		if ( ! empty( $settings['timer_actions'] ) ) {
 			foreach( $settings['timer_actions'] as $key => $value ) {
 				switch ( $value ) {
+					case 'restart-timer':
+						$actions['restart-timer'] = true;
+						break;
 					case 'hide-timer':
 						$actions['hide-timer'] = '';
 						break;

@@ -2047,7 +2047,8 @@ if ( !function_exists('tmpcoder_validate_html_tag') ){
 			'span',
 		];
 
-	    return in_array( strtolower( $tag ), $allowed_html_wrapper_tags ) ? $tag : 'div';
+	    // return in_array( strtolower( $tag ), $allowed_html_wrapper_tags ) ? $tag : 'div';
+		return in_array( strtolower( (string) $tag ), $allowed_html_wrapper_tags ) ? $tag : 'div';
     }
 }
 
@@ -2135,77 +2136,68 @@ function tmpcoder_disable_default_woo_pages_creation() {
 
 /* Set global fonts in all widgets [START] */
 
-add_action('redux/field/'.TMPCODER_THEME_OPTION_NAME.'/fieldset/after/'.TMPCODER_THEME_OPTION_NAME, 'tmpcoder_add_global_option');
-
 function tmpcoder_add_global_option($data){
 
-    if ( in_array(get_template(), array('sastrawp', 'spexo') ) ) {
+    if ( in_array(get_template(), array('sastrawp', 'spexo', 'bellizawp') ) ) {
 
-        if (isset($data['id']) && $data['id'] == 'heading_6') {
+    	$pro_class = !tmpcoder_is_availble() ? 'set-global-options-pro' : '';
 
-        	$pro_class = !tmpcoder_is_availble() ? 'set-global-options-pro' : '';
-
-            ?>
-            <div class="tmpcoder-settings inte-settings common-box-shadow set-global-fonts-popup <?php echo esc_attr($pro_class); ?>">
-                <div class="tmpcoder-settings-group">
-                    <div class="tmpcoder-setting">
-                        <h4>
-                            <span class="mailchimp-label"><?php esc_html_e( 'Apply Global Fonts to All Widgets', 'sastra-essential-addons-for-elementor' ); ?></span>
-                            
-                            <div class="about-text"><?php esc_html_e('Use the Global Options to set and apply selected fonts globally across all widgets.', 'sastra-essential-addons-for-elementor' ); ?></div>
-                        </h4>
-                    </div>
-                    <p class="submit">
-                        <button class="button tmpcoder-options-button tmpcoder-template-conditions set-global-fonts-btn" type="button"><?php esc_html_e('Set Global Fonts', 'sastra-essential-addons-for-elementor'); ?></button>
-                    </p>
+        ?>
+        <div class="tmpcoder-settings inte-settings common-box-shadow set-global-fonts-popup <?php echo esc_attr($pro_class); ?>">
+            <div class="tmpcoder-settings-group">
+                <div class="tmpcoder-section-info">
+                    <h4 style="margin-bottom: 15px !important;"><?php esc_html_e( 'Apply Global Fonts to All Widgets', 'sastra-essential-addons-for-elementor' ); ?></h4>
+                    <p><?php esc_html_e('Use the Global Options to set and apply selected fonts globally across all widgets.', 'sastra-essential-addons-for-elementor' ); ?></p>
                 </div>
-                <?php if (!tmpcoder_is_availble()) { ?>	
-                <div class="tmpcoder-setting-tooltip">
-                    <a href="<?php echo esc_attr(TMPCODER_PURCHASE_PRO_URL) ?>?ref=tmpcoder-plugin-backend-settings-woo-pro#purchasepro" class="tmpcoder-setting-tooltip-link" target="_blank">
-                        <span class="dashicons dashicons-lock"></span>
-                        <span class="dashicons dashicons-unlock"></span>
-                    </a>
-                    <div class="tmpcoder-setting-tooltip-text"><?php esc_html_e( 'Upgrade to Pro', 'sastra-essential-addons-for-elementor' ); ?></div>
-                </div>
-            	<?php } ?>
-            </div>  
-			
-			<div class="tmpcoder-set-global-fonts-confirm-popup-wrap tmpcoder-admin-popup-wrap">
-				<div class="tmpcoder-set-global-fonts-popup tmpcoder-admin-popup">
-					<div id="tmpcoder-set-global-fonts-confirm-popup">
-						<header>
-							<h2><?php esc_html_e( 'Ready to Apply Global Fonts to All Widgets?', 'sastra-essential-addons-for-elementor' ); ?></h2>
-							<p><?php echo wp_kses_post(__( 'Use the <strong>Global Options</strong> to set and apply <strong>selected fonts globally</strong> across all widgets.', 'sastra-essential-addons-for-elementor' )); ?></p>
-						</header>
-						<div class="popup-action">
-							<a class="button button-primary tmpcoder-set-global-fonts-confirm-button"><?php esc_html_e('Set Global Fonts', 'sastra-essential-addons-for-elementor') ?></a>
-							<a class="button button-secondary popup-close"><?php esc_html_e('Cancel', 'sastra-essential-addons-for-elementor') ?></a>
-						</div>
+				<p class="submit">
+                    <button class="button tmpcoder-options-button tmpcoder-template-conditions1 set-global-fonts-btn" type="button"><?php esc_html_e('Set Global Fonts', 'sastra-essential-addons-for-elementor'); ?></button>
+                </p>
+            </div>
+            <?php if (!tmpcoder_is_availble()) { ?>	
+            <div class="tmpcoder-setting-tooltip">
+                <a href="<?php echo esc_attr(TMPCODER_PURCHASE_PRO_URL) ?>?ref=tmpcoder-plugin-backend-settings-woo-pro#purchasepro" class="tmpcoder-setting-tooltip-link" target="_blank">
+                    <span class="dashicons dashicons-lock"></span>
+                    <span class="dashicons dashicons-unlock"></span>
+                </a>
+                <div class="tmpcoder-setting-tooltip-text"><?php esc_html_e( 'Upgrade to Pro', 'sastra-essential-addons-for-elementor' ); ?></div>
+            </div>
+        	<?php } ?>
+        </div>  
+		
+		<div class="tmpcoder-set-global-fonts-confirm-popup-wrap tmpcoder-admin-popup-wrap">
+			<div class="tmpcoder-set-global-fonts-popup tmpcoder-admin-popup">
+				<div id="tmpcoder-set-global-fonts-confirm-popup">
+					<header>
+						<h2><?php esc_html_e( 'Ready to Apply Global Fonts to All Widgets?', 'sastra-essential-addons-for-elementor' ); ?></h2>
+						<p><?php echo wp_kses_post(__( 'Use the <strong>Global Options</strong> to set and apply <strong>selected fonts globally</strong> across all widgets.', 'sastra-essential-addons-for-elementor' )); ?></p>
+					</header>
+					<div class="popup-action">
+						<a class="button button-primary tmpcoder-set-global-fonts-confirm-button"><?php esc_html_e('Set Global Fonts', 'sastra-essential-addons-for-elementor') ?></a>
+						<a class="button button-secondary popup-close"><?php esc_html_e('Cancel', 'sastra-essential-addons-for-elementor') ?></a>
 					</div>
 				</div>
 			</div>
-			
-            <div class="tmpcoder-condition-popup-wrap tmpcoder-admin-popup-wrap">
-                <div class="tmpcoder-condition-popup tmpcoder-admin-popup">
-                    <header>
-                        <h2><?php esc_html_e( 'Apply Global Fonts to All Widgets', 'sastra-essential-addons-for-elementor' ); ?></h2>
-                            <?php esc_html_e( 'Please do not refresh the page', 'sastra-essential-addons-for-elementor' ); ?><br>
-                    </header>
-                    <table class="tmpcoder-options-table widefat">
-                        <tbody>
-                            <tr class="bsf-target-rules-row tmpcoder-options-row">                                
-                                <div class="set-global-loader">
-                                	<img src="<?php echo esc_url(TMPCODER_ADDONS_ASSETS_URL.'images/backend-loader.gif'); ?>" alt="" />
-                                </div>
-                                <img class="set-global-font-success" src="<?php echo esc_url(TMPCODER_ADDONS_ASSETS_URL.'images/right-sign.jpg'); ?>" alt="" />
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+		</div>
+		
+        <div class="tmpcoder-condition-popup-wrap tmpcoder-admin-popup-wrap">
+            <div class="tmpcoder-condition-popup tmpcoder-admin-popup">
+                <header>
+                    <h2><?php esc_html_e( 'Apply Global Fonts to All Widgets', 'sastra-essential-addons-for-elementor' ); ?></h2>
+                        <?php esc_html_e( 'Please do not refresh the page', 'sastra-essential-addons-for-elementor' ); ?><br>
+                </header>
+                <table class="tmpcoder-options-table widefat">
+                    <tbody>
+                        <tr class="bsf-target-rules-row tmpcoder-options-row">                                
+                            <div class="set-global-loader">
+                            	<img src="<?php echo esc_url(TMPCODER_ADDONS_ASSETS_URL.'images/backend-loader.gif'); ?>" alt="" />
+                            </div>
+                            <img class="set-global-font-success" src="<?php echo esc_url(TMPCODER_ADDONS_ASSETS_URL.'images/right-sign.jpg'); ?>" alt="" />
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-            <?php
-
-        }
+        </div>
+        <?php
     }
 }
 
@@ -3091,7 +3083,7 @@ if ( ! function_exists( 'tmpcoder_render_admin_header' ) ) {
 						</div>
 					</div>
 	
-					<h2 class="nav-tab-wrapper wp-clearfix">
+					<div class="nav-tab-wrapper wp-clearfix">
 						<?php foreach ( $arr as $id => $section ) {
 							if ( $id === 'system-info' ) {
 								continue;
@@ -3103,7 +3095,7 @@ if ( ! function_exists( 'tmpcoder_render_admin_header' ) ) {
 								<span><?php echo wp_kses_post( $section['label'] ); ?></span>
 							</a>
 						<?php } ?>
-					</h2>
+					</div>
 				</div>
 	
 				<?php
@@ -3172,7 +3164,7 @@ if ( ! function_exists( 'tmpcoder_get_admin_header_tabs' ) ) {
 				'id'    => 'settings',
 				'icon'  => 'intigrations-tab.svg',
 				'url'   => tmpcoder_generate_admin_url( 'settings' ),
-				'label' => __( 'Integrations', 'sastra-essential-addons-for-elementor' ),
+				'label' => __( 'Settings', 'sastra-essential-addons-for-elementor' ),
 				'path'  => TMPCODER_PLUGIN_DIR . '/inc/admin/lib/welcome-screen/sections/settings.php',
 			),
 			'system-info' => array(
@@ -3189,10 +3181,10 @@ if ( ! function_exists( 'tmpcoder_get_admin_header_tabs' ) ) {
 				'label' => __( 'Tools', 'sastra-essential-addons-for-elementor' ),
 				'path'  => TMPCODER_PLUGIN_DIR . '/inc/admin/lib/welcome-screen/sections/tools.php',
 			),
-		);
-	
-		// Remove tabs if not SastraWP or Spexo
-		if (defined('TMPCODER_CURRENT_THEME_NAME') && !in_array(TMPCODER_CURRENT_THEME_NAME, array('SastraWP', 'Spexo'))) { 
+	);
+
+	// Remove tabs if not SastraWP or Spexo
+	if (defined('TMPCODER_CURRENT_THEME_NAME') && !in_array(TMPCODER_CURRENT_THEME_NAME, array('SastraWP', 'Spexo'))) {
 			unset($tabs['global-options']);
 			unset($tabs['prebuilt-demos']);
 		}
@@ -3366,23 +3358,37 @@ add_action( 'wp_ajax_nopriv_tmpcoder_mini_cart_qty', 'tmpcoder_update_cart_qty' 
 
 function tmpcoder_update_cart_qty() {
     if ( isset($_POST['key'], $_POST['qty']) ) {
-        WC()->cart->set_quantity( sanitize_text_field($_POST['key']), intval($_POST['qty']), true );
+        $cart_item_key = sanitize_text_field($_POST['key']);
+        $quantity = intval($_POST['qty']);
+        
+        WC()->cart->set_quantity( $cart_item_key, $quantity, true );
         WC()->cart->calculate_totals();
 
-        // Get values
+        // Get cart totals
 	    $cart_count = WC()->cart->get_cart_contents_count();
 	    $cart_subtotal = WC()->cart->get_cart_subtotal();
-
-	     // Optionally return refreshed mini-cart HTML
-	    ob_start();
-	    woocommerce_mini_cart();
-	    $mini_cart_html = ob_get_clean();
+	    
+	    // Get specific product data
+	    $cart_item = WC()->cart->get_cart_item( $cart_item_key );
+	    $product_price = '';
+	    $product_subtotal = '';
+	    
+	    if ( $cart_item ) {
+	        $_product = apply_filters( 'woocommerce_cart_item_product', $cart_item['data'], $cart_item, $cart_item_key );
+	        $product_price = apply_filters( 'woocommerce_cart_item_price', WC()->cart->get_product_price( $_product ), $cart_item, $cart_item_key );
+	        $product_subtotal = apply_filters( 'woocommerce_cart_item_subtotal', WC()->cart->get_product_subtotal( $_product, $cart_item['quantity'] ), $cart_item, $cart_item_key );
+	        
+	        // Return the line subtotal (quantity × price) for display
+	        $product_price = $product_subtotal;
+	    }
 
 	    wp_send_json_success([
-	        'cart_count'     => $cart_count,
-	        'cart_subtotal'  => $cart_subtotal,
-	        'mini_cart_html' => $mini_cart_html,
-	        'message'        => 'Cart updated successfully.',
+	        'cart_count'        => $cart_count,
+	        'cart_subtotal'     => $cart_subtotal,
+	        'product_price'     => $product_price,
+	        'product_subtotal'  => $product_subtotal,
+	        'cart_item_key'     => $cart_item_key,
+	        'message'           => 'Cart updated successfully.',
 	    ]);
     }
     wp_die();

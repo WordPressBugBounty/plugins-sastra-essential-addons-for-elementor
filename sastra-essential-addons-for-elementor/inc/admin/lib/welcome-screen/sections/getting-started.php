@@ -46,20 +46,25 @@ $featuredList = array();
         );
         array_push($featuredList, $featuredArr);
     } else {
-        $featuredArr = array(
-            'title' => __( 'Prebuilt Websites', 'sastra-essential-addons-for-elementor' ),
-            'icon' => 'prebuilt-websites.svg',
-            'action_link' => admin_url('theme-install.php?search=spexo'),
-            'description' => __( 'Install Spexo theme and get prebuilt website.', 'sastra-essential-addons-for-elementor' ),
-            'action_link_text' => 'Get Spexo Theme',
-            'target' => '',
-            'extra_class' => 'tmpcoder-lock-pre-websites',
-            'is_lock' => true,
-        );
-        array_push($featuredList, $featuredArr);
+        
+        if (get_template() != 'bellizawp') {
+
+            $featuredArr = array(
+                'title' => __( 'Prebuilt Websites', 'sastra-essential-addons-for-elementor' ),
+                'icon' => 'prebuilt-websites.svg',
+                'action_link' => admin_url('theme-install.php?search=spexo'),
+                'description' => __( 'Install Spexo theme and get prebuilt website.', 'sastra-essential-addons-for-elementor' ),
+                'action_link_text' => 'Get Spexo Theme',
+                'target' => '',
+                'extra_class' => 'tmpcoder-lock-pre-websites',
+                'is_lock' => true,
+            );
+
+            array_push($featuredList, $featuredArr);
+        }
     }
 
-     $featuredArr = array(
+    $featuredArr = array(
         'title' => __( 'Site Builder', 'sastra-essential-addons-for-elementor' ),
         'icon' => 'site-builder.svg',
         'action_link' => admin_url('admin.php?page=spexo-welcome&tab=site-builder'),
@@ -203,76 +208,119 @@ $featuredList = array();
                     <?php esc_html_e( 'Latest Blogs', 'sastra-essential-addons-for-elementor' ); ?>
                 </h2>
                 
-               <?php
-
-               $options = array(
-                    'timeout'    => ( ( defined('DOING_CRON') && DOING_CRON ) ? 30 : 3 ),
-                    'user-agent' => 'tmpcoder-plugin-user-agent',
-                    'headers' => array( 'Referer' => site_url() ),
-                );
+                <div class="tmpcoder-blog-loading" style="text-align: center; padding: 20px;">
+                    <span class="spinner is-active" style="float: none; margin: 0;"></span>
+                    <p><?php esc_html_e( 'Loading blog posts...', 'sastra-essential-addons-for-elementor' ); ?></p>
+                </div>
                 
-                $req_params = ['action' => 'get_welcome_screen_blog_ids'];
-
-                $api_url = TMPCODER_UPDATES_URL;
-                $response_ids = wp_remote_get(add_query_arg($req_params,$api_url), $options);
-
-                if ( is_wp_error( $response_ids ) ) {
-                    echo 'Error fetching IDs';
-                    return;
-                }
-
-                $ids_data = json_decode( wp_remote_retrieve_body( $response_ids ), true );
-
-                if ( ! isset( $ids_data['status'] ) || $ids_data['status'] !== 'success' || empty( $ids_data['data'] ) ) {
-                    echo 'No valid post IDs found.';
-                    return;
-                }
-
-                $post_ids = $ids_data['data']; // This should be an array of post IDs like [18394, 19096, 18380]
-
-                $ids_query = implode( '&include[]=', array_map( 'intval', $post_ids ) );
-
-                $api_url   = "https://spexoaddons.com/wp-json/wp/v2/posts?_embed&include[]=".$ids_query;
-
-                $response = wp_remote_get( $api_url );
-
-                if ( is_array( $response ) && !is_wp_error( $response ) ) {
-                    $posts = json_decode( wp_remote_retrieve_body( $response ) );
-                    echo '<div class="row tmpcoder-news-grid">';
-                        foreach ( $posts as $post ) {
-                            echo '<div class="tmpcoder-news-post col-xl-4">';
-                                $thumbnail = '';
-                                if ( isset( $post->_embedded->{'wp:featuredmedia'}[0]->source_url ) ) {
-                                    $thumbnail = $post->_embedded->{'wp:featuredmedia'}[0]->source_url;
-                                }
-                                if ( $thumbnail ) {
-                                    echo '<a href="'.esc_url($post->link).'" target="_blank">';    
-                                    echo '<div class="tmpcoder-post-img-container">';
-
-                                    echo '<img src="' . esc_url( $thumbnail ) . '" alt="' . esc_attr( $post->title->rendered ) . '" />';
-                                    echo '<h4>'. esc_html( $post->title->rendered ) .'</h4>';
-                                    echo '</div>';
-                                    echo '</a>';
-                                }
-                            echo '</div>';
-                        }
-                    echo '</div>';
-                }
-                else {
-                    echo esc_html__('Failed to fetch post content.', 'sastra-essential-addons-for-elementor');
-                }
-                ?>
+                <div class="row tmpcoder-news-grid" style="display: none;"></div>
+                
+                <div class="tmpcoder-blog-error" style="display: none; text-align: center; padding: 20px; color: #d63638;">
+                    <p><?php esc_html_e( 'Failed to fetch post content.', 'sastra-essential-addons-for-elementor' ); ?></p>
+                </div>
+                
                 <div class="tmpcoder-read-more-blogs">
                     <a href="<?php echo esc_url(TMPCODER_PLUGIN_SITE_URL.'blog') ?>"  class="read-more-btn1 btn-link" target="_blank" ><?php echo esc_html('Read More Blogs') ?></a>
                 </div>
             </div>
+            
+            <script type="text/javascript">
+            (function($) {
+                'use strict';
+                
+                /**
+                 * Load blog posts from API on page load via WordPress AJAX
+                 * This avoids CORS issues by using server-side proxy
+                 */
+                function loadBlogPosts() {
+                    var $blogGrid = $('.tmpcoder-welcome-screen-blog-grid');
+                    var $loading = $blogGrid.find('.tmpcoder-blog-loading');
+                    var $newsGrid = $blogGrid.find('.tmpcoder-news-grid');
+                    var $error = $blogGrid.find('.tmpcoder-blog-error');
+                    
+                    // Show loading state
+                    $loading.show();
+                    $newsGrid.hide();
+                    $error.hide();
+                    
+                    // Make WordPress AJAX request (avoids CORS issues)
+                    $.ajax({
+                        url: ajaxurl || '<?php echo esc_js( admin_url( 'admin-ajax.php' ) ); ?>',
+                        type: 'POST',
+                        data: {
+                            action: 'tmpcoder_get_welcome_blog_posts',
+                            nonce: '<?php echo esc_js( wp_create_nonce( 'tmpcoder_welcome_blog_nonce' ) ); ?>'
+                        },
+                        dataType: 'json',
+                        timeout: 15000, // 15 second timeout
+                        success: function(response) {
+                            $loading.hide();
+                            
+                            if (response && response.success && response.data && Array.isArray(response.data) && response.data.length > 0) {
+                                // Render blog posts
+                                var html = '';
+                                $.each(response.data, function(index, post) {
+                                    if (post && post.thumbnail && post.title && post.link) {
+                                        html += '<div class="tmpcoder-news-post col-xl-4">';
+                                        html += '<a href="' + escapeHtml(post.link) + '" target="_blank">';
+                                        html += '<div class="tmpcoder-post-img-container">';
+                                        html += '<img src="' + escapeHtml(post.thumbnail) + '" alt="' + escapeHtml(post.title) + '" />';
+                                        html += '<h4>' + escapeHtml(post.title) + '</h4>';
+                                        html += '</div>';
+                                        html += '</a>';
+                                        html += '</div>';
+                                    }
+                                });
+                                
+                                if (html) {
+                                    $newsGrid.html(html).show();
+                                } else {
+                                    $error.show();
+                                }
+                            } else {
+                                $error.show();
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            $loading.hide();
+                            $error.show();
+                            console.error('Blog API Error:', status, error);
+                        }
+                    });
+                }
+                
+                /**
+                 * Escape HTML to prevent XSS
+                 */
+                function escapeHtml(text) {
+                    if (!text) return '';
+                    var map = {
+                        '&': '&amp;',
+                        '<': '&lt;',
+                        '>': '&gt;',
+                        '"': '&quot;',
+                        "'": '&#039;'
+                    };
+                    return String(text).replace(/[&<>"']/g, function(m) { return map[m]; });
+                }
+                
+                // Initialize on page load
+                $(document).ready(function() {
+                    // Only load if we're on the welcome screen and the blog grid exists
+                    if ($('.tmpcoder-welcome-screen-blog-grid').length) {
+                        loadBlogPosts();
+                    }
+                });
+                
+            })(jQuery);
+            </script>
         </div>
 
         <div class="col-xl-4 help-box-main">
             <div class="tmpcoder-getting-started-video common-box-shadow help-box">
-                <iframe height="215"
-                src="https://www.youtube.com/embed/oEX5d5tpSLQ" allowfullscreen>
-                </iframe>
+                <a href="https://www.youtube.com/@spexothemes/videos" class="tmpcoder-referel-image" target="_blank">
+                    <img src="<?php echo esc_url(TMPCODER_ADDONS_ASSETS_URL.'images/Spexoyoutube.jpg'); ?>">
+                </a>
             </div>
             <div class="common-box-shadow help-box">
                 <a href="<?php echo esc_url(TMPCODER_RATING_LINK); ?>" target="_blank">

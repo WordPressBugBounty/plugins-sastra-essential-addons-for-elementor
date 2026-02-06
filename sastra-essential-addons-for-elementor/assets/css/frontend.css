@@ -52,7 +52,7 @@ ul.page-numbers li:last-child {
 
 .blog-list-content ul li .byline,.blog-detail-content ul li{
     text-transform: capitalize;
-*/}
+}
 
 /*.blog-list-content ul li:first-child {
     padding-left: 0;
@@ -786,7 +786,8 @@ body .wlfmc-default-table:not(.is-elementor) .wlfmc-wishlist-footer tr.actions,b
 
 .tmpcoder-grid-extra-icon-left svg,
 .tmpcoder-grid-extra-icon-right svg,
-.tmpcoder-post-list-icon svg {
+.tmpcoder-post-list-icon svg,
+.tmpcoder-grid-item-wishlist-button button > svg {
     width: 1em;
     height: 1em;
     vertical-align: middle;

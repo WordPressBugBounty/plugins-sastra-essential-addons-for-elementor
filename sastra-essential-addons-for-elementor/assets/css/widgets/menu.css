@@ -638,10 +638,10 @@ div[class*="tmpcoder-sub-icon-"] .tmpcoder-mobile-nav-menu .menu-item-has-childr
 }
 
 @media screen and (max-width: 1024px) {
-	.tmpcoder-nav-menu-bp-tablet > .elementor-widget-container > nav.tmpcoder-nav-menu-container {
+	.tmpcoder-nav-menu-bp-tablet nav.tmpcoder-nav-menu-container {
 		display: none !important;
 	}
-	.tmpcoder-nav-menu-bp-tablet > .elementor-widget-container > nav.tmpcoder-mobile-nav-menu-container {
+	.tmpcoder-nav-menu-bp-tablet nav.tmpcoder-mobile-nav-menu-container {
 		display: block !important;
 	}
 	
@@ -683,7 +683,7 @@ div[class*="tmpcoder-sub-icon-"] .tmpcoder-mobile-nav-menu .menu-item-has-childr
 }
 
 .tmpcoder-pointer-overline.tmpcoder-pointer-fx-slide .tmpcoder-pointer-item.tmpcoder-active-menu-item:before,
-.tmpcoder-pointer-underline > .elementor-widget-container > nav.tmpcoder-nav-menu-container > ul > li > a.tmpcoder-active-menu-item:after,
+.tmpcoder-pointer-underline nav.tmpcoder-nav-menu-container > ul > li > a.tmpcoder-active-menu-item:after,
 .tmpcoder-pointer-double-line.tmpcoder-pointer-fx-slide .tmpcoder-pointer-item.tmpcoder-active-menu-item:before,
 .tmpcoder-pointer-double-line.tmpcoder-pointer-fx-slide .tmpcoder-pointer-item.tmpcoder-active-menu-item:after,
 .tmpcoder-pointer-overline.tmpcoder-pointer-fx-grow .tmpcoder-pointer-item.tmpcoder-active-menu-item:before,

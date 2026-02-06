@@ -1,5 +1,9 @@
 <?php 
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit; // Exit if accessed directly.
+}
+
 add_action('admin_enqueue_scripts','tmpcoder_demo_import_scripts_func');
 
 if ( ! function_exists( 'tmpcoder_demo_import_scripts_func' ) ) :
@@ -25,7 +29,7 @@ add_action( 'admin_notices', function(){
 	// Get Current Theme
     $theme = get_option('stylesheet');
 
-    if ( ! in_array($theme, array('sastrawp','sastrawp-child','spexo','spexo-child') ) ) {
+    if ( ! in_array($theme, array('sastrawp','sastrawp-child','spexo','spexo-child','bellizawp','bellizawp-child') ) ) {
 
 		$tmpcoder_notice_excluded_pages = array( 'tmpcoder-setup-wizard', 'tmpcoder-theme-wizard', 'tmpcoder-plugin-wizard' );
 

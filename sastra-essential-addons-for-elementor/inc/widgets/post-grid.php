@@ -8856,6 +8856,12 @@ $settings = array_merge( $settings, $settings_new );
 
 				if ( 'yes' == $settings['grid_lazy_loading'] ) {
 
+						// echo '<pre>';
+						// print_r ($settings['grid_lazy_loading']);
+						// echo '</pre>';
+
+						// echo 'Loader URL = '.$settings['grid_lazy_loader']['url'];
+
 					$lazy_loader_image_url = !empty($settings['grid_lazy_loader']['url']) ? $settings['grid_lazy_loader']['url'] : TMPCODER_ADDONS_ASSETS_URL . 'images/icon-256x256.png';
 
 					echo '<img data-no-lazy="1" src="' . esc_url($lazy_loader_image_url) . '" alt="' . esc_attr($alt) . '" class="testing grid-main-image tmpcoder-hidden-image tmpcoder-anim-timing-' . esc_attr($settings['image_effects_animation_timing']) . '">';

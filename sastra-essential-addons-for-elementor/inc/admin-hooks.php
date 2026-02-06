@@ -39,7 +39,7 @@ require_once (TMPCODER_PLUGIN_DIR . 'inc/woocommerce/classes/add-remove-from-com
 require_once (TMPCODER_PLUGIN_DIR . 'inc/woocommerce/classes/compare-popup-action.php');
 require_once (TMPCODER_PLUGIN_DIR . 'inc/woocommerce/classes/update-mini-compare.php');
 
-if (defined('TMPCODER_CURRENT_THEME_NAME') && in_array(TMPCODER_CURRENT_THEME_NAME, array('SastraWP','Spexo') ) ) {
+if (defined('TMPCODER_CURRENT_THEME_NAME') && in_array(TMPCODER_CURRENT_THEME_NAME, array('SastraWP','Spexo', 'BellizaWP') ) ) {
     require_once (TMPCODER_PLUGIN_DIR . 'inc/inline-css.php');
 }
 
@@ -47,8 +47,16 @@ if (class_exists('Elementor\Plugin')) {
     require_once (TMPCODER_PLUGIN_DIR . 'inc/admin/mega-menu.php');
     require_once (TMPCODER_PLUGIN_DIR . 'inc/admin/theme-builder.php');
     
-    if (defined('TMPCODER_CURRENT_THEME_NAME') && in_array(TMPCODER_CURRENT_THEME_NAME, array('SastraWP','Spexo') ) ) {    
+    if (defined('TMPCODER_CURRENT_THEME_NAME') && in_array(TMPCODER_CURRENT_THEME_NAME, array('SastraWP','Spexo', 'BellizaWP') ) ) {    
         require_once (TMPCODER_PLUGIN_DIR . 'inc/admin/import/tmpcoder-plugin-demo-list.php');
+    }
+
+    // Rating Notice
+    if ( ! function_exists('tmpcoder_add_rating_notice_action') ) {
+        add_action('init', 'tmpcoder_add_rating_notice_action');
+        function tmpcoder_add_rating_notice_action() {
+            require TMPCODER_PLUGIN_DIR.'inc/admin/notice/rating-notice.php';
+        }
     }
 }
 

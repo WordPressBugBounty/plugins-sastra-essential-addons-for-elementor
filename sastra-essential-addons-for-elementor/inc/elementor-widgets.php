@@ -250,7 +250,7 @@ if ( !class_exists('TemplatesWidgetRegister') ){
 
           wp_enqueue_style(
             'widgets-editor',
-            TMPCODER_PLUGIN_URI . 'assets/css/admin/widgets-editor.min.css',
+            TMPCODER_PLUGIN_URI . 'assets/css/admin/widgets-editor'.tmpcoder_script_suffix().'.css',
             [],
             tmpcoder_get_plugin_version()
           );
@@ -581,7 +581,7 @@ if ( !class_exists('TemplatesWidgetRegister') ){
             if ( isset( $_GET['preview'] ) && $_GET['preview'] === 'true' ) {// phpcs:ignore WordPress.Security.NonceVerification.Recommended
               wp_enqueue_style(
                 'widgets-editor',
-                TMPCODER_PLUGIN_URI.'assets/css/admin/widgets-editor.min.css',
+                TMPCODER_PLUGIN_URI.'assets/css/admin/widgets-editor'.tmpcoder_script_suffix().'.css',
                 [],
                 tmpcoder_get_plugin_version()
               );

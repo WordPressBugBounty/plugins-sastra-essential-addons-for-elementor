@@ -201,8 +201,8 @@ if ( ! class_exists( 'TMPCODER_Advanced_Hooks_Loader' ) ) {
             {
                 add_submenu_page(
                     TMPCODER_THEME.'-welcome',
-                    __( 'Integrations', 'sastra-essential-addons-for-elementor' ),
-                    __( 'Integrations', 'sastra-essential-addons-for-elementor' ),
+                    __( 'Settings', 'sastra-essential-addons-for-elementor' ),
+                    __( 'Settings', 'sastra-essential-addons-for-elementor' ),
                     'manage_options',
                     'admin.php?page='.TMPCODER_THEME.'-welcome&tab=settings'
                 );

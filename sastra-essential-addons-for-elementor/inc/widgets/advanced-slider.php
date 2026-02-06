@@ -942,7 +942,7 @@ class TMPCODER_Advanced_Slider extends Widget_Base {
 					'hidden' => esc_html__( 'Hidden', 'sastra-essential-addons-for-elementor' )
 				],
 				'selectors' => [
-					'{{WRAPPER}} .elementor-widget-container' => 'overflow: {{VALUE}};',
+					'{{WRAPPER}} .tmpcoder-advanced-slider-wrap' => 'overflow: {{VALUE}};',
 				]
 			]
 		);

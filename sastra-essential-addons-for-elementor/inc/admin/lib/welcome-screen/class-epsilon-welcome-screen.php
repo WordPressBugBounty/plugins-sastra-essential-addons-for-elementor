@@ -147,8 +147,14 @@ class TMPCODER_Welcome_Screen {
 		 * Load the welcome screen styles and scripts
 		 */
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_global_options_styles' ) );
 
 		add_action( 'admin_init', [$this, 'tmpcoder_register_addons_settings'] );
+		
+		/**
+		 * Register AJAX handler for blog posts
+		 */
+		add_action( 'wp_ajax_tmpcoder_get_welcome_blog_posts', array( $this, 'ajax_get_welcome_blog_posts' ) );
 	}
 
 	// Register Settings
@@ -220,6 +226,25 @@ class TMPCODER_Welcome_Screen {
 	        register_setting( 'tmpcoder-elements-settings', 'tmpcoder-element-'. $slug, [ 'default' => 'on' ] );
 	    }
 	}
+
+	/**
+	 * Enqueue CSS for the theme Global Options (Global Colors) page.
+	 * This is CSS-only; all logic and markup remain in the theme.
+	 */
+	public function enqueue_global_options_styles( $hook ) {
+		if ( empty( $_GET['page'] ) || 'spexo_addons_global_settings' !== sanitize_key( wp_unslash( $_GET['page'] ) ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			return;
+		}
+
+		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+
+		wp_enqueue_style(
+			'spexo-global-options',
+			TMPCODER_PLUGIN_URI . 'inc/admin/lib/welcome-screen/css/spexo-global-options.css',
+			array(),
+			tmpcoder_get_plugin_version()
+		);
+	}
 	
 	/**
 	 * Instance constructor
@@ -274,8 +299,42 @@ class TMPCODER_Welcome_Screen {
                     'global_options_link' => esc_url('admin.php?page=spexo_addons_global_settings'),
                     'widget_settings_link' => esc_url('admin.php?page='.TMPCODER_THEME.'-welcome&tab=widgets'),
                     'global_settings_link' => esc_url('admin.php?page='.TMPCODER_THEME.'-welcome&tab=settings'),
+                    'spexo_ai_nonce'        => wp_create_nonce( 'spexo_ai_admin_nonce' ),
 				)
 			);
+
+        $screen = get_current_screen();
+        $current_tab = isset( $_GET['tab'] ) ? sanitize_key( wp_unslash( $_GET['tab'] ) ) : 'getting-started'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+
+        if ( $screen && 'toplevel_page_spexo-welcome' === $screen->id && 'settings' === $current_tab ) {
+            $suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+
+            wp_enqueue_style(
+                'spexo-settings-layout',
+                TMPCODER_PLUGIN_URI . 'inc/admin/lib/welcome-screen/css/settings-layout' . $suffix . '.css',
+                array( 'welcome-screen' ),
+                tmpcoder_get_plugin_version()
+            );
+
+            wp_enqueue_script(
+                'spexo-settings-layout',
+                TMPCODER_PLUGIN_URI . 'inc/admin/lib/welcome-screen/js/settings-layout' . $suffix . '.js',
+                array( 'jquery' ),
+                tmpcoder_get_plugin_version(),
+                true
+            );
+
+            wp_localize_script(
+                'spexo-settings-layout',
+                'spexoSettingsLayout',
+                array(
+                    'resetConfirmTitle'       => esc_html__( 'Are you sure?', 'sastra-essential-addons-for-elementor' ),
+                    'resetConfirmMessage'    => esc_html__( 'Resetting will lose all custom values in this section. This action cannot be undone.', 'sastra-essential-addons-for-elementor' ),
+                    'resetButtonText'        => esc_html__( 'Reset Section', 'sastra-essential-addons-for-elementor' ),
+                    'cancelButtonText'       => esc_html__( 'Cancel', 'sastra-essential-addons-for-elementor' ),
+                )
+            );
+        }
 		}
 	}
 
@@ -346,9 +405,7 @@ class TMPCODER_Welcome_Screen {
         $tab   = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'getting-started';// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		
 		if( defined('TMPCODER_PRO_ADDONS_ASSETS_URL') ) {
-			$headers = get_headers(TMPCODER_PRO_ADDONS_ASSETS_URL . 'images/spexo-logo-web-pro.svg');
-			$main_header_logo = ($headers && strpos($headers[0], '200')) ? TMPCODER_PRO_ADDONS_ASSETS_URL.'images/spexo-logo-web-pro.svg' : TMPCODER_ADDONS_ASSETS_URL.'images/spexo-logo-web.svg' ;
-
+			$main_header_logo = TMPCODER_PRO_ADDONS_ASSETS_URL.'images/spexo-logo-web-pro.svg';
 	    } else {
 	        $main_header_logo = TMPCODER_ADDONS_ASSETS_URL.'images/spexo-logo-web.svg';
 	    }
@@ -384,5 +441,46 @@ class TMPCODER_Welcome_Screen {
 		}
 
 		return $i;
+	}
+
+	/**
+	 * AJAX handler to fetch blog posts from external API
+	 * This avoids CORS issues by making the request server-side
+	 *
+	 * @return void
+	 */
+	public function ajax_get_welcome_blog_posts() {
+		// Verify nonce for security
+		check_ajax_referer( 'tmpcoder_welcome_blog_nonce', 'nonce' );
+
+		$options = array(
+			'timeout'    => ( ( defined('DOING_CRON') && DOING_CRON ) ? 30 : 10 ),
+			'user-agent' => 'tmpcoder-plugin-user-agent',
+			'headers' => array( 'Referer' => site_url() ),
+		);
+		
+		$req_params = array( 'action' => 'get_welcome_screen_blog_ids', 'version' => TMPCODER_PLUGIN_VER );
+
+		// Use the API URL - check if there's a constant, otherwise use default
+		$api_url = TMPCODER_UPDATES_URL;
+		
+		$response = wp_remote_get( add_query_arg( $req_params, $api_url ), $options );
+
+		if ( is_wp_error( $response ) ) {
+			wp_send_json_error( array(
+				'message' => __( 'Error fetching blog posts.', 'sastra-essential-addons-for-elementor' )
+			) );
+			return;
+		}
+
+		$post_array = json_decode( wp_remote_retrieve_body( $response ), true );
+
+		if ( ! empty( $post_array ) && ! is_wp_error( $post_array ) && is_array( $post_array ) ) {
+			wp_send_json_success( $post_array );
+		} else {
+			wp_send_json_error( array(
+				'message' => __( 'Failed to fetch post content.', 'sastra-essential-addons-for-elementor' )
+			) );
+		}
 	}
 }

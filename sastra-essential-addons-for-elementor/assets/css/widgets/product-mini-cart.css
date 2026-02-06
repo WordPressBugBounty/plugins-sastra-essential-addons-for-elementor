@@ -484,3 +484,24 @@ body.tmpcoder-mini-cart-sidebar-body {
 	height: 100vh;
 	overflow: hidden;
 }
+
+/* Mini Cart - Quantity with Plus/Minus Input & Price (Right Aligned) - START */
+.mini-cart-quantity-row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+	gap: 10px;
+}
+
+.mini-cart-quantity-row .mini-cart-quantity {
+	flex: 0 0 auto;
+}
+
+.mini-cart-quantity-row .quantity.price-right {
+	flex: 1;
+	text-align: right;
+	font-weight: 600;
+	color: #222;
+}
+/* Mini Cart - Quantity with Plus/Minus Input & Price (Right Aligned) - END */

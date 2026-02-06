@@ -674,14 +674,23 @@ $settings = array_merge( $settings, $settings_new );
 		if (isset($settings['show_mini_cart_update_qty']) && $settings['show_mini_cart_update_qty'] == 'yes') {
 			
 			add_filter( 'woocommerce_widget_cart_item_quantity', function( $html, $cart_item, $cart_item_key ) {
+			    $_product = apply_filters( 'woocommerce_cart_item_product', $cart_item['data'], $cart_item, $cart_item_key );
+			    $product_price = apply_filters( 'woocommerce_cart_item_price', WC()->cart->get_product_price( $_product ), $cart_item, $cart_item_key );
+			    $product_subtotal = apply_filters( 'woocommerce_cart_item_subtotal', WC()->cart->get_product_subtotal( $_product, $cart_item['quantity'] ), $cart_item, $cart_item_key );
 			    $quantity = $cart_item['quantity'];
+			    
 			    ob_start();
 			    ?>
-			    <div class="mini-cart-quantity mini-cart-qty-wrap">
-			        <button class="mini-cart-minus" data-key="<?php echo esc_attr( $cart_item_key ); ?>">-</button>
-			        <input type="number" min="1" value="<?php echo esc_attr( $quantity ); ?>" data-key="<?php echo esc_attr( $cart_item_key ); ?>" class="mini-cart-qty-input" />
-			        <button class="mini-cart-plus" data-key="<?php echo esc_attr( $cart_item_key ); ?>">+</button>
-			        <span class="mini-cart-loader" style="display:none;"></span>
+			    <div class="tmpcoder-mini-cart-quantity">
+			        <div class="mini-cart-quantity-row">
+			            <div class="mini-cart-quantity mini-cart-qty-wrap">
+			                <button class="mini-cart-minus" data-key="<?php echo esc_attr( $cart_item_key ); ?>">-</button>
+			                <input type="number" min="1" value="<?php echo esc_attr( $quantity ); ?>" data-key="<?php echo esc_attr( $cart_item_key ); ?>" class="mini-cart-qty-input" />
+			                <button class="mini-cart-plus" data-key="<?php echo esc_attr( $cart_item_key ); ?>">+</button>
+			                <span class="mini-cart-loader" style="display:none;"></span>
+			            </div>
+			            <span class="quantity price-right"><?php echo wp_kses_post( $product_subtotal ); ?></span>
+			        </div>
 			    </div>
 			    </div>
 			    <?php
