@@ -2138,7 +2138,7 @@ function tmpcoder_disable_default_woo_pages_creation() {
 
 function tmpcoder_add_global_option($data){
 
-    if ( in_array(get_template(), array('sastrawp', 'spexo', 'bellizawp') ) ) {
+    if ( in_array(get_template(), array('sastrawp', 'spexo', 'belliza') ) ) {
 
     	$pro_class = !tmpcoder_is_availble() ? 'set-global-options-pro' : '';
 

@@ -3,7 +3,7 @@
  * Plugin Name: Spexo Addons for Elementor
  * Plugin URI: http://spexoaddons.com/
  * Description: Spexo Addons for Elementor is all in one solution for complete starter sites, single page templates, blocks & images. This plugin offers additional features needed by our theme, including AI-powered content generation and image creation.
- * Version: 1.0.29
+ * Version: 1.0.30
  * Author: TemplatesCoder
  * Author URI:  https://templatescoder.com/
  * Elementor tested up to: 3.32.4
@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 $theme = (is_object(wp_get_theme()->parent())) ? wp_get_theme()->parent() : wp_get_theme();
 
 if ( ! defined( 'TMPCODER_PLUGIN_VER' ) ) {
-    define( 'TMPCODER_PLUGIN_VER', '1.0.29' );
+    define( 'TMPCODER_PLUGIN_VER', '1.0.30' );
 }
 
 if ( ! defined( 'TMPCODER_PLUGIN_NAME' ) ) {
@@ -459,7 +459,7 @@ add_action('admin_init', function(){
         $_wizard_page_redirect = get_option(TMPCODER_PLUGIN_KEY.'_wizard_page_redirect', 0);
         
         $wizard_run = get_option(TMPCODER_PLUGIN_KEY.'_wizard_page' , 0);
-        if ( ($_wizard_page_redirect == 1 || $wizard_run == 0) && TMPCODER_CURRENT_THEME_NAME != 'BellizaWP' ) {
+        if ( ($_wizard_page_redirect == 1 || $wizard_run == 0) && TMPCODER_CURRENT_THEME_NAME != 'Belliza' ) {
             delete_option(TMPCODER_PLUGIN_KEY.'_wizard_page_redirect');
             update_option(TMPCODER_PLUGIN_KEY.'_wizard_page', 1);
             update_option('sastrawp_wizard_page', 1);

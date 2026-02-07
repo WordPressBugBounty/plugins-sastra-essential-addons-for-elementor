@@ -1,7 +1,7 @@
 === Spexo Addons for Elementor - Free Addons, Widgets and Templates for Elementor ===
 Contributors: templatescoderthemes, skywebtech
 Tags: elementor, elementor addons, elementor templates, elementor widgets, woocommerce elementor
-Stable tag: 1.0.29
+Stable tag: 1.0.30
 Requires at least: 5.0
 Tested up to: 6.9
 Requires PHP: 7.4
@@ -339,6 +339,10 @@ Feel free to contact us anytime via [Support](https://templatescoder.com/support
 
 == Changelog ==
 
+= 1.0.30 - 07-Febuary-2026 =
+
+* Fixed minor bugs and improved performance and stability.
+
 = 1.0.29 - 27-January-2026 =
 
 * Improved the Elementor template import process for more reliable and smoother imports
@@ -375,9 +379,4 @@ Improvements:
 * Updated: Compatible with Elementor 3.32
 * Minor bug fixes and other small enhancements
 
-= 1.0.26 - 2025-09-27 =
-
-* Improved: Minor bug fixes and overall performance enhancements.
-
 [See changelog for all versions.](https://spexoaddons.com/changelog/)
-

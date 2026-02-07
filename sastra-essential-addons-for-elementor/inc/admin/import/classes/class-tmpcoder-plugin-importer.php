@@ -192,7 +192,7 @@ if ( ! class_exists( 'TMPCODER_Importer' ) ) {
 		    	'tmpcoder_allowed_theme_textdomains_for_import',
 		    	array(
 		    		'spexo',
-		    		'bellizawp',
+		    		'belliza',
 		    	)
 		    );
 
@@ -219,11 +219,11 @@ if ( ! class_exists( 'TMPCODER_Importer' ) ) {
 		    $template = get_option('template'); // Get parent theme
 
 		    // Activate Sastra Theme
-		    // Don't switch if BellizaWP or BellizaWP Child theme is active
-		    $is_bellizawp_parent = ( $template === 'bellizawp' );
-		    $is_bellizawp_child = ( $theme !== 'bellizawp' && $template === 'bellizawp' && strpos( $theme, 'bellizawp' ) !== false );
+		    // Don't switch if Belliza or Belliza Child theme is active
+		    $is_belliza_parent = ( $template === 'belliza' );
+		    $is_belliza_child = ( $theme !== 'belliza' && $template === 'belliza' && strpos( $theme, 'belliza' ) !== false );
 		    
-		    if ( ! $is_bellizawp_parent && ! $is_bellizawp_child ) {
+		    if ( ! $is_belliza_parent && ! $is_belliza_child ) {
 		        switch_theme( 'spexo' );
 		        set_transient( 'sastra_activation_notice', true );
 		    }

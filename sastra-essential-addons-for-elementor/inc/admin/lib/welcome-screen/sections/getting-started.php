@@ -47,7 +47,7 @@ $featuredList = array();
         array_push($featuredList, $featuredArr);
     } else {
         
-        if (get_template() != 'bellizawp') {
+        if (get_template() != 'belliza') {
 
             $featuredArr = array(
                 'title' => __( 'Prebuilt Websites', 'sastra-essential-addons-for-elementor' ),

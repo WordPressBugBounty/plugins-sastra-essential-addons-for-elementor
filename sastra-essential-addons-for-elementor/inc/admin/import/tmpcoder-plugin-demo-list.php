@@ -397,13 +397,13 @@ if (!function_exists('tmpcoder_get_theme_status')) {
         $theme = wp_get_theme();
 
         // Theme installed and activate.
-        if ( in_array($theme->name, array('SastraWP','Spexo', 'BellizaWP') ) || in_array($theme->parent_theme, array('SastraWP','Spexo', 'BellizaWP') ) ) {
+        if ( in_array($theme->name, array('SastraWP','Spexo', 'Belliza') ) || in_array($theme->parent_theme, array('SastraWP','Spexo', 'Belliza') ) ) {
             return 'req-theme-active';
         }
 
         // Theme installed but not activate.
         foreach ( (array) wp_get_themes() as $theme_dir => $theme ) {
-            if ( in_array($theme->name, array('SastraWP','Spexo', 'BellizaWP') ) || in_array($theme->parent_theme, array('SastraWP','Spexo', 'BellizaWP') ) ) {
+            if ( in_array($theme->name, array('SastraWP','Spexo', 'Belliza') ) || in_array($theme->parent_theme, array('SastraWP','Spexo', 'Belliza') ) ) {
                 return 'req-theme-inactive';
             }
         }

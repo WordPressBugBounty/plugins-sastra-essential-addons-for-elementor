@@ -39,7 +39,7 @@ require_once (TMPCODER_PLUGIN_DIR . 'inc/woocommerce/classes/add-remove-from-com
 require_once (TMPCODER_PLUGIN_DIR . 'inc/woocommerce/classes/compare-popup-action.php');
 require_once (TMPCODER_PLUGIN_DIR . 'inc/woocommerce/classes/update-mini-compare.php');
 
-if (defined('TMPCODER_CURRENT_THEME_NAME') && in_array(TMPCODER_CURRENT_THEME_NAME, array('SastraWP','Spexo', 'BellizaWP') ) ) {
+if (defined('TMPCODER_CURRENT_THEME_NAME') && in_array(TMPCODER_CURRENT_THEME_NAME, array('SastraWP','Spexo', 'Belliza') ) ) {
     require_once (TMPCODER_PLUGIN_DIR . 'inc/inline-css.php');
 }
 
@@ -47,7 +47,7 @@ if (class_exists('Elementor\Plugin')) {
     require_once (TMPCODER_PLUGIN_DIR . 'inc/admin/mega-menu.php');
     require_once (TMPCODER_PLUGIN_DIR . 'inc/admin/theme-builder.php');
     
-    if (defined('TMPCODER_CURRENT_THEME_NAME') && in_array(TMPCODER_CURRENT_THEME_NAME, array('SastraWP','Spexo', 'BellizaWP') ) ) {    
+    if (defined('TMPCODER_CURRENT_THEME_NAME') && in_array(TMPCODER_CURRENT_THEME_NAME, array('SastraWP','Spexo', 'Belliza') ) ) {    
         require_once (TMPCODER_PLUGIN_DIR . 'inc/admin/import/tmpcoder-plugin-demo-list.php');
     }
 
