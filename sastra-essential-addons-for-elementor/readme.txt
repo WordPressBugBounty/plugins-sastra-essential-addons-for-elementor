@@ -1,6 +1,6 @@
-=== Spexo Addons for Elementor - Free Addons, Widgets and Templates for Elementor ===
+=== Spexo Addons for Elementor - Free Addons, Widgets and Starter Templates for Elementor ===
 Contributors: templatescoderthemes, skywebtech
-Tags: elementor, elementor addons, elementor templates, elementor widgets, woocommerce elementor
+Tags: elementor, elementor addons, templates, elementor widgets, woocommerce elementor
 Stable tag: 1.0.30
 Requires at least: 5.0
 Tested up to: 6.9
@@ -237,7 +237,7 @@ Elementor Parallax Background effect creates depth. It offers a smooth scrolling
 ### Caldera Forms styler for Elementor
 [Caldera Forms Styler](https://spexoaddons.com/widgets/caldera-forms-styler-elementor/) customizes Caldera forms. You can adjust spacing and colors for better design. Caldera Forms Styler for Elementor allows you to customize Caldera Forms through Elementor.
 ### Templates & Themes for Elementor
-[Spexo Themes](https://spexoaddons.com/spexo-elementor-theme/) offer pre-built designs. These templates fit various industries. You can build professional sites fast. Templates & Themes collection offers pre-built, customizable starter templates for various industries. Whether you're building a personal blog, eCommerce store, or portfolio, these templates speed up development. Lightweight Starter sites can help you to create a professional website in minutes.
+[Spexo Themes](https://spexoaddons.com/spexo-elementor-theme/) offer pre-built designs. These templates fit various industries. You can build professional sites fast. Templates & Themes collection offers pre-built, customizable AI powered starter templates for various industries. Whether you're building a personal blog, eCommerce store, or portfolio, these templates speed up development. Lightweight Starter sites can help you to create a professional website in minutes.
 
 
 
