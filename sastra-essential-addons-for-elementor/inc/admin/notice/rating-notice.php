@@ -93,28 +93,28 @@ class TMPCODER_Rating_Notice {
             $plugin_info = get_plugin_data( TMPCODER_PLUGIN_FILE , true, true );
 
             $rating_notice = 
-                '<i class=" tmpcoder-rating-notice-dismiss tmpcoder-notice-banner-dismiss tmpcoder-upgrade-pro-notice-dismiss" role="button" aria-label="Dismiss this notice." tabindex="0"></i>
-                <div class="tmpcoder-notice-aside tmpcoder-upgrade-pro-notice-aside">
-                    <div class="tmpcoder-notice-icon-wrapper">
-                        <img src="'.esc_url(TMPCODER_ADDONS_ASSETS_URL.'images/logo-40x40.svg').'" width="24" height="24">
-                    </div>
-                </div>
-                <div class="tmpcoder-notice-content tmpcoder-upgrade-pro-notice-content">
-                    <h3>'.sprintf(
-                        /* translators: 1: Plugin Name. */
-                        esc_html__( '⭐ Enjoy %1$s? Rate Us!', 'sastra-essential-addons-for-elementor' ), esc_html( ucfirst(TMPCODER_PLUGIN_NAME) ) ).'</h3>
+            	'<i class=" tmpcoder-rating-notice-dismiss tmpcoder-notice-banner-dismiss tmpcoder-upgrade-pro-notice-dismiss" role="button" aria-label="Dismiss this notice." tabindex="0"></i>
+        		<div class="tmpcoder-notice-aside tmpcoder-upgrade-pro-notice-aside">
+					<div class="tmpcoder-notice-icon-wrapper">
+						<img src="'.esc_url(TMPCODER_ADDONS_ASSETS_URL.'images/logo-40x40.svg').'" width="24" height="24">
+					</div>
+				</div>
+				<div class="tmpcoder-notice-content tmpcoder-upgrade-pro-notice-content">
+					<h3>'.sprintf(
+						/* translators: 1: Plugin Name. */
+						esc_html__( '⭐ Enjoy %1$s? Rate Us!', 'sastra-essential-addons-for-elementor' ), esc_html( ucfirst(TMPCODER_PLUGIN_NAME) ) ).'</h3>
 
-                    <p>'.esc_html__( 'Could you please do us a BIG favor and give it a 5-star rating on WordPress? It really helps us grow and keep improving!.', 'sastra-essential-addons-for-elementor' ).'</p>
+					<p>'.esc_html__( 'Could you please do us a BIG favor and give it a 5-star rating on WordPress? It really helps us grow and keep improving!.', 'sastra-essential-addons-for-elementor' ).'</p>
 
-                    <div class="tmpcoder-notice-actions">
-                        '.sprintf( '<a href="%s" class="button button-primary tmpcoder-notice-button tmpcoder-rating-link tmpcoder-upgrade-pro-button" target="_blank">%s</a>', TMPCODER_RATING_LINK, esc_html__( 'OK, you deserve it', 'sastra-essential-addons-for-elementor' ) ).'
-                        <a class="tmpcoder-maybe-later"><span class="dashicons dashicons-clock"></span> '.esc_html__('Maybe Later', 'sastra-essential-addons-for-elementor').'</a>
-                        <a class="tmpcoder-already-rated"><span class="dashicons dashicons-yes"></span> '.esc_html__('I already did', 'sastra-essential-addons-for-elementor').'</a>
+					<div class="tmpcoder-notice-actions">
+						'.sprintf( '<a href="%s" class="button button-primary tmpcoder-notice-button tmpcoder-rating-link tmpcoder-upgrade-pro-button" target="_blank">%s</a>', TMPCODER_RATING_LINK, esc_html__( 'OK, you deserve it', 'sastra-essential-addons-for-elementor' ) ).'
+						<a class="tmpcoder-maybe-later"><span class="dashicons dashicons-clock"></span> '.esc_html__('Maybe Later', 'sastra-essential-addons-for-elementor').'</a>
+						<a class="tmpcoder-already-rated"><span class="dashicons dashicons-yes"></span> '.esc_html__('I already did', 'sastra-essential-addons-for-elementor').'</a>
                         <a href="' . esc_url(TMPCODER_NEED_HELP_URL) . '" target="_blank" class="tmpcoder-need-support"><span class="dashicons dashicons-sos"></span> '.esc_html__('Help me first', 'sastra-essential-addons-for-elementor').'</a>
-                    </div>
-                </div>';
+					</div>
+				</div>';
 
-                echo '<div class="notice-1 notice-info tmpcoder-rating-notice tmpcoder-upgrade-pro-notice tmpcoder-notice-banner tmpcoder-notice-banner-dismissible tmpcoder-notice-banner-extended">' . wp_kses_post($rating_notice) .'</div>';
+            	echo '<div class="notice-1 notice-info tmpcoder-rating-notice tmpcoder-upgrade-pro-notice tmpcoder-notice-banner tmpcoder-notice-banner-dismissible tmpcoder-notice-banner-extended">' . wp_kses_post($rating_notice) .'</div>';
         }
     }
 

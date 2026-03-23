@@ -444,6 +444,9 @@
 			}if (widget == 'woo-grid'){
 				widget =  'woo-commerce-product-grid-slider-carousel-widget';
 			}
+			if (widget == 'popup-trigger'){
+				widget =  'popup-builder';
+			}
 
 			var previewUrl = 'https://spexoaddons.com/widgets/'+prefix+widget+'?ref=tmpcoder-plugin-panel-'+widget;
 

@@ -1136,3 +1136,198 @@ input[type="number"]::-webkit-inner-spin-button {
 .elementor-widget:not(:last-child).elementor-widget__width-auto {
     margin-bottom: 0;
 }
+
+/* Popup Builder Styles */
+body:not(.elementor-editor-active) .tmpcoder-template-popup {
+    display: none;
+}
+
+.tmpcoder-template-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 99999999;
+}
+
+.tmpcoder-template-popup-inner {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+:has(#wpadminbar) .tmpcoder-template-popup-inner {
+    top: 32px !important;
+}
+
+.tmpcoder-popup-container {
+    position: relative;
+}
+
+.tmpcoder-popup-container-inner {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    overflow: hidden;
+    position: relative;
+    background: #ffffff;
+    box-sizing: border-box;
+}
+
+.tmpcoder-popup-container-inner>div {
+    width: 100%;
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+}
+
+.tmpcoder-popup-container>div {
+    width: 100%;
+}
+
+.tmpcoder-popup-image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #ffffff;
+}
+
+.tmpcoder-popup-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    background: rgba( 0, 0, 0, 0.7);
+}
+
+.tmpcoder-popup-close-btn {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 99;
+    text-align: center;
+    cursor: pointer;
+    transition-duration: 0.4s;
+}
+
+.tmpcoder-popup-notification.tmpcoder-template-popup,
+.tmpcoder-popup-notification .tmpcoder-template-popup-inner {
+    height: auto !important;
+}
+
+.tmpcoder-popup-notification .tmpcoder-popup-overlay {
+    display: none !important;
+}
+
+.tmpcoder-popup-container-inner.ps-container.ps-active-y>.ps-scrollbar-y-rail,
+.tmpcoder-popup-container-inner.ps.ps--active-y>.ps__rail-y {
+    display: block;
+    background-color: transparent;
+}
+
+.tmpcoder-popup-container-inner.ps-container>.ps-scrollbar-y-rail,
+.tmpcoder-popup-container-inner.ps>.ps__rail-y {
+    display: none;
+    position: absolute;
+    right: 3px;
+    width: 3px;
+}
+
+.tmpcoder-popup-container-inner.ps-container>.ps-scrollbar-y-rail>.ps-scrollbar-y,
+.tmpcoder-popup-container-inner.ps>.ps__rail-y>.ps__thumb-y {
+    position: absolute;
+    cursor: pointer;
+    right: 0;
+    width: 3px;
+}
+
+.tmpcoder-popup-container .ps-scrollbar-x-rail {
+    display: none !important;
+}
+
+.tmpcoder-popup-notification .tmpcoder-popup-container .slideInDown {
+    -webkit-animation-timing-function: linear;
+    animation-timing-function: linear;
+}
+
+.tmpcoder-popup-notification .tmpcoder-popup-container {
+    width: 100% !important;
+    -webkit-box-align: start !important;
+    -ms-flex-align: start !important;
+    align-items: flex-start !important;
+}
+
+.tmpcoder-popup-trigger-button {
+    display: inline-block;
+    font-size: 14px;
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    cursor: pointer;
+}
+
+.tmpcoder-popup-trigger-button svg {
+    display: unset;
+}
+
+
+/* Only For Editing */
+
+.tmpcoder-popup-container .elementor-editor-section-settings {
+    -webkit-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    transform: translateX(-50%);
+    border-radius: 0 0 5px 5px;
+}
+
+.tmpcoder-popup-container .elementor-editor-section-settings .elementor-editor-element-setting:first-child {
+    border-radius: 0 0 0 5px;
+}
+
+.tmpcoder-popup-container .elementor-editor-section-settings .elementor-editor-element-setting:first-child:before {
+    top: 0;
+    border-width: 0 12px 22px 0;
+}
+
+.tmpcoder-popup-container .elementor-editor-section-settings .elementor-editor-element-setting:last-child {
+    border-radius: 0 0 5px 0;
+}
+
+.tmpcoder-popup-container .elementor-editor-section-settings .elementor-editor-element-setting:last-child:after {
+    top: 0;
+    border-width: 0 0 22px 12px;
+}
+
+.elementor-editor-active [data-elementor-type="tmpcoder-popup"] .elementor-section-wrap:not(:empty)+#elementor-add-new-section,
+.elementor-editor-active [data-elementor-type="tmpcoder-popup"]:not(.elementor-edit-mode) {
+    display: none;
+}
+
+.elementor .elementor-widget-tmpcoder-popup-trigger .tmpcoder-popup-trigger-button {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.tmpcoder-forms-submit-justify .wpcf7-spinner {
+    margin: 0 auto;
+    display: none;
+}
+.tmpcoder-forms-submit-justify .submitting .wpcf7-spinner {
+    display: block;
+}
+.tmpcoder-template-popup .tmpcoder-popup-container {
+    max-height: calc(100vh - 50px);
+    /*max-width: calc(100% - 30px);*/
+    overflow: auto;
+}

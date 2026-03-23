@@ -272,8 +272,8 @@ class TMPCODER_Site_Logo extends Widget_Base {
 	 */
 	protected function register_site_logo_styling_controls() {
 
-		// Section: Request New Feature
-		tmpcoder_add_section_request_feature( $this, Controls_Manager::RAW_HTML, '' );
+		// Section: Help & Docs
+		tmpcoder_add_section_help_docs( $this, Controls_Manager::RAW_HTML, '' );
 
 		$this->start_controls_section(
 			'section_style_site_logo_image',

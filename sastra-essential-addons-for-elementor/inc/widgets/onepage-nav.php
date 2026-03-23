@@ -265,8 +265,8 @@ class TMPCODER_OnepageNav extends Widget_Base {
 		// Section: Settings ---------
 		$this->add_section_settings();
 
-		// Section: Request New Feature
-		tmpcoder_add_section_request_feature( $this, Controls_Manager::RAW_HTML, '' );
+		// Section: Help & Docs
+		tmpcoder_add_section_help_docs( $this, Controls_Manager::RAW_HTML, '' );
 
 		// Section: Pro Features
 		tmpcoder_pro_features_list_section( $this, '', Controls_Manager::RAW_HTML, 'onepage-nav', [

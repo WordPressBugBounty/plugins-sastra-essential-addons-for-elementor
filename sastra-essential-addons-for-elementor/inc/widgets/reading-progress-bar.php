@@ -187,8 +187,8 @@ class TMPCODER_Reading_Progress_Bar extends Widget_Base {
 
         $this->end_controls_section();
 
-		// Section: Request New Feature
-		tmpcoder_add_section_request_feature( $this, Controls_Manager::RAW_HTML, '' );
+		// Section: Help & Docs
+		tmpcoder_add_section_help_docs( $this, Controls_Manager::RAW_HTML, '' );
         
 	}
 

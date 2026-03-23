@@ -2642,6 +2642,9 @@ class TMPCODER_Media_Grid extends Widget_Base {
 
 		// $this->tmpcoder_pagination_tab_content();
 
+		// Section: Help & Docs
+		tmpcoder_add_section_help_docs( $this, Controls_Manager::RAW_HTML, '' );
+
 		// Styles ====================
 		// Section: Grid Item --------
 		$this->start_controls_section(

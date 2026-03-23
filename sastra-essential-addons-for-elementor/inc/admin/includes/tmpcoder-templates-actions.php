@@ -23,6 +23,9 @@ class TMPCODER_Templates_Actions {
 		// Import Library Template
 		add_action( 'wp_ajax_tmpcoder_import_library_template', [ $this, 'tmpcoder_import_library_template' ] );
 
+		// Import prebuilt popup/block into existing popup template (Popup Builder library step).
+		add_action( 'wp_ajax_tmpcoder_import_prebuilt_into_popup', [ $this, 'tmpcoder_import_prebuilt_into_popup' ] );
+
 		// Create Template
 		add_action( 'wp_ajax_tmpcoder_create_template', [ $this, 'tmpcoder_create_template' ] );
 
@@ -37,6 +40,12 @@ class TMPCODER_Templates_Actions {
 
 		// Register Elementor AJAX Actions
 		add_action( 'elementor/ajax/register_actions', [ $this, 'tmpcoder_register_elementor_ajax_actions' ] );
+
+		// Popup Builder: create popup template with conditions (combined flow).
+		add_action( 'wp_ajax_tmpcoder_create_popup_with_conditions', [ $this, 'tmpcoder_create_popup_with_conditions' ] );
+
+		// Popup Builder: get Display On conditions HTML for the Popup Setup modal (avoids conflict with Manage Conditions).
+		add_action( 'wp_ajax_tmpcoder_get_popup_setup_conditions', [ $this, 'tmpcoder_get_popup_setup_conditions' ] );
 	}
 
 	/**
@@ -68,6 +77,34 @@ class TMPCODER_Templates_Actions {
 	}
 
 	/**
+	 * Output Display On (target rules) HTML for the Popup Setup modal.
+	 * Uses a unique field name so it does not conflict with the Manage Conditions modal.
+	 */
+	public function tmpcoder_get_popup_setup_conditions() {
+
+		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'tmpcoder-plugin-options-js' ) || ! current_user_can( 'manage_options' ) ) {
+			exit;
+		}
+
+		if ( class_exists( 'TMPCODER_Target_Rules_Fields' ) ) {
+			TMPCODER_Target_Rules_Fields::get_instance()->admin_styles();
+			TMPCODER_Target_Rules_Fields::target_rule_settings_field(
+				// 'bsf-target-rules-location-popup-setup',
+				'bsf-target-rules-location',
+				array(
+					'title'          => __( 'Display Rules', 'sastra-essential-addons-for-elementor' ),
+					'value'          => '[{"type":"basic-global","specific":null}]',
+					'tags'           => 'site,enable,target,pages',
+					'rule_type'      => 'display',
+					'add_rule_label' => __( 'Add Display Rule', 'sastra-essential-addons-for-elementor' ),
+				),
+				null
+			);
+		}
+		exit();
+	}
+
+	/**
 	** Save Template Conditions
 	*/
 	public function tmpcoder_save_template_conditions() {
@@ -80,33 +117,40 @@ class TMPCODER_Templates_Actions {
 
 		$post_id = tmpcoder_get_template_id($template);
 
-        // Usage with $_POST
-        if ( isset($_POST['bsf-target-rules-location']) ){
-		    $sanitized_post = json_decode(sanitize_text_field(wp_unslash($_POST['bsf-target-rules-location'])) , true);
-            if ( empty($sanitized_post) ){
-                $sanitized_post = array();
-            }
-        }else{
-            $sanitized_post = array();
-        }
+		$sanitized_post = array();
+		if ( ! empty( $_POST['bsf-target-rules-location'] ) ) {
+			$decoded = json_decode( sanitize_text_field( wp_unslash( $_POST['bsf-target-rules-location'] ) ), true );
+			$sanitized_post = is_array( $decoded ) ? $decoded : array();
+		}
+		if ( ! empty( $sanitized_post['specific'] ) && is_array( $sanitized_post['specific'] ) ) {
+			$specificArr = array();
+			foreach ( $sanitized_post['specific'] as $value ) {
+				$specificArr = array_merge( $specificArr, is_array( $value ) ? $value : array( $value ) );
+			}
+			$sanitized_post['specific'] = array_filter( $specificArr );
+		}
 
-        if ( isset($sanitized_post['specific']) && !empty($sanitized_post['specific']) ){
-            $sanitized_post['specific'] = array_filter($sanitized_post['specific']);
-            if ( !empty($sanitized_post['specific']) ){
-                $specificArr = array();
-                foreach ($sanitized_post['specific'] as $key => $value) {
-                    $specificArr = array_merge($specificArr, $value);
-                }
-                $sanitized_post['specific'] = $specificArr;
-            }
-        }
+		$target_locations = TMPCODER_Target_Rules_Fields::get_format_rule_value(
+			array( 'bsf-target-rules-location' => $sanitized_post ),
+			'bsf-target-rules-location'
+		);
+		update_post_meta( $post_id, 'tmpcoder_target_include_locations', $target_locations );
 
-        $tmpcoder_target_rules_array = array();
-        $tmpcoder_target_rules_array['bsf-target-rules-location'] = $sanitized_post;
-
-		$target_locations = TMPCODER_Target_Rules_Fields::get_format_rule_value( $tmpcoder_target_rules_array, 'bsf-target-rules-location' );
-
-        update_post_meta( $post_id, 'tmpcoder_target_include_locations', $target_locations );
+		// Response for real-time list update (labels + active state).
+		if ( ! function_exists( 'tmpcoder_get_template_conditions_summary' ) ) {
+			require_once TMPCODER_PLUGIN_DIR . 'inc/admin/includes/tmpcoder-templates-loop.php';
+		}
+		$summary = tmpcoder_get_template_conditions_summary( $post_id );
+		wp_send_json_success(
+			array(
+				'conditions_summary' => $summary,
+				'is_active'          => ! empty( $summary['include'] ),
+				'labels'             => array(
+					'include' => __( 'Active Conditions:', 'sastra-essential-addons-for-elementor' ),
+					'exclude' => __( 'Condition Excluded:', 'sastra-essential-addons-for-elementor' ),
+				),
+			)
+		);
 	}
 
 	/**
@@ -131,7 +175,61 @@ class TMPCODER_Templates_Actions {
 			'code' => '03DE8-0CE62-C7A95-893AA-91A8F',
         ]);
         
-		echo wp_json_encode($data);
+		echo wp_json_encode( $data );
+	}
+
+	/**
+	 * Import a prebuilt popup or block into an existing popup template (used after "Save Conditions" in Popup Builder library step).
+	 */
+	public function tmpcoder_import_prebuilt_into_popup() {
+		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'tmpcoder-plugin-options-js' ) || ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( array( 'message' => __( 'Invalid request.', 'sastra-essential-addons-for-elementor' ) ) );
+		}
+
+		$post_id       = isset( $_POST['post_id'] ) ? absint( $_POST['post_id'] ) : 0;
+		$template_slug = isset( $_POST['template_slug'] ) ? sanitize_text_field( wp_unslash( $_POST['template_slug'] ) ) : '';
+		$kit_id        = isset( $_POST['kit'] ) ? sanitize_text_field( wp_unslash( $_POST['kit'] ) ) : '';
+		$section_slug  = isset( $_POST['section'] ) ? sanitize_text_field( wp_unslash( $_POST['section'] ) ) : '';
+
+		if ( ! $post_id || ! $template_slug ) {
+			wp_send_json_error( array( 'message' => __( 'Missing post ID or template slug.', 'sastra-essential-addons-for-elementor' ) ) );
+		}
+
+		$post = get_post( $post_id );
+		if ( ! $post || get_post_meta( $post_id, 'tmpcoder_template_type', true ) !== 'type_popup' ) {
+			wp_send_json_error( array( 'message' => __( 'Invalid popup template.', 'sastra-essential-addons-for-elementor' ) ) );
+		}
+
+		try {
+			$source = new TMPCODER_Library_Source();
+			$data   = $source->get_data(
+				array(
+					'template_id' => $template_slug,
+					'kit_id'      => $kit_id,
+					'section_id'  => $section_slug,
+					'code'        => '03DE8-0CE62-C7A95-893AA-91A8F',
+				)
+			);
+		} catch ( \Exception $e ) {
+			wp_send_json_error( array( 'message' => $e->getMessage() ) );
+		}
+
+		if ( empty( $data['content'] ) ) {
+			wp_send_json_error( array( 'message' => __( 'Template has no content.', 'sastra-essential-addons-for-elementor' ) ) );
+		}
+
+		// Store Elementor content and page settings on the popup post.
+		update_post_meta( $post_id, '_elementor_data', $data['content'] );
+
+		if ( ! empty( $data['page_settings'] ) && is_array( $data['page_settings'] ) ) {
+			update_post_meta( $post_id, '_elementor_page_settings', $data['page_settings'] );
+		}
+
+		wp_send_json_success(
+			array(
+				'redirect' => admin_url( 'post.php?post=' . $post_id . '&action=elementor' ),
+			)
+		);
 	}
 
 	/**
@@ -185,8 +283,9 @@ class TMPCODER_Templates_Actions {
 
 				wp_set_object_terms( $template_id, [$user_template_type, 'user'], 'tmpcoder_template_type' );
 
-				if ( 'popup' === sanitize_text_field(wp_unslash($_POST['user_template_type'])) ) {
-					update_post_meta( $template_id, '_elementor_template_type', 'tmpcoder-popups' );
+				if ( 'type_popup' === sanitize_text_field(wp_unslash($_POST['user_template_type'])) ) {
+					update_post_meta( $template_id, '_elementor_template_type', 'tmpcoder-popup' );
+					update_post_meta( $template_id, 'tmpcoder_template_type', 'type_popup' );
 				} else {
 					if ( 'type_header' === sanitize_text_field(wp_unslash($_POST['user_template_type'])) ) {
 						update_post_meta( $template_id, '_elementor_template_type', 'tmpcoder-theme-builder-header' );
@@ -212,6 +311,127 @@ class TMPCODER_Templates_Actions {
 			echo absint($template_id);
 		}
 
+		flush_rewrite_rules();
+	}
+
+	/**
+	 * Popup Builder: create popup template + save conditions + (optionally) import prebuilt.
+	 */
+	public function tmpcoder_create_popup_with_conditions() {
+		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'tmpcoder-plugin-options-js' ) || ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( array( 'message' => __( 'Invalid request.', 'sastra-essential-addons-for-elementor' ) ) );
+		}
+
+		$name = isset( $_POST['popup_name'] ) ? sanitize_text_field( wp_unslash( $_POST['popup_name'] ) ) : '';
+		if ( '' === $name ) {
+			wp_send_json_error( array( 'message' => __( 'Popup name is required.', 'sastra-essential-addons-for-elementor' ) ) );
+		}
+
+		$slug = isset( $_POST['popup_slug'] ) ? sanitize_title( wp_unslash( $_POST['popup_slug'] ) ) : sanitize_title( $name );
+
+		// Build conditions payload in the same format as tmpcoder_save_template_conditions (bsf-target-rules-location).
+		$sanitized_post = array();
+		if ( ! empty( $_POST['bsf-target-rules-location'] ) ) {
+			$decoded = json_decode( sanitize_text_field( wp_unslash( $_POST['bsf-target-rules-location'] ) ), true );
+			$sanitized_post = is_array( $decoded ) ? $decoded : array();
+		}
+		// Fallback: support legacy payload (conditions + specific as separate keys).
+		if ( empty( $sanitized_post['rule'] ) && ( isset( $_POST['conditions'] ) || isset( $_POST['specific'] ) ) ) {
+			$conditions_json = isset( $_POST['conditions'] ) ? wp_unslash( $_POST['conditions'] ) : '';
+			$specific_json   = isset( $_POST['specific'] ) ? wp_unslash( $_POST['specific'] ) : '';
+			$conditions      = json_decode( $conditions_json, true );
+			$specific        = json_decode( $specific_json, true );
+			if ( ! is_array( $conditions ) ) {
+				$conditions = array();
+			}
+			if ( ! is_array( $specific ) ) {
+				$specific = array();
+			}
+			// JS may send conditions as { slug: [ rule1, rule2 ] }; extract rule array.
+			if ( ! empty( $conditions ) && ! isset( $conditions[0] ) ) {
+				$rule_arr = reset( $conditions );
+				$conditions = is_array( $rule_arr ) ? $rule_arr : array();
+			}
+			$sanitized_post = array(
+				'rule'     => $conditions,
+				'specific' => $specific,
+			);
+		}
+
+		// Create popup template post.
+		$template_id = wp_insert_post(
+			array(
+				'post_type'   => TMPCODER_THEME_ADVANCED_HOOKS_POST_TYPE,
+				'post_title'  => $name,
+				'post_name'   => $slug,
+				'post_status' => 'publish',
+				'post_content'=> '',
+			)
+		);
+
+		if ( is_wp_error( $template_id ) || ! $template_id ) {
+			wp_send_json_error( array( 'message' => __( 'Failed to create popup.', 'sastra-essential-addons-for-elementor' ) ) );
+		}
+
+		// Set popup-specific meta and taxonomy, mirroring tmpcoder_create_template() for type_popup.
+		wp_set_object_terms( $template_id, array( 'type_popup', 'user' ), 'tmpcoder_template_type' );
+		update_post_meta( $template_id, '_elementor_template_type', 'tmpcoder-popup' );
+		update_post_meta( $template_id, 'tmpcoder_template_type', 'type_popup' );
+		update_post_meta( $template_id, '_wp_page_template', 'elementor_canvas' );
+
+		// Flatten and sanitize specific (same as tmpcoder_save_template_conditions).
+		if ( ! empty( $sanitized_post['specific'] ) && is_array( $sanitized_post['specific'] ) ) {
+			$specificArr = array();
+			foreach ( $sanitized_post['specific'] as $value ) {
+				$specificArr = array_merge( $specificArr, is_array( $value ) ? $value : array( $value ) );
+			}
+			$sanitized_post['specific'] = array_filter( $specificArr );
+		}
+
+		$target_locations = TMPCODER_Target_Rules_Fields::get_format_rule_value(
+			array( 'bsf-target-rules-location' => $sanitized_post ),
+			'bsf-target-rules-location'
+		);
+		update_post_meta( $template_id, 'tmpcoder_target_include_locations', $target_locations );
+
+		// Optionally import prebuilt content into this popup.
+		$prebuilt_slug   = isset( $_POST['prebuilt_full_slug'] ) ? sanitize_text_field( wp_unslash( $_POST['prebuilt_full_slug'] ) ) : '';
+		$prebuilt_kit    = isset( $_POST['prebuilt_kit'] ) ? sanitize_text_field( wp_unslash( $_POST['prebuilt_kit'] ) ) : '';
+		$prebuilt_section= isset( $_POST['prebuilt_section'] ) ? sanitize_text_field( wp_unslash( $_POST['prebuilt_section'] ) ) : '';
+
+		if ( $prebuilt_slug ) {
+			try {
+				$source = new TMPCODER_Library_Source();
+				$data   = $source->get_data(
+					array(
+						'template_id' => $prebuilt_slug,
+						'kit_id'      => $prebuilt_kit,
+						'section_id'  => $prebuilt_section,
+						'code'        => '03DE8-0CE62-C7A95-893AA-91A8F',
+					)
+				);
+
+				if ( ! empty( $data['content'] ) ) {
+					update_post_meta( $template_id, '_elementor_data', $data['content'] );
+				}
+
+				if ( ! empty( $data['page_settings'] ) && is_array( $data['page_settings'] ) ) {
+					update_post_meta( $template_id, '_elementor_page_settings', $data['page_settings'] );
+				}
+			} catch ( \Exception $e ) {
+				// Fail silently for import; the popup will still be created and usable.
+			}
+		}
+
+		$redirect = admin_url( 'post.php?post=' . $template_id . '&action=elementor' );
+
+		wp_send_json_success(
+			array(
+				'id'       => $template_id,
+				'redirect' => $redirect,
+			)
+		);
+		
 		flush_rewrite_rules();
 	}
 
@@ -297,12 +517,16 @@ class TMPCODER_Library_Source extends \Elementor\TemplateLibrary\Source_Base {
 		}
 
 		if ( '' !== $kit_id ) {
-			$url =  TMPCODER_DEMO_IMPORT_API . 'template-kit/'. $kit_id .'/';
-            
+			$url = TMPCODER_DEMO_IMPORT_API . 'template-kit/' . $kit_id . '/';
+
 		} elseif ( '' !== $section_id ) {
 			$url = TMPCODER_DEMO_IMPORT_API . 'prebuild-section/';
 		} else {
-			$url = TMPCODER_DEMO_IMPORT_API . 'prebuild-block/';
+			if ( strpos( $template_id, 'popup' ) !== false ) {
+				$url = TMPCODER_DEMO_IMPORT_API . 'prebuild-popup/';
+			} else {
+				$url = TMPCODER_DEMO_IMPORT_API . 'prebuild-block/';
+			}
 		}
 
 		$req_params = [];
@@ -319,6 +543,8 @@ class TMPCODER_Library_Source extends \Elementor\TemplateLibrary\Source_Base {
             'headers' => array( 'Referer' => site_url() ),
 		] );
 		
+		// echo $url . $template_id .'.json?='. $randomNum.$license_key_params;
+		// die();
 		return wp_remote_retrieve_body( $response );
 	}
 
@@ -385,6 +611,11 @@ class TMPCODER_Library_Source extends \Elementor\TemplateLibrary\Source_Base {
 		$data['content'] = $this->replace_elements_ids( $data['content'] );		
 		$data['content'] = $this->process_export_import_content( $data['content'], 'on_import' );
 
+		// Process page_settings so document images (e.g. popup_container_bg_image) are imported and linked.
+		if ( ! empty( $data['page_settings'] ) && is_array( $data['page_settings'] ) ) {
+			$data['page_settings'] = $this->process_page_settings_import_images( $data['page_settings'] );
+		}
+
 		// Enable Back
 		if ( 'on' === $parallax_bg ) {
 			update_option('tmpcoder-parallax-background', 'on');
@@ -394,5 +625,81 @@ class TMPCODER_Library_Source extends \Elementor\TemplateLibrary\Source_Base {
 		}
 
 		return $data;
+	}
+
+	/**
+	 * Recursively process page_settings and import any image objects (e.g. popup container background).
+	 * Replaces remote id/url with local attachment id/url so they display on the frontend.
+	 *
+	 * @param array $settings Page or document settings.
+	 * @return array Processed settings.
+	 */
+	protected function process_page_settings_import_images( array $settings ) {
+		foreach ( $settings as $key => $value ) {
+			if ( is_array( $value ) && $this->is_elementor_image_object( $value ) ) {
+				$imported = $this->import_image_from_url( isset( $value['url'] ) ? $value['url'] : '' );
+				if ( $imported ) {
+					$settings[ $key ] = array_merge( $value, $imported );
+				}
+			} elseif ( is_array( $value ) ) {
+				$settings[ $key ] = $this->process_page_settings_import_images( $value );
+			}
+		}
+		return $settings;
+	}
+
+	/**
+	 * Check if array is an Elementor image control value (has id and url).
+	 *
+	 * @param array $value Setting value.
+	 * @return bool
+	 */
+	protected function is_elementor_image_object( $value ) {
+		return isset( $value['url'] ) && ( isset( $value['id'] ) || array_key_exists( 'id', $value ) );
+	}
+
+	/**
+	 * Import image from URL and return Elementor-style image array with new id and url.
+	 *
+	 * @param string $url Image URL.
+	 * @return array|false New image array (id, url, etc.) or false on failure.
+	 */
+	protected function import_image_from_url( $url ) {
+		if ( empty( $url ) || ! function_exists( 'media_handle_sideload' ) ) {
+			return false;
+		}
+
+		require_once ABSPATH . 'wp-admin/includes/file.php';
+		require_once ABSPATH . 'wp-admin/includes/media.php';
+		require_once ABSPATH . 'wp-admin/includes/image.php';
+
+		$tmp = download_url( $url );
+		if ( is_wp_error( $tmp ) ) {
+			return false;
+		}
+
+		$file_array = array(
+			'name'     => wp_basename( $url ),
+			'tmp_name' => $tmp,
+		);
+
+		$new_id = media_handle_sideload( $file_array, 0 );
+		if ( is_wp_error( $new_id ) ) {
+			wp_delete_file( $file_array['tmp_name'] );
+			return false;
+		}
+
+		$new_url = wp_get_attachment_url( $new_id );
+		if ( ! $new_url ) {
+			return false;
+		}
+
+		return array(
+			'id'     => $new_id,
+			'url'    => $new_url,
+			'size'   => '',
+			'alt'    => '',
+			'source' => 'library',
+		);
 	}
 }

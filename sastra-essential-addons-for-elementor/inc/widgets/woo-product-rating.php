@@ -257,8 +257,8 @@ class TMPCODER_Product_Rating extends Widget_Base {
 
         $this->end_controls_section();
 
-        // Section: Request New Feature
-		tmpcoder_add_section_request_feature( $this, Controls_Manager::RAW_HTML, Controls_Manager::TAB_STYLE );
+        // Section: Help & Docs
+		tmpcoder_add_section_help_docs( $this, Controls_Manager::RAW_HTML, Controls_Manager::TAB_STYLE );
     }
     
     public function render_product_rating( $settings ) {

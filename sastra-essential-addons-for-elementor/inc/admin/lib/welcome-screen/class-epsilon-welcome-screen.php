@@ -389,7 +389,7 @@ class TMPCODER_Welcome_Screen {
 		}
 		
 		if (did_action( 'elementor/loaded' )) {
-			add_menu_page('Spexo Addons', 'Spexo Addons', 'manage_options', 'spexo-welcome',[$this,'render_welcome_screen'],TMPCODER_ADDONS_ASSETS_URL.'images/logo-icon.svg', 30 );
+			add_menu_page('Spexo Addons', 'Spexo Addons', 'manage_options', 'spexo-welcome',[$this,'render_welcome_screen'],TMPCODER_ADDONS_ASSETS_URL.'images/logo-icon.svg', 3 );
 		}
 	}
 

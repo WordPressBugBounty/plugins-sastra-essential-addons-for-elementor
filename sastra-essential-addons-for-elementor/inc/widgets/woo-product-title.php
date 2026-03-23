@@ -257,7 +257,7 @@ class TMPCODER_Woo_Product_Title extends Widget_Base {
 
 		$this->end_controls_section();
 
-		tmpcoder_add_section_request_feature( $this, Controls_Manager::RAW_HTML, '' );
+		tmpcoder_add_section_help_docs( $this, Controls_Manager::RAW_HTML, '' );
 	}
 
 	/**

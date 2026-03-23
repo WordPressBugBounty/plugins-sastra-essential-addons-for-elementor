@@ -1067,30 +1067,112 @@ if (!function_exists('tmpcoder_library_buttons')) {
 }
 
 /**
-** Request Feature Section
+** Get widget documentation URL from registration array (docs field = index 2)
+** Uses same source as widget settings page: TMPCODER_DOCUMENTATION_URL . $data[2]
 */
 
-if (!function_exists('tmpcoder_add_section_request_feature')) {
-	
-	function tmpcoder_add_section_request_feature( $module, $raw_html, $tab ) {
-		$module->start_controls_section(
-			'section_request_new_feature',
+if ( ! function_exists( 'tmpcoder_get_widget_docs_url' ) ) {
+
+	function tmpcoder_get_widget_docs_url( $widget ) {
+		if ( ! is_object( $widget ) || ! method_exists( $widget, 'get_name' ) ) {
+			return defined( 'TMPCODER_DOCUMENTATION_URL' ) ? TMPCODER_DOCUMENTATION_URL : '#';
+		}
+
+		$widget_name = $widget->get_name();
+		$base_url   = defined( 'TMPCODER_DOCUMENTATION_URL' ) ? TMPCODER_DOCUMENTATION_URL : '#';
+
+		// Widgets whose get_name() does not match registration slug (tmpcoder-{data[0]}); map get_name() -> docs slug.
+		$widget_docs_slug_map = [
+			'site-logo'                      => 'site-logo',
+			'tmpcoder-post-media'            => 'post-thumbnail',
+			'tmpcoder-woo-product-title'     => 'product-title',
+			'tmpcoder-woo-product-price'     => 'product-price',
+			'tmpcoder-woo-add-to-cart'       => 'product-add-to-cart',
+			'tmpcoder-woo-short-description' => 'product-excerpt',
+			'tmpcoder-woo-product-content'   => 'product-content',
+			'tmpcoder-my-account-pro'        => 'my-account-page',
+			'tmpcoder_breadcrumb'            => 'breadcrumb',
+		];
+		if ( isset( $widget_docs_slug_map[ $widget_name ] ) ) {
+			return esc_url( $base_url . $widget_docs_slug_map[ $widget_name ] );
+		}
+
+		$all_widgets = function_exists( 'tmpcoder_get_all_widgtes' ) ? tmpcoder_get_all_widgtes() : [];
+
+		if ( function_exists( 'tmpcoder_is_availble' ) && tmpcoder_is_availble() ) {
+			if ( function_exists( 'tmpcoder_get_all_pro_widgtes' ) ) {
+				$all_widgets = array_merge( $all_widgets, tmpcoder_get_all_pro_widgtes() );
+			}
+		}
+
+		foreach ( $all_widgets as $data ) {
+			if ( ! is_array( $data ) || empty( $data[0] ) ) {
+				continue;
+			}
+			$expected_name     = 'tmpcoder-' . $data[0];
+			$expected_name_alt = 'tmpcoder-' . str_replace( '-pro', '', $data[0] );
+			if ( $expected_name === $widget_name || $expected_name_alt === $widget_name ) {
+				$docs_slug = isset( $data[2] ) && '' !== $data[2] ? $data[2] : $data[0];
+				return esc_url( $base_url . $docs_slug );
+			}
+		}
+
+		return $base_url;
+	}
+}
+
+/**
+** Help & Docs Section (Documentation + Request Feature)
+*/
+
+if ( ! function_exists( 'tmpcoder_add_section_help_docs' ) ) {
+
+	function tmpcoder_add_section_help_docs( $widget_instance, $control_type, $additional_args = '' ) {
+		if ( is_array( $additional_args ) && isset( $additional_args['tab'] ) ) {
+			$tab = $additional_args['tab'];
+		} elseif ( ! empty( $additional_args ) && is_string( $additional_args ) ) {
+			$tab = $additional_args;
+		} else {
+			$tab = '';
+		}
+
+		$widget_instance->start_controls_section(
+			'section_help_docs',
 			[
-				'label' => __( 'Request Feature', 'sastra-essential-addons-for-elementor' ),
-				'tab' => $tab,
+				'label' => __( 'Help & Docs', 'sastra-essential-addons-for-elementor' ),
+				'tab'   => $tab,
 			]
 		);
 
-		$module->add_control(
+		$docs_url = function_exists( 'tmpcoder_get_widget_docs_url' ) ? tmpcoder_get_widget_docs_url( $widget_instance ) : '#';
+
+		$widget_instance->add_control(
+			'help_docs_documentation',
+			[
+				'type'      => $control_type,
+				'raw'       => '<div class="tmpcoder-help-docs-block">'
+							. '<span class="tmpcoder-help-docs-icon dashicons dashicons-book"></span>'
+							. '<p class="tmpcoder-help-docs-text"><strong>'
+							. esc_html__( 'Quickly learn', 'sastra-essential-addons-for-elementor' )
+							. '</strong> '
+							. esc_html__( 'to use this widget by', 'sastra-essential-addons-for-elementor' )
+							. ' <a href="' . esc_url( $docs_url ) . '" target="_blank" class="tmpcoder-help-docs-link">'
+							. esc_html__( 'viewing the documentation.', 'sastra-essential-addons-for-elementor' )
+							. '</a></p></div>',
+				'separator' => 'none',
+			]
+		);
+
+		$widget_instance->add_control(
 			'request_new_feature',
 			[
-				'type' => $raw_html,
+				'type'    => $control_type,
 				/* Translators: %s is the plugin name. */
-				'raw' => sprintf(__( 'Missing an Option, have a New Widget or any kind of Feature Idea? Please share it with us and lets discuss. <a href="%s" target="_blank">Request New Feature <span class="dashicons dashicons-star-empty"></span></a>', 'sastra-essential-addons-for-elementor' ), TMPCODER_REQUEST_NEW_FEATURE_URL)
+				'raw'     => sprintf( __( 'Missing an Option, have a New Widget or any kind of Feature Idea? Please share it with us and lets discuss. <a href="%s" target="_blank">Request New Feature <span class="dashicons dashicons-star-empty"></span></a>', 'sastra-essential-addons-for-elementor' ), TMPCODER_REQUEST_NEW_FEATURE_URL ),
 			]
 		);
 
-		$module->end_controls_section(); // End Controls Section
+		$widget_instance->end_controls_section(); // End Controls Section
 	}
 }
 
@@ -1110,7 +1192,7 @@ if (!function_exists('tmpcoder_upgrade_pro_notice')) {
 		$module->add_control(
             $option .'_pro_notice',
             [
-				'raw' => 'This option is available<br> in the <strong><a href="'. $url .'" target="_blank">Pro version</a></strong> and above.',
+				'raw' => '<div class="elementor-panel-alert elementor-panel-alert-info"> This option is available<br> in the <strong><a href="'. $url .'" target="_blank">Pro version</a></strong> and above.</div>',
 				'type' => $controls_manager,
 				'content_classes' => 'tmpcoder-pro-notice',
 				'condition' => [
@@ -1486,6 +1568,7 @@ if (!function_exists('tmpcoder_get_registered_modules')) {
 			'Archive List' => ['archive-list', '', 'archive-list', 'new','archive-list.php','TMPCODER_Archive_List','page-list.svg'],
             'Recent Post List' => ['recent-post-list', 'recent-post-list', 'recent-post-list', 'new','recent-post-list.php','TMPCODER_Post_List','page-list.svg'],
             'Global Template' => ['elementor-template', '', 'global-templates', 'new','elementor-template.php','TMPCODER_Elementor_Template','elementor-template.svg'],
+            'Popup Trigger' => ['popup-trigger', 'popup-trigger', 'popup-trigger', 'new','popup-trigger.php','TMPCODER_Popup_Trigger','button.svg'],
 		];
 	}
 }
@@ -3146,6 +3229,13 @@ if ( ! function_exists( 'tmpcoder_get_admin_header_tabs' ) ) {
 				'url'   => tmpcoder_generate_admin_url( 'site-builder' ),
 				'label' => __( 'Site Builder', 'sastra-essential-addons-for-elementor' ),
 				'path'  => TMPCODER_PLUGIN_DIR . '/inc/admin/lib/welcome-screen/sections/site-builder.php',
+			),
+			'popup-builder' => array(
+				'id'    => 'popup-builder',
+				'icon'  => 'multitask.svg',
+				'url'   => tmpcoder_generate_admin_url( 'popup-builder' ),
+				'label' => __( 'Popup Builder', 'sastra-essential-addons-for-elementor' ),
+				'path'  => TMPCODER_PLUGIN_DIR . '/inc/admin/lib/welcome-screen/sections/popup-builder.php',
 			),
 			'widgets' => array(
 				'id'    => 'widgets',

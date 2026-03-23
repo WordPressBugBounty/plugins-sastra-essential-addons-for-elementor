@@ -161,12 +161,10 @@ class TMPCODER_Templates_Library_Blocks {
 					}
 
 					?>
-					<div class="tmpcoder-tplib-template-wrap<?php echo esc_attr($template_class); ?>" data-title="<?php echo esc_attr(strtolower($data_template_title)); ?>">
+					<div class="tmpcoder-tplib-template-wrap<?php echo esc_attr($template_class); ?>" data-title="<?php echo esc_attr(strtolower($data_template_title)); ?>" data-macy-complete="1">
 						<div class="tmpcoder-tplib-template" data-slug="<?php echo esc_attr($template_slug); ?>" data-filter="<?php echo esc_attr($module_slug); ?>" data-sub-filter="<?php echo esc_attr($template_sub); ?>" data-preview-type="<?php echo esc_attr($preview_type); ?>" data-preview-url="<?php echo esc_attr($preview_url); ?>">
 							<div class="tmpcoder-tplib-template-media">
-
 								<img class="tmpcoder-lazyload-image" src="<?php echo esc_url(TMPCODER_ADDONS_ASSETS_URL.'images/lazy-loader.gif'); ?>" data-src="<?php echo esc_url($template_slug_for_image); ?>" data-lazy-load />
-								
 								<div class="tmpcoder-tplib-template-media-overlay">
 									<i class="eicon-eye"></i>
 								</div>

@@ -792,6 +792,9 @@ class TMPCODER_Testimonial_Carousel extends Widget_Base {
 
 		$this->end_controls_section(); // End Controls Section
 
+		// Section: Help & Docs
+		tmpcoder_add_section_help_docs( $this, Controls_Manager::RAW_HTML, '' );
+
 		// Styles
 		// Section: General ----------
 		$this->start_controls_section(

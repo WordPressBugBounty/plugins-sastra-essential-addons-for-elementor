@@ -172,7 +172,7 @@ if ( !class_exists('TemplatesWidgetRegister') ){
 
             $screen = get_current_screen();
 
-            if ( strpos($hook, TMPCODER_THEME.'-premade-blocks') || strpos($hook, 'spexo-welcome') ) {
+            if ( strpos($hook, TMPCODER_THEME.'-premade-blocks') || strpos($hook, 'spexo-welcome') || strpos($hook, 'spexo-popup-builder') ) {
                 wp_enqueue_style( 'tmpcoder-premade-blocks-css', TMPCODER_PLUGIN_URI .'assets/css/admin/premade-blocks'.tmpcoder_script_suffix().'.css', [], tmpcoder_get_plugin_version() );
                 wp_enqueue_script( 'tmpcoder-macy-js', TMPCODER_PLUGIN_URI .'assets/js/lib/macy/macy'.tmpcoder_script_suffix().'.js', ['jquery'], tmpcoder_get_plugin_version(), false );
                 wp_enqueue_script( 'tmpcoder-premade-blocks-js', TMPCODER_PLUGIN_URI .'assets/js/admin/premade-blocks'.tmpcoder_script_suffix().'.js', ['jquery'], tmpcoder_get_plugin_version(), false );
@@ -189,7 +189,7 @@ if ( !class_exists('TemplatesWidgetRegister') ){
                 ]
             );
               
-              if ( strpos($hook, 'sastra-theme-builder') || strpos($hook, 'spexo-welcome') ) {
+              if ( strpos($hook, 'sastra-theme-builder') || strpos($hook, 'spexo-welcome') || strpos($hook, 'spexo-popup-builder') ) {
                          
                 // enqueue CSS
                 wp_enqueue_style( 'tmpcoder-plugin-options-css', TMPCODER_PLUGIN_URI .'assets/css/admin/plugin-options'.tmpcoder_script_suffix().'.css', [], tmpcoder_get_plugin_version() );

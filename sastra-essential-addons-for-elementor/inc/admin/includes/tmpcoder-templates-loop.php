@@ -7,6 +7,52 @@ if ( ! defined( 'ABSPATH' ) ) {
 require_once TMPCODER_PLUGIN_DIR . 'inc/header-footer-helper/tmpcoder-plugin-advanced-hooks-loader.php';
 
 /**
+ * Human-readable display conditions (include/exclude) for list view.
+ *
+ * @param int $post_id Template post ID.
+ * @return array{ 'include' => string[], 'exclude' => string[] }
+ */
+function tmpcoder_get_template_conditions_summary( $post_id ) {
+	$out = array( 'include' => array(), 'exclude' => array() );
+	if ( ! class_exists( 'TMPCODER_Target_Rules_Fields' ) ) {
+		return $out;
+	}
+	$post_id = (int) $post_id;
+
+	foreach ( array( 'include' => 'tmpcoder_target_include_locations', 'exclude' => 'tmpcoder_target_exclude_locations' ) as $key => $meta_key ) {
+		$locations = get_post_meta( $post_id, $meta_key, true );
+		if ( empty( $locations ) || ! is_array( $locations ) ) {
+			continue;
+		}
+		$labels = array();
+		$rule   = isset( $locations['rule'] ) ? $locations['rule'] : array();
+		$idx    = array_search( 'specifics', $rule, true );
+		if ( false !== $idx ) {
+			unset( $rule[ $idx ] );
+		}
+		foreach ( $rule as $loc_key ) {
+			if ( (string) $loc_key === '' ) {
+				continue;
+			}
+			$label = TMPCODER_Target_Rules_Fields::get_location_by_key( $loc_key );
+			if ( $label ) {
+				$labels[] = $label;
+			}
+		}
+		if ( isset( $locations['specific'] ) && is_array( $locations['specific'] ) ) {
+			foreach ( $locations['specific'] as $loc_key ) {
+				$label = TMPCODER_Target_Rules_Fields::get_location_by_key( $loc_key );
+				if ( $label ) {
+					$labels[] = $label;
+				}
+			}
+		}
+		$out[ $key ] = array_filter( $labels );
+	}
+	return $out;
+}
+
+/**
 ** TMPCODER_Templates_Loop setup
 */
 class TMPCODER_Templates_Loop {
@@ -15,20 +61,18 @@ class TMPCODER_Templates_Loop {
 	** Loop Through Custom Templates
 	*/
 	public static function render_theme_builder_templates( $template ) {
-		// WP_Query arguments
-		$args = array (
-			'post_type'   => array( TMPCODER_THEME_ADVANCED_HOOKS_POST_TYPE ),
-			'post_status' => array( 'publish' ),
+		$args = array(
+			'post_type'      => array( TMPCODER_THEME_ADVANCED_HOOKS_POST_TYPE ),
+			'post_status'    => array( 'publish' ),
 			'posts_per_page' => -1,
-			'meta_key' => 'tmpcoder_template_type',
-    		'meta_value' => $template,
-            'meta_compare' => '=', // Use '=' for exact match
+			'meta_key'       => 'tmpcoder_template_type',
+			'meta_value'     => $template,
+			'meta_compare'   => '=',
+			'orderby'        => 'date',
+			'order'          => 'DESC',
 		);
-
-		// The Query
 		$user_templates = get_posts( $args );
 
-		// The Loop
 		echo '<ul class="tmpcoder-'. esc_attr($template) .'-templates-list tmpcoder-my-templates-list" data-pro="'. esc_attr(tmpcoder_is_availble()) .'">';
 
 			if ( ! empty( $user_templates ) ) {
@@ -40,31 +84,61 @@ class TMPCODER_Templates_Loop {
 						continue;
 					}
 
-					$conditions2 = get_post_meta($user_template->ID, 'tmpcoder_target_include_locations',true);
-
-                    $conditions = isset($conditions2['rule']) ? wp_json_encode(array_values($conditions2['rule'])) : '';
-                    $specific_conditions = isset($conditions2['specific']) ? wp_json_encode($conditions2['specific']) : '';
+					$include_locations = get_post_meta( $user_template->ID, 'tmpcoder_target_include_locations', true );
+					$conditions        = isset( $include_locations['rule'] ) ? wp_json_encode( array_values( $include_locations['rule'] ) ) : '';
+					$specific_conditions = isset( $include_locations['specific'] ) ? wp_json_encode( $include_locations['specific'] ) : '';
 
 
 					$edit_url = str_replace( 'edit', 'elementor', get_edit_post_link( $user_template->ID ) );
 					$show_on_canvas = get_post_meta(tmpcoder_get_template_id($slug), 'tmpcoder_'. $template .'_show_on_canvas', true);
 
-					echo '<li>';
-				        echo '<h3 class="tmpcoder-title">'. esc_html($user_template->post_title) .'</h3>';
+					$conditions_summary = tmpcoder_get_template_conditions_summary( $user_template->ID );
+					$is_active          = ! empty( $conditions_summary['include'] );
+					$li_class           = 'tmpcoder-template-item' . ( $is_active ? ' tmpcoder-template-active' : '' );
 
-				        echo '<div class="tmpcoder-action-buttons">';
-							// Activate
-							echo '<span data-id="'.esc_attr($user_template->ID).'" id="current-layout-'.esc_attr($user_template->ID).'" class="tmpcoder-template-conditions button button-primary" data-conditions="'.esc_attr($conditions).'" data-specific="'.esc_attr($specific_conditions).'" data-slug="'. esc_attr($slug) .'" data-show-on-canvas="'. esc_attr($show_on_canvas) .'">'. esc_html__( 'Manage Conditions', 'sastra-essential-addons-for-elementor' ) .'</span>';
-							// Edit
-							echo '<a href="'. esc_url($edit_url) .'" class="tmpcoder-edit-template button button-primary">'. esc_html__( 'Edit Template', 'sastra-essential-addons-for-elementor' ) .'</a>';
+					echo '<li class="' . esc_attr( $li_class ) . '">';
+					echo '<div class="tmpcoder-template-card-inner">';
 
-							// Delete
-							$one_time_nonce = wp_create_nonce( 'delete_post-' . $slug );
+					// Left column: title + condition notes + inactive note.
+					echo '<div class="tmpcoder-template-card-text">';
+					echo '<div class="tmpcoder-template-title-row">';
+					echo '<h3 class="tmpcoder-title">' . esc_html( $user_template->post_title ) . '</h3>';
+					if ( ! $is_active ) {
+						echo '<span class="tmpcoder-template-draft-tag">' . esc_html__( 'Draft', 'sastra-essential-addons-for-elementor' ) . '</span>';
+					}
+					echo '</div>'; // .tmpcoder-template-title-row
 
-							echo '<span class="tmpcoder-delete-template button button-primary"  data-nonce="'. esc_attr($one_time_nonce) .'" data-slug="'. esc_attr($slug) .'" data-warning="'. esc_html__( 'Are you sure you want to delete this template?', 'sastra-essential-addons-for-elementor' ) .'"><span class="dashicons dashicons-trash"></span></span>';
+					if ( ! empty( $conditions_summary['include'] ) || ! empty( $conditions_summary['exclude'] ) ) {
+						$include_labels = $conditions_summary['include'];
+						$exclude_labels = $conditions_summary['exclude'];
 
+						if ( ! empty( $include_labels ) ) {
+							echo '<p class="tmpcoder-conditions-note">' . esc_html__( 'Active Conditions:', 'sastra-essential-addons-for-elementor' ) . ' <strong>' . esc_html( implode( ', ', $include_labels ) ) . '</strong></p>';
+						}
 
-				        echo '</div>';
+						if ( ! empty( $exclude_labels ) ) {
+							echo '<p class="tmpcoder-conditions-note">' . esc_html__( 'Condition Excluded:', 'sastra-essential-addons-for-elementor' ) . ' <strong>' . esc_html( implode( ', ', $exclude_labels ) ) . '</strong></p>';
+						}
+					}
+
+					if ( ! $is_active ) {
+						echo '<p class="tmpcoder-conditions-note tmpcoder-inactive-label">' . esc_html__( 'Inactive Template', 'sastra-essential-addons-for-elementor' ) . '</p>';
+					}
+
+					echo '</div>'; // .tmpcoder-template-card-text
+
+					// Right column: existing action buttons (position and structure unchanged).
+					echo '<div class="tmpcoder-action-buttons">';
+					// Manage Conditions
+					echo '<span data-id="' . esc_attr( $user_template->ID ) . '" id="current-layout-' . esc_attr( $user_template->ID ) . '" class="tmpcoder-template-conditions button button-primary" data-conditions="' . esc_attr( $conditions ) . '" data-specific="' . esc_attr( $specific_conditions ) . '" data-slug="' . esc_attr( $slug ) . '" data-show-on-canvas="' . esc_attr( $show_on_canvas ) . '">' . esc_html__( 'Manage Conditions', 'sastra-essential-addons-for-elementor' ) . '</span>';
+					// Edit
+					echo '<a href="' . esc_url( $edit_url ) . '" class="tmpcoder-edit-template button button-primary">' . esc_html__( 'Edit Template', 'sastra-essential-addons-for-elementor' ) . '</a>';
+					// Delete
+					$one_time_nonce = wp_create_nonce( 'delete_post-' . $slug );
+					echo '<span class="tmpcoder-delete-template button button-primary"  data-nonce="' . esc_attr( $one_time_nonce ) . '" data-slug="' . esc_attr( $slug ) . '" data-warning="' . esc_html__( 'Are you sure you want to delete this template?', 'sastra-essential-addons-for-elementor' ) . '"><span class="dashicons dashicons-trash"></span></span>';
+					echo '</div>'; // .tmpcoder-action-buttons
+
+					echo '</div>'; // .tmpcoder-template-card-inner
 					echo '</li>';
 				}
 			} else {
@@ -130,11 +204,19 @@ class TMPCODER_Templates_Loop {
 
 	/**
 	** Render Conditions Popup
+	*
+	* @param bool   $canvas            Whether canvas mode.
+	* @param int|false $template_id    Optional template post ID.
+	* @param string|null $force_layout_type Optional. When set (e.g. 'type_popup' on Popup Builder page), used as active_tab instead of $_GET['layout_type'].
 	*/
-	public static function render_conditions_popup( $canvas = false, $template_id= false ) {
+	public static function render_conditions_popup( $canvas = false, $template_id = false, $force_layout_type = null ) {
 
 		// Active Tab
-		$active_tab = isset( $_GET['layout_type'] ) ? sanitize_text_field( wp_unslash( $_GET['layout_type'] ) ) : 'type_header';// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if ( null !== $force_layout_type && '' !== $force_layout_type ) {
+			$active_tab = $force_layout_type;
+		} else {
+			$active_tab = isset( $_GET['layout_type'] ) ? sanitize_text_field( wp_unslash( $_GET['layout_type'] ) ) : 'type_header';// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		}
 
 		$post_id = tmpcoder_get_post_id_by_meta_key_and_meta_value('tmpcoder_template_type', $active_tab);
 

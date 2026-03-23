@@ -175,6 +175,9 @@ class TMPCODER_Archive_List extends Widget_Base {
 
         $this->end_controls_section();
 
+		// Section: Help & Docs
+		tmpcoder_add_section_help_docs( $this, Controls_Manager::RAW_HTML, '' );
+
 		// Styles ====================
 		// Section: Archive Style ---
 		$this->start_controls_section(

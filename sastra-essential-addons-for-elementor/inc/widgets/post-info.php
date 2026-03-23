@@ -399,8 +399,8 @@ class TMPCODER_Post_Info extends Widget_Base {
 
 		$this->end_controls_section();
 
-		// Section: Request New Feature
-		tmpcoder_add_section_request_feature( $this, Controls_Manager::RAW_HTML, '' );
+		// Section: Help & Docs
+		tmpcoder_add_section_help_docs( $this, Controls_Manager::RAW_HTML, '' );
 
 		// Section: Pro Features
 		tmpcoder_pro_features_list_section( $this, '', Controls_Manager::RAW_HTML, 'post-info', [

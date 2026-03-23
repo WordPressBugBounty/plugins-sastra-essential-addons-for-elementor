@@ -200,6 +200,21 @@ class TMPCODER_Target_Rules_Fields {
 			),
 		);
 
+		// When Spexo Addons Pro is active, strip the " (Pro)" suffix from labels.
+		// This keeps logic and access control unchanged and only corrects UI text dynamically.
+		if ( function_exists( 'tmpcoder_is_availble' ) && tmpcoder_is_availble() ) {
+			foreach ( $selection_options as $group_key => $group ) {
+				if ( ! isset( $group['value'] ) || ! is_array( $group['value'] ) ) {
+					continue;
+				}
+				foreach ( $group['value'] as $value_key => $label ) {
+					if ( is_string( $label ) && false !== strpos( $label, '(Pro)' ) ) {
+						$selection_options[ $group_key ]['value'][ $value_key ] = str_replace( ' (Pro)', '', $label );
+					}
+				}
+			}
+		}
+
 		/**
 		 * Filter options displayed in the display conditions select field of Display conditions.
 		 *
@@ -246,26 +261,69 @@ class TMPCODER_Target_Rules_Fields {
 	}
 
 	/**
+	 * Fallback labels for known condition keys so first-view display is always readable.
+	 * Used when the key is not found in location selection (e.g. load order or filters).
+	 * Pro suffix is stripped when Pro plugin is active.
+	 *
+	 * @return array<string, string>
+	 */
+	private static function get_location_label_fallbacks() {
+		$pro_suffix = ( function_exists( 'tmpcoder_is_availble' ) && tmpcoder_is_availble() ) ? '' : ' (Pro)';
+		return array(
+			'basic-global'      => __( 'Entire Website', 'sastra-essential-addons-for-elementor' ),
+			'basic-singulars'   => __( 'All Singulars', 'sastra-essential-addons-for-elementor' ) . $pro_suffix,
+			'basic-archives'    => __( 'All Archives', 'sastra-essential-addons-for-elementor' ) . $pro_suffix,
+			'special-404'       => __( '404 Page', 'sastra-essential-addons-for-elementor' ) . $pro_suffix,
+			'special-search'    => __( 'Search Page', 'sastra-essential-addons-for-elementor' ) . $pro_suffix,
+			'special-blog'      => __( 'Blog / Posts Page', 'sastra-essential-addons-for-elementor' ) . $pro_suffix,
+			'special-front'     => __( 'Front Page', 'sastra-essential-addons-for-elementor' ) . $pro_suffix,
+			'special-date'      => __( 'Date Archive', 'sastra-essential-addons-for-elementor' ) . $pro_suffix,
+			'special-author'    => __( 'Author Archive', 'sastra-essential-addons-for-elementor' ) . $pro_suffix,
+			'special-woo-shop'  => __( 'WooCommerce Shop Page', 'sastra-essential-addons-for-elementor' ) . $pro_suffix,
+			'specifics'        => __( 'Specific Pages / Posts / Taxonomies, etc.', 'sastra-essential-addons-for-elementor' ) . $pro_suffix,
+		);
+	}
+
+	/**
 	 * Get location label by key.
 	 *
 	 * @param string $key Location option key.
 	 * @return string
 	 */
 	public static function get_location_by_key( $key ) {
+		$key = is_string( $key ) ? trim( $key ) : (string) $key;
+		if ( $key === '' ) {
+			return '';
+		}
+
+		// Stored keys may end with '-pro' when Pro was inactive at save; look up without suffix for label.
+		$lookup_key = ( substr( $key, -4 ) === '-pro' ) ? substr( $key, 0, -4 ) : $key;
+
 		if ( ! isset( self::$location_selection ) || empty( self::$location_selection ) ) {
 			self::$location_selection = self::get_location_selections();
 		}
 		$location_selection = self::$location_selection;
 
 		foreach ( $location_selection as $location_grp ) {
-			if ( isset( $location_grp['value'][ $key ] ) ) {
-				return $location_grp['value'][ $key ];
+			$values = isset( $location_grp['value'] ) ? $location_grp['value'] : array();
+			$label  = null;
+			if ( isset( $values[ $lookup_key ] ) && $values[ $lookup_key ] !== '' ) {
+				$label = $values[ $lookup_key ];
+			} elseif ( isset( $values[ $key ] ) && $values[ $key ] !== '' ) {
+				$label = $values[ $key ];
+			}
+			if ( is_string( $label ) ) {
+				if ( function_exists( 'tmpcoder_is_availble' ) && tmpcoder_is_availble() ) {
+					$label = str_replace( ' (Pro)', '', $label );
+				}
+				return $label;
 			}
 		}
 
 		if ( strpos( $key, 'post-' ) !== false ) {
 			$post_id = (int) str_replace( 'post-', '', $key );
-			return get_the_title( $post_id );
+			$title  = get_the_title( $post_id );
+			return $title ? $title : $key;
 		}
 
 		// taxonomy options.
@@ -276,12 +334,61 @@ class TMPCODER_Target_Rules_Fields {
 			if ( ! is_wp_error( $term ) ) {
 				$term_taxonomy = ucfirst( str_replace( '_', ' ', $term->taxonomy ) );
 				return $term->name . ' - ' . $term_taxonomy;
-			} else {
-				return '';
+			}
+			return '';
+		}
+
+		// Ensure first view always shows a readable label for known keys (no raw slugs).
+		$fallbacks = self::get_location_label_fallbacks();
+		if ( isset( $fallbacks[ $lookup_key ] ) ) {
+			return $fallbacks[ $lookup_key ];
+		}
+		if ( isset( $fallbacks[ $key ] ) ) {
+			return $fallbacks[ $key ];
+		}
+
+		// Path-style keys (e.g. post|all|archive, post|all|taxarchive|category): build label for real-time display.
+		if ( strpos( $lookup_key, '|' ) !== false ) {
+			$path_label = self::get_location_label_from_path( $lookup_key );
+			if ( $path_label !== '' ) {
+				return $path_label;
 			}
 		}
 
 		return $key;
+	}
+
+	/**
+	 * Build a human-readable label from a path-style location key (e.g. post|all|archive).
+	 * Ensures real-time condition labels display correctly without page refresh.
+	 *
+	 * @param string $key Key such as "post|all", "post|all|archive", "post|all|taxarchive|category".
+	 * @return string Empty if not a path key or cannot resolve; otherwise a readable label.
+	 */
+	private static function get_location_label_from_path( $key ) {
+		$parts = array_filter( explode( '|', $key ) );
+		if ( count( $parts ) < 2 ) {
+			return '';
+		}
+		$post_type_name = $parts[0];
+		$post_type      = get_post_type_object( $post_type_name );
+		$post_label     = $post_type && isset( $post_type->labels->name ) ? $post_type->labels->name : ucfirst( $post_type_name );
+		if ( 'all' === $parts[1] ) {
+			if ( isset( $parts[2] ) && 'archive' === $parts[2] ) {
+				/* translators: %s: post type label (e.g. Posts) */
+				return sprintf( __( 'All %s Archive', 'sastra-essential-addons-for-elementor' ), $post_label );
+			}
+			if ( isset( $parts[2] ) && 'taxarchive' === $parts[2] && isset( $parts[3] ) ) {
+				$tax_name = $parts[3];
+				$tax      = get_taxonomy( $tax_name );
+				$tax_label = $tax && isset( $tax->labels->name ) ? $tax->labels->name : ucfirst( str_replace( '_', ' ', $tax_name ) );
+				/* translators: %s: taxonomy label (e.g. Categories) */
+				return sprintf( __( 'All %s Archive', 'sastra-essential-addons-for-elementor' ), $tax_label );
+			}
+			/* translators: %s: post type label (e.g. Posts) */
+			return sprintf( __( 'All %s', 'sastra-essential-addons-for-elementor' ), $post_label );
+		}
+		return '';
 	}
 
 	/**

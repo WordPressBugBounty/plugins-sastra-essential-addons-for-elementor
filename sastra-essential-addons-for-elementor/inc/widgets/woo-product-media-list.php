@@ -29,7 +29,7 @@ class TMPCODER_Product_Media_List extends Widget_Base {
     }
 
     public function get_icon() {
-        return 'eicon-gallery-grid';
+        return 'tmpcoder-icon eicon-gallery-grid';
     }
 
     public function get_categories() {
@@ -106,14 +106,22 @@ class TMPCODER_Product_Media_List extends Widget_Base {
             ]
         );
 
-
         $this->end_controls_section();
+
+        // Section: Help & Docs
+		tmpcoder_add_section_help_docs( $this, Controls_Manager::RAW_HTML, '' );
     }
 
     public function render() {
+
+        if ( ! class_exists( 'WooCommerce' ) ) {
+			echo '<h2>'. esc_html__( 'WooCommerce is NOT active!', 'sastra-essential-addons-for-elementor' ) .'</h2>';
+			return;
+		}
+
         $settings = $this->get_settings();
-$settings_new = $this->get_settings_for_display();
-$settings = array_merge( $settings, $settings_new );
+        $settings_new = $this->get_settings_for_display();
+        $settings = array_merge( $settings, $settings_new );
     
         global $product;
         if ( ! is_a( $product, 'WC_Product' ) ) {

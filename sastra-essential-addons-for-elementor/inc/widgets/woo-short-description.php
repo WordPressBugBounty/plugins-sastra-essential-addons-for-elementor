@@ -114,8 +114,8 @@ class TMPCODER_Woo_Short_Description extends Widget_Base {
 
 		$this->end_controls_section();
 
-		// Section: Request New Feature
-		tmpcoder_add_section_request_feature( $this, Controls_Manager::RAW_HTML, Controls_Manager::TAB_STYLE );
+		// Section: Help & Docs
+		tmpcoder_add_section_help_docs( $this, Controls_Manager::RAW_HTML, Controls_Manager::TAB_STYLE );
 	}
 
 	protected function render() {

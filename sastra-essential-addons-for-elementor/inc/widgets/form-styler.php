@@ -378,8 +378,8 @@ class TMPCODER_Form_Styler extends Widget_Base {
 
 		$this->end_controls_section(); // End Controls Section
 
-		// Section: Request New Feature
-		tmpcoder_add_section_request_feature( $this, Controls_Manager::RAW_HTML, '' );
+		// Section: Help & Docs
+		tmpcoder_add_section_help_docs( $this, Controls_Manager::RAW_HTML, '' );
 
 		// Styles ====================
 		// Section: Container --------

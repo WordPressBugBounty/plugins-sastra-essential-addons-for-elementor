@@ -16,13 +16,16 @@ class TMPCODER_Templates_Library {
 	*/
 	public function __construct() {
 
-		// Templates Library
+        // Templates Library
         require TMPCODER_PLUGIN_DIR . 'inc/admin/includes/tmpcoder-templates-actions.php';
         require TMPCODER_PLUGIN_DIR . 'inc/admin/templates/library/tmpcoder-templates-library-blocks.php';
         require TMPCODER_PLUGIN_DIR . 'inc/admin/templates/library/tmpcoder-templates-library-sections.php';
         require TMPCODER_PLUGIN_DIR . 'inc/admin/templates/library/tmpcoder-templates-library-pages.php';
+        require TMPCODER_PLUGIN_DIR . 'inc/admin/templates/library/tmpcoder-templates-library-popups.php';
 
-        add_action( 'current_screen', [ $this, 'tmpcoder_redirect_to_options_page' ] );
+		if(!defined('TMPCODER_SASTRA_HELPER_PATH')) {
+			add_action( 'current_screen', [ $this, 'tmpcoder_redirect_to_options_page' ] );	
+		}
 
 		// Template Actions
 		new TMPCODER_Templates_Actions();
@@ -35,6 +38,9 @@ class TMPCODER_Templates_Library {
 
 		// Add Pages to Library
 		new TMPCODER_Templates_Library_Pages();
+
+		// Add Popups to Library
+		new TMPCODER_Templates_Library_Popups();
 
 	}
 

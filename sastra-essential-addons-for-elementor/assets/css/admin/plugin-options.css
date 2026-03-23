@@ -1494,6 +1494,8 @@ input.tmpcoder-condition-input-ids,
 .tmpcoder-save-conditions {
     padding: 8px 20px;
     color: #fff;
+    transition-duration: 0.4s;
+    border: 1px solid #5729d9;
     background: #5729d9;
     margin-left: auto;
     border-radius: 3px;
@@ -1877,7 +1879,8 @@ div.fs-notice.updated, div.fs-notice.success {
     font-size: 12px;
   } */
 }
-.tmpcoder-target-rule-condition .target_rule-condition{
+.tmpcoder-target-rule-condition .target_rule-condition,
+.tmpcoder-popup-setup-wrap input {
   border-radius: unset;
   padding: 5px 10px;
 } 

@@ -338,6 +338,8 @@
             box-shadow: 0 2px 5px 0 rgba(0,0,0,0.05);
     cursor: pointer;
     border-radius: 3px;
+    line-height: 24px !important;
+    color: #6d7882 !important;
 }
 
 .tmpcoder-tplib-filters h3 span,

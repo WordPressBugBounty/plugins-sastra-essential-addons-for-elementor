@@ -47,6 +47,25 @@ class TMPCODER_Dual_Color_Heading extends Widget_Base {
 
 	protected function register_controls() {
 
+		// Documentation button - at top of panel, before all other controls (uses docs field from widget settings)
+		// $docs_url = function_exists( 'tmpcoder_get_widget_docs_url' ) ? tmpcoder_get_widget_docs_url( $this ) : '#';
+		// $this->start_controls_section(
+		// 	'section_docs_top',
+		// 	[
+		// 		'label' => '',
+		// 		'tab'   => '',
+		// 	]
+		// );
+		// $this->add_control(
+		// 	'docs_button_top',
+		// 	[
+		// 		'type'      => Controls_Manager::RAW_HTML,
+		// 		'raw'       => '<div class="spexo-widget-docs" style="background:#f6f7f7;border:1px solid #e0e0e0;border-radius:4px;padding:10px 12px;margin-bottom:10px;"><a href="' . esc_url( $docs_url ) . '" target="_blank" style="color:#2271b1;font-weight:500;text-decoration:none;display:inline-flex;align-items:center;gap:6px;"><span class="dashicons dashicons-book-alt" style="font-size:16px;width:16px;height:16px;"></span>' . esc_html__( 'View Documentation', 'sastra-essential-addons-for-elementor' ) . '</a><p style="margin:6px 0 0 0;font-size:12px;color:#646970;line-height:1.4;">' . esc_html__( 'Quickly learn how to use this widget with the official guide.', 'sastra-essential-addons-for-elementor' ) . '</p></div>',
+		// 		'separator' => 'none',
+		// 	]
+		// );
+		// $this->end_controls_section();
+
 		$this->start_controls_section(
 			'section_content',
 			[
@@ -205,8 +224,8 @@ class TMPCODER_Dual_Color_Heading extends Widget_Base {
 
 		$this->end_controls_section();
 
-		// Section: Request New Feature
-		tmpcoder_add_section_request_feature( $this, Controls_Manager::RAW_HTML, '' );
+		// Section: Help & Docs
+		tmpcoder_add_section_help_docs( $this, Controls_Manager::RAW_HTML, '' );
 
 		$this->start_controls_section(
 			'primary_heading_styles',

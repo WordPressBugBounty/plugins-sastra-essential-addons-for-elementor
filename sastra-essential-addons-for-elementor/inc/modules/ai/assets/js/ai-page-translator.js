@@ -795,11 +795,15 @@
                         var $translatorBtn = createTranslatorButton(loc.location);
                         $addButton.before($translatorBtn);
                         buttonAdded = true;
+                    
                     } else {
                         // Fallback: add to the beginning of toolbar
                         var $translatorBtn = createTranslatorButton(loc.location);
                         $target.prepend($translatorBtn);
                         buttonAdded = true;
+                        
+                        $('body').addClass('tmpcoder-is-translate-button-added');
+
                     }
                 }
             }

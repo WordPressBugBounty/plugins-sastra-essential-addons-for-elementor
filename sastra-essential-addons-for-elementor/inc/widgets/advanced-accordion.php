@@ -34,7 +34,7 @@ class TMPCODER_Advanced_Accordion extends Widget_Base {
 	}
 
 	public function get_keywords() {
-		return [ 'blog', 'advanced accordion' ];
+		return [ 'blog', 'advanced accordion', 'accordion' , 'faq', 'accordion widget' ];
 	}
 
 	public function get_script_depends() {
@@ -462,8 +462,8 @@ class TMPCODER_Advanced_Accordion extends Widget_Base {
 
 		$this->end_controls_section();
 
-		// Section: Request New Feature
-		tmpcoder_add_section_request_feature( $this, Controls_Manager::RAW_HTML, '' );
+		// Section: Help & Docs
+		tmpcoder_add_section_help_docs( $this, Controls_Manager::RAW_HTML, '' );
 
 		// Section: Pro Features
 		tmpcoder_pro_features_list_section( $this, '', Controls_Manager::RAW_HTML, 'advanced-accordion', [

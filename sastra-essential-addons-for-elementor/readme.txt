@@ -1,244 +1,257 @@
-=== Spexo Addons for Elementor - Free Addons, Widgets and Starter Templates for Elementor ===
+=== Spexo Addons for Elementor - Elementor Widgets, WooCommerce Builder, Mega Menu and Starter Templates for Elementor ===
 Contributors: templatescoderthemes, skywebtech
-Tags: elementor, elementor addons, templates, elementor widgets, woocommerce elementor
-Stable tag: 1.0.30
+Tags: elementor addons, elementor widgets, woocommerce elementor, header footer builder, elementor templates
+Stable tag: 1.0.31
 Requires at least: 5.0
 Tested up to: 6.9
 Requires PHP: 7.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-100+ best elementor addons & template kit. Free Widgets: Elementor Post Grid, Woocommerce, Form, Mega Menu Builder, Carousel, Image Hotspots, Parallax
+Advanced Elementor addons plugin with widgets, WooCommerce builders, mega menu, template kits and extensions for faster WordPress website design.
 
 == Description ==
 
-**Spexo Addons** (formerly Sastra Addons) is the easy to use and most flexible addon for [Elementor](https://wordpress.org/plugins/elementor/) page builder plugin. We aim to offer you the tools necessary to streamline and simplify the website development process. The most significant advantage is that you can develop anything **without writing a single line of code**. Whether you are a developer or not, our easy to use prebuilt widgets, extensions and builders will make your life easy and you can develop a beautiful, smooth and faster website.
+**Spexo Addons for Elementor** extends the Elementor page builder with advanced widgets, WooCommerce elements, layout extensions and starter templates. The plugin helps developers, agencies and website owners **build professional websites faster using Elementor.**
 
-Spexo Addons for Elementor - comes with **80+ Best Free widgets for Elementor**, **200+ creative blocks & element pack**, Ready to use prebuilt websites & templates for elementor, Free addons for Elementor, Elementor Mega Menu Builder, Prebuilt Widgets, Blocks & Extensions.
+The plugin provides a collection of Elementor widgets for content layouts, navigation, marketing sections and WooCommerce product displays. These tools are designed for real projects and work directly inside the Elementor editor.
 
-Spexo now includes AI-powered tools built directly into Elementor, so you can create content and visuals faster without switching tabs or using extra tools.
-Spexo comes with AI powered Elementor widgets designed for real work, not gimmicks. These features help in day to day website building writing and improving content, generating images, translating pages, and improving SEO with better alt text - right inside your existing Elementor workflow.
+**Useful Links** 👇
 
-##NEW: AI-Powered Features##
-- Write content instantly using AI inside Elementor text fields, text areas, and editors.
-- Improve or rewrite existing content with one-click AI suggestions.
-- Create images directly in Elementor using built-in AI image generation.
-- Automatically generate clear and SEO-friendly image alt text in the Media Library.
-- Translate entire Elementor pages in one click, with automatic detection of all text content.
-- Manage and customize AI settings and model preferences from a dedicated settings page.
-- Set daily AI usage limits to control costs and avoid overuse.
-- View detailed AI usage statistics with helpful learning and support resources from [OpenAI](https://openai.com/).
-
-Showcase user engagement using powerful tools like **Dynamic Search with AJAX**, **Popup Builder**, and **One Page Navigation** - all crafted to simplify navigation, increase interaction, and offer greater design flexibility. Enhance your website with popular widgets such as **Image Comparison**, **Interactive Image Hotspots**, and **Blog Posts Carousel**, enabling you to build visually striking, interactive experiences. Every tool is fully compatible with Elementor’s intuitive drag-and-drop editor, allowing for seamless customization without any coding.
-
-**USEFUL LINKS** 👇
 - [Live Widget Demo](https://spexoaddons.com/widgets/)
 - [Free Templates for Elementor](https://spexoaddons.com/spexo-elementor-theme/)
 - [Documentation](https://spexoaddons.com/documentation)
-- [Need Support?](https://templatescoder.com/support/)
+- [Need Support?](https://fastthemes.com/support/)
+
+Spexo also includes smart AI-powered tools that help generate content, create images, translate pages and improve image alt text inside Elementor. These features help streamline daily website building tasks without leaving the editor.
+
+The plugin is suitable for developers who build client websites and for beginners who want to create modern websites without writing custom code.
+
+https://www.youtube.com/watch?v=oTqiHNGMafU
+
+**[Elementor](https://wordpress.org/plugins/elementor/) Page Builder plugin is required to use Spexo Addons.**
 
 
-##Why Spexo Addons for Elementor?##
-- Easy to Customize and flexible
-- Developed by a team with over 15 years of experience
-- Compatible with third party plugins and themes
-- Optimized for faster website loading
-- Developer friendly widgets
-- Continuous updates and support
+## Why Use Spexo Addons for Elementor
 
-**[Elementor](https://wordpress.org/plugins/elementor/) Website builder is required for this plugin.**
+Spexo Addons extends Elementor with widgets, layout tools and WooCommerce builders that help speed up website development.
 
-### Spexo Widgets for Elementor List:
+The plugin focuses on practical features that developers use in real projects. The widgets integrate directly into the Elementor interface so users can design pages visually.
 
-- [Mega Menu Widget](https://spexoaddons.com/widgets/elementor-mega-menu-builder/) with Off-Canvas mobile menu
-- [Post Grid, Slider & Carousel Widget](https://spexoaddons.com/widgets/elementor-post-grid-slider-carousel-widget/): Post Grid / Post Slider / Post Carousel
-- [Product Grid, Slider & Carousel Widget](https://spexoaddons.com/widgets/elementor-woo-commerce-product-grid-slider-carousel-widget/): Product Grid / Product Carousel / Product Slider
-- [Image Grid - Image Slider / Image Carousel](https://spexoaddons.com/widgets/elementor-image-grid-slider-carousel/)
-- [Magazine Grid / Slider](https://spexoaddons.com/widgets/elementor-magazine-grid-slider/)
-- [Advanced Slider / Carousel](https://spexoaddons.com/widgets/elementor-advanced-slider/)
-- [Testimonial Slider](https://spexoaddons.com/widgets/elementor-testimonial/)
-- [Nav Menu](https://spexoaddons.com/widgets/elementor-navigation-menu/)
-- [Onepage Navigation](https://spexoaddons.com/widgets/elementor-onepage-navigation/)
-- [Pricing Table](https://spexoaddons.com/widgets/elementor-pricing-table/)
-- [Countdown Widget](https://spexoaddons.com/widgets/elementor-countdown-timer/): Countdown Timer
-- [Progress Bar](https://spexoaddons.com/widgets/elementor-progress-bar/)
-- [Advanced Text - Animated Text](https://spexoaddons.com/widgets/elementor-advanced-text/)
-- [Flip Box](https://spexoaddons.com/widgets/elementor-flip-box/)
-- [Promo Box](https://spexoaddons.com/widgets/elementor-promo-box/)
-- [Before After Image Comparison Slider](https://spexoaddons.com/widgets/elementor-before-after-slider/)
-- [Image Hotspots](https://spexoaddons.com/widgets/elementor-hotspot/)
-- [Forms Styler](https://spexoaddons.com/widgets/elementor-form-styler/) (Support: Contact Form 7, WP forms, Ninja Forms, Caldera Forms)
-- [Content Ticker](https://spexoaddons.com/widgets/elementor-content-ticker/)
-- [Button](https://spexoaddons.com/widgets/elementor-button-widget/)
-- [Dual Button](https://spexoaddons.com/widgets/elementor-dual-button/)
-- [Team Member](https://spexoaddons.com/widgets/elementor-team-member/)
-- [Price List](https://spexoaddons.com/widgets/elementor-price-list/)
-- [Business Hours](https://spexoaddons.com/widgets/elementor-business-hours-widget/)
-- [Sharing Buttons](https://spexoaddons.com/widgets/elementor-sharing-buttons/)
-- [Search Form](https://spexoaddons.com/widgets/elementor-search-form/)
-- [Back to Top Button](https://spexoaddons.com/widgets/elementor-back-to-top-button/)
-- [Phone Call Button](https://spexoaddons.com/widgets/elementor-phone-call-button/)
-- [Lottie Animation](https://spexoaddons.com/widgets/elementor-lottie-animation/)
-- [Post/Story Timeline Widget](https://spexoaddons.com/widgets/elementor-posts-story-timeline/)
-- [Flip Carousel](https://spexoaddons.com/widgets/elementor-flip-carousel/)
-- [Features List](https://spexoaddons.com/widgets/elementor-feature-list/)
-- [Dual Color Heading](https://spexoaddons.com/widgets/elementor-dual-color-heading/)
-- [Advanced Accordion](https://spexoaddons.com/widgets/elementor-advanced-accordion/)
-- [Image Accordion](https://spexoaddons.com/widgets/elementor-image-accordion/)
-- [Page List for Mega Menu](https://spexoaddons.com/widgets/elementor-page-list/)
-- [Data Table](https://spexoaddons.com/widgets/elementor-data-table/)
-- [Reading Progress Bar](https://spexoaddons.com/widgets/elementor-reading-progress-bar-widget/)
-- [Offcanvas Content (Sidebar menu)](https://spexoaddons.com/widgets/elementor-off-canvas-content/)
+The plugin is designed for performance and compatibility with popular WordPress themes and plugins.
+
+Key advantages include:
+
+- Large collection of Elementor widgets
+- WooCommerce widgets for online stores
+- Elementor extensions for advanced layout control
+- Pre-built templates and starter websites
+- Developer friendly design options
+- Modular widgets that can be enabled or disabled
+
+
+## AI Powered Tools
+Spexo includes built-in AI tools designed to assist content creation inside Elementor.
+
+These tools help users generate page content, improve existing text and create images without switching between external tools.
+
+Available AI features include:
+
+- AI writing assistant inside Elementor text fields  
+- Content rewriting and improvement suggestions  
+- AI image generation directly inside Elementor  
+- Automatic image alt text generation for SEO  
+- One-click translation of Elementor pages  
+- AI usage dashboard and settings panel  
+
+These tools are optional and can be enabled or disabled from the plugin settings.
 
 
 
-### [Woocommerce Addons for Elementor](https://spexoaddons.com/widgets/woocommerce-elementor-addons/) & Widgets:
+## Popular Elementor Widgets Included
 
-- Product Grid
-- Product Carousel
-- Product Slider
-- Product Mini Cart
-- Breadcrumbs
-- Product Add to Cart
-- Product Price
-- Product Media
-- Product Tabs
-- Product Meta
-- Product Rating
-- Product Sale Badge
-- Product Excerpt
-- Product Stock
-- Product Additional Info
+Spexo Addons provides a large collection of Elementor widgets that help you build modern website layouts, marketing sections and interactive content blocks directly inside Elementor.
+
+- **Mega Menu Builder** – Build advanced navigation layouts using the [Mega Menu Widget for Elementor](https://spexoaddons.com/widgets/elementor-mega-menu-builder/) with multi column menus and off-canvas mobile navigation.
+
+- **Post Grid** – Display blog posts and custom post types using the [Post Grid Widget](https://spexoaddons.com/widgets/elementor-post-grid-slider-carousel-widget/) in responsive grid layouts.
+
+- **Post Slider** – Showcase featured posts using the [Post Slider Widget](https://spexoaddons.com/widgets/elementor-post-grid-slider-carousel-widget/) to highlight blog content and articles.
+
+- **Post Carousel** – Create interactive blog displays using the [Post Carousel Widget](https://spexoaddons.com/widgets/elementor-post-grid-slider-carousel-widget/) to improve content discovery.
+
+- **Image Grid** – Display galleries and portfolios using the [Image Grid Widget](https://spexoaddons.com/widgets/elementor-image-grid-slider-carousel/) in flexible multi column layouts.
+
+- **Image Carousel** – Create sliding image galleries using the [Image Carousel Widget](https://spexoaddons.com/widgets/elementor-image-grid-slider-carousel/) for portfolios, brand logos and featured visuals.
+
+- **Advanced Slider** – Build interactive hero sliders using the [Advanced Slider Widget](https://spexoaddons.com/widgets/elementor-advanced-slider/) with animation and layout controls.
+
+- **Testimonial Slider** – Display customer feedback using the [Testimonial Slider Widget](https://spexoaddons.com/widgets/elementor-testimonial/) with ratings, client names and images.
+
+- **Pricing Table** – Present service plans clearly using the [Pricing Table Widget](https://spexoaddons.com/widgets/elementor-pricing-table/) to create pricing comparisons.
+
+- **Countdown Timer** – Create urgency for promotions and launches using the [Countdown Timer Widget](https://spexoaddons.com/widgets/elementor-countdown-timer/).
+
+- **Image Comparison** – Showcase before and after results using the [Before After Image Comparison Widget](https://spexoaddons.com/widgets/elementor-before-after-slider/).
+
+- **Image Hotspots** – Highlight product features using the [Image Hotspots Widget](https://spexoaddons.com/widgets/elementor-hotspot/) with interactive markers and tooltips.
+
+- **Advanced Accordion** – Organize FAQs and expandable content using the [Advanced Accordion Widget](https://spexoaddons.com/widgets/elementor-advanced-accordion/).
+
+- **Data Table** – Display structured information using the [Data Table Widget](https://spexoaddons.com/widgets/elementor-data-table/) for comparison tables and datasets.
+
+- **Reading Progress Bar** – Improve reading experience using the [Reading Progress Bar Widget](https://spexoaddons.com/widgets/elementor-reading-progress-bar-widget/) that shows scroll progress.
+
+- **Lottie Animation** – Add lightweight animations using the [Lottie Animation Widget](https://spexoaddons.com/widgets/elementor-lottie-animation/) with JSON animation files.
+
+- **Search Form** – Improve site navigation using the [Search Form Widget](https://spexoaddons.com/widgets/elementor-search-form/) with real time search functionality.
+
+These lightweight Elementor widgets help you build modern layouts, interactive sections and content rich pages without writing custom code.
 
 
 
-### Extensions and Other Features
+## Elementor WooCommerce Builder & Widgets
 
-- Elementor Theme Builder & [Woocommerce Builder](https://spexoaddons.com/widgets/woocommerce-elementor-addons/)
-Header Footer Builder, Post & Product Archive builder, Single Post & Product builder, Single Page, Search, category, tags, 404, author, data page template builder.
+Spexo Addons includes WooCommerce widgets that help you design custom ecommerce layouts directly inside Elementor.
 
-- [Mega Menu Builder](https://spexoaddons.com/widgets/elementor-mega-menu-builder/)
-Build any type of WordPress mega menu with Menu Badges and Icons, use any elementor widgets in Mega menu content, and support Ajax loading of mega menu items for maximum page loading speed. Off-Canvas Mobile and Desktop Menus support.
-- Advanced Sticky Menu - Create eye-catching Sticky Header Effects
-- Parallax Scrolling (Parallax effect extension)
-- Parallax Multi-Layer Effect extension
-- Particle Effect
-- Sticky Section (Can be used for creating Sticky Header / Menu)
-- Custom CSS - apply custom css to any section.
+- **Product Grid** – Display WooCommerce products using the [Product Grid Widget](https://spexoaddons.com/widgets/elementor-woo-commerce-product-grid-slider-carousel-widget/) in responsive grid layouts.
 
-- [Lottie Animation for Elementor](https://spexoaddons.com/widgets/elementor-lottie-animation/)
-Our Lottie animation widget gives you the ability to easily add Lottie Animations to your pages. Ability to load Lottie animation from multiple sources - Load with Custom link or Media library.
-- Forms Styler for Elementor: This Form widget comes with the following options: 
--- [Contact Form 7 Styler for Elementor](https://spexoaddons.com/widgets/contact-form-7-styler-elementor/)
--- [WPforms Styler for Elementor](https://spexoaddons.com/widgets/wpforms-styler-elementor/)
--- [Ninja Forms Styler for Elementor](https://spexoaddons.com/widgets/ninja-forms-styler-elementor/)
--- [Caldera Forms Styler for Elementor](https://spexoaddons.com/widgets/caldera-forms-styler-elementor/)
+- **Product Slider** – Showcase featured products using the [Product Slider Widget](https://spexoaddons.com/widgets/elementor-woo-commerce-product-grid-slider-carousel-widget/) to highlight promotions and product collections.
 
-### [Themes & Templates Kits for Elementor](https://spexoaddons.com/spexo-elementor-theme/):
-- [AI Software Agency](https://spexoaddons.com/templates/ai-software-agency-elementor-template/)
-- [AI Automation](https://spexoaddons.com/templates/ai-automation-elementor-template/)
-- [Wildlife Safari](https://spexoaddons.com/templates/wildlife-safari-elementor-template/)
-- [Classic Blog](https://spexoaddons.com/templates/classic-blog-elementor-template/)
-- [AI SaaS Agency](https://spexoaddons.com/templates/ai-saas-agency-elementor-template/)
-- [Tech Company](https://spexoaddons.com/templates/tech-company-elementor-template/)
-- [Spa](https://spexoaddons.com/templates/spa-elementor-template/)
-- [Photography Portfolio](https://spexoaddons.com/templates/photography-portfolio-elementor-template/)
-- [Freelancer Portfolio](https://spexoaddons.com/templates/freelancer-portfolio-elementor-template/)
-- [Personal Blog](https://spexoaddons.com/templates/personal-blog-elementor-template/)
-- [Finance](https://spexoaddons.com/templates/finance-elementor-template/)
-- [Fitness](https://spexoaddons.com/templates/fitness-elementor-template/)
-- [Consultancy Firm](https://spexoaddons.com/templates/consultancy-firm-elementor-template/)
-- [Business Corporate](https://spexoaddons.com/templates/business-corporate-elementor-template/)
-- [Business Startup](https://spexoaddons.com/templates/business-startup-elementor-template/)
-- [News and Blog](https://spexoaddons.com/templates/news-blog-elementor-template/)
-- [Single Property](https://spexoaddons.com/templates/single-property-elementor-template/)
-- [GYM](https://spexoaddons.com/templates/gym-elementor-template/)
-- [Property](https://spexoaddons.com/templates/property-elementor-template/)
-- [Travel Agency](https://spexoaddons.com/templates/travel-agency-elementor-template/)
-- [Digital Agency](https://spexoaddons.com/templates/digital-agency-elementor-template/)
-- [Design Agency](https://spexoaddons.com/templates/design-agency-elementor-template/)
-- [Cleaning Service](https://spexoaddons.com/templates/cleaning-service-elementor-template/)
-- [News Portal](https://spexoaddons.com/templates/news-portal-elementor-template/)
-- [Medical](https://spexoaddons.com/templates/medical-elementor-template/)
-- [Industrial](https://spexoaddons.com/templates/industrial-elementor-template/)
-- [Yoga Studio](https://spexoaddons.com/templates/yoga-studio-elementor-template/)
-- [Beer & Brewery](https://spexoaddons.com/templates/beer-brewery-elementor-template/)
-- [Personal Portfolio](https://spexoaddons.com/templates/personal-portfolio-elementor-template/)
-- [Real Estate](https://spexoaddons.com/templates/real-estate-elementor-template/)
-- [Magazine](https://spexoaddons.com/templates/magazine-elementor-template/)
+- **Product Carousel** – Create interactive product displays using the [Product Carousel Widget](https://spexoaddons.com/widgets/elementor-woo-commerce-product-grid-slider-carousel-widget/) to increase product visibility.
 
-### [WooCommerce Themes & Templates Kits for Elementor](https://spexoaddons.com/spexo-elementor-theme/):
-- [Furniture Store](https://spexoaddons.com/templates/furniture-store-elementor-template/)
-- [Fashion eCommerce](https://spexoaddons.com/templates/fashion-ecommerce-elementor-template/)
-- [Fashion Store](https://spexoaddons.com/templates/fashion-store-elementor-template/)
-- [Cosmetic eCommerce Store](https://spexoaddons.com/templates/cosmetic-elementor-template/)
-- [Organic Store](https://spexoaddons.com/templates/organic-store-elementor-template/)
-- [Jewellery Shop](https://spexoaddons.com/templates/jewellery-shop-elementor-template/)
-- [Trendy Fashion eCommerce Store](https://spexoaddons.com/templates/trendy-fashion-elementor-template/)
-- [Fashion Shop](https://spexoaddons.com/templates/fashion-shop-elementor-template/)
-- [Clothing Store](https://spexoaddons.com/templates/clothing-store-elementor-template/)
-- [Mega Store eCommerce Template](https://spexoaddons.com/templates/mega-store-elementor-template/)
-- [Restaurant Template for Elementor](https://spexoaddons.com/templates/restaurant-elementor-template/)
-- [Craft Beer](https://spexoaddons.com/templates/craft-beer-elementor-template/)
-- [Clothes Store](https://spexoaddons.com/templates/clothes-store-elementor-template/)
-- [Electronics Store](https://spexoaddons.com/templates/electronics-store-elementor-template/)
-- [Furniture Shop eCommerce Template](https://spexoaddons.com/templates/furniture-shop-elementor-template/)
-- [Smart Watch Single Product Template for Elementor](https://spexoaddons.com/templates/smart-watch-elementor-template/)
-- [Drone Single Product Template for Elementor](https://spexoaddons.com/templates/drone-elementor-template/)
+- **Product Mini Cart** – Improve the shopping experience with the [WooCommerce Mini Cart Widget](https://spexoaddons.com/documentation/product-mini-cart/) that allows users to quickly view cart items.
 
-This plugin works best with [Spexo Theme](https://spexoaddons.com/spexo-elementor-theme/) for pre-built websites.
+- **Product Add to Cart** – Add purchase buttons anywhere using the [Add to Cart Widget](https://spexoaddons.com/documentation/product-add-to-cart/) within Elementor layouts.
 
-### Spexo Widgets for Elementor
+- **Product Price** – Display product pricing clearly using the [Product Price Widget](https://spexoaddons.com/documentation/product-price/).
 
-Spexo is a popular Elementor addon with ready templates, advanced widgets, template kits & WooCommerce builders. Spexo Addons for Elementor offers powerful tools. Spexo is one of the best elementor addons which can help you to simplify building websites without coding knowledge. The features help both developers and non-developers. Spexo Addons plugin works like ElementsKit, Essential Addons for Elementor, Royal Elementor Addons, Premium Addons, Happy Addons, PowerPack Addons, Unlimited Elements, Qi Addons, Ultimate Addons for Elementor, Spectra etc. Spexo plugin works with multiple WordPress themes like Spexo Theme, Astra, Storefront, OceanWP, Royal Theme and GeneratePress.
+- **Product Rating** – Show star ratings and reviews with the [Product Rating Widget](https://spexoaddons.com/documentation/product-rating/) to build customer trust.
 
-### Mega menu widget for Elementor
-[Mega Menu Widget for Elementor](https://spexoaddons.com/widgets/elementor-mega-menu-builder/) builds customizable menus. It supports off-canvas mobile menus. The Nav Menu Widget customizes WordPress menus. It changes the look and feel without code. You can create mobile menus and dropdowns. It also supports hamburger menus and hover effects.
-### Pricing Table widget for Elementor
-[Pricing Table Widget for Elementor](https://spexoaddons.com/widgets/elementor-pricing-table/) displays pricing plans. It allows toggling between options. The Pricing Table Widget helps create comparison tables. It displays costs and features with unique styles. You can use it for regular pricing or plans with toggle button. This widget makes comparing pricing simple and effective for users.
-### Countdown Timer widget for Elementor
-[Countdown Timer Widget for Elementor](https://spexoaddons.com/widgets/elementor-countdown-widget/) adds customizable timers. It supports actions when time expires. The Countdown Timer Widget shows a timer that counts down to a set date or event. It creates urgency for events, sales, or forms. 
-### Data table for Elementor
-[Data Table Widget for Elementor](https://spexoaddons.com/widgets/data-table/) organizes data in tables. The Elementor Data Table widget allows you to organize and display data in a structured, easy-to-read table. You can add headers, rows, and columns, and customize the look of the table to match your website’s design.
-### Image grid for Elementor
-[Image Grid Widget for Elementor](https://spexoaddons.com/widgets/elementor-image-grid-slider-carousel/) displays images in a grid. The Image Grid Widget displays images in grids, sliders, or carousels. It works for galleries, logo grids, and more. Features include multicolumn layouts, pagination, load more buttons, and lightbox views. The Magazine Grid Widget creates layouts for news or magazines.
-### Dual color heading for Elementor
-[Elementor Dual Color Heading Widget](https://spexoaddons.com/widgets/dual-color-heading/) creates bold headlines with two colors. It highlights important text in a clean, modern style. 
-### Post carousel for Elementor
-[Post Carousel Widget](https://spexoaddons.com/widgets/elementor-post-grid-slider-carousel-widget/) showcases posts in sliders. It supports custom post types and blog posts. The Post Grid Widget displays posts in grids, sliders, or carousels. It works for recent posts, portfolios, and custom post types. Features include multicolumn layouts, pagination, load more buttons, and random post displays. 
-### Lottie widget for Elementor
-[Lottie Widget](https://spexoaddons.com/widgets/elementor-lottie-animation/) adds animations to your pages. You can upload animations from various sources. This makes pages more dynamic. The widget is perfect for adding motion graphics without slowing down performance. 
-### Parallax background for Elementor
-Elementor Parallax Background effect creates depth. It offers a smooth scrolling experience. The Elementor Parallax Background extension allows you to add immersive parallax scrolling effects to your website. 
-### Reading progress bar for Elementor
-[Reading Progress Bar](https://spexoaddons.com/widgets/reading-progress-bar-widget/) shows scroll progress. It works well on long pages and blogs. Users see how far they’ve read. Reading Progress Bar Extension adds a progress bar to your pages. It shows users how far they have scrolled.
-### Live search for Elementor
-[Live Search Widget](https://spexoaddons.com/widgets/search-form/) offers real-time search results. Visitors find what they need as they type. The Elementor Live Search Widget adds a live search bar with real-time results to your site. 
-### testimonial widget
-[Testimonial Widget](https://spexoaddons.com/widgets/testimonial/) displays customer reviews. It can be shown in sliders or grids. Testimonial Slider Widget displays customer reviews. It shows feedback in a slider format. You can include ratings, company logos, and client images. It’s a great way to highlight testimonials on your site.
-### Flip Box
-[Flip Box Widget](https://spexoaddons.com/widgets/flip-box/) adds interactive boxes. These boxes flip on hover to reveal more content. This makes your site engaging. It flips on hover, revealing more content or call-to-action buttons. It’s ideal for creating eye-catching promo boxes and ads.
-### Offcanvas Content for Elementor
-[Off-Canvas Content Widget](https://spexoaddons.com/widgets/off-canvas-content/) adds hidden sidebars. Users access additional menus or promotions. Elementor Off-Canvas Content Widget enables you to display sidebars or hidden content that slides in from the side. 
-### Image Accordion
-[Image Accordion Widget](https://spexoaddons.com/widgets/image-accordion/) makes images interactive. It reveals content when users hover or click. Image Accordion Widget displays images in an accordion format, where users can click or hover over each image to expand it. 
-### Image Hotspots
-[Image Hotspots Widget](https://spexoaddons.com/widgets/image-hotspots/) adds tooltips to images. You can highlight key areas. Image Hotspots Widget adds interactive points to images. You can create hotspots with tooltips for more details. 
-### Woocommerce elementor addons
-[WooCommerce Addons](https://spexoaddons.com/widgets/woocommerce-elementor-addons/) offer advanced store features. They include product grids, sliders, and filters. These Woo commerce tools and widgets boost the shopping experience. 
-### Woocommerce product Grid/Slider/Carousel
-[WooCommerce Product Grid/Slider/Carousel](https://spexoaddons.com/widgets/elementor-woo-commerce-product-grid-slider-carousel-widget/) displays products in different layouts. These options enhance product displays. It supports product lists, category grids, and carousels. 
-### Contact form 7 styler for Elementor
-[Contact Form 7 Styler](https://spexoaddons.com/widgets/contact-form-7-styler-elementor/) customizes forms. You can style forms to fit your site. No coding is needed. Elementor Contact Form 7 Styler Widget allows you to style and customize Contact Form 7 forms directly within Elementor. 
-### WPforms styler for Elementor
-[WPForms Styler](https://spexoaddons.com/widgets/wpforms-styler-elementor/) offers easy form customization. It supports full control over form styles. WPForms Styler for Elementor lets you easily style and customize WPForms from within Elementor.
-### Ninja Forms styler for Elementor
-[Ninja Forms Styler](https://spexoaddons.com/widgets/ninja-forms-styler-elementor/) makes form design simple. You can tweak input fields, buttons, and labels. Ninja Forms Styler for Elementor offers customization options for Ninja Forms, letting you tweak the look and feel of your forms directly within Elementor. 
-### Caldera Forms styler for Elementor
-[Caldera Forms Styler](https://spexoaddons.com/widgets/caldera-forms-styler-elementor/) customizes Caldera forms. You can adjust spacing and colors for better design. Caldera Forms Styler for Elementor allows you to customize Caldera Forms through Elementor.
-### Templates & Themes for Elementor
-[Spexo Themes](https://spexoaddons.com/spexo-elementor-theme/) offer pre-built designs. These templates fit various industries. You can build professional sites fast. Templates & Themes collection offers pre-built, customizable AI powered starter templates for various industries. Whether you're building a personal blog, eCommerce store, or portfolio, these templates speed up development. Lightweight Starter sites can help you to create a professional website in minutes.
+- **Product Tabs** – Organize product descriptions, specifications, and reviews using the [Product Tabs Widget](https://spexoaddons.com/documentation/product-tabs/).
 
+- **Product Media** – Display product images and galleries using the [Product Media Widget](https://spexoaddons.com/documentation/product-media/).
+
+- **Product Stock** – Inform customers about product availability using the [Product Stock Widget](https://spexoaddons.com/documentation/product-stock/).
+
+- **Product Breadcrumbs** – Improve navigation with the [Product Breadcrumbs Widget](https://spexoaddons.com/documentation/product-breadcrumb/).
+
+These [Elementor WooCommerce widgets](https://spexoaddons.com/widgets/woocommerce-elementor-addons/) allow full customization of WooCommerce store layouts inside Elementor.
+
+
+
+## Elementor Extensions
+
+Spexo Addons includes powerful Elementor extensions that expand the capabilities of the Elementor page builder.
+
+- **Elementor Theme Builder** – Create custom layouts using the [Elementor Theme Builder](https://spexoaddons.com/documentation/site-builder/) to control headers, footers, and templates.
+
+- **Header and Footer Builder** – Design flexible navigation layouts using the [Header and Footer Builder](https://spexoaddons.com/documentation/custom-header/).
+
+- **Single Post Builder** – Design blog post templates with the [Single Post Builder](https://spexoaddons.com/documentation/).
+
+- **Single Product Builder** – Customize WooCommerce product pages using the [Single Product Builder](https://spexoaddons.com/documentation/).
+
+- **Mega Menu Builder** – Create advanced navigation layouts using the [Mega Menu Builder Widget](https://spexoaddons.com/widgets/elementor-mega-menu-builder/).
+
+- **Sticky Header Effects** – Improve navigation using [Sticky Header Effects](https://spexoaddons.com/documentation/sticky-section/) to keep menus visible while scrolling.
+
+- **Parallax Scrolling Effects** – Add motion depth to sections using [Parallax Scrolling Effects](https://spexoaddons.com/documentation/parallax-background/).
+
+- **Particle Effects** – Enhance sections with animated backgrounds using [Particle Effects](https://spexoaddons.com/documentation/particles/).
+
+- **Custom CSS Support** – Apply styling control using [Custom CSS Support](https://spexoaddons.com/documentation/custom-css/).
+
+These extensions help designers build interactive layouts without custom code.
+
+
+https://www.youtube.com/watch?v=9FVni0rGjOM
+
+
+## Elementor Templates and Starter Websites
+
+Spexo Addons provides ready-to-use Elementor templates and starter websites that help launch websites faster.
+
+Explore all templates in the [Elementor Templates Library](https://spexoaddons.com/spexo-elementor-theme/).
+
+Templates are available for many industries:
+
+- **Digital Agencies** – Launch marketing websites using [Agency Elementor Templates](https://spexoaddons.com/spexo-elementor-theme/).
+
+- **AI Software Companies** – Build startup websites using [AI Software Elementor Templates](https://spexoaddons.com/spexo-elementor-theme/).
+
+- **Corporate Websites** – Create business websites using [Corporate Elementor Templates](https://spexoaddons.com/spexo-elementor-theme/).
+
+- **SaaS Startups** – Design product landing pages using [SaaS Elementor Templates](https://spexoaddons.com/spexo-elementor-theme/).
+
+- **Blog and Magazine Websites** – Publish content using [Blog Elementor Templates](https://spexoaddons.com/spexo-elementor-theme/).
+
+- **Real Estate Websites** – Build property listing websites using [Real Estate Elementor Templates](https://spexoaddons.com/spexo-elementor-theme/).
+
+- **Travel Agencies** – Launch tourism websites using [Travel Elementor Templates](https://spexoaddons.com/spexo-elementor-theme/).
+
+- **Photography Portfolios** – Showcase work using [Photography Elementor Templates](https://spexoaddons.com/spexo-elementor-theme/).
+
+- **WooCommerce Online Stores** – Launch ecommerce websites using [WooCommerce Elementor Templates](https://spexoaddons.com/spexo-elementor-theme/).
+
+Starter websites allow developers to launch new projects quickly and customize layouts using Elementor.
+
+
+## Spexo Widgets for Elementor
+
+Spexo is a popular Elementor addon with ready templates, advanced widgets, template kits & WooCommerce builders. Spexo Addons for Elementor offers powerful tools. Spexo is one of the best elementor addons which can help you to simplify building websites without coding knowledge. The features help both developers and non-developers. Spexo Addons plugin works like ElementsKit, Essential Addons for Elementor, Royal Elementor Addons, Premium Addons, Happy Addons, PowerPack Addons, Unlimited Elements, Qi Addons, Ultimate Addons for Elementor, Spectra etc. 
+
+## Compatibility With WordPress Themes
+
+Spexo Addons works with most themes that support Elementor.
+
+Commonly used themes include:
+
+- Spexo Theme
+- Hello Elementor
+- Astra
+- GeneratePress
+- OceanWP
+- Storefront
+- Kadence
+- Neve
+
+The plugin is also fully compatible with the Spexo theme which provides starter website imports.
+
+
+
+## Plugin Compatibility
+
+Spexo integrates with several popular WordPress plugins.
+
+Supported integrations include:
+
+- WooCommerce  
+- Contact Form 7  
+- WPForms  
+- Ninja Forms  
+- MailChimp  
+- Rank Math SEO  
+- Yoast SEO  
+
+These integrations allow widgets to work with common form builders and eCommerce setups.
+
+
+
+## Who Should Use Spexo Addons
+
+Spexo Addons is suitable for developers and agencies who build websites using Elementor.
+
+The plugin is also useful for freelancers and business owners who want to build websites without coding.
+
+Common use cases include:
+
+- Business websites  
+- WooCommerce online stores  
+- Agency websites  
+- SaaS landing pages  
+- Blogs and magazines  
+- Portfolio websites  
 
 
 ## External Resources
@@ -246,8 +259,8 @@ Elementor Parallax Background effect creates depth. It offers a smooth scrolling
 - [MailChimp](https://api.mailchimp.com) - [Terms of Use](https://mailchimp.com/legal/api_use/): Mailchimp addon helps to collect emails from your website visitors by creating stunning email opt-in forms. 
 - [YouTube](https://youtube.com/) - [Terms of Use](https://www.youtube.com/t/terms): Youtube APIs used in many widgets to embed youtube video URL
 - [Vimeo](https://vimeo.com/) - [Terms of Use](https://vimeo.com/terms): Vimeo APIs used in many widgets to embed vimeo video URL
-- Import ReadyMade Block/Section ([Link](https://themes.templatescoder.com) - [Terms of Use](https://templatescoder.com/terms-conditions/)): User can create page with Elementor few click Insert Block OR Insert Section then section ready.
-- Import Demo Files: ([Link](https://updates.templatescoder.com) - [Terms of Use](https://templatescoder.com/terms-conditions/))
+- Import ReadyMade Block/Section ([Link](https://themes.templatescoder.com) - [Terms of Use](https://fastthemes.com/terms-conditions/)): User can create page with Elementor few click Insert Block OR Insert Section then section ready.
+- Import Demo Files: ([Link](https://updates.templatescoder.com) - [Terms of Use](https://fastthemes.com/terms-conditions/))
 - Lottie file support: ([Link](https://lottiefiles.com) - [Terms of Use](https://lottiefiles.com/page/terms-and-conditions))
 - Social sharing: This widget lets you share your pages and blog posts on any popular social media websites. Available platforms: [Facebook](https://www.facebook.com/) - [Terms of Use](https://www.facebook.com/policies_center/), [Twitter](https://twitter.com/) - [Terms of Use](https://x.com/en/tos), [Linkedin](https://www.linkedin.com/) - [Privacy Policy](https://www.linkedin.com/legal/privacy-policy), [Pinterest](https://www.pinterest.com/) - [Terms of Use](https://policy.pinterest.com/en/terms-of-service), [Reddit](https://reddit.com/) - [Privacy Policy](https://www.reddit.com/policies/privacy-policy), [Tumblr](https://tumblr.com/) - [Terms of Use](https://www.tumblr.com/policy/en/terms-of-service), [Digg](https://digg.com/) - [Terms of Use](https://digg.com/tos), [Xing](https://www.xing.com/) - [Terms of Use](https://www.xing.com/terms), [Vkontakte](https://vkontakte.ru/) - [Terms of Use](https://vk.com/terms), [Odnoklassniki](http://odnoklassniki.ru/) - [Privacy Policy](https://ok.ru/agreementpage), [Pocket](https://getpocket.com/) - [Terms of Use](https://getpocket.com/tos), [Skype](https://skype.com/) - [Terms of Use](https://www.microsoft.com/en-us/servicesagreement/), [Whatsapp](https://whatsapp.com/) - [Terms of Use](https://www.whatsapp.com/legal/terms-of-service), [Telegram](https://telegram.me/) - [Terms of Use](https://telegram.org/tos/in), Email, Print, etc...
 
@@ -256,7 +269,10 @@ Elementor Parallax Background effect creates depth. It offers a smooth scrolling
 Widgets and other features will be added with each major update based on popular demand. We are really trying to make this plugin one of the best in the repository.
 
 🏆 **BACKED BY A TRUSTED TEAM**
-**Spexo Addons for Elementor** (formerly Sastra Essential Addons) is powered by [TemplatesCoder](https://templatescoder.com/), a dedicated WordPress product company, trusted by various happy users. TemplatesCoder is a division of [SkyWebTech](https://www.skywebtech.net/), An award winning agency with 15+ years of development experience in small to large scale projects.
+**Spexo Addons for Elementor** (formerly Sastra Essential Addons) is powered by [FastThemes](https://fastthemes.com), a dedicated WordPress product company, trusted by various happy users. FastThemes is a division of [SkyWebTech](https://www.skywebtech.net/), An award winning agency with 15+ years of development experience in small to large scale projects.
+
+Keywords
+Before and after image sliders, WooCommerce pricing tools, advanced tools for professionals, custom form builder WordPress, speed-enhanced WordPress plugins, temp, WooCommerce product grid, advanced styling options, templ, bu, form, se, wucomerce, ki, essent, ultimate, elim, ultimat, li, performan, c, live search, galle, websi, go, searc, aja, carous, par, parral, m, med, v, vid, butto, prod, cal, calen, calenda, jq, ta, gr, bo, popu, Elementor custom breakpoints, sticky header plugin, Elementor mega menu, custom Elementor modules, woocommerc, responsive product galleries, perfor, AJAX-powered search, templa, build, premium, MailChimp integration plugin, carou, interactive blog grids, elimentr, perf, testimonials and reviews, addo, beginner-friendly plugins, a, drag and drop editor, woocomme, sl, slid, g, perfo, Elementor plugin, lite, dynamic content display, ga, visual website builder, t, pag, widg, elemen, wid, e, template, interactive forms for Elementor, fr, paral, essentia, ai, woocommer, business hours widget, fre, easy to use, da, premi, wo, for, s, blog post carousels, parala, ima, team member showcase, ele, call-to-action buttons, gri, po, elementor, paralla, elime, best Elementor widgets, extens, d, boost conversions with Elementor, te, pricing tables WordPress, woocom, per, mobile-friendly WordPress addons, ulti, extensi, unyson, gallery, si, site, web, pricing calculator for services, parall, i, caro, engage visitors with interactive elements, element, customizable progress bars, googl, sea, es, WordPress page builder, as, astr, woo, esse, lightweight Elementor tools, eli, templat, ast, k, prem, kin, ess, ult, l, webs, lit, pe, ultima,performa, dat, performanc, co, pre, sit, websit, goog, se, sear, aj, ca, carouse, parr, paralax, im, imag, me, medi, vi, vide, butt, produ, cale, b, calend, wu, wc, tabl, contact, Gutenberg bridging plugin, white label Elementor plugin, exten, conditional logic for WordPress, add, WooCommerce Elementor widgets, ad, news ticker for WordPress, eleme, product showcases, contac, pro, Elementor addons, widge, bui, Elementor templates, elementr, ex, magazine-style layouts, wooco, free Elementor widgets, wi, essen, uneson, astra, WordPress charts plugin, elem, optimized Elementor widgets, w, alimentor, p, tem, essential, data tables for Elementor, extensio, protected content WordPress, elementar, wucom, essenti, u, cross-domain copy-paste Elementor, s, ul, conta, pr, slide, gall, no coding required, wor, product sliders for WooCommerce, exte, content tickers for updates, f, responsive grid layouts, wooc, interactive sliders for Elementor, buil, elemento, lightweight WordPress plugins, woocomm, sale countdown timer, ext, sli, timeline widgets for WordPress, galler, s, elimentor, perform, SEO-friendly WordPress addons, con, premiu, fo, gal, responsive design tools, el, service comparison tables, pa, interactive pricing slider, create visually stunning designs, builde, advanced Elementor features, newsletter sign-up forms.
 
 == Installation ==
 
@@ -267,7 +283,7 @@ Note: This plugin works with Elementor. Make sure you have Elementor installed.
 3. All Settings will be found in Admin sidebar menu -> Spexo Addons for Elementor
 4. Also you can see all Widgets under the category “Spexo Addons for Elementor” inside the Elementor editor in your element/widget list.
 
-If you have any questions please check out [FAQ](https://wordpress.org/plugins/sastra-essential-addons-for-elementor/#faq) page or contact us via [Support](https://templatescoder.com/support/?ref=spexo-addons-install-tab)
+If you have any questions please check out [FAQ](https://wordpress.org/plugins/sastra-essential-addons-for-elementor/#faq) page or contact us via [Support](https://fastthemes.com/support/?ref=spexo-addons-install-tab)
 
 
 == Frequently Asked Questions ==
@@ -325,7 +341,7 @@ post_max_size 64M
 
 = We have a query not addressed here, how can we contact you? =
 
-Feel free to contact us anytime via [Support](https://templatescoder.com/support/?ref=spexo-addons-tab-faq)
+Feel free to contact us anytime via [Support](https://fastthemes.com/support/?ref=spexo-addons-tab-faq)
 
 == Screenshots ==
 
@@ -338,6 +354,19 @@ Feel free to contact us anytime via [Support](https://templatescoder.com/support
 7. Elementor Post Grid, Slider & Carousel Widget: Post Grid / Post Slider / Post Carousel
 
 == Changelog ==
+
+= 1.0.31 - 23-March-2026 =
+
+*   Added: Popup Builder to create fully custom popups using Spexo Addons without coding
+*   Added: Prebuilt popup templates including  
+    - [Subscribe Popups](https://spexoaddons.com/widgets/elementor-popup-builder/#model-popup)  
+    - [Cookie Notices](https://spexoaddons.com/widgets/elementor-popup-builder/#corner-popup)  
+    - [Top Bar Banners](https://spexoaddons.com/widgets/elementor-popup-builder/#slide-popup)  
+    - [Corner Box Popups](https://spexoaddons.com/widgets/elementor-popup-builder/#corner-popup)  
+    - [Discount Coupon Popup](https://spexoaddons.com/widgets/elementor-popup-builder/#corner-popup)  
+    - [Announcements and more](https://spexoaddons.com/widgets/elementor-popup-builder/#popup-examples)
+*   Improved: Added direct documentation links inside widget editors for quick access while editing
+*   Updated: Compatibility with Elementor 3.35.6
 
 = 1.0.30 - 07-Febuary-2026 =
 
@@ -365,18 +394,5 @@ Improvements:
 
 * Improved compatibility with **WordPress 6.9** for smoother performance
 * Better support for newer Elementor versions through **cleaned and optimized styles**
-
-= 1.0.27 - 2025-10-10 =
-
-* Added: New Prebuilt Website – **[Jewellery](https://spexoaddons.com/templates/jewellery-store-elementor-template/)**
-* Added: New Prebuilt Website – **[E-bike](https://spexoaddons.com/templates/e-bike-store-elementor-template/)**
-* Added: New Prebuilt Website – **[Coffee](https://spexoaddons.com/templates/coffee-store-elementor-template/)**
-* Added: New Prebuilt Website – **[University](https://spexoaddons.com/templates/university-elementor-template/)**
-* Added: Five new 404 page layout sections in Prebuilt Section Library
-* Enhanced: Parallax effect for smoother performance
-* Fixed: Pagination dot spacing not working properly in Image Grid/Slider/Carousel widget on responsive devices
-* Fixed: Plus/Minus border option not working properly in Product Add to Cart widget
-* Updated: Compatible with Elementor 3.32
-* Minor bug fixes and other small enhancements
 
 [See changelog for all versions.](https://spexoaddons.com/changelog/)

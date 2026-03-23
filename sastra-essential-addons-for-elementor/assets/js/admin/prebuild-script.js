@@ -55,13 +55,13 @@
 
 			// Open Popup Predefined Styles
 			// TODO: Experiment Disable Library opening for Pupups
-			// if ( 'tmpcoder-popups' === window.elementor.config.document.type ) {
-			// 	setTimeout(function() {
-			// 		if ( 0 === previewIframe.find('.elementor-section-wrap.ui-sortable').children().length ) {
-			// 			previewIframe.find('#tmpcoder-library-btn').trigger('click');
-			// 		}
-			// 	}, 2000);
-			// }
+			if ( 'tmpcoder-popup' === window.elementor.config.document.type ) {
+				// setTimeout(function() {
+				// 	if ( 0 === previewIframe.find('.elementor-section-wrap.ui-sortable').children().length ) {
+				// 		previewIframe.find('#tmpcoder-library-btn').trigger('click');
+				// 	}
+				// }, 2000);
+			}
 
 			// Popup
 			previewIframe.on( 'click', '#tmpcoder-library-btn', function() {
@@ -70,24 +70,27 @@
 				TmpcoderLibraryTmpls.renderPopup( previewIframe );
 
 				// Render Content
-				/*if ( 'tmpcoder-popups' === window.elementor.config.document.type && undefined === previewIframe.find('#tmpcoder-library-btn').attr('data-filter') ) {
+				if ( 'tmpcoder-popup' === window.elementor.config.document.type && undefined === previewIframe.find('#tmpcoder-library-btn').attr('data-filter') ) {
 					TmpcoderLibraryTmpls.renderPopupContent( previewIframe, 'popups' );
-				} else*/
-				if ( 'wp-post' === window.elementor.config.document.type && undefined === previewIframe.find('#tmpcoder-library-btn').attr('data-filter') ) {
-					TmpcoderLibraryTmpls.renderPopupContent( previewIframe, 'sections' );
+				} else {
+
+					if ( 'wp-post' === window.elementor.config.document.type && undefined === previewIframe.find('#tmpcoder-library-btn').attr('data-filter') ) {
+						TmpcoderLibraryTmpls.renderPopupContent( previewIframe, 'sections' );
+						
+					} else if ( undefined !== previewIframe.find('#tmpcoder-library-btn').attr('data-filter') ) {
+						previewIframe.find('.tmpcoder-tplib-header').find('li').removeClass( 'tmpcoder-tplib-active-tab' );
+						previewIframe.find('.tmpcoder-tplib-header').find('li[data-tab="blocks"]').addClass( 'tmpcoder-tplib-active-tab' );
+						TmpcoderLibraryTmpls.renderPopupContent( previewIframe, 'blocks' );
 					
-				} else if ( undefined !== previewIframe.find('#tmpcoder-library-btn').attr('data-filter') ) {
-					previewIframe.find('.tmpcoder-tplib-header').find('li').removeClass( 'tmpcoder-tplib-active-tab' );
-					previewIframe.find('.tmpcoder-tplib-header').find('li[data-tab="blocks"]').addClass( 'tmpcoder-tplib-active-tab' );
-					TmpcoderLibraryTmpls.renderPopupContent( previewIframe, 'blocks' );
-				
-				} 
-				else {
-					//TmpcoderLibraryTmpls.renderPopupContent( previewIframe, 'pages' );
-					TmpcoderLibraryTmpls.renderPopupContent( previewIframe, 'blocks' );
-					previewIframe.find('.tmpcoder-tplib-header').find('li[data-tab="blocks"]').trigger('click');
-					previewIframe.find('.tmpcoder-tplib-header').find('li[data-tab="blocks"]').addClass( 'tmpcoder-tplib-active-tab' );
+					} 
+					else {
+						//TmpcoderLibraryTmpls.renderPopupContent( previewIframe, 'pages' );
+						TmpcoderLibraryTmpls.renderPopupContent( previewIframe, 'blocks' );
+						previewIframe.find('.tmpcoder-tplib-header').find('li[data-tab="blocks"]').trigger('click');
+						previewIframe.find('.tmpcoder-tplib-header').find('li[data-tab="blocks"]').addClass( 'tmpcoder-tplib-active-tab' );
+					}
 				}
+
 
 				// Filter Content
 				$(document).on( 'tmpcoder-filter-popup-content', function() {
@@ -113,11 +116,16 @@
 					headerNavigation += '<li data-tab="sections" class="tmpcoder-tplib-active-tab">Sections</li>';
 				}
 
-				if ( 'tmpcoder-popups' === window.elementor.config.document.type ) {
+				if ( 'tmpcoder-popup' === window.elementor.config.document.type ) {
 					if ( undefined === previewIframe.find('#tmpcoder-library-btn').attr('data-filter') ) {
+						// var headerNavigation = '\
+						// <li data-tab="sections" class="tmpcoder-tplib-active-tab">Sections</li>\
+						// <li data-tab="blocks">Blocks</li>';
+						
 						var headerNavigation = '\
-						<li data-tab="sections" class="tmpcoder-tplib-active-tab">Sections</li>\
-						<li data-tab="blocks">Blocks</li>';
+							<li data-tab="blocks">Blocks</li>\
+							<li data-tab="popups" class="tmpcoder-tplib-active-tab">Popups</li>';
+
 					} else {
 						var headerNavigation = '\
 						<li data-tab="sections">Sections</li>\
@@ -347,6 +355,25 @@
 									// console.log(val);
 								}
 							}); 
+						} else if ( 'popups' === tab ) {
+							if ( '' !== val ) {
+								previewIframe.find('.tmpcoder-tplib-template-wrap').hide();
+								previewIframe.find('.tmpcoder-tplib-template-wrap[data-title*="'+ val +'"]').show();
+							} else {
+								previewIframe.find('.tmpcoder-tplib-template-wrap').show();
+							}
+
+							TmpcoderLibraryTmpls.renderPopupGrid( previewIframe );
+
+							 elementorCommon.ajax.addRequest( 'tmpcoder_backend_search_query_results_func', {
+								data: {
+									search_query: val,
+									type:5
+								},
+								success: function() {
+									// console.log(val);
+								}
+							}); 
 						}
 					}, 1000);
 				});
@@ -388,9 +415,9 @@
 
 			}); // end always
 
-			setTimeout(function(){
-				TmpcoderLibraryTmpls.renderTemplatesGridContent(previewIframe, tab);
-			}, 2000);
+			// setTimeout(function(){
+			// 	TmpcoderLibraryTmpls.renderTemplatesGridContent(previewIframe, tab);
+			// }, 2000);
 			
 		},
 
@@ -452,9 +479,22 @@
 				var module = $(this).parent().data('filter'),
 					template = $(this).parent().data('slug'),
 					kitID = $(this).parent().data('kit'),
-					previewUrl = 'sections' !== activeTab ? TmpcoderLibFrontJs.demos_url + $(this).parent().data('preview-url') : $(this).parent().find('img').attr('src'),
+					previewUrl = '',
 					previewType = $(this).parent().data('preview-type'),
 					proRefferal = '';
+
+				// Determine preview URL based on tab type
+				if ( 'sections' === activeTab ) {
+					// For sections, use current src attribute
+					previewUrl = $(this).parent().find('img').attr('src');
+				} else if ( 'popups' === activeTab ) {
+					// For popups, use data-src attribute (lazy loaded image)
+					var lazyImage = $(this).parent().find('.tmpcoder-lazyload-image');
+					previewUrl = lazyImage.attr('data-src') || lazyImage.attr('src');
+				} else {
+					// For blocks/pages, use preview-url data attribute with demos URL
+					previewUrl = TmpcoderLibFrontJs.demos_url + $(this).parent().data('preview-url');
+				}
 
 				if ( $(this).closest('.tmpcoder-tplib-pro-wrap').length ) {
 					proRefferal = '-pro';
@@ -511,8 +551,8 @@
 				}
 
 				// Popup Templates
-				if ( 'tmpcoder-popups' === window.elementor.config.document.type && 'popups' === activeTab ) {
-					module = 'popups/'+ module;
+				if ( 'tmpcoder-popup' === window.elementor.config.document.type && 'popups' === activeTab ) {
+					// module = 'popups/'+ module;
 				}
 
 				// Purchase Page
@@ -530,10 +570,11 @@
 				previewIframe.find('.tmpcoder-tplib-content-wrap').show();
 				previewIframe.find('.tmpcoder-tplib-preview-wrap').hide();
 				TmpcoderLibraryTmpls.renderPopupLoader( previewIframe );
+
 				
 				// Template Slug
 				template = template.includes('-zzz') ? template.replace('-zzz', '') : template;
-				template = 'pages' === activeTab ? template : module +'/'+ template;
+				template = 'pages' === activeTab && 'popups' !== activeTab ? template : module +'/'+ template;
 				sectionSlug = 'sections' === activeTab ? sectionSlug : '';
 
 				// AJAX Data
@@ -568,7 +609,7 @@
 					}
 
 					// Popups
-					if ( 'tmpcoder-popups' === window.elementor.config.document.type && 'popups' === activeTab ) {
+					if ( 'tmpcoder-popup' === window.elementor.config.document.type && 'popups' === activeTab ) {
 						var defaults = {
 							popup_trigger: 'load',
 							popup_show_again_delay: '0',

@@ -83,7 +83,7 @@ $featuredList = array();
         'description' => __( 'Turn off unused widgets to optimize your website speed.', 'sastra-essential-addons-for-elementor' ),
         'action_link_text' => 'Read More',
         'target' => '',
-        'extra_class' => ( function_exists('get_template') && in_array(get_template(), array('sastrawp', 'spexo')) ? 'set-box' : ''),
+        'extra_class' => ( function_exists('get_template') && !in_array(get_template(), array('sastrawp', 'spexo')) ? 'set-box' : ''),
         'is_lock' => false,
     );
     array_push($featuredList, $featuredArr);
@@ -110,11 +110,23 @@ $featuredList = array();
             'description' => __( 'Control all site-wide settings easily with Global Options.', 'sastra-essential-addons-for-elementor' ),
             'action_link_text' => 'Read More',
             'target' => '',
-            'extra_class' => 'set-box',
+            'extra_class' => 'set-box1',
             'is_lock' => false,
         );
         array_push($featuredList, $featuredArr);
     }
+
+    $featuredArr = array(
+        'title' => __( 'Popup Builder', 'sastra-essential-addons-for-elementor' ),
+        'icon' => 'popup-builder-2.svg',
+        'action_link' => admin_url('admin.php?page=spexo-welcome&tab=popup-builder'),
+        'description' => __( 'Create beautiful popups with ease using the Popup Builder.', 'sastra-essential-addons-for-elementor' ),
+        'action_link_text' => 'Read More',
+        'target' => '',
+        'extra_class' => ( function_exists('get_template') && !in_array(get_template(), array('sastrawp', 'spexo')) ? 'set-box' : ''),
+        'is_lock' => false,
+    );
+    array_push($featuredList, $featuredArr);
 
     $tmpcoder_news = [];
     $tmpcoder_news[0]['featured_img_url'] = 'https://spexo.b-cdn.net/wp-content/uploads/2024/09/all-about-wordpress-elementor-min.jpg';

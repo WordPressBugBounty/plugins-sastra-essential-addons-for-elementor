@@ -648,22 +648,23 @@ if ( ! class_exists( 'TMPCODER_Advanced_Hooks_Loader' ) ) {
 			<?php
 		}
 
-		public function custom_layout_types_arr($key = '')
-		{
-			$custom_layout_types = array(
-				'type_header'   => __( 'Header', 'sastra-essential-addons-for-elementor' ),
-				'type_footer'   => __( 'Footer', 'sastra-essential-addons-for-elementor' ),
-				'type_archive'   => __( 'Post Archive', 'sastra-essential-addons-for-elementor' ),
-				'type_single_post'   => __( 'Single Post', 'sastra-essential-addons-for-elementor' ),
-				'type_search_result_page'   => __( 'Search Results Page', 'sastra-essential-addons-for-elementor' ),
-				'type_404' => __( '404 Page', 'sastra-essential-addons-for-elementor' ),
-			);
+	public function custom_layout_types_arr($key = '')
+	{
+		$custom_layout_types = array(
+			'type_header'   => __( 'Header', 'sastra-essential-addons-for-elementor' ),
+			'type_footer'   => __( 'Footer', 'sastra-essential-addons-for-elementor' ),
+			'type_archive'   => __( 'Post Archive', 'sastra-essential-addons-for-elementor' ),
+			'type_single_post'   => __( 'Single Post', 'sastra-essential-addons-for-elementor' ),
+			'type_search_result_page'   => __( 'Search Results Page', 'sastra-essential-addons-for-elementor' ),
+			'type_404' => __( '404 Page', 'sastra-essential-addons-for-elementor' ),
+			'type_popup' => __( 'Popup', 'sastra-essential-addons-for-elementor' ),
+		);
 
-			if ( class_exists('WooCommerce') ) {
-				$custom_layout_types['type_product_category'] = __( 'Product Category', 'sastra-essential-addons-for-elementor' );
-				$custom_layout_types['type_product_archive']  = __( 'Products Archive', 'sastra-essential-addons-for-elementor' );
-				$custom_layout_types['type_single_product']   = __( 'Single Product', 'sastra-essential-addons-for-elementor' );
-			}
+		if ( class_exists('WooCommerce') ) {
+			$custom_layout_types['type_product_category'] = __( 'Product Category', 'sastra-essential-addons-for-elementor' );
+			$custom_layout_types['type_product_archive']  = __( 'Products Archive', 'sastra-essential-addons-for-elementor' );
+			$custom_layout_types['type_single_product']   = __( 'Single Product', 'sastra-essential-addons-for-elementor' );
+		}
 
 			if ($key) {
 				return isset($custom_layout_types[$key])?$custom_layout_types[$key]:'-';
