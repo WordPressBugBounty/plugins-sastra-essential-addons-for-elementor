@@ -1,20 +1,24 @@
-=== Spexo Addons for Elementor - Elementor Widgets, WooCommerce Builder, Mega Menu and Starter Templates for Elementor ===
+=== Spexo Addons for Elementor - Elementor Widgets, Mega Menu, Popup Builder, Template Kits and Starter Templates for Elementor ===
 Contributors: templatescoderthemes, skywebtech
 Tags: elementor addons, elementor widgets, woocommerce elementor, header footer builder, elementor templates
-Stable tag: 1.0.31
+Stable tag: 1.0.32
 Requires at least: 5.0
 Tested up to: 6.9
 Requires PHP: 7.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-Advanced Elementor addons plugin with widgets, WooCommerce builders, mega menu, template kits and extensions for faster WordPress website design.
+Advanced Elementor addons plugin with widgets, WooCommerce builder, mega menu, popup builder and Elementor template kits for faster website design.
 
 == Description ==
 
-**Spexo Addons for Elementor** extends the Elementor page builder with advanced widgets, WooCommerce elements, layout extensions and starter templates. The plugin helps developers, agencies and website owners **build professional websites faster using Elementor.**
+**Spexo Addons for Elementor** is a powerful Elementor addons plugin that extends the Elementor page builder with advanced widgets, Elementor extensions, WooCommerce builder and ready Elementor template kits.
 
-The plugin provides a collection of Elementor widgets for content layouts, navigation, marketing sections and WooCommerce product displays. These tools are designed for real projects and work directly inside the Elementor editor.
+The plugin helps developers, agencies and website owners build professional websites faster using Elementor starter templates kit without writing custom code.
+
+
+Spexo Addons includes a wide range of Elementor widgets for layouts, marketing sections, navigation and WooCommerce product displays. It also includes an Elementor popup builder for creating marketing popups, lead capture forms and announcements directly inside Elementor.
+
 
 **Useful Links** 👇
 
@@ -23,7 +27,7 @@ The plugin provides a collection of Elementor widgets for content layouts, navig
 - [Documentation](https://spexoaddons.com/documentation)
 - [Need Support?](https://fastthemes.com/support/)
 
-Spexo also includes smart AI-powered tools that help generate content, create images, translate pages and improve image alt text inside Elementor. These features help streamline daily website building tasks without leaving the editor.
+Spexo also includes AI powered tools that help generate content, create images, translate pages and improve image alt text inside Elementor. These tools help streamline common website building tasks.
 
 The plugin is suitable for developers who build client websites and for beginners who want to create modern websites without writing custom code.
 
@@ -36,7 +40,9 @@ https://www.youtube.com/watch?v=oTqiHNGMafU
 
 Spexo Addons extends Elementor with widgets, layout tools and WooCommerce builders that help speed up website development.
 
-The plugin focuses on practical features that developers use in real projects. The widgets integrate directly into the Elementor interface so users can design pages visually.
+The plugin focuses on practical features used in real client projects. The widgets integrate directly into Elementor so you can design pages visually.
+
+Spexo is an Elementor addons plugin designed for real website projects. It combines Elementor widgets, Elementor extensions and WooCommerce tools in a single plugin to reduce dependency on multiple addons.
 
 The plugin is designed for performance and compatibility with popular WordPress themes and plugins.
 
@@ -44,14 +50,29 @@ Key advantages include:
 
 - Large collection of Elementor widgets
 - WooCommerce widgets for online stores
+- Elementor popup builder
 - Elementor extensions for advanced layout control
-- Pre-built templates and starter websites
+- Pre built templates and starter websites
 - Developer friendly design options
 - Modular widgets that can be enabled or disabled
 
+## Popup Builder for Elementor
+
+Spexo Addons includes an [Elementor popup builder](https://spexoaddons.com/widgets/elementor-popup-builder/) that allows you to create custom popups directly inside the Elementor editor. This popup builder for Elementor helps you design popups visually without using external popup plugins.
+
+You can create marketing popups, email subscription forms and promotional messages using Elementor widgets and layout controls.
+- **Popup Design** – Create popup layouts using Elementor widgets with full design control.
+- **Display Conditions** – Control where popups appear using page level rules.
+- **Trigger Options** – Show popups on page load, scroll or click using the [Popup Builder Documentation](https://spexoaddons.com/documentation/popup-builder/).
+- **Exit Intent Popups** – Display popups when users attempt to leave the website.
+- **Responsive Controls** – Adjust popup visibility for desktop, tablet and mobile.
+- **Animation Effects** – Apply entrance and exit animations.
+
+This Elementor popup builder helps improve engagement and conversions without using separate popup plugins.
+
 
 ## AI Powered Tools
-Spexo includes built-in AI tools designed to assist content creation inside Elementor.
+Spexo includes built in AI tools designed to assist content creation inside Elementor.
 
 These tools help users generate page content, improve existing text and create images without switching between external tools.
 
@@ -61,7 +82,7 @@ Available AI features include:
 - Content rewriting and improvement suggestions  
 - AI image generation directly inside Elementor  
 - Automatic image alt text generation for SEO  
-- One-click translation of Elementor pages  
+- One click translation of Elementor pages  
 - AI usage dashboard and settings panel  
 
 These tools are optional and can be enabled or disabled from the plugin settings.
@@ -70,9 +91,9 @@ These tools are optional and can be enabled or disabled from the plugin settings
 
 ## Popular Elementor Widgets Included
 
-Spexo Addons provides a large collection of Elementor widgets that help you build modern website layouts, marketing sections and interactive content blocks directly inside Elementor.
+Spexo Addons provides a large collection of Elementor widgets that help you build modern website layouts, marketing sections and interactive content using a complete Elementor addons system.
 
-- **Mega Menu Builder** – Build advanced navigation layouts using the [Mega Menu Widget for Elementor](https://spexoaddons.com/widgets/elementor-mega-menu-builder/) with multi column menus and off-canvas mobile navigation.
+- **Mega Menu Builder** – Build advanced navigation layouts using the [Mega Menu Widget for Elementor](https://spexoaddons.com/widgets/elementor-mega-menu-builder/) with multi column menus and off canvas mobile navigation.
 
 - **Post Grid** – Display blog posts and custom post types using the [Post Grid Widget](https://spexoaddons.com/widgets/elementor-post-grid-slider-carousel-widget/) in responsive grid layouts.
 
@@ -128,7 +149,7 @@ Spexo Addons includes WooCommerce widgets that help you design custom ecommerce 
 
 - **Product Rating** – Show star ratings and reviews with the [Product Rating Widget](https://spexoaddons.com/documentation/product-rating/) to build customer trust.
 
-- **Product Tabs** – Organize product descriptions, specifications, and reviews using the [Product Tabs Widget](https://spexoaddons.com/documentation/product-tabs/).
+- **Product Tabs** – Organize product descriptions, specifications and reviews using the [Product Tabs Widget](https://spexoaddons.com/documentation/product-tabs/).
 
 - **Product Media** – Display product images and galleries using the [Product Media Widget](https://spexoaddons.com/documentation/product-media/).
 
@@ -143,8 +164,9 @@ These [Elementor WooCommerce widgets](https://spexoaddons.com/widgets/woocommerc
 ## Elementor Extensions
 
 Spexo Addons includes powerful Elementor extensions that expand the capabilities of the Elementor page builder.
+These Elementor extensions extend the core functionality of Elementor and help you build advanced layouts without additional plugins.
 
-- **Elementor Theme Builder** – Create custom layouts using the [Elementor Theme Builder](https://spexoaddons.com/documentation/site-builder/) to control headers, footers, and templates.
+- **Elementor Theme Builder** – Create custom layouts using the [Elementor Theme Builder](https://spexoaddons.com/documentation/site-builder/) to control headers, footers and templates.
 
 - **Header and Footer Builder** – Design flexible navigation layouts using the [Header and Footer Builder](https://spexoaddons.com/documentation/custom-header/).
 
@@ -170,7 +192,7 @@ https://www.youtube.com/watch?v=9FVni0rGjOM
 
 ## Elementor Templates and Starter Websites
 
-Spexo Addons provides ready-to-use Elementor templates and starter websites that help launch websites faster.
+Spexo Addons provides ready to use Elementor templates and starter websites that help launch websites faster.
 
 Explore all templates in the [Elementor Templates Library](https://spexoaddons.com/spexo-elementor-theme/).
 
@@ -226,13 +248,13 @@ Spexo integrates with several popular WordPress plugins.
 
 Supported integrations include:
 
-- WooCommerce  
-- Contact Form 7  
-- WPForms  
-- Ninja Forms  
-- MailChimp  
-- Rank Math SEO  
-- Yoast SEO  
+- WooCommerce
+- Contact Form 7
+- WPForms
+- Ninja Forms
+- MailChimp
+- Rank Math SEO
+- Yoast SEO
 
 These integrations allow widgets to work with common form builders and eCommerce setups.
 
@@ -246,12 +268,12 @@ The plugin is also useful for freelancers and business owners who want to build 
 
 Common use cases include:
 
-- Business websites  
-- WooCommerce online stores  
-- Agency websites  
-- SaaS landing pages  
-- Blogs and magazines  
-- Portfolio websites  
+- Business websites
+- WooCommerce online stores
+- Agency websites
+- SaaS landing pages
+- Blogs and magazines
+- Portfolio websites
 
 
 ## External Resources
@@ -355,18 +377,28 @@ Feel free to contact us anytime via [Support](https://fastthemes.com/support/?re
 
 == Changelog ==
 
+= 1.0.32 - 16-April-2026 =
+
+New Features
+
+* Added new prebuilt websites: **[Sports Coach](https://spexoaddons.com/templates/free-sports-coach-elementor-template/)** and **[Pet Grooming](https://spexoaddons.com/templates/free-pet-grooming-elementor-template/)**.
+
+Improvements
+
+* Updated compatibility with Elementor 4.0.2.
+
 = 1.0.31 - 23-March-2026 =
 
-*   Added: Popup Builder to create fully custom popups using Spexo Addons without coding
-*   Added: Prebuilt popup templates including  
+* Added: Popup Builder to create fully custom popups using Spexo Addons without coding
+* Added: Prebuilt popup templates including  
     - [Subscribe Popups](https://spexoaddons.com/widgets/elementor-popup-builder/#model-popup)  
     - [Cookie Notices](https://spexoaddons.com/widgets/elementor-popup-builder/#corner-popup)  
     - [Top Bar Banners](https://spexoaddons.com/widgets/elementor-popup-builder/#slide-popup)  
     - [Corner Box Popups](https://spexoaddons.com/widgets/elementor-popup-builder/#corner-popup)  
     - [Discount Coupon Popup](https://spexoaddons.com/widgets/elementor-popup-builder/#corner-popup)  
     - [Announcements and more](https://spexoaddons.com/widgets/elementor-popup-builder/#popup-examples)
-*   Improved: Added direct documentation links inside widget editors for quick access while editing
-*   Updated: Compatibility with Elementor 3.35.6
+* Improved: Added direct documentation links inside widget editors for quick access while editing
+* Updated: Compatibility with Elementor 3.35.6
 
 = 1.0.30 - 07-Febuary-2026 =
 
