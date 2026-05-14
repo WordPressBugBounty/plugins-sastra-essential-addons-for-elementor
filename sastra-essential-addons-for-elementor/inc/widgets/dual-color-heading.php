@@ -225,7 +225,9 @@ class TMPCODER_Dual_Color_Heading extends Widget_Base {
 		$this->end_controls_section();
 
 		// Section: Help & Docs
-		tmpcoder_add_section_help_docs( $this, Controls_Manager::RAW_HTML, '' );
+		if(function_exists('tmpcoder_add_section_help_docs')) {
+			tmpcoder_add_section_help_docs( $this, Controls_Manager::RAW_HTML, '' );
+		}
 
 		$this->start_controls_section(
 			'primary_heading_styles',

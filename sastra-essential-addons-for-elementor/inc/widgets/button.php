@@ -406,13 +406,58 @@ class TMPCODER_Button extends Widget_Base {
 			]
 		);
 
+		$this->add_control(
+			'enable_icon_hover_distance',
+			[
+				'label' => esc_html__( 'Hover Icon Distance', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::SWITCHER,
+				'label_on' => esc_html__( 'Yes', 'sastra-essential-addons-for-elementor' ),
+				'label_off' => esc_html__( 'No', 'sastra-essential-addons-for-elementor' ),
+				'return_value' => 'yes',
+				'default' => 'no',
+				'prefix_class' => 'tmpcoder-hover-icon-distance-',
+				'condition' => [
+					'icon_style' => [ 'inline', 'pro-bk', 'pro-ibk' ],
+				],
+			]
+		);
+
+		$this->add_control(
+			'icon_hover_distance',
+			[
+				'label' => esc_html__( 'Hover Distance', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::SLIDER,
+				'size_units' => [ 'px' ],
+				'range' => [
+					'px' => [
+						'min' => 0,
+						'max' => 50,
+					],
+				],
+				'default' => [
+					'unit' => 'px',
+					'size' => 12,
+				],
+				'selectors' => [
+					'{{WRAPPER}}.tmpcoder-hover-icon-distance-yes.tmpcoder-button-icon-position-left .tmpcoder-button:hover .tmpcoder-button-icon' => 'margin-right: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}}.tmpcoder-hover-icon-distance-yes.tmpcoder-button-icon-position-right .tmpcoder-button:hover .tmpcoder-button-icon' => 'margin-left: {{SIZE}}{{UNIT}};',
+				],
+				'condition' => [
+					'icon_style' => [ 'inline', 'pro-bk', 'pro-ibk' ],
+					'enable_icon_hover_distance' => 'yes',
+				],
+			]
+		);
+
 		$this->end_controls_section(); // End Controls Section
 
 		// Section: Tooltip ---------
 		$this->add_section_tooltip();
 
 		// Section: Help & Docs
-		tmpcoder_add_section_help_docs( $this, Controls_Manager::RAW_HTML, '' );
+		if(function_exists('tmpcoder_add_section_help_docs')) {
+			tmpcoder_add_section_help_docs( $this, Controls_Manager::RAW_HTML, '' );
+		}
 
 		// Section: Pro Features
 		tmpcoder_pro_features_list_section( $this, '', Controls_Manager::RAW_HTML, 'button', [

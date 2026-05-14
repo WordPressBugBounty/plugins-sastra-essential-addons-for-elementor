@@ -234,9 +234,16 @@ class TMPCODER_Templates_Loop {
                     <?php esc_html_e( 'Define the rules that establish how and where your Template appears on your website.', 'sastra-essential-addons-for-elementor' ); ?><br>
             </header>
             <div class="popup-loader-html">
-	            <div class="welcome-backend-loader">
-	                <img src="<?php echo esc_url(TMPCODER_ADDONS_ASSETS_URL.'images/backend-loader.gif'); ?>" alt="" width="80" height="80" />
-	            </div>
+                <?php
+                tmpcoder_render_common_loader(
+                    array(
+                        'class'       => 'tmpcoder-template-conditions-loader',
+                        'type'        => 'template-conditions',
+                        'title'       => '',
+                        'description' => '',
+                    )
+                );
+                ?>
             </div>
             <span class="close-popup dashicons dashicons-no-alt"></span>
             <table class="tmpcoder-options-table widefat">
@@ -245,8 +252,9 @@ class TMPCODER_Templates_Loop {
 		            <tr class="bsf-target-rules-row tmpcoder-options-row">
 						<td class="bsf-target-rules-row-heading tmpcoder-options-row-heading">
 							<label><?php esc_html_e( 'Display On', 'sastra-essential-addons-for-elementor' ); ?></label>
-							<i class="bsf-target-rules-heading-help dashicons dashicons-editor-help"
-								title="<?php esc_attr_e( 'Add locations for where this template should appear.', 'sastra-essential-addons-for-elementor' ); ?>"></i>
+							<i class="bsf-target-rules-heading-help dashicons dashicons-editor-help">
+								<span class="tooltip"><?php esc_attr_e( 'Add locations for where this template should appear.', 'sastra-essential-addons-for-elementor' ); ?></span>
+							</i>
 						</td>
 						<td class="bsf-target-rules-row-content tmpcoder-options-row-content">
 
@@ -273,7 +281,7 @@ class TMPCODER_Templates_Loop {
             <?php
            	// Pro Notice
 			if ( ! tmpcoder_is_availble() ) {
-				echo '<span class="tmpcoder-popup-pro-notice"><br>Conditions are fully suppoted in the <strong><a href="'. esc_url(TMPCODER_PURCHASE_PRO_URL.'?ref=tmpcoder-plugin-backend-conditions-upgrade-pro#purchasepro') .'" target="_blank">Pro versions.</a></strong></span>';
+				echo '<span class="tmpcoder-popup-pro-notice"><br>Conditions are fully suppoted in the <strong><a href="'. esc_url(TMPCODER_PURCHASE_PRO_URL.'?ref=tmpcoder-plugin-backend-conditions-upgrade-pro#purchasepro') .'" target="_blank"><img src="'.esc_url( TMPCODER_ADDONS_ASSETS_URL . 'images/premium-icon-purple.svg' ).'" style="width: 16px; height: 16px;     vertical-align: sub;margin-right: 4px;" /><span>Pro versions</span>.</a></strong></span>';
 			}
 
             ?>

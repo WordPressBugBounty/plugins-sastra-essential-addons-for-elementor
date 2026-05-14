@@ -71,12 +71,12 @@
 }
 
 .tmpcoder-import-demo-left {
-    width: 50%;
+    width: 60%;
     box-sizing: border-box;
 }
 
 .tmpcoder-import-demo-right {
-    width: 50%;
+    width: 40%;
     display: flex;
     align-items: center;
     box-sizing: border-box;
@@ -129,7 +129,7 @@
 
 .tmpcoder-import-demo-search input {
     width: 100%;
-    height: 42px;
+    height: 40px;
     padding-left: 15px;
     background-color: #FBFBFB;
     border: none;
@@ -159,7 +159,7 @@
     border: 1px solid #e8e8e8;
     line-height: 40px;
     padding: 0 20px;
-    border-radius: 3px;
+    border-radius: 6px;
     font-size: 14px;
     cursor: pointer;
 }
@@ -268,6 +268,65 @@
     margin-top: 30px;
 }
 
+.tmpcoder-import-demo-page:not(.tmpcoder-demo-images-ready) .tmpcoder-import-demo-grid {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.tmpcoder-import-demo-page.tmpcoder-demo-images-ready .tmpcoder-import-demo-grid {
+    opacity: 1;
+    visibility: visible;
+}
+
+.tmpcoder-import-demo-page.tmpcoder-demo-images-ready .tmpcoder-demo-skeleton {
+    display: none;
+}
+
+.tmpcoder-demo-skeleton {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+    padding: 30px;
+    padding-top: 0;
+    margin-top: 30px;
+}
+
+.tmpcoder-demo-skeleton-card {
+    background: #fff;
+    border: 1px solid #ebeef0;
+    border-radius: 8px;
+    padding: 12px;
+}
+
+.tmpcoder-demo-skeleton-thumb,
+.tmpcoder-demo-skeleton-line {
+    background: linear-gradient(90deg, #ececec 25%, #f6f6f6 50%, #ececec 75%);
+    background-size: 200% 100%;
+    animation: tmpcoderBlocksSkeletonShimmer 1.4s linear infinite;
+    border-radius: 6px;
+}
+
+.tmpcoder-demo-skeleton-thumb {
+    aspect-ratio: 16 / 9;
+    margin-bottom: 12px;
+}
+
+.tmpcoder-demo-skeleton-line {
+    height: 12px;
+    margin-bottom: 8px;
+    border-radius: 999px;
+}
+
+.tmpcoder-demo-skeleton-line:last-child {
+    width: 72%;
+    margin-bottom: 0;
+}
+
+@keyframes tmpcoderBlocksSkeletonShimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
 .tmpcoder-import-demo-grid .plugin_box {
     margin-top: 0px;
     border: 0px;
@@ -281,13 +340,13 @@
     background: #fff;
 }
 
-.tmpcoder-import-demo-grid .plugin_box .action_button .button.demo-preview-btn .dashicons {
-    transition: unset;
-}
-
 @media screen and (max-width: 1400px) {
     .tmpcoder-import-demo-grid {
         -ms-grid-columns: (1fr)[3];
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .tmpcoder-demo-skeleton {
         grid-template-columns: repeat(3, 1fr);
     }
 }
@@ -349,17 +408,12 @@
     color: #562ad5;
 }
 
-.tmpcoder-import-demo-grid .demo-preview-btn:hover {
-    background: #562ad5;
-    border-color: #562ad5;
-    color: #fff;
-}
 
 .tmpcoder-import-demo-grid .demo-preview-btn:focus {
     background: transparent;
     border-color: #562ad5;
     color: #562ad5;
-    box-shadow: 0 0 0 1px #562ad5;
+    box-shadow: unset;
 }
 
 .tmpcoder-import-demo-grid .import-demo-content:focus {
@@ -378,16 +432,15 @@
     background-color: #562ad5;
 }
 
-.tmpcoder-import-demo-page .tmpcoder-import-demo-page-title h1,
-p {
+.tmpcoder-import-demo-page .tmpcoder-import-demo-page-title h1 {
     color: #1d2327;
 }
 
 .tmpcoder-import-demo-grid .uninstall-button:focus {
-    box-shadow: 0 0 0 1px #fff, 0 0 0 3px red;
+    box-shadow: unset;
 }
 
-.tmpcoder-import-demo-grid .upgrade-btn:focus {
+.spexo-addons-admin-page .tmpcoder-import-demo-grid .upgrade-btn:focus {
     /*box-shadow: 0 0 0 1px #fff, 0 0 0 3px #2271b1;*/
     /*background: red;*/
     /*border-color: red;*/
@@ -398,20 +451,22 @@ p {
     border: 0;
 }
 
-.tmpcoder-import-demo-grid .upgrade-btn:hover {
+.spexo-addons-admin-page .tmpcoder-import-demo-grid .upgrade-btn:hover {
     /*background: transparent;*/
     /*border-color: red;*/
     /*color: red;*/
     background-image: linear-gradient(120deg, #BF1864 0%, #5729D9 100%);
     border: 0;
+    color: #fff;
 }
 
-.tmpcoder-import-demo-grid .upgrade-btn {
+.spexo-addons-admin-page .tmpcoder-import-demo-grid .upgrade-btn {
     /*background: red;*/
     /*border-color: red;*/
     background-image: linear-gradient(120deg, #5729D9 0%, #BF1864 100%);
     color: #fff;
     border: 0;
+    padding: 4px 10px !important;
 }
 
 .tmpcoder-import-popup .button {
@@ -548,10 +603,18 @@ p {
     .tmpcoder-import-demo-grid {
         grid-template-columns: repeat(2, 1fr);
     }
+
+    .tmpcoder-demo-skeleton {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 @media screen and (max-width: 767px) {
     .tmpcoder-import-demo-grid {
+        grid-template-columns: repeat(1, 1fr);
+    }
+
+    .tmpcoder-demo-skeleton {
         grid-template-columns: repeat(1, 1fr);
     }
 
@@ -574,22 +637,42 @@ p {
     margin-right: 5px;
 }
 
-.spexo-addons_page_tmpcoder-import-demo .tmpcoder-documentation-buttons-header .tmpcoder-prebuilt-video-link i {
-    /*font-size: 15px;*/
-}
-.spexo-addons_page_tmpcoder-import-demo .tmpcoder-prebuilt-demo-doc-link a {
-    color: #bf1864;
-    border: 1px solid #bf1864;
-    font-size: 14px;
-}
-.spexo-addons_page_tmpcoder-import-demo .tmpcoder-prebuilt-demo-doc-link a:hover {
-    background: #bf1864;
-    color:#fff;
-}
-.spexo-addons_page_tmpcoder-import-demo .tmpcoder-prebuilt-demo-doc-link i { font-size: 18px; height: 18px; width: 18px; margin-right: 8px; }
-.spexo-addons_page_tmpcoder-import-demo .tmpcoder-theme-welcome{ padding-bottom: 24px; }
+
+.spexo-addons_page_tmpcoder-import-demo .tmpcoder-prebuilt-demo-doc-link i {font-size: 16px;
+    height: 16px;
+    width: 16px;
+    margin-right: 8px;
+    top: 0;}
+.spexo-addons_page_tmpcoder-import-demo .tmpcoder-theme-welcome{ padding-bottom: 40px; }
 .spexo-addons_page_tmpcoder-import-demo .btn-link{ padding: 9px 15px; }
 .spexo-addons_page_tmpcoder-import-demo .plugin_box .action_bar{ padding: 20px; }
 .spexo-addons_page_tmpcoder-import-demo .plugin_box .action_button{ padding: 0px 20px 20px 20px;}
-.spexo-addons_page_tmpcoder-import-demo .plugin_box .action_button .button{ padding: 3px 10px; font-weight: 700; }
-.spexo-addons_page_tmpcoder-import-demo .plugin_box .action_button .button .dashicons{ font-size: 18px; height: 18px; width: 18px; margin-right: 3px;}
+.spexo-addons_page_tmpcoder-import-demo .plugin_box .action_button .button .dashicons{ font-size: 16px; height: 16px; width: 16px; margin-right: 3px;}
+
+.about-wrap #import-demo-uninstall-popup .popup-heading span,
+.about-wrap #import-demo-confirm-popup .popup-heading span,
+.about-wrap #import-process-complete-popup .popup-heading span,    
+.about-wrap #uninstall-demo-popup .popup-heading span {    
+    vertical-align: top!important;
+}
+.about-wrap #import-demo-uninstall-popup .popup-content a,
+.about-wrap #import-demo-confirm-popup .popup-content a,    
+.about-wrap #import-process-complete-popup .popup-content a,   
+.about-wrap #uninstall-demo-popup .popup-content a {   
+    line-height: 20px!important;
+}
+.about-wrap #import-demo-uninstall-popup .popup-heading,
+.about-wrap #import-demo-confirm-popup .popup-heading,
+.about-wrap #import-process-complete-popup .popup-heading,
+.about-wrap #uninstall-demo-popup .popup-heading {    
+    margin:0!important;
+    font-size: 20px!important;
+    text-align: left!important;
+    font-weight: 600!important;
+}
+#uninstall-demo-popup {
+    padding: 30px;
+}
+#import-demo-uninstall-popup .popup-content .content-title {
+    margin: 10px 0 0 0;
+}

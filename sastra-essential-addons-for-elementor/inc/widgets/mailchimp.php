@@ -105,7 +105,7 @@ class TMPCODER_Mailchimp extends Widget_Base {
 			]
 		);
 
-		if ( '' == get_option('tmpcoder_mailchimp_api_key') ) {
+		if ( '' == tmpcoder_get_settings('tmpcoder_mailchimp_api_key') ) {
 			$this->add_control(
 				'mailchimp_key_notice',
 				[
@@ -310,7 +310,9 @@ class TMPCODER_Mailchimp extends Widget_Base {
 		$this->end_controls_section(); // End Controls Section
 
 		// Section: Help & Docs
-		tmpcoder_add_section_help_docs( $this, Controls_Manager::RAW_HTML, '' );
+		if(function_exists('tmpcoder_add_section_help_docs')) {
+			tmpcoder_add_section_help_docs( $this, Controls_Manager::RAW_HTML, '' );
+		}
 
 		// Section: Pro Features
 		tmpcoder_pro_features_list_section( $this, '', Controls_Manager::RAW_HTML, 'mailchimp', [

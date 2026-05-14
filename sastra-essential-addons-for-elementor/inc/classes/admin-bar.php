@@ -118,8 +118,12 @@ class TMPCODER_Admin_Bar {
 					\$m.addClass('tmpcoder-clear-cache--init');
 					
 					if (\$clearCache.hasClass('tools-btn')) {
-						$('.welcome-backend-loader').fadeIn();
-						$('.tmpcoder-theme-welcome').css('opacity', '0.5');
+						if (window.tmpcoderCommonLoader && typeof window.tmpcoderCommonLoader.show === 'function') {
+							window.tmpcoderCommonLoader.show('.tmpcoder-tools-sync-loader');
+						} else {
+							$('.welcome-backend-loader').removeAttr('hidden').fadeIn();
+						}
+						$('.tmpcoder-theme-welcome').css('opacity', '1');
 					}
 					
 					$.post(SpexoAdmin.ajax_url, {
@@ -131,7 +135,11 @@ class TMPCODER_Admin_Bar {
 						\$m.removeClass('tmpcoder-clear-cache--init').addClass('tmpcoder-clear-cache--done');
 						
 						if (\$clearCache.hasClass('tools-btn')) {
-							$('.welcome-backend-loader').fadeOut();
+							if (window.tmpcoderCommonLoader && typeof window.tmpcoderCommonLoader.hide === 'function') {
+								window.tmpcoderCommonLoader.hide('.tmpcoder-tools-sync-loader');
+							} else {
+								$('.welcome-backend-loader').attr('hidden', true).fadeOut();
+							}
 							$('.tmpcoder-theme-welcome').css('opacity', '1');
 							$('.tmpcoder-settings-saved').stop().fadeIn(500).delay(1000).fadeOut(1000);
 						} else {
@@ -158,7 +166,11 @@ class TMPCODER_Admin_Bar {
 					}).fail(function() {
 						\$m.removeClass('tmpcoder-clear-cache--init');
 						if (\$clearCache.hasClass('tools-btn')) {
-							$('.welcome-backend-loader').fadeOut();
+							if (window.tmpcoderCommonLoader && typeof window.tmpcoderCommonLoader.hide === 'function') {
+								window.tmpcoderCommonLoader.hide('.tmpcoder-tools-sync-loader');
+							} else {
+								$('.welcome-backend-loader').attr('hidden', true).fadeOut();
+							}
 							$('.tmpcoder-theme-welcome').css('opacity', '1');
 						}
 					});
@@ -200,6 +212,9 @@ class TMPCODER_Admin_Bar {
 		if ( ! current_user_can( 'manage_options' ) ) {
 			return;
 		}
+
+		$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+		$is_welcome_page = ( $screen && 'toplevel_page_spexo-welcome' === $screen->id );
 
 		$custom_css = '#wp-admin-bar-spexo-addons > .ab-item > img {
 		    margin-top: -4px;
@@ -319,8 +334,12 @@ class TMPCODER_Admin_Bar {
 					\$m.addClass('tmpcoder-clear-cache--init');
 					
 					if (\$clearCache.hasClass('tools-btn')) {
-						$('.welcome-backend-loader').fadeIn();
-						$('.tmpcoder-theme-welcome').css('opacity', '0.5');
+						if (window.tmpcoderCommonLoader && typeof window.tmpcoderCommonLoader.show === 'function') {
+							window.tmpcoderCommonLoader.show('.tmpcoder-tools-sync-loader');
+						} else {
+							$('.welcome-backend-loader').removeAttr('hidden').fadeIn();
+						}
+						$('.tmpcoder-theme-welcome').css('opacity', '1');
 					}
 					
 					$.post(SpexoAdmin.ajax_url, {
@@ -332,7 +351,11 @@ class TMPCODER_Admin_Bar {
 						\$m.removeClass('tmpcoder-clear-cache--init').addClass('tmpcoder-clear-cache--done');
 						
 						if (\$clearCache.hasClass('tools-btn')) {
-							$('.welcome-backend-loader').fadeOut();
+							if (window.tmpcoderCommonLoader && typeof window.tmpcoderCommonLoader.hide === 'function') {
+								window.tmpcoderCommonLoader.hide('.tmpcoder-tools-sync-loader');
+							} else {
+								$('.welcome-backend-loader').attr('hidden', true).fadeOut();
+							}
 							$('.tmpcoder-theme-welcome').css('opacity', '1');
 							$('.tmpcoder-settings-saved').stop().fadeIn(500).delay(1000).fadeOut(1000);
 						} else {
@@ -359,7 +382,11 @@ class TMPCODER_Admin_Bar {
 					}).fail(function() {
 						\$m.removeClass('tmpcoder-clear-cache--init');
 						if (\$clearCache.hasClass('tools-btn')) {
-							$('.welcome-backend-loader').fadeOut();
+							if (window.tmpcoderCommonLoader && typeof window.tmpcoderCommonLoader.hide === 'function') {
+								window.tmpcoderCommonLoader.hide('.tmpcoder-tools-sync-loader');
+							} else {
+								$('.welcome-backend-loader').attr('hidden', true).fadeOut();
+							}
 							$('.tmpcoder-theme-welcome').css('opacity', '1');
 						}
 					});
@@ -368,7 +395,11 @@ class TMPCODER_Admin_Bar {
 		})(jQuery);
 		";
 		
-		wp_add_inline_script( $inline_script_handle, $clear_cache_inline_script );
+		// Prevent duplicate click handlers on welcome page.
+		// The fallback method (ensure_welcome_page_inline_script) already prints this script there.
+		if ( ! $is_welcome_page ) {
+			wp_add_inline_script( $inline_script_handle, $clear_cache_inline_script );
+		}
 		
 		// Enqueue the main admin.js file for other functionality (deactivation popup, rating notices, etc.)
 		wp_enqueue_script(

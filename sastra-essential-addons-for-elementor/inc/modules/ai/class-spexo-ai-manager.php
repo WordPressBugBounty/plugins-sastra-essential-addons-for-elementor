@@ -354,8 +354,11 @@ class Spexo_AI_Manager {
         
         // PRO FEATURE: OpenAI Image Model Selection
         if ($is_pro) {
-            $sanitized['openai_image_model'] = isset($input['openai_image_model']) 
-                ? sanitize_text_field($input['openai_image_model']) 
+            $raw_image_model = isset($input['openai_image_model'])
+                ? sanitize_text_field($input['openai_image_model'])
+                : 'dall-e-3';
+            $sanitized['openai_image_model'] = Spexo_AI_Image_Generator::is_allowed_image_model($raw_image_model)
+                ? $raw_image_model
                 : 'dall-e-3';
         } else {
             // Force default image model for free version
@@ -538,7 +541,7 @@ class Spexo_AI_Manager {
         $options = get_option('spexo_ai_options', []);
         $value = $options['openai_model'] ?? 'gpt-4o';
         $is_pro = tmpcoder_is_availble();
-        $upgrade_link = TMPCODER_PURCHASE_PRO_URL.'?ref=tmpcoder-plugin-backend-settings-woo-pro#purchasepro';
+        $upgrade_link = TMPCODER_PURCHASE_PRO_URL.'?ref=tmpcoder-plugin-backend-settings-ai-settings-pro#purchasepro';
         
         // Get cached models or use default
         $cached_models = get_option('spexo_ai_cached_models', []);
@@ -553,7 +556,7 @@ class Spexo_AI_Manager {
             <div class="form-group-wrapper pb-20">
                 <div class="form-group">
                     <div class="spexo-woo-page-config-field">
-                        <label><?php echo esc_html('OpenAI Model') ?></label>
+                        <label><?php echo esc_html('OpenAI Model') ?><?php if ( ! $is_pro ) : ?><span class="spexo-pro-label-tag"><?php esc_html_e( 'Pro', 'sastra-essential-addons-for-elementor' ); ?></span><?php endif; ?></label>
                         <select name="spexo_ai_options[openai_model]" id="spexo-openai-model-select" class="spexo-woo-images-select form-control"<?php echo $is_pro ? '' : ' disabled'; ?> data-default="gpt-4o">
                             <?php foreach ($models as $key => $label) : ?>
                                 <option value="<?php echo esc_attr($key); ?>" <?php selected($value, $key); ?>><?php echo esc_html($label); ?></option>
@@ -565,10 +568,10 @@ class Spexo_AI_Manager {
                         <?php echo esc_html__('List Refresh', 'sastra-essential-addons-for-elementor') ?>
                         </button>
                         <?php if ( ! $is_pro ) : ?>
-                        <p class="spexo-woo-page-config-pro-note">
-                            <span><?php esc_html_e( 'Available in Pro', 'sastra-essential-addons-for-elementor' ); ?></span>
-                            <a href="<?php echo esc_url( $upgrade_link ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Upgrade', 'sastra-essential-addons-for-elementor' ); ?></a>
-                        </p>
+                        <a class="spexo-upgrade-link" href="<?php echo esc_url( $upgrade_link ); ?>" target="_blank" rel="noopener noreferrer">
+                            <img src="<?php echo esc_url( TMPCODER_ADDONS_ASSETS_URL . 'images/premium-icon-purple.svg' ); ?>" alt="" aria-hidden="true">
+                            <span><?php esc_html_e( 'Upgrade to Pro', 'sastra-essential-addons-for-elementor' ); ?></span>
+                        </a>
                         <?php endif; ?>
                     </div>
                 </div>
@@ -581,42 +584,25 @@ class Spexo_AI_Manager {
         $options = get_option('spexo_ai_options', []);
         $value = $options['openai_image_model'] ?? 'dall-e-3';
         $is_pro = tmpcoder_is_availble();
-        $upgrade_link = TMPCODER_PURCHASE_PRO_URL.'?ref=tmpcoder-plugin-backend-settings-woo-pro#purchasepro';
-        // Get cached models or use default
+        $upgrade_link = TMPCODER_PURCHASE_PRO_URL.'?ref=tmpcoder-plugin-backend-settings-ai-settings-pro#purchasepro';
+        // Merge curated defaults with DALL·E + GPT Image ids from /v1/models cache.
         $cached_models = get_option('spexo_ai_cached_models', []);
-        $image_models = [];
-        
-        // Filter for image models from cached models
-        if (!empty($cached_models)) {
-            foreach ($cached_models as $key => $label) {
-                if (strpos($key, 'dall-e-') === 0) {
-                    $image_models[$key] = $label;
-                }
-            }
-        }
-        
-        // Fallback to default if no cached image models
-        if (empty($image_models)) {
-            $image_models = [
-                'dall-e-3' => 'DALL-E 3',
-                'dall-e-2' => 'DALL-E 2'
-            ];
-        }
+        $image_models = Spexo_AI_Image_Generator::merge_image_models_for_settings($cached_models);
         ?>
         <div class="form-group-wrapper">
             <div class="form-group">
                 <div class="spexo-woo-page-config-field">
-                    <label><?php echo esc_html('OpenAI Image Model') ?></label>
+                    <label><?php echo esc_html('OpenAI Image Model') ?><?php if ( ! $is_pro ) : ?><span class="spexo-pro-label-tag"><?php esc_html_e( 'Pro', 'sastra-essential-addons-for-elementor' ); ?></span><?php endif; ?></label>
                     <select name="spexo_ai_options[openai_image_model]" class="spexo-woo-images-select form-control"<?php echo $is_pro ? '' : ' disabled'; ?> data-default="dall-e-3">
                         <?php foreach ($image_models as $key => $label) : ?>
                             <option value="<?php echo esc_attr($key); ?>" <?php selected($value, $key); ?>><?php echo esc_html($label); ?></option>
                         <?php endforeach; ?>
                     </select>
                     <?php if ( ! $is_pro ) : ?>
-                    <p class="spexo-woo-page-config-pro-note">
-                        <span><?php esc_html_e( 'Available in Pro', 'sastra-essential-addons-for-elementor' ); ?></span>
-                        <a href="<?php echo esc_url( $upgrade_link ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Upgrade', 'sastra-essential-addons-for-elementor' ); ?></a>
-                    </p>
+                    <a class="spexo-upgrade-link" href="<?php echo esc_url( $upgrade_link ); ?>" target="_blank" rel="noopener noreferrer">
+                        <img src="<?php echo esc_url( TMPCODER_ADDONS_ASSETS_URL . 'images/premium-icon-purple.svg' ); ?>" alt="" aria-hidden="true">
+                        <span><?php esc_html_e( 'Upgrade to Pro', 'sastra-essential-addons-for-elementor' ); ?></span>
+                    </a>
                     <?php endif; ?>
                 </div>
             </div>
@@ -679,17 +665,17 @@ class Spexo_AI_Manager {
         $options = get_option('spexo_ai_options', []);
         $value = $options['enable_ai_alt_text_auto_generation'] ?? false;
         $is_pro = tmpcoder_is_availble();
-        $upgrade_link = TMPCODER_PURCHASE_PRO_URL.'?ref=tmpcoder-plugin-backend-settings-woo-pro#purchasepro';
+        $upgrade_link = TMPCODER_PURCHASE_PRO_URL.'?ref=tmpcoder-plugin-backend-settings-ai-settings-pro#purchasepro';
         ?>
         <div class="spexo-woo-config-toggle-wrapper">
 			<div class="spexo-woo-config-toggle-label">
-				<strong class="spexo-woo-config-toggle-title"><?php esc_html_e('Auto Generate Alt Text', 'sastra-essential-addons-for-elementor'); ?></strong>
+				<strong class="spexo-woo-config-toggle-title"><?php esc_html_e('Auto Generate Alt Text', 'sastra-essential-addons-for-elementor'); ?><?php if ( ! $is_pro ) : ?><span class="spexo-pro-label-tag"><?php esc_html_e( 'Pro', 'sastra-essential-addons-for-elementor' ); ?></span><?php endif; ?></strong>
 				<span class="spexo-woo-config-toggle-description"><?php esc_html_e('Automatically generate alt text on upload.', 'sastra-essential-addons-for-elementor'); ?></span>
                 <?php if ( ! $is_pro ) : ?>
-                <p class="spexo-woo-page-config-pro-note">
-                    <span><?php esc_html_e( 'Available in Pro', 'sastra-essential-addons-for-elementor' ); ?></span>
-                    <a href="<?php echo esc_url( $upgrade_link ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Upgrade', 'sastra-essential-addons-for-elementor' ); ?></a>
-                </p>
+                <a class="spexo-upgrade-link" href="<?php echo esc_url( $upgrade_link ); ?>" target="_blank" rel="noopener noreferrer">
+                    <img src="<?php echo esc_url( TMPCODER_ADDONS_ASSETS_URL . 'images/premium-icon-purple.svg' ); ?>" alt="" aria-hidden="true">
+                    <span><?php esc_html_e( 'Upgrade to Pro', 'sastra-essential-addons-for-elementor' ); ?></span>
+                </a>
                 <?php endif; ?>
 			</div>
 			<div class="spexo-checkbox-toggle">
@@ -704,22 +690,22 @@ class Spexo_AI_Manager {
         $options = get_option('spexo_ai_options', []);
         $value = $options['ai_alt_text_generation_interval'] ?? 60;
         $is_pro = tmpcoder_is_availble();
-        $upgrade_link = TMPCODER_PURCHASE_PRO_URL.'?ref=tmpcoder-plugin-backend-settings-woo-pro#purchasepro';
+        $upgrade_link = TMPCODER_PURCHASE_PRO_URL.'?ref=tmpcoder-plugin-backend-settings-ai-settings-pro#purchasepro';
         ?>
         <div class="pt-16">
             <div class="form-group-wrapper">
                 <div class="form-group">
                     <div class="spexo-woo-page-config-field">
-                        <label class="spexo-woo-page-config-label" for="tmpcoder_woo_shop_ppp"><?php esc_html_e('Alt Text Generation Interval', 'sastra-essential-addons-for-elementor'); ?></label>
+                        <label class="spexo-woo-page-config-label" for="tmpcoder_woo_shop_ppp"><?php esc_html_e('Alt Text Generation Interval', 'sastra-essential-addons-for-elementor'); ?><?php if ( ! $is_pro ) : ?><span class="spexo-pro-label-tag"><?php esc_html_e( 'Pro', 'sastra-essential-addons-for-elementor' ); ?></span><?php endif; ?></label>
                         <div class="spexo-woo-page-config-input-wrapper">
                             <input type="number" name="spexo_ai_options[ai_alt_text_generation_interval]" id="ai_alt_text_generation_interval" value="<?php echo esc_attr($value); ?>" min="10" max="3600" class="spexo-woo-page-config-input form-control-number-label form-control"<?php echo $is_pro ? '' : ' disabled'; ?> data-default="60" />
                             <span class="spexo-woo-page-config-suffix"><?php esc_html_e('Recommended:', 'sastra-essential-addons-for-elementor'); ?> 60s</span>
                         </div>
                         <?php if ( ! $is_pro ) : ?>
-                        <p class="spexo-woo-page-config-pro-note">
-                            <span><?php esc_html_e( 'Available in Pro', 'sastra-essential-addons-for-elementor' ); ?></span>
-                            <a href="<?php echo esc_url( $upgrade_link ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Upgrade', 'sastra-essential-addons-for-elementor' ); ?></a>
-                        </p>
+                        <a class="spexo-upgrade-link" href="<?php echo esc_url( $upgrade_link ); ?>" target="_blank" rel="noopener noreferrer">
+                            <img src="<?php echo esc_url( TMPCODER_ADDONS_ASSETS_URL . 'images/premium-icon-purple.svg' ); ?>" alt="" aria-hidden="true">
+                            <span><?php esc_html_e( 'Upgrade to Pro', 'sastra-essential-addons-for-elementor' ); ?></span>
+                        </a>
                         <?php endif; ?>
                     </div>
                 </div>
@@ -732,24 +718,24 @@ class Spexo_AI_Manager {
         $options = get_option('spexo_ai_options', []);
         $value = $options['ai_alt_text_image_detail_level'] ?? 'low';
         $is_pro = tmpcoder_is_availble();
-        $upgrade_link = TMPCODER_PURCHASE_PRO_URL.'?ref=tmpcoder-plugin-backend-settings-woo-pro#purchasepro';
+        $upgrade_link = TMPCODER_PURCHASE_PRO_URL.'?ref=tmpcoder-plugin-backend-settings-ai-settings-pro#purchasepro';
         ?>
         <div class="pt-16">
             <div class="form-group-wrapper">
                 <div class="form-group">
                     <div class="spexo-woo-page-config-field">
                         <div class="spexo-woo-page-config-input-wrapper">
-                            <label class="spexo-woo-page-config-label" for="tmpcoder_woo_shop_ppp"><?php esc_html_e('Image Detail Level', 'sastra-essential-addons-for-elementor'); ?></label>
+                            <label class="spexo-woo-page-config-label" for="tmpcoder_woo_shop_ppp"><?php esc_html_e('Image Detail Level', 'sastra-essential-addons-for-elementor'); ?><?php if ( ! $is_pro ) : ?><span class="spexo-pro-label-tag"><?php esc_html_e( 'Pro', 'sastra-essential-addons-for-elementor' ); ?></span><?php endif; ?></label>
                             <select name="spexo_ai_options[ai_alt_text_image_detail_level]" id="ai_alt_text_image_detail_level" class="spexo-woo-images-select form-control"<?php echo $is_pro ? '' : ' disabled'; ?> data-default="low">
                                 <option value="low" <?php selected($value, 'low'); ?>><?php esc_html_e('Low', 'sastra-essential-addons-for-elementor'); ?></option>
                                 <option value="high" <?php selected($value, 'high'); ?>><?php esc_html_e('High', 'sastra-essential-addons-for-elementor'); ?></option>
                             </select>
                             <p class="tmpcoder-smooth-scroll-field-description"><?php esc_html_e('Level of detail for image analysis. High uses more tokens.', 'sastra-essential-addons-for-elementor'); ?></p>
                             <?php if ( ! $is_pro ) : ?>
-                            <p class="spexo-woo-page-config-pro-note">
-                                <span><?php esc_html_e( 'Available in Pro', 'sastra-essential-addons-for-elementor' ); ?></span>
-                                <a href="<?php echo esc_url( $upgrade_link ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Upgrade', 'sastra-essential-addons-for-elementor' ); ?></a>
-                            </p>
+                            <a class="spexo-upgrade-link" href="<?php echo esc_url( $upgrade_link ); ?>" target="_blank" rel="noopener noreferrer">
+                                <img src="<?php echo esc_url( TMPCODER_ADDONS_ASSETS_URL . 'images/premium-icon-purple.svg' ); ?>" alt="" aria-hidden="true">
+                                <span><?php esc_html_e( 'Upgrade to Pro', 'sastra-essential-addons-for-elementor' ); ?></span>
+                            </a>
                             <?php endif; ?>
                         </div>
                     </div>

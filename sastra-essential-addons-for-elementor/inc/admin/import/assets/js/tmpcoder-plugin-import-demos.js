@@ -70,7 +70,11 @@ const import_required_files = function()
             jQuery('[name="importlist[install_required_plugins]"').prop('checked', true);
             jQuery('#install-plugin-loader').addClass('hide-import-img-loader');
             setTimeout(function(){
-                message_text.text(tmpcoder_ajax_object.delete_previews_demo_message);
+                if (should_keep_existing_demo_data()) {
+                    message_text.text(tmpcoder_ajax_object.import_site_content_message || 'Importing Site Content...');
+                } else {
+                    message_text.text(tmpcoder_ajax_object.delete_previews_demo_message);
+                }
             },500);
 
             var progres = getRandomInt(1,2);
@@ -740,7 +744,7 @@ const end_import = function()
 const import_process_popup_open = function()
 {
     jQuery('#import-demo-popup').fadeIn();
-    jQuery('.tmpcoder-admin-popup-wrap').fadeIn();
+    jQuery('.tmpcoder-import-popup-wrap.tmpcoder-admin-popup-wrap').fadeIn();
 } 
 
 const set_progress_value = function(bar_value, step_value)
@@ -792,6 +796,23 @@ function import_demo_confirm_popup_open() {
     jQuery('.tmpcoder-admin-popup').fadeIn();
 }
 
+const should_keep_existing_demo_data = function() {
+    return window.spexoWizardKeepExistingData === true;
+}
+
+const start_import_after_reset_decision = function() {
+    if ( should_keep_existing_demo_data() ) {
+        if (woocommerce_attributes_file_url) {
+            import_woocommerce_attributes_before_xml(woocommerce_attributes_file_url);
+        } else {
+            import_xml(xml_file_url, false, tmpcoder_cpt_data);
+        }
+        return;
+    }
+
+    reset_posts();
+}
+
 function import_demo_content_start() {
     message_text.text(tmpcoder_ajax_object.start_import_message);
 
@@ -803,7 +824,7 @@ function import_demo_content_start() {
     var installPlugins = setInterval(function() {
 
         if ( Object.values(requiredPlugins).every(Boolean) && requiredTheme && requiredFiles ) {
-            reset_posts();
+            start_import_after_reset_decision();
             clearInterval( installPlugins );
         }
     // Clear
@@ -1044,6 +1065,44 @@ const installRequiredTheme = function() {
 // Search Demo
 var searchTimeout = null,
     maingGridHtml = jQuery('.tmpcoder-import-demo-grid').html();
+
+const revealDemoGridWhenImagesReady = function() {
+    var $page = jQuery('.tmpcoder-import-demo-page');
+    var $images = jQuery('.main-grid .grid-item:visible .demo-preview');
+    var pendingImages = 0;
+
+    if ( ! $page.length ) {
+        return;
+    }
+
+    $page.removeClass('tmpcoder-demo-images-ready');
+
+    if ( ! $images.length ) {
+        $page.addClass('tmpcoder-demo-images-ready');
+        return;
+    }
+
+    $images.each(function() {
+        if ( this.complete && this.naturalWidth !== 0 ) {
+            return;
+        }
+
+        pendingImages++;
+        jQuery(this).one('load error', function() {
+            pendingImages--;
+            if ( pendingImages <= 0 ) {
+                $page.addClass('tmpcoder-demo-images-ready');
+            }
+        });
+    });
+
+    if ( pendingImages <= 0 ) {
+        $page.addClass('tmpcoder-demo-images-ready');
+    }
+}
+
+revealDemoGridWhenImagesReady();
+
 jQuery('.tmpcoder-import-demo-search').find('input').keyup(function(e) {
     if ( e.which === 13 ) {
         return false;
@@ -1101,6 +1160,8 @@ const searchDemo = function( tag, html ) {
             }
         }
     });
+
+    revealDemoGridWhenImagesReady();
 }
 
 const fiterFreeProTemplates = function( price ) {
@@ -1116,6 +1177,8 @@ const fiterFreeProTemplates = function( price ) {
     } else {
         jQuery('.main-grid .grid-item'+ tagAttr).show();
     }
+
+    revealDemoGridWhenImagesReady();
 }
 
 jQuery(document).on('click','.tmpcoder-retry-import', function(e){

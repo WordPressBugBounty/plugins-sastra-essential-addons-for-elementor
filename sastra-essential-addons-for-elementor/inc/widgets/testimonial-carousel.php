@@ -793,7 +793,9 @@ class TMPCODER_Testimonial_Carousel extends Widget_Base {
 		$this->end_controls_section(); // End Controls Section
 
 		// Section: Help & Docs
-		tmpcoder_add_section_help_docs( $this, Controls_Manager::RAW_HTML, '' );
+		if(function_exists('tmpcoder_add_section_help_docs')) {
+			tmpcoder_add_section_help_docs( $this, Controls_Manager::RAW_HTML, '' );
+		}
 
 		// Styles
 		// Section: General ----------
@@ -2999,6 +3001,8 @@ $settings = array_merge( $settings, $settings_new );
 	}
 
 	function tmpcoder_get_icon( $icon, $dir ) {
+		$icon = is_string( $icon ) ? $icon : '';
+
 		if ( false !== strpos( $icon, 'svg-' ) ) {
 			return $this->tmpcoder_get_svg_icon( $icon, $dir );
 

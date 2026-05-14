@@ -415,7 +415,9 @@ class TMPCODER_Offcanvas extends Widget_Base {
         $this->end_controls_section();
 
 		// Section: Help & Docs
-		tmpcoder_add_section_help_docs( $this, Controls_Manager::RAW_HTML, '' );
+		if(function_exists('tmpcoder_add_section_help_docs')) {
+			tmpcoder_add_section_help_docs( $this, Controls_Manager::RAW_HTML, '' );
+		}
 
 		// Section: Pro Features
 		tmpcoder_pro_features_list_section( $this, '', Controls_Manager::RAW_HTML, 'offcanvas', [

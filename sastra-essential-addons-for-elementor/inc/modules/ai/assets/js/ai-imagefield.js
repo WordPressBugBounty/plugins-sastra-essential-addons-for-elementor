@@ -187,12 +187,16 @@
                         'cursor': 'not-allowed'
                     });
                 }
-                var imageModels = [
-                    { value: 'dall-e-3', label: 'DALL·E 3' },
-                    { value: 'gpt-image-1', label: 'GPT Image 1' }
-                ];
+                var imageModels = (SpexoAiImageField.image_models && SpexoAiImageField.image_models.length)
+                    ? SpexoAiImageField.image_models
+                    : [
+                        { value: 'dall-e-3', label: 'DALL·E 3' },
+                        { value: 'dall-e-2', label: 'DALL·E 2' },
+                        { value: 'gpt-image-1', label: 'GPT Image 1' }
+                    ];
+                var modelControls = SpexoAiImageField.model_controls || {};
                 imageModels.forEach(function(m) {
-                    $modelSelect.append('<option value="' + m.value + '">' + m.label + '</option>');
+                    $('<option/>').attr('value', m.value).text(m.label).appendTo($modelSelect);
                 });
                 // Apply default from settings (only if Pro, otherwise force DALL-E 3)
                 if (is_pro && SpexoAiImageField.image_model) {
@@ -200,72 +204,63 @@
                 } else {
                     $modelSelect.val('dall-e-3');
                 }
-                // Define controls per model
-                var modelControls = {
-                    'dall-e-3': {
-                        qualities: [
-                            { value: 'hd', label: 'HD (default)' },
-                            { value: 'standard', label: 'Standard' }
-                        ],
-                        sizes: [
-                            { value: '1024x1024', label: '1024×1024 (square)' },
-                            { value: '1024x1792', label: '1024×1792 (portrait)' },
-                            { value: '1792x1024', label: '1792×1024 (landscape)' }
-                        ]
-                    },
-                    'gpt-image-1': {
-                        qualities: [
-                            { value: 'high', label: 'High (default)' },
-                            { value: 'medium', label: 'Medium' },
-                            { value: 'low', label: 'Low' },
-                            { value: 'auto', label: 'Auto' },
-                        ],
-                        sizes: [
-                            { value: 'auto', label: 'Auto (default)' },
-                            { value: '1024x1024', label: '1024×1024 (square)' },
-                            { value: '1536x1024', label: '1536×1024 (landscape)' },
-                            { value: '1024x1536', label: '1024×1536 (portrait)' }
-                        ]
+                if (!$modelSelect.val()) {
+                    $modelSelect.val('dall-e-3');
+                }
+                function resolveControlsForModel(model) {
+                    if (modelControls[model]) {
+                        return modelControls[model];
                     }
-                };
+                    if (model && model.indexOf('gpt-image-') === 0 && modelControls['gpt-image']) {
+                        return modelControls['gpt-image'];
+                    }
+                    return modelControls['dall-e-3'] || {
+                        qualities: [{ value: 'hd', label: 'HD (default)' }, { value: 'standard', label: 'Standard' }],
+                        sizes: [{ value: '1024x1024', label: '1024×1024 (square)' }],
+                        supports_background: false
+                    };
+                }
+                function modelSupportsTransparentBg(model) {
+                    return model && model.indexOf('gpt-image-') === 0;
+                }
                 // Update controls based on selected model
                 function updateControls() {
                     var model = $modelSelect.val();
-                    var controls = modelControls[model];
-                    if (controls) {
+                    var controls = resolveControlsForModel(model);
+                    var $qualityRow = $quality.closest('.spexo-ai-image-field-row');
+                    if (controls.qualities && controls.qualities.length) {
                         $quality.empty();
                         controls.qualities.forEach(function(q) {
-                            $quality.append('<option value="' + q.value + '">' + q.label + '</option>');
+                            $('<option/>').attr('value', q.value).text(q.label).appendTo($quality);
                         });
-                        $resolution.empty();
-                        controls.sizes.forEach(function(s) {
-                            $resolution.append('<option value="' + s.value + '">' + s.label + '</option>');
-                        });
+                        $qualityRow.show();
+                    } else {
+                        $quality.empty();
+                        $qualityRow.hide();
                     }
+                    $resolution.empty();
+                    (controls.sizes || []).forEach(function(s) {
+                        $('<option/>').attr('value', s.value).text(s.label).appendTo($resolution);
+                    });
                 }
                 // Initial update
                 updateControls();
                 // Listen for model changes
                 $modelSelect.on('change', updateControls);
-                // Background checkbox for GPT Image 1 (only visible for GPT Image 1 model)
+                // Transparent background (GPT Image family)
                 var $bgCheckboxLabel = $('<label class="spexo-ai-image-bg-checkbox-label" style="margin-right:6px;margin-bottom:8px;margin-top:8px;display:none;"><input type="checkbox" class="spexo-ai-image-bg-checkbox" style="margin-right:8px;"/>Transparent background</label>');
                 
-                // Update show/hide of background checkbox based on model selection
                 function updateBgCheckbox() {
-
                     var $bgRow = $bgCheckboxLabel.closest('.spexo-ai-image-field-row');
-
-                    if ($modelSelect.val() === 'gpt-image-1') {
-
+                    var controls = resolveControlsForModel($modelSelect.val());
+                    var showBg = controls.supports_background || modelSupportsTransparentBg($modelSelect.val());
+                    if (showBg) {
                         $bgCheckboxLabel.show();
                         if ($bgRow.length) {
                             $bgRow.show();
                         }
                     } else {
                         $bgCheckboxLabel.hide().find('input').prop('checked', false);
-                        // setTimeout(function(){
-                        //     $bgCheckboxLabel.hide();
-                        // },100);
                         if ($bgRow.length) {
                             $bgRow.hide();
                         }
@@ -306,6 +301,8 @@
                     $('<p class="spexo-ai-image-prompt-note">Complex prompts may take up to 2 minutes to process.</p>')
                 );
                 $outer.append($promptContainer);
+                updateControls();
+                updateBgCheckbox();
                 // Mark the Generate Image button as active (container open) - 
                 $btn.addClass('is-active');
                 // Focus on input
@@ -352,7 +349,7 @@
                         model: selectedModel
                     };
                     // Add background parameter for GPT Image 1 (only if Pro and GPT Image 1 selected)
-                    if (is_pro && selectedModel === 'gpt-image-1' && $bgCheckboxLabel.find('input').is(':checked')) {
+                    if (is_pro && modelSupportsTransparentBg(selectedModel) && $bgCheckboxLabel.find('input').is(':checked')) {
                         requestData.background = 'transparent';
                     }
                     // Make the request

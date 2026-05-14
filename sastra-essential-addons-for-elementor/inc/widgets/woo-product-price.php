@@ -135,7 +135,9 @@ class TMPCODER_Woo_Product_Price extends Widget_Base {
 		$this->end_controls_section();
 
 		// Section: Help & Docs
-		// tmpcoder_add_section_help_docs( $this, Controls_Manager::RAW_HTML, '' );
+		if(function_exists('tmpcoder_add_section_help_docs')) {
+			tmpcoder_add_section_help_docs( $this, Controls_Manager::RAW_HTML, '' );
+		}
 
 		$this->start_controls_section(
 			'section_content_style',
@@ -190,7 +192,9 @@ class TMPCODER_Woo_Product_Price extends Widget_Base {
 		$this->end_controls_section();
 
 		// Section: Help & Docs
-		tmpcoder_add_section_help_docs( $this, Controls_Manager::RAW_HTML, \Elementor\Controls_Manager::TAB_STYLE );
+		if(function_exists('tmpcoder_add_section_help_docs')) {
+		    tmpcoder_add_section_help_docs( $this, Controls_Manager::RAW_HTML, \Elementor\Controls_Manager::TAB_STYLE );
+        }
 	}
 
 	protected function render() {

@@ -189,13 +189,15 @@ if ( !class_exists('TemplatesWidgetRegister') ){
                 ]
             );
               
-              if ( strpos($hook, 'sastra-theme-builder') || strpos($hook, 'spexo-welcome') || strpos($hook, 'spexo-popup-builder') ) {
+              if ( strpos($hook, 'sastra-theme-builder') || strpos($hook, 'spexo-welcome') || strpos($hook, 'spexo-popup-builder') || strpos($hook, 'tmpcoder-license-activation') ) {
                          
                 // enqueue CSS
                 wp_enqueue_style( 'tmpcoder-plugin-options-css', TMPCODER_PLUGIN_URI .'assets/css/admin/plugin-options'.tmpcoder_script_suffix().'.css', [], tmpcoder_get_plugin_version() );
+                wp_enqueue_style( 'tmpcoder-common-loader', TMPCODER_PLUGIN_URI . 'inc/admin/lib/welcome-screen/css/common-loader.css', [], tmpcoder_get_plugin_version() );
 
                 // enqueue JS
                 wp_enqueue_script( 'tmpcoder-plugin-options-js', TMPCODER_PLUGIN_URI .'assets/js/admin/plugin-options'.tmpcoder_script_suffix().'.js', ['jquery'], tmpcoder_get_plugin_version(), false );
+                wp_enqueue_script( 'tmpcoder-common-loader', TMPCODER_PLUGIN_URI . 'inc/admin/lib/welcome-screen/js/common-loader.js', ['jquery'], tmpcoder_get_plugin_version(), false );
 
                 wp_localize_script(
                       'tmpcoder-plugin-options-js',
@@ -230,7 +232,7 @@ if ( !class_exists('TemplatesWidgetRegister') ){
 
             wp_localize_script( 'tmpcoder-editor-js', 'tmpcoder_config', array( 
               'TMPCODER_PURCHASE_PRO_URL'   => esc_url(TMPCODER_PURCHASE_PRO_URL),
-              'tmpcoder_registered_modules' => tmpcoder_get_all_widgtes(),
+              'tmpcoder_registered_modules' => tmpcoder_get_editor_panel_registered_modules(),
               'TMPCODER_DEMO_IMPORT_API'    => esc_url(TMPCODER_DEMO_IMPORT_API),
               'is_key_expire' => $is_key_expire,
               'renew_button_text' => esc_html('Renew Here'),
@@ -516,6 +518,22 @@ if ( !class_exists('TemplatesWidgetRegister') ){
              tmpcoder_get_plugin_version(),
              true 
           );
+          
+          wp_register_script( 
+            'tmpcoder-peel',
+             TMPCODER_PLUGIN_URI.'assets/js/lib/peel/peel'.tmpcoder_script_suffix().'.js',
+             [ 'jquery' ],
+             tmpcoder_get_plugin_version(),
+             true 
+          );
+          
+          wp_register_script( 
+            'tmpcoder-html2canvas',
+             TMPCODER_PLUGIN_URI.'assets/js/lib/html2canvas/html2canvas'.tmpcoder_script_suffix().'.js',
+             [ 'jquery' ],
+             tmpcoder_get_plugin_version(),
+             true 
+          );
 
           wp_register_script( 
             'tmpcoder-grid-widgets',
@@ -749,7 +767,7 @@ if ( !class_exists('TemplatesWidgetRegister') ){
         public function register_custom_control(){
 
             require TMPCODER_PLUGIN_DIR.'inc/controls/tmpcoder-ajax-select2/tmpcoder-control-ajax-select2.php';
-            require_once (TMPCODER_PLUGIN_DIR . 'inc/controls/tmpcoder-ajax-select2/tmpcoder-control-icons.php');
+            require_once (TMPCODER_PLUGIN_DIR.'inc/controls/tmpcoder-ajax-select2/tmpcoder-control-icons.php');
             require TMPCODER_PLUGIN_DIR.'inc/controls/choose.php';
 
             // Register Custom Controls

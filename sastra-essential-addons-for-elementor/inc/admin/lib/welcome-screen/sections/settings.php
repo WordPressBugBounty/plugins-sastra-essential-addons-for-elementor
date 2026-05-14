@@ -6,6 +6,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 $is_pro     = tmpcoder_is_availble();
 $ai_manager = class_exists( '\Spexo_Addons\AI\Spexo_AI_Manager' ) ? \Spexo_Addons\AI\Spexo_AI_Manager::get_instance() : null;
 
+$upgrade_link_woocommerce     = TMPCODER_PURCHASE_PRO_URL . '?ref=tmpcoder-plugin-backend-settings-woo-pro#purchasepro';
+$upgrade_link_ai_settings     = TMPCODER_PURCHASE_PRO_URL . '?ref=tmpcoder-plugin-backend-settings-ai-settings-pro#purchasepro';
+$upgrade_link_smooth_scroll   = TMPCODER_PURCHASE_PRO_URL . '?ref=tmpcoder-plugin-backend-settings-smooth-scrolling-pro#purchasepro';
+$upgrade_link_media_post_type = TMPCODER_PURCHASE_PRO_URL . '?ref=tmpcoder-plugin-backend-settings-media-post-types-pro#purchasepro';
+$upgrade_link_featured_video  = TMPCODER_PURCHASE_PRO_URL . '?ref=tmpcoder-plugin-backend-settings-featured-video-pro#purchasepro';
+$upgrade_link_display_mode    = TMPCODER_PURCHASE_PRO_URL . '?ref=tmpcoder-plugin-backend-settings-display-mode-pro#purchasepro';
+$upgrade_link_video_settings  = TMPCODER_PURCHASE_PRO_URL . '?ref=tmpcoder-plugin-backend-settings-video-settings-pro#purchasepro';
+$upgrade_link_secondary_image = TMPCODER_PURCHASE_PRO_URL . '?ref=tmpcoder-plugin-backend-settings-secondary-featured-image-pro#purchasepro';
+
 $settings_tabs = [
     [
         'id'          => 'woocommerce',
@@ -93,12 +102,11 @@ $settings_tabs[] = [
     'id'          => 'integration',
     'icon'        => 'dashicons-admin-generic',
     'label'       => esc_html__( 'Integration', 'sastra-essential-addons-for-elementor' ),
-    'description' => esc_html__( 'Connect your MailChimp account to synchronize subscribers.', 'sastra-essential-addons-for-elementor' ),
+    'description' => esc_html__( 'MailChimp, Google reCAPTCHA v3, and other third-party connections.', 'sastra-essential-addons-for-elementor' ),
     'sections'    => [],
 ];
 
 $default_tab  = $settings_tabs[0];
-$upgrade_link = TMPCODER_PURCHASE_PRO_URL . '?ref=tmpcoder-plugin-backend-settings-woo-pro#purchasepro';
 ?>
 
 <div class="spexo-settings-page">
@@ -120,7 +128,17 @@ $upgrade_link = TMPCODER_PURCHASE_PRO_URL . '?ref=tmpcoder-plugin-backend-settin
                             <a href="javascript:void(0);" class="spexo-settings-nav-toggle">
                                 <span class="dashicons <?php echo esc_attr( $tab['icon'] ); ?>" aria-hidden="true"></span>
                                 <span><?php echo esc_html( $tab['label'] ); ?></span>
+                                <?php if ( ! $is_pro && in_array( $tab['id'], [ 'woocommerce', 'ai-settings' ], true ) ) : ?>
+                                    <span class="spexo-pro-label-tag"><?php esc_html_e( 'Pro', 'sastra-essential-addons-for-elementor' ); ?></span>
+                                <?php endif; ?>
                             </a>
+                            <?php if ( ! $is_pro && in_array( $tab['id'], [ 'woocommerce', 'ai-settings' ], true ) ) : ?>
+                                <?php $menu_upgrade_link = ( 'ai-settings' === $tab['id'] ) ? $upgrade_link_ai_settings : $upgrade_link_woocommerce; ?>
+                                <a class="spexo-upgrade-link" href="<?php echo esc_url( $menu_upgrade_link ); ?>" target="_blank" rel="noopener noreferrer">
+                                    <img src="<?php echo esc_url( TMPCODER_ADDONS_ASSETS_URL . 'images/premium-icon-purple.svg' ); ?>" alt="" aria-hidden="true">
+                                    <span><?php esc_html_e( 'Upgrade to Pro', 'sastra-essential-addons-for-elementor' ); ?></span>
+                                </a>
+                            <?php endif; ?>
                             <?php if ( ! empty( $tab['sections'] ) ) : ?>
                                 <ul class="spexo-settings-nav-children">
                                     <?php foreach ( $tab['sections'] as $child ) : ?>
@@ -173,8 +191,12 @@ $upgrade_link = TMPCODER_PURCHASE_PRO_URL . '?ref=tmpcoder-plugin-backend-settin
                                     <div class="spexo-ai-settings-field-content">
                                         <div class="spexo-woo-config-toggle-wrapper">
                                             <div class="spexo-woo-config-toggle-label">
-                                                <strong class="spexo-woo-config-toggle-title"><?php esc_html_e( 'Smooth Scroll', 'sastra-essential-addons-for-elementor' ); ?></strong>
+                                                <strong class="spexo-woo-config-toggle-title"><?php esc_html_e( 'Smooth Scroll', 'sastra-essential-addons-for-elementor' ); ?><span class="spexo-pro-label-tag"><?php esc_html_e( 'Pro', 'sastra-essential-addons-for-elementor' ); ?></span></strong>
                                                 <span class="spexo-woo-config-toggle-description"><?php esc_html_e( 'Upgrade to unlock smooth scrolling controls.', 'sastra-essential-addons-for-elementor' ); ?></span>
+                                                <a class="spexo-upgrade-link" href="<?php echo esc_url( $upgrade_link_smooth_scroll ); ?>" target="_blank" rel="noopener noreferrer">
+                                                    <img src="<?php echo esc_url( TMPCODER_ADDONS_ASSETS_URL . 'images/premium-icon-purple.svg' ); ?>" alt="" aria-hidden="true">
+                                                    <span><?php esc_html_e( 'Upgrade to Pro', 'sastra-essential-addons-for-elementor' ); ?></span>
+                                                </a>
                                             </div>
                                             <div class="spexo-checkbox-toggle">
                                                 <input type="checkbox" id="smooth-scroll" disabled="disabled">
@@ -221,6 +243,10 @@ $upgrade_link = TMPCODER_PURCHASE_PRO_URL . '?ref=tmpcoder-plugin-backend-settin
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-tag text-gray-400" aria-hidden="true"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"></path><circle cx="7.5" cy="7.5" r=".5" fill="#9ca3af"></circle></svg>
                                                             <?php endif; ?>
                                                             <?php echo esc_html( $field['label'] ); ?>
+
+                                                            <?php if ( ! $is_pro ) : ?>
+                                                                <span class="spexo-pro-label-tag"><?php esc_html_e( 'Pro', 'sastra-essential-addons-for-elementor' ); ?></span>
+                                                            <?php endif; ?>
                                                         </label>
                                                         <div class="spexo-woo-page-config-input-wrapper">
                                                             <input type="number" min="1" step="1" class="spexo-woo-page-config-input form-control-number-label form-control" id="<?php echo esc_attr( $field['id'] ); ?>" name="<?php echo esc_attr( $field['id'] ); ?>" value="<?php echo esc_attr( $value ); ?>" <?php disabled( ! $is_pro ); ?> data-default="<?php echo esc_attr( 12 ); ?>">
@@ -229,7 +255,7 @@ $upgrade_link = TMPCODER_PURCHASE_PRO_URL . '?ref=tmpcoder-plugin-backend-settin
                                                         <?php if ( ! $is_pro ) : ?>
                                                             <p class="spexo-woo-page-config-pro-note">
                                                                 <span><?php esc_html_e( 'Available in Pro', 'sastra-essential-addons-for-elementor' ); ?></span>
-                                                                <a href="<?php echo esc_url( $upgrade_link ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Upgrade', 'sastra-essential-addons-for-elementor' ); ?></a>
+                                                                <a class="spexo-upgrade-link" href="<?php echo esc_url( $upgrade_link_woocommerce ); ?>" target="_blank" rel="noopener noreferrer"><img src="<?php echo esc_url( TMPCODER_ADDONS_ASSETS_URL . 'images/premium-icon-purple.svg' ); ?>"><span><?php esc_html_e( 'Upgrade to Pro', 'sastra-essential-addons-for-elementor' ); ?></span></a>
                                                             </p>
                                                         <?php endif; ?>
                                                     </div>
@@ -313,13 +339,16 @@ $upgrade_link = TMPCODER_PURCHASE_PRO_URL . '?ref=tmpcoder-plugin-backend-settin
                                 <?php else : ?>
                                     <div class="spexo-pro-locked">
                                         <div class="spexo-locked-text">
-                                            <strong><?php esc_html_e( 'Pro Feature', 'sastra-essential-addons-for-elementor' ); ?></strong>
+                                            <strong><?php esc_html_e( 'Custom Gallery Thumbnail', 'sastra-essential-addons-for-elementor' ); ?><span class="spexo-pro-label-tag"><?php esc_html_e( 'Pro', 'sastra-essential-addons-for-elementor' ); ?></span></strong>
                                             <p><?php esc_html_e( 'Select custom gallery thumbnail sizes with Pro.', 'sastra-essential-addons-for-elementor' ); ?><br/>
                                             <span class="spexo-woo-page-config-pro-note"><?php esc_html_e( 'The available thumbnail sizes : Thumbnail (150×150), Medium (300×300), Large (1024×1024), Full Size (Original).', 'sastra-essential-addons-for-elementor' ); ?></span>
                                         </p>
                                             
                                         </div>
-                                        <a class="spexo-upgrade-link" href="<?php echo esc_url( $upgrade_link ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Upgrade to Pro', 'sastra-essential-addons-for-elementor' ); ?></a>
+                                        <a class="spexo-upgrade-link" href="<?php echo esc_url( $upgrade_link_woocommerce ); ?>" target="_blank" rel="noopener noreferrer">
+                                            <img src="<?php echo esc_url( TMPCODER_ADDONS_ASSETS_URL . 'images/premium-icon-purple.svg' ); ?>" alt="" aria-hidden="true">
+                                            <span><?php esc_html_e( 'Upgrade to Pro', 'sastra-essential-addons-for-elementor' ); ?></span>
+                                        </a>
                                     </div>
                                 <?php endif; ?>
                             </div>
@@ -342,12 +371,15 @@ $upgrade_link = TMPCODER_PURCHASE_PRO_URL . '?ref=tmpcoder-plugin-backend-settin
                                         ?>
                                         <div class="spexo-pro-locked">
                                             <div class="spexo-locked-text">
-                                                <strong><?php esc_html_e( 'Pro Feature', 'sastra-essential-addons-for-elementor' ); ?></strong>
+                                                <strong><?php esc_html_e( 'Woo Template Overrides', 'sastra-essential-addons-for-elementor' ); ?><span class="spexo-pro-label-tag"><?php esc_html_e( 'Pro', 'sastra-essential-addons-for-elementor' ); ?></span></strong>
                                                 <p><?php esc_html_e( 'Unlock WooCommerce template overrides with Pro.', 'sastra-essential-addons-for-elementor' ); ?><br/>
                                             <span class="spexo-woo-page-config-pro-note"><?php esc_html_e( 'Templates like Cart Template, Mini Cart Drawer, Custom Notices & Add Wishlist To My Account Option etc.', 'sastra-essential-addons-for-elementor' ); ?></span>
                                                 
                                             </div>
-                                            <a class="spexo-upgrade-link" href="<?php echo esc_url( $upgrade_link ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Upgrade to Pro', 'sastra-essential-addons-for-elementor' ); ?></a>
+                                            <a class="spexo-upgrade-link" href="<?php echo esc_url( $upgrade_link_woocommerce ); ?>" target="_blank" rel="noopener noreferrer">
+                                                <img src="<?php echo esc_url( TMPCODER_ADDONS_ASSETS_URL . 'images/premium-icon-purple.svg' ); ?>" alt="" aria-hidden="true">
+                                                <span><?php esc_html_e( 'Upgrade to Pro', 'sastra-essential-addons-for-elementor' ); ?></span>
+                                            </a>
                                         </div>
                                         <?php
                                     }
@@ -396,10 +428,13 @@ $upgrade_link = TMPCODER_PURCHASE_PRO_URL . '?ref=tmpcoder-plugin-backend-settin
                                 <?php else : ?>
                                     <div class="spexo-pro-locked">
                                         <div class="spexo-locked-text">
-                                            <strong><?php esc_html_e( 'Wishlist & Compare Pages', 'sastra-essential-addons-for-elementor' ); ?></strong>
+                                            <strong><?php esc_html_e( 'Wishlist & Compare Pages', 'sastra-essential-addons-for-elementor' ); ?><span class="spexo-pro-label-tag"><?php esc_html_e( 'Pro', 'sastra-essential-addons-for-elementor' ); ?></span></strong>
                                             <p><?php esc_html_e( 'Assign dedicated wishlist and compare pages with Pro.', 'sastra-essential-addons-for-elementor' ); ?></p>
                                 </div>
-                                        <a class="spexo-upgrade-link" href="<?php echo esc_url( $upgrade_link ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Upgrade to Pro', 'sastra-essential-addons-for-elementor' ); ?></a>
+                                        <a class="spexo-upgrade-link" href="<?php echo esc_url( $upgrade_link_featured_video ); ?>" target="_blank" rel="noopener noreferrer">
+                                            <img src="<?php echo esc_url( TMPCODER_ADDONS_ASSETS_URL . 'images/premium-icon-purple.svg' ); ?>" alt="" aria-hidden="true">
+                                            <span><?php esc_html_e( 'Upgrade to Pro', 'sastra-essential-addons-for-elementor' ); ?></span>
+                                        </a>
                                     </div>
                                 <?php endif; ?>
                             </div>
@@ -426,10 +461,13 @@ $upgrade_link = TMPCODER_PURCHASE_PRO_URL . '?ref=tmpcoder-plugin-backend-settin
                                     ?>
                                     <div class="spexo-pro-locked">
                                         <div class="spexo-locked-text">
-                                            <strong><?php esc_html_e( 'Featured Videos', 'sastra-essential-addons-for-elementor' ); ?></strong>
+                                            <strong><?php esc_html_e( 'Featured Videos', 'sastra-essential-addons-for-elementor' ); ?><span class="spexo-pro-label-tag"><?php esc_html_e( 'Pro', 'sastra-essential-addons-for-elementor' ); ?></span></strong>
                                             <p><?php esc_html_e( 'Enable custom video sources for each post type with Pro.', 'sastra-essential-addons-for-elementor' ); ?></p>
                                     </div>
-                                        <a class="spexo-upgrade-link" href="<?php echo esc_url( $upgrade_link ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Upgrade to Pro', 'sastra-essential-addons-for-elementor' ); ?></a>
+                                        <a class="spexo-upgrade-link" href="<?php echo esc_url( $upgrade_link_featured_video ); ?>" target="_blank" rel="noopener noreferrer">
+                                            <img src="<?php echo esc_url( TMPCODER_ADDONS_ASSETS_URL . 'images/premium-icon-purple.svg' ); ?>" alt="" aria-hidden="true">
+                                            <span><?php esc_html_e( 'Upgrade to Pro', 'sastra-essential-addons-for-elementor' ); ?></span>
+                                        </a>
                                 </div>
                                 <?php 
                                 }
@@ -454,10 +492,13 @@ $upgrade_link = TMPCODER_PURCHASE_PRO_URL . '?ref=tmpcoder-plugin-backend-settin
                                     ?>
                                     <div class="spexo-pro-locked">
                                         <div class="spexo-locked-text">
-                                            <strong><?php esc_html_e( 'Display Mode', 'sastra-essential-addons-for-elementor' ); ?></strong>
+                                            <strong><?php esc_html_e( 'Display Mode', 'sastra-essential-addons-for-elementor' ); ?><span class="spexo-pro-label-tag"><?php esc_html_e( 'Pro', 'sastra-essential-addons-for-elementor' ); ?></span></strong>
                                             <p><?php esc_html_e( 'Select between YouTube or Vimeo playback with Pro.', 'sastra-essential-addons-for-elementor' ); ?></p>
                                         </div>
-                                        <a class="spexo-upgrade-link" href="<?php echo esc_url( $upgrade_link ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Upgrade to Pro', 'sastra-essential-addons-for-elementor' ); ?></a>
+                                        <a class="spexo-upgrade-link" href="<?php echo esc_url( $upgrade_link_display_mode ); ?>" target="_blank" rel="noopener noreferrer">
+                                            <img src="<?php echo esc_url( TMPCODER_ADDONS_ASSETS_URL . 'images/premium-icon-purple.svg' ); ?>" alt="" aria-hidden="true">
+                                            <span><?php esc_html_e( 'Upgrade to Pro', 'sastra-essential-addons-for-elementor' ); ?></span>
+                                        </a>
                                     </div>
                                         <?php
                                 }
@@ -482,10 +523,13 @@ $upgrade_link = TMPCODER_PURCHASE_PRO_URL . '?ref=tmpcoder-plugin-backend-settin
                                     ?>
                                     <div class="spexo-pro-locked">
                                         <div class="spexo-locked-text">
-                                            <strong><?php esc_html_e( 'Autoplay', 'sastra-essential-addons-for-elementor' ); ?></strong>
+                                            <strong><?php esc_html_e( 'Autoplay', 'sastra-essential-addons-for-elementor' ); ?><span class="spexo-pro-label-tag"><?php esc_html_e( 'Pro', 'sastra-essential-addons-for-elementor' ); ?></span></strong>
                                             <p><?php esc_html_e( 'Automatically play featured videos inside popups with Pro.', 'sastra-essential-addons-for-elementor' ); ?></p>
                                         </div>
-                                        <a class="spexo-upgrade-link" href="<?php echo esc_url( $upgrade_link ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Upgrade to Pro', 'sastra-essential-addons-for-elementor' ); ?></a>
+                                        <a class="spexo-upgrade-link" href="<?php echo esc_url( $upgrade_link_video_settings ); ?>" target="_blank" rel="noopener noreferrer">
+                                            <img src="<?php echo esc_url( TMPCODER_ADDONS_ASSETS_URL . 'images/premium-icon-purple.svg' ); ?>" alt="" aria-hidden="true">
+                                            <span><?php esc_html_e( 'Upgrade to Pro', 'sastra-essential-addons-for-elementor' ); ?></span>
+                                        </a>
                                     </div>
                             <?php
                                 }
@@ -506,10 +550,13 @@ $upgrade_link = TMPCODER_PURCHASE_PRO_URL . '?ref=tmpcoder-plugin-backend-settin
                                 <?php else : ?>
                                     <div class="spexo-pro-locked">
                                         <div class="spexo-locked-text">
-                                            <strong><?php esc_html_e( 'Pro Feature', 'sastra-essential-addons-for-elementor' ); ?></strong>
+                                            <strong><?php esc_html_e( 'Featured Image', 'sastra-essential-addons-for-elementor' ); ?><span class="spexo-pro-label-tag"><?php esc_html_e( 'Pro', 'sastra-essential-addons-for-elementor' ); ?></span></strong>
                                             <p><?php esc_html_e( 'Add a secondary featured image metabox to selected post types with Pro.', 'sastra-essential-addons-for-elementor' ); ?></p>
                                         </div>
-                                        <a class="spexo-upgrade-link" href="<?php echo esc_url( $upgrade_link ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Upgrade to Pro', 'sastra-essential-addons-for-elementor' ); ?></a>
+                                        <a class="spexo-upgrade-link" href="<?php echo esc_url( $upgrade_link_secondary_image ); ?>" target="_blank" rel="noopener noreferrer">
+                                            <img src="<?php echo esc_url( TMPCODER_ADDONS_ASSETS_URL . 'images/premium-icon-purple.svg' ); ?>" alt="" aria-hidden="true">
+                                            <span><?php esc_html_e( 'Upgrade to Pro', 'sastra-essential-addons-for-elementor' ); ?></span>
+                                        </a>
                                     </div>
                                 <?php endif; ?>
                             </div>
@@ -596,31 +643,113 @@ $upgrade_link = TMPCODER_PURCHASE_PRO_URL . '?ref=tmpcoder-plugin-backend-settin
                     <?php endif; ?>
 
                     <div class="spexo-settings-panel" data-panel="integration">
-                        <section class="spexo-settings-section-card spexo-subpanel spexo-default-active" id="integration-section" data-subpanel="integration-section">
-                            <div class="spexo-integration-content">
-                                <div class="spexo-integration-card">
-                                    <div class="sub-header spexo-integration-card-header">
-                                        <h3 class="spexo-integration-card-title"><?php esc_html_e( 'MailChimp', 'sastra-essential-addons-for-elementor' ); ?></h3>
-                                    </div>
-                                    <div class="spexo-integration-card-body">
-                                        <div class="form-group-wrapper">
-                                            <div class="form-group">
-                                                <label class="spexo-integration-label" for="tmpcoder_mailchimp_api_key">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mail text-gray-400" aria-hidden="true"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"></path><rect x="2" y="4" width="20" height="16" rx="2"></rect></svg>
-                                                    <span><?php esc_html_e('MailChimp API Key', 'sastra-essential-addons-for-elementor'); ?></span>
-                                                </label>
-                                                <p class="spexo-integration-description"><?php esc_html_e( 'Connect your MailChimp account to synchronize subscribers.', 'sastra-essential-addons-for-elementor' ); ?></p>
-                                                <input type="text" class="spexo-woo-page-config-input form-control" name="tmpcoder_mailchimp_api_key" id="tmpcoder_mailchimp_api_key" value="<?php echo esc_attr( tmpcoder_get_settings( 'tmpcoder_mailchimp_api_key' ) ); ?>" placeholder="<?php echo esc_attr__( 'Enter your MailChimp API Key', 'sastra-essential-addons-for-elementor' ); ?>" data-default="" autocomplete="new-password" readonly onfocus="this.removeAttribute('readonly');" aria-label="<?php echo esc_attr__( 'MailChimp API Key', 'sastra-essential-addons-for-elementor' ); ?>">
-                                                <a class="spexo-integration-link" href="https://mailchimp.com/help/about-api-keys/" target="_blank" rel="noopener noreferrer">
-                                                    <?php esc_html_e( 'Where can I find my API Key?', 'sastra-essential-addons-for-elementor' ); ?>
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-right" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
-                                                </a>
+                        <div class="spexo-woocommerce-sections-wrapper">
+                            <section class="spexo-settings-section-card spexo-subpanel spexo-default-active" id="integration-section" data-subpanel="integration-section">
+                                <div class="spexo-integration-content">
+                                    <div class="spexo-integration-card">
+                                        <div class="sub-header spexo-integration-card-header">
+                                            <h3 class="spexo-integration-card-title"><?php esc_html_e( 'MailChimp', 'sastra-essential-addons-for-elementor' ); ?></h3>
+                                        </div>
+                                        <div class="spexo-integration-card-body">
+                                            <div class="form-group-wrapper">
+                                                <div class="form-group">
+                                                    <label class="spexo-integration-label" for="tmpcoder_mailchimp_api_key">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mail text-gray-400" aria-hidden="true"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"></path><rect x="2" y="4" width="20" height="16" rx="2"></rect></svg>
+                                                        <span><?php esc_html_e('MailChimp API Key', 'sastra-essential-addons-for-elementor'); ?></span>
+                                                    </label>
+                                                    <p class="spexo-integration-description"><?php esc_html_e( 'Connect your MailChimp account to synchronize subscribers.', 'sastra-essential-addons-for-elementor' ); ?></p>
+                                                    <input type="text" class="spexo-woo-page-config-input form-control" name="tmpcoder_mailchimp_api_key" id="tmpcoder_mailchimp_api_key" value="<?php echo esc_attr( tmpcoder_get_settings( 'tmpcoder_mailchimp_api_key' ) ); ?>" placeholder="<?php echo esc_attr__( 'Enter your MailChimp API Key', 'sastra-essential-addons-for-elementor' ); ?>" data-default="" autocomplete="new-password" readonly onfocus="this.removeAttribute('readonly');" aria-label="<?php echo esc_attr__( 'MailChimp API Key', 'sastra-essential-addons-for-elementor' ); ?>">
+                                                    <a class="spexo-integration-link" href="https://mailchimp.com/help/about-api-keys/" target="_blank" rel="noopener noreferrer">
+                                                        <?php esc_html_e( 'Where can I find my API Key?', 'sastra-essential-addons-for-elementor' ); ?>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-right" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </section>
+                            </section>
+                            <section class="spexo-settings-section-card spexo-subpanel spexo-default-active" id="integration-section" data-subpanel="integration-section">
+                                <div class="spexo-integration-content">
+                                    <?php //if(tmpcoder_is_availble()): ?>    <!-- Check if Pro is available -->
+                                        <div class="spexo-integration-card">
+                                            <div class="sub-header spexo-integration-card-header">
+                                                <h3 class="spexo-integration-card-title"><?php esc_html_e( 'Google reCAPTCHA v3', 'sastra-essential-addons-for-elementor' ); ?></h3>
+                                            </div>
+                                            <div class="spexo-integration-card-body">
+                                                <div class="form-group-wrapper">
+                                                    <div class="form-group">
+                                                        <label class="spexo-integration-label" for="tmpcoder_recaptcha_v3_site_key">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shield-check text-gray-400" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="m9 12 2 2 4-4"></path></svg>
+                                                            <span><?php esc_html_e( 'reCAPTCHA v3 Site Key', 'sastra-essential-addons-for-elementor' ); ?></span>
+                                                        </label>
+                                                        <p class="spexo-integration-description"><?php esc_html_e( 'Used by the Login & Register widget (Pro) and other features that load Google reCAPTCHA v3.', 'sastra-essential-addons-for-elementor' ); ?></p>
+                                                        <input type="text" class="spexo-woo-page-config-input form-control" name="tmpcoder_recaptcha_v3_site_key" id="tmpcoder_recaptcha_v3_site_key" value="<?php echo esc_attr( tmpcoder_get_settings( 'tmpcoder_recaptcha_v3_site_key' ) ); ?>" placeholder="<?php echo esc_attr__( 'Enter your reCAPTCHA v3 site key', 'sastra-essential-addons-for-elementor' ); ?>" data-default="" autocomplete="off" aria-label="<?php echo esc_attr__( 'reCAPTCHA v3 Site Key', 'sastra-essential-addons-for-elementor' ); ?>">
+                                                        <a class="spexo-integration-link" href="https://www.google.com/recaptcha/admin/create" target="_blank" rel="noopener noreferrer">
+                                                            <?php esc_html_e( 'Get keys from Google', 'sastra-essential-addons-for-elementor' ); ?>
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-right" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="spexo-integration-card">
+                                            
+                                            <div class="spexo-integration-card-body">
+                                                <div class="form-group-wrapper">
+                                                    <div class="form-group">
+                                                        <label class="spexo-integration-label" for="tmpcoder_recaptcha_v3_secret_key">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-key-round text-gray-400" aria-hidden="true"><path d="M2.5 21.5 9 15"></path><circle cx="16" cy="8" r="5"></circle><path d="m14 14-2 2"></path><path d="m8 20 2-2"></path></svg>
+                                                            <span><?php esc_html_e( 'reCAPTCHA v3 Secret Key', 'sastra-essential-addons-for-elementor' ); ?></span>
+                                                        </label>
+                                                        <p class="spexo-integration-description"><?php esc_html_e( 'Used to verify Login & Register requests against Google reCAPTCHA on the server side.', 'sastra-essential-addons-for-elementor' ); ?></p>
+                                                        <input type="text" class="spexo-woo-page-config-input form-control" name="tmpcoder_recaptcha_v3_secret_key" id="tmpcoder_recaptcha_v3_secret_key" value="<?php echo esc_attr( tmpcoder_get_settings( 'tmpcoder_recaptcha_v3_secret_key' ) ); ?>" placeholder="<?php echo esc_attr__( 'Enter your reCAPTCHA v3 secret key', 'sastra-essential-addons-for-elementor' ); ?>" data-default="" autocomplete="new-password" readonly onfocus="this.removeAttribute('readonly');" aria-label="<?php echo esc_attr__( 'reCAPTCHA v3 Secret Key', 'sastra-essential-addons-for-elementor' ); ?>">
+                                                        <a class="spexo-integration-link" href="https://www.google.com/recaptcha/admin/create" target="_blank" rel="noopener noreferrer">
+                                                            <?php esc_html_e( 'Get keys from Google', 'sastra-essential-addons-for-elementor' ); ?>
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-right" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <?php //endif; ?>
+                                </div>
+                            </section>
+
+                            <?php
+                            /*
+                            <section class="spexo-settings-section-card spexo-subpanel spexo-default-active" id="integration-section" data-subpanel="integration-section">
+                                <div class="spexo-integration-content">
+                                    <div class="spexo-integration-card">
+                                        <div class="sub-header spexo-integration-card-header">
+                                            <h3 class="spexo-integration-card-title"><?php esc_html_e( 'Usage Tracking', 'sastra-essential-addons-for-elementor' ); ?></h3>
+                                        </div>
+                                        <div class="spexo-integration-card-body">
+                                            <div class="spexo-ai-settings-field-content">
+                                                <div class="spexo-woo-config-toggle-wrapper">
+                                                    <div class="spexo-woo-config-toggle-label">
+                                                        <strong class="spexo-woo-config-toggle-title"><?php esc_html_e( 'Share Anonymous Usage Data', 'sastra-essential-addons-for-elementor' ); ?></strong>
+                                                        <span class="spexo-woo-config-toggle-description"><?php esc_html_e( 'Help us improve templates and setup flow by sharing non-sensitive usage analytics.', 'sastra-essential-addons-for-elementor' ); ?></span>
+                                                        <a class="spexo-integration-link" href="<?php echo esc_url( trailingslashit( TMPCODER_PLUGIN_SITE_URL ) . 'usage-tracking/' ); ?>" target="_blank" rel="noopener noreferrer">
+                                                            <?php esc_html_e( 'Learn more', 'sastra-essential-addons-for-elementor' ); ?>
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-right" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+                                                        </a>
+                                                    </div>
+                                                    <div class="spexo-checkbox-toggle">
+                                                        <?php $usage_tracking_enabled = ( 'yes' === get_site_option( TMPCODER_PLUGIN_KEY . '_usage_optin', 'no' ) ); ?>
+                                                        <input type="hidden" name="tmpcoder_usage_tracking" value="0">
+                                                        <input type="checkbox" id="tmpcoder_usage_tracking" name="tmpcoder_usage_tracking" value="1" <?php checked( $usage_tracking_enabled ); ?>>
+                                                        <label for="tmpcoder_usage_tracking"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            */
+                            ?>
+                        </div>
                     </div>
                 </div>
 
@@ -638,9 +767,16 @@ $upgrade_link = TMPCODER_PURCHASE_PRO_URL . '?ref=tmpcoder-plugin-backend-settin
             </div>
         </div>  
 
-        <div class="welcome-backend-loader">
-            <img src="<?php echo esc_url( TMPCODER_ADDONS_ASSETS_URL . 'images/backend-loader.gif' ); ?>" alt="" width="80" height="80" />
-        </div>
+        <?php
+        tmpcoder_render_common_loader(
+            array(
+                'class' => 'tmpcoder-settings-sync-loader',
+                'type'  => 'settings-sync',
+                'title' => esc_html__( 'Settings Saving...', 'sastra-essential-addons-for-elementor' ),
+                'description' => esc_html__( 'Saving the settings to the database.', 'sastra-essential-addons-for-elementor' ),
+            )
+        );
+        ?>
         <div class="tmpcoder-settings-saved">
             <span><?php esc_html_e( 'Options Updated', 'sastra-essential-addons-for-elementor' ); ?></span>
             <span class="dashicons dashicons-smiley"></span>

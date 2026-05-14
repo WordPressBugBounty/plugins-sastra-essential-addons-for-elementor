@@ -104,6 +104,6 @@
     display: none !important;
 }
 .tmpcoder-target-rule-selector-wrapper .tmpcoder-add-conditions {
-    margin-left: 10px;
+    margin-left: 10px !important;
 }
 .tmpcoder-options-row-heading i {vertical-align: sub;}

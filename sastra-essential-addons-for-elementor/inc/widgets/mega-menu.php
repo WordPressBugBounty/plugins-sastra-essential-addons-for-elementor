@@ -655,7 +655,9 @@ $settings = array_merge( $settings, $settings_new );
 		$this->end_controls_section(); // End Controls Section
 
 		// Section: Help & Docs
-		tmpcoder_add_section_help_docs( $this, Controls_Manager::RAW_HTML, '' );
+		if(function_exists('tmpcoder_add_section_help_docs')) {
+			tmpcoder_add_section_help_docs( $this, Controls_Manager::RAW_HTML, '' );
+		}
 
 		// Section: Pro Features
 		tmpcoder_pro_features_list_section( $this, '', Controls_Manager::RAW_HTML, 'mega-menu', [
@@ -2262,6 +2264,7 @@ $settings = array_merge( $settings, $settings_new );
 			'menu_id' => 'mobile-menu-'. $this->get_nav_menu_index() .'-'. $this->get_id(),
 			'container' => '',
 			'fallback_cb' => '__return_empty_string',
+			'tmpcoder_mob_menu_display_as' => $settings['mob_menu_display_as'],
 			'walker' => new \TMPCODER_Mobile_Menu_Walker(),
 		];
 

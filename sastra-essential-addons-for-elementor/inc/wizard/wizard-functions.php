@@ -81,7 +81,7 @@ if (!function_exists('tmpcoder_install_plugin')) {
     
     function tmpcoder_install_plugin( $plugin_slug ) {
         if ( ! current_user_can( 'install_plugins' ) ) {
-            return;
+            return new WP_Error( 'permission_denied', __( 'You do not have permission to install plugins.', 'sastra-essential-addons-for-elementor' ) );
         }
 
         if ( ! function_exists( 'plugins_api' ) ) {
@@ -112,6 +112,17 @@ if (!function_exists('tmpcoder_install_plugin')) {
                     ],
                 ]
             );
+
+            if ( is_wp_error( $api ) || empty( $api->download_link ) ) {
+                return new WP_Error(
+                    'plugin_info_unavailable',
+                    sprintf(
+                        /* translators: %s plugin slug */
+                        __( 'Could not fetch plugin package for %s.', 'sastra-essential-addons-for-elementor' ),
+                        sanitize_text_field( (string) $plugin_slug )
+                    )
+                );
+            }
 
             $download_link = $api->download_link;
         } else {
@@ -160,5 +171,36 @@ if (!function_exists('tmpcoder_update_plugin')) {
         } else {
             return true;
         }
+    }
+}
+
+if ( ! function_exists( 'tmpcoder_wizard_normalize_prebuilt_demo_row' ) ) {
+    /**
+     * Reduce remote prebuilt demo payload to safe fields for the setup wizard UI.
+     *
+     * @param array|object $demo Raw demo entry from TMPCODER_Remote_Api::get_prebuilt_demos().
+     * @return array
+     */
+    function tmpcoder_wizard_normalize_prebuilt_demo_row( $demo ) {
+        $d            = is_array( $demo ) ? $demo : (array) $demo;
+        $slug         = isset( $d['theme-demo-slug'] ) ? sanitize_key( $d['theme-demo-slug'] ) : '';
+        $requires_pro = ! empty( $d['is_upgrade_pro'] ) || ! empty( $d['is_pro'] );
+        $is_pro_user  = function_exists( 'tmpcoder_is_availble' ) && tmpcoder_is_availble();
+
+        $row = array(
+            'name'             => isset( $d['name'] ) ? sanitize_text_field( wp_strip_all_tags( $d['name'] ) ) : '',
+            'image'            => isset( $d['image'] ) ? esc_url_raw( $d['image'] ) : '',
+            'preview_url'      => isset( $d['preview-url'] ) ? esc_url_raw( $d['preview-url'] ) : '',
+            'slug'             => $slug,
+            'category'         => isset( $d['tags'] ) ? sanitize_text_field( $d['tags'] ) : '',
+            'locked'           => ( $requires_pro && ! $is_pro_user ),
+            'is_new'           => ! empty( $d['new'] ),
+            'show_pro_badge'   => ! empty( $d['is_pro'] ) || ! empty( $d['is_upgrade_pro'] ),
+            'is_favorite'      => ! empty( $d['is_favorite'] ) || ! empty( $d['favorite'] ) || ! empty( $d['is-favorite'] ),
+        );
+
+        $row['search_blob'] = strtolower( $row['name'] . ' ' . $row['category'] . ' ' . $row['slug'] );
+
+        return $row;
     }
 }

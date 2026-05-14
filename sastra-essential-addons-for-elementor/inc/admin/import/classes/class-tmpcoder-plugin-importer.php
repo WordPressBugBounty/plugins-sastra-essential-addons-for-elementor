@@ -161,7 +161,8 @@ if ( ! class_exists( 'TMPCODER_Importer' ) ) {
 		        'wp-mail-smtp/wp_mail_smtp.php',
 		        'updraftplus/updraftplus.php',
 		        'temporary-login-without-password/temporary-login-without-password.php',
-		        'wp-reset/wp-reset.php'
+		        'wp-reset/wp-reset.php',
+		        'wordpress-seo/wp-seo.php'
 		    ];
             if ( defined('TMPCODER_PRO_PLUGIN_KEY') ){
                 $required_plugins[] = TMPCODER_PRO_PLUGIN_KEY.'/'. TMPCODER_PRO_PLUGIN_KEY .'.php';
@@ -500,13 +501,25 @@ if ( ! class_exists( 'TMPCODER_Importer' ) ) {
 				$redux_options_raw_data = TMPCODER_Helper::data_from_file( $redux_file_path );
 
 				$redux_options_data = json_decode( $redux_options_raw_data, true );
+				if ( function_exists( 'tmpcoder_wizard_apply_branding_payload_to_redux_options' ) ) {
+					$redux_options_data = tmpcoder_wizard_apply_branding_payload_to_redux_options( $redux_options_data );
+				}
 
 				$redux_framework = \ReduxFrameworkInstances::get_instance( TMPCODER_THEME_OPTION_NAME );
 
 				if ( isset( $redux_framework->args['opt_name'] ) ) {
 					
-					// Import Redux settings.
-					$redux_framework->set_options( $redux_options_data );
+					// Import Redux settings (Redux 4+ compatible; keep legacy fallback).
+					if ( ! is_array( $redux_options_data ) ) {
+						$redux_options_data = array();
+					}
+					if ( isset( $redux_framework->options_class ) && is_object( $redux_framework->options_class ) && method_exists( $redux_framework->options_class, 'set' ) ) {
+						$redux_framework->options_class->set( $redux_options_data );
+					} elseif ( method_exists( $redux_framework, 'set' ) ) {
+						$redux_framework->set( $redux_options_data );
+					} elseif ( method_exists( $redux_framework, 'set_options' ) ) {
+						$redux_framework->set_options( $redux_options_data );
+					}
 
 			        $update_setting = 0;
 			        $nav_menu_location_arr = array();
@@ -786,6 +799,9 @@ if ( ! class_exists( 'TMPCODER_Importer' ) ) {
 			update_option( 'tmpcoder_import_complete', 'yes', 'no' );
 			delete_transient( 'tmpcoder_import_started' );
 			delete_option( 'tmpcoder_recent_import_log_file' );
+			if ( defined( 'TMPCODER_PLUGIN_KEY' ) ) {
+				delete_option( TMPCODER_PLUGIN_KEY . '_wizard_branding_payload' );
+			}
 
             // Elementor options cache clear
             if ( did_action( 'elementor/loaded' ) ) {
@@ -916,12 +932,23 @@ if ( ! class_exists( 'TMPCODER_Importer' ) ) {
 		            $data = get_post_meta( get_the_ID(), '_elementor_data', true );
 
 		            if ( ! empty( $data ) ) {
-		                $data = preg_replace('/\\\{1}\/sites\\\{1}\/\d+/', '', $data);
-		                $data = str_replace( $old_prefix_raw, $current_upload_url_escaped, $data );
-		                $data = str_replace( $demo_site_url, $site_url, $data );
-		                $data = str_replace( $demo_import_url, $site_url, $data );
-		                $data = str_replace( $demo_import_url2, $site_url_raw, $data );
-		                $data = json_decode( $data, true );
+		            	// Keep-data flow can retain records where Elementor meta is already stored as array.
+		            	if ( is_array( $data ) ) {
+		            		$data = wp_json_encode( $data );
+		            	}
+
+		            	if ( is_string( $data ) ) {
+			                $data = preg_replace('/\\\{1}\/sites\\\{1}\/\d+/', '', $data);
+			                $data = str_replace( $old_prefix_raw, $current_upload_url_escaped, $data );
+			                $data = str_replace( $demo_site_url, $site_url, $data );
+			                $data = str_replace( $demo_import_url, $site_url, $data );
+			                $data = str_replace( $demo_import_url2, $site_url_raw, $data );
+
+			                $decoded_data = json_decode( $data, true );
+			                if ( JSON_ERROR_NONE === json_last_error() ) {
+			                	$data = $decoded_data;
+			                }
+		            	}
 		            }
 
 		            update_metadata( 'post', get_the_ID(), '_elementor_data', $data );

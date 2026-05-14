@@ -24,7 +24,7 @@ function tmpcoder_import_demo_list(){
     }
     
     if ( function_exists( 'tmpcoder_render_admin_header' ) ) {
-        tmpcoder_render_admin_header( $import_header_logo, 'prebuilt-demos' );
+        tmpcoder_render_admin_header( $import_header_logo, 'prebuilt-demos', true );
     }
 
     ?>
@@ -81,6 +81,16 @@ function tmpcoder_import_demo_list(){
         <?php 
         if ( !empty($import_demos) && $import_error_msg == '' ){ ?>
 
+            <div class="tmpcoder-demo-skeleton">
+                <?php for ( $s = 0; $s < 8; $s++ ) : ?>
+                    <div class="tmpcoder-demo-skeleton-card">
+                        <div class="tmpcoder-demo-skeleton-thumb"></div>
+                        <div class="tmpcoder-demo-skeleton-line"></div>
+                        <div class="tmpcoder-demo-skeleton-line"></div>
+                    </div>
+                <?php endfor; ?>
+            </div>
+
             <div class="tmpcoder-import-demo-grid main-grid">
 
             <?php
@@ -109,7 +119,7 @@ function tmpcoder_import_demo_list(){
                     <?php } ?>
 
                     <div class="grid-item-inn">
-                        <a target="_blank" title="<?php echo esc_attr('View '.$value['name'], 'sastra-essential-addons-for-elementor'); ?>" href="<?php echo esc_url($value['preview-url'], 'sastra-essential-addons-for-elementor') ?>"><img src="<?php echo esc_url( $value['image'] ); ?>" alt="plugin box image" class="demo-preview" loading="lazy"></a>
+                        <a target="_blank" title="<?php echo esc_attr('View '.$value['name'], 'sastra-essential-addons-for-elementor'); ?>" href="<?php echo esc_url($value['preview-url'], 'sastra-essential-addons-for-elementor') ?>"><img src="<?php echo esc_url( $value['image'] ); ?>" alt="plugin box image" class="demo-preview"></a>
 
                         <div class="action_bar">
                             <span class="plugin_name"><?php echo esc_html( $value['name'] ); ?></span>
@@ -345,7 +355,10 @@ function tmpcoder_import_demo_list(){
             </div>
         </div>
 
-    <?php 
+    <?php
+    if ( function_exists( 'tmpcoder_render_admin_header_external_end' ) ) {
+        tmpcoder_render_admin_header_external_end();
+    }
 }
 
 add_action('admin_enqueue_scripts','tmpcoder_demo_import_scripts_func');

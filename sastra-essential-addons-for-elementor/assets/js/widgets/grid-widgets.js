@@ -6,6 +6,26 @@
         var iGrid = $scope.find('.tmpcoder-grid');
         var loadedItems;
 
+        function isGridMeasurable($grid) {
+            if (!$grid || !$grid.length) {
+                return false;
+            }
+
+            if (!$grid.is(':visible')) {
+                return false;
+            }
+
+            if ($grid.closest('.tmpcoder-visibility-hidden').length) {
+                return false;
+            }
+
+            if ($grid.closest('.tmpcoder-sticky-replace-header-yes.tmpcoder-visibility-hidden').length) {
+                return false;
+            }
+
+            return $grid.width() > 0;
+        }
+
         if (!iGrid.length) {
             return;
         }
@@ -956,6 +976,10 @@
                 defaultLayout,
                 transDuration = 400;
 
+            if (!isGridMeasurable(grid)) {
+                return;
+            }
+
             // Get Responsive Columns
             var prefixClass = $scope.attr('class'),
                 prefixClass = prefixClass.split(' ');
@@ -1237,6 +1261,10 @@
             let iGrid = $scope.find('.tmpcoder-grid'),
                 items = iGrid.children('article'),
                 columns = Math.floor(iGrid.outerWidth() / items.outerWidth());
+
+            if (!isGridMeasurable(iGrid)) {
+                return;
+            }
 
             if ('fitRows' === settings.layout && columns > 1) {
                 let maxHeight = Math.max.apply(null, items.map(function (item) {
@@ -1808,6 +1836,27 @@
                     this.src = this.dataset.src;
                 }
             });
+        });
+
+        $(document).on('tmpcoder:grid:relayout', function (e, $target) {
+            if ($target && $target.length && !$scope.has($target).length && !$target.has($scope).length) {
+                return;
+            }
+
+            if (!isGridMeasurable(iGrid)) {
+                return;
+            }
+
+            isotopeLayout(settings);
+
+            setTimeout(function () {
+                isotopeLayout(settings);
+                setEqualHeight(settings);
+
+                if (typeof iGrid.isotope === 'function') {
+                    iGrid.isotope('layout');
+                }
+            }, 120);
         });
     }
     

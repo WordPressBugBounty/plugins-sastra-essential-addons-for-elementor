@@ -81,7 +81,7 @@ class TMPCODER_Pro_Features_Notice {
             "
             jQuery(document).ready(function($) {
                 $('html, body').animate({ scrollTop: 0 }, 'slow');
-                $('body').addClass('tmpcoder-pro-features-body');
+                $('body').addClass('tmpcoder-pro-features-body-1');
                 $(document).find('.tmpcoder-pro-features-notice-wrap').css('opacity', 1);
 
                 if ($('#tmpcoder-pro-notice-confetti').length) {

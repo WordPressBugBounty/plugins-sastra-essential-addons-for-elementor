@@ -553,14 +553,19 @@ jQuery(document).ready(function( $ ) {
 	        beforeSend: function() {
 				var conditionContent = conditionPupup.find('.tmpcoder-options-row-content');
 	       		conditionContent.html($('.popup-loader-html').html());
-				conditionContent.find('.welcome-backend-loader').fadeIn();
-				conditionContent.find('.welcome-backend-loader img').css('position','absolute');
+				var $loader = conditionContent.find('.tmpcoder-template-conditions-loader').first();
+				if (window.tmpcoderCommonLoader && typeof window.tmpcoderCommonLoader.show === 'function') {
+					window.tmpcoderCommonLoader.show('.tmpcoder-condition-popup-wrap .tmpcoder-options-row-content .tmpcoder-template-conditions-loader');
+				} else {
+					$loader.removeAttr('hidden').css('display', 'block');
+				}
 				conditionContent.css('height','100px');
 				$('.tmpcoder-save-conditions').css('pointer-events','none');
 	        }
 	    })
 	    .done( function( response ) {
 			var conditionContent = conditionPupup.find('.tmpcoder-options-row-content');
+				conditionPupup.find('.tmpcoder-template-conditions-loader').attr('hidden', true).css('display', '');
 	       		conditionContent.html(response);
 				conditionContent.find('.target_rule-add-exclusion-rule').addClass('tmpcoder-hidden');
 			window.cloneCondition();
@@ -569,6 +574,7 @@ jQuery(document).ready(function( $ ) {
 			$('.tmpcoder-save-conditions').removeAttr('style');
 	    })
 	    .fail( function( error ) {
+			conditionPupup.find('.tmpcoder-template-conditions-loader').attr('hidden', true).css('display', '');
 	        console.log(error);
 	    })
 
@@ -877,6 +883,37 @@ jQuery(document).ready(function( $ ) {
 	if ( $('.tmpcoder-popup-builder-page').length && $('#tmpcoder-popup-library-wrap').length ) {
 
 		var tmpcoderPopupMacy = null;
+		var tmpcoderPopupMacyRecalcTimer = null;
+		var tmpcoderPopupMacyRevealTimer = null;
+
+		function tmpcoderSchedulePopupMacyReflow( onStable ) {
+			if ( ! tmpcoderPopupMacy ) {
+				if ( typeof onStable === 'function' ) {
+					onStable();
+				}
+				return;
+			}
+
+			if ( tmpcoderPopupMacyRecalcTimer ) {
+				clearTimeout( tmpcoderPopupMacyRecalcTimer );
+			}
+			tmpcoderPopupMacyRecalcTimer = setTimeout( function() {
+				tmpcoderPopupMacyRecalcTimer = null;
+				try {
+					tmpcoderPopupMacy.recalculate( true );
+				} catch ( e ) {}
+			}, 60 );
+
+			if ( typeof onStable === 'function' ) {
+				if ( tmpcoderPopupMacyRevealTimer ) {
+					clearTimeout( tmpcoderPopupMacyRevealTimer );
+				}
+				tmpcoderPopupMacyRevealTimer = setTimeout( function() {
+					tmpcoderPopupMacyRevealTimer = null;
+					onStable();
+				}, 180 );
+			}
+		}
 
 		// Ensure overlay is attached directly to <body> so it is not clipped by admin layout.
 		(function() {
@@ -914,6 +951,21 @@ jQuery(document).ready(function( $ ) {
 				$sidebar.css({ opacity: 0, visibility: 'hidden' });
 
 				var $gridInner = $content.find('.tmpcoder-tplib-template-gird-inner').first();
+				var $blocksLibraryWrap = $gridInner.closest('.tmpcoder-prebuild-blocks-library-page');
+				var gridRevealed = false;
+				var revealGridWhenReady = function() {
+					if ( gridRevealed ) {
+						return;
+					}
+					gridRevealed = true;
+					if ( isBlocks && $blocksLibraryWrap.length ) {
+						$blocksLibraryWrap.addClass('tmpcoder-blocks-layout-ready');
+					} else {
+						$gridInner.css('opacity', '');
+					}
+					$sidebar.css({ opacity: '', visibility: '' });
+					$loading.hide();
+				};
 
 				// Ensure only one "Create from Scratch" card (remove any existing in this grid).
 				$gridInner.find('.tmpcoder-popup-library-scratch-card').remove();
@@ -948,12 +1000,15 @@ jQuery(document).ready(function( $ ) {
 					var preloader = new Image();
 					preloader.onload = function() {
 						$img.attr('src', realSrc);
+						tmpcoderSchedulePopupMacyReflow( revealGridWhenReady );
 					};
 					preloader.onerror = function() {
 						// Keep the loader/placeholder on error.
 						if ( loaderSrc ) {
 							$img.attr('src', loaderSrc );
 						}
+						// Even on broken image URLs, keep layout progressing.
+						tmpcoderSchedulePopupMacyReflow( revealGridWhenReady );
 					};
 					preloader.src = realSrc;
 				});
@@ -987,7 +1042,7 @@ jQuery(document).ready(function( $ ) {
 					$content.find('.tmpcoder-tplib-filters h3 span').attr('data-filter', current).text( $(this).text() );
 
 					if ( tmpcoderPopupMacy ) {
-						setTimeout( function() { tmpcoderPopupMacy.recalculate( true ); }, 50 );
+						tmpcoderSchedulePopupMacyReflow( revealGridWhenReady );
 					}
 				});
 
@@ -1007,7 +1062,7 @@ jQuery(document).ready(function( $ ) {
 							$(this).toggle( ! val || title.indexOf( val ) !== -1 );
 						});
 						if ( tmpcoderPopupMacy ) {
-							setTimeout( function() { tmpcoderPopupMacy.recalculate( true ); }, 50 );
+							tmpcoderSchedulePopupMacyReflow( revealGridWhenReady );
 						}
 					}, 200 );
 				});
@@ -1037,23 +1092,22 @@ jQuery(document).ready(function( $ ) {
 						}
 					});
 
-					if ( isBlocks ) {
-						// After Macy's first pass (give it a brief moment), reveal the grid
-						// and sidebar, then hide the loader, so blocks appear once in their final layout.
-						setTimeout( function() {
-							$gridInner.css('opacity', '');
-							$sidebar.css({ opacity: '', visibility: '' });
-							$loading.hide();
-						}, 500 );
-					} else {
-						// Popups: hide loader and reveal sidebar immediately after Macy init.
-						$sidebar.css({ opacity: '', visibility: '' });
-						$loading.hide();
+					if ( typeof tmpcoderPopupMacy.runOnImageLoad === 'function' ) {
+						tmpcoderPopupMacy.runOnImageLoad( function() {
+							tmpcoderSchedulePopupMacyReflow( revealGridWhenReady );
+						}, true );
 					}
+					tmpcoderSchedulePopupMacyReflow( revealGridWhenReady );
+					setTimeout( function() {
+						tmpcoderSchedulePopupMacyReflow( revealGridWhenReady );
+					}, 250 );
+					// Safety fallback: reveal even if Macy/image callbacks are missed.
+					setTimeout( function() {
+						revealGridWhenReady();
+					}, 1500 );
 				} else {
 					// Macy unavailable – fall back to simple grid, reveal sidebar, and hide loader.
-					$sidebar.css({ opacity: '', visibility: '' });
-					$loading.hide();
+					revealGridWhenReady();
 				}
 
 				tmpcoderPopupLibraryLoadTabInProgress = false;
@@ -1580,17 +1634,40 @@ jQuery(document).ready(function( $ ) {
 	** Save Options with Ajax -------------------------
 	*/
 	$('.tmpcoder-settings-page form, .spexo-settings-page form, .spexo-settings-form').submit(function () {
-		var settings =  $(this).serialize();
+		var $form = $(this);
+		var settings =  $form.serialize();
+		var $loader = $form.find('.welcome-backend-loader').first();
+		var loaderSelector = '';
 
-		$('.welcome-backend-loader').fadeIn();
-		$('.tmpcoder-theme-welcome').css('opacity','0.5');
+		if ($loader.hasClass('tmpcoder-widgets-sync-loader')) {
+			loaderSelector = '.tmpcoder-widgets-sync-loader';
+		} else if ($loader.hasClass('tmpcoder-settings-sync-loader')) {
+			loaderSelector = '.tmpcoder-settings-sync-loader';
+		} else if ($loader.hasClass('tmpcoder-tools-sync-loader')) {
+			loaderSelector = '.tmpcoder-tools-sync-loader';
+		}
+
+		if (loaderSelector && window.tmpcoderCommonLoader && typeof window.tmpcoderCommonLoader.show === 'function') {
+			window.tmpcoderCommonLoader.show(loaderSelector);
+		} else {
+			$loader.fadeIn();
+		}
+		$('.tmpcoder-theme-welcome').css('opacity','1');
 
 		$.post( 'options.php', settings ).error(function() {
 			// alert('error');
-			$('.welcome-backend-loader').fadeOut();
+			if (loaderSelector && window.tmpcoderCommonLoader && typeof window.tmpcoderCommonLoader.hide === 'function') {
+				window.tmpcoderCommonLoader.hide(loaderSelector);
+			} else {
+				$loader.fadeOut();
+			}
 			$('.tmpcoder-theme-welcome').css('opacity','1');
 		}).success(function() {
-			$('.welcome-backend-loader').fadeOut();
+			if (loaderSelector && window.tmpcoderCommonLoader && typeof window.tmpcoderCommonLoader.hide === 'function') {
+				window.tmpcoderCommonLoader.hide(loaderSelector);
+			} else {
+				$loader.fadeOut();
+			}
 			$('.tmpcoder-theme-welcome').css('opacity','1');
 			$('.tmpcoder-settings-saved').stop().fadeIn(500).delay(1000).fadeOut(1000); 
 		});

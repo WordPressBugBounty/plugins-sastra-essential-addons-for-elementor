@@ -1135,9 +1135,10 @@ if ( ! function_exists( 'tmpcoder_add_section_help_docs' ) ) {
 		} else {
 			$tab = '';
 		}
+		$control_suffix = '' !== $tab ? '_' . sanitize_key( (string) $tab ) : '';
 
 		$widget_instance->start_controls_section(
-			'section_help_docs',
+			'section_help_docs' . $control_suffix,
 			[
 				'label' => __( 'Help & Docs', 'sastra-essential-addons-for-elementor' ),
 				'tab'   => $tab,
@@ -1147,7 +1148,7 @@ if ( ! function_exists( 'tmpcoder_add_section_help_docs' ) ) {
 		$docs_url = function_exists( 'tmpcoder_get_widget_docs_url' ) ? tmpcoder_get_widget_docs_url( $widget_instance ) : '#';
 
 		$widget_instance->add_control(
-			'help_docs_documentation',
+			'help_docs_documentation' . $control_suffix,
 			[
 				'type'      => $control_type,
 				'raw'       => '<div class="tmpcoder-help-docs-block">'
@@ -1164,7 +1165,7 @@ if ( ! function_exists( 'tmpcoder_add_section_help_docs' ) ) {
 		);
 
 		$widget_instance->add_control(
-			'request_new_feature',
+			'request_new_feature' . $control_suffix,
 			[
 				'type'    => $control_type,
 				/* Translators: %s is the plugin name. */
@@ -1333,7 +1334,7 @@ if (!function_exists('tmpcoder_ajax_mailchimp_subscribe')) {
             exit; // Get out of here, the nonce is rotten!
         }
 
-	    $api_key = !empty(get_option('tmpcoder_mailchimp_api_key')) && false != get_option('tmpcoder_mailchimp_api_key') ? get_option('tmpcoder_mailchimp_api_key') : ''; // GOGA
+	    $api_key = !empty(tmpcoder_get_settings('tmpcoder_mailchimp_api_key')) && false != tmpcoder_get_settings('tmpcoder_mailchimp_api_key') ? tmpcoder_get_settings('tmpcoder_mailchimp_api_key') : ''; // GOGA
 
 	    $api_key_sufix = explode( '-', $api_key )[1];
 
@@ -1394,7 +1395,7 @@ if (!function_exists('tmpcoder_get_mailchimp_lists')) {
 	
 	function tmpcoder_get_mailchimp_lists(){
 
-		$api_key = get_option('tmpcoder_mailchimp_api_key', '');
+		$api_key = tmpcoder_get_settings('tmpcoder_mailchimp_api_key', '');
 
 		$mailchimp_list = [
 			'def' => esc_html__( 'Select List', 'sastra-essential-addons-for-elementor' )
@@ -1429,12 +1430,12 @@ if (!function_exists('tmpcoder_get_mailchimp_groups')) {
 	
 	function tmpcoder_get_mailchimp_groups() {
 		$groups_array = ['def' => 'Select Group'];
-		foreach ($this->tmpcoder_get_mailchimp_lists() as $key => $value ) {
+		foreach (tmpcoder_get_mailchimp_lists() as $key => $value ) {
 			if ( 'def' === $key ) {
 				continue;
 			}
 			$audience = $key; // How to get settin
-			$api_key = get_option('tmpcoder_mailchimp_api_key');
+		    $api_key = tmpcoder_get_settings('tmpcoder_mailchimp_api_key');
 			$url = 'https://'. substr( $api_key, strpos( $api_key, '-' ) + 1 ) .'.api.mailchimp.com/3.0/lists/'.$audience.'/interest-categories';
 			$args = [ 'headers' => [ 'Authorization' => 'Basic ' . base64_encode( 'user:'. $api_key ) ] ];
 			
@@ -1472,22 +1473,22 @@ if (!function_exists('tmpcoder_get_woocommerce_builder_modules')) {
 			// ------ Array Value name ------
 			// 'widget name' => ['widget-slug', 'live demo link', 'docs link', 'tag','file name','widget class','widget icon'],
 
-			'Woo Grid/Slider/Carousel' => ['woo-grid', 'woo-grid', 'woo-grid-slider-carousel', 'new','woo-product-grid.php','TMPCODER_Woo_Grid','woo-grid-1.svg'],
-			'Woo Product Grid (Classic)' => ['eicon-woocommerce', 'woo-product-grid-classic', 'woo-product-grid-classic', 'new','woo-product-grid-classic.php','Product_Grid','woo-grid-1.svg'],
+			'Woo Grid/Slider/Carousel' => ['woo-grid', 'woo-grid', 'woo-grid-slider-carousel', '','woo-product-grid.php','TMPCODER_Woo_Grid','woo-grid-1.svg'],
+			'Woo Product Grid (Classic)' => ['eicon-woocommerce', 'woo-product-grid-classic', 'woo-product-grid-classic', '','woo-product-grid-classic.php','Product_Grid','woo-grid-1.svg'],
 			// 'Woo Product Grid (Classic)' => ['woo-product-grid-classic', 'woo-product-grid-classic', 'woo-product-grid-classic', 'new','woo-product-grid-classic.php','Product_Grid','woo-grid-1.svg'],
-			'Product Title' => ['product-title', '', 'product-title', 'new','woo-product-title.php','TMPCODER_Woo_Product_Title','product-title.svg'],
-			'Product Media' => ['product-media', '', 'product-media', 'new','woo-product-media.php','TMPCODER_Product_Media','product-media.svg'],
-			'Product Media List' => ['product-media-list', '', 'product-media-list', 'new','woo-product-media-list.php','TMPCODER_Product_Media_List','product-media.svg'],
-			'Product Price' => ['product-price', '', 'product-price', 'new','woo-product-price.php','TMPCODER_Woo_Product_Price','product-price.svg'],
-			'Product Add to Cart' => ['product-add-to-cart', '', 'product-add-to-cart', 'new','woo-add-to-cart.php','TMPCODER_Woo_Add_To_Cart','product-add-to-cart.svg'],
-			'Product Tabs' => ['product-tabs', '', 'product-tabs', 'new','woo-product-tab.php','TMPCODER_Product_Tabs','product-tabs.svg'],
-			'Product Excerpt' => ['product-excerpt', '', 'product-excerpt', 'new','woo-short-description.php','TMPCODER_Woo_Short_Description','product-excerpt.svg'],
-			'Product Content' => ['product-content', '', 'product-content', 'new','woo-product-content.php','TMPCODER_Woo_Product_Content','product-content.svg'],
-			'Product Rating' => ['product-rating', '', 'product-rating', 'new','woo-product-rating.php','TMPCODER_Product_Rating','product-rating.svg'],
-			'Product Meta' => ['product-meta', '', 'product-meta', 'new','woo-product-meta.php','TMPCODER_Product_Meta','product-meta.svg'],
-			'Product Stock' => ['product-stock', '', 'product-stock', 'new','woo-product-stock.php','TMPCODER_Product_Stock','product-stock.svg'],
-			'Product Mini Cart' => ['product-mini-cart', '', 'product-mini-cart', 'new','woo-mini-cart.php','TMPCODER_Product_Mini_Cart','product-mini-cart.svg'],
-			'Product Additional Information' => ['product-additional-information', '', 'product-additional-information', 'new','woo-product-additional-info.php','TMPCODER_Product_AdditionalInformation','product-meta.svg'],
+			'Product Title' => ['product-title', '', 'product-title', '',	'woo-product-title.php','TMPCODER_Woo_Product_Title','product-title.svg'],
+			'Product Media' => ['product-media', '', 'product-media', '',	'woo-product-media.php','TMPCODER_Product_Media','product-media.svg'],
+			'Product Media List' => ['product-media-list', '', 'product-media-list', '',	'woo-product-media-list.php','TMPCODER_Product_Media_List','product-media.svg'],
+			'Product Price' => ['product-price', '', 'product-price', '',	'woo-product-price.php','TMPCODER_Woo_Product_Price','product-price.svg'],
+			'Product Add to Cart' => ['product-add-to-cart', '', 'product-add-to-cart', '',	'woo-add-to-cart.php','TMPCODER_Woo_Add_To_Cart','product-add-to-cart.svg'],
+			'Product Tabs' => ['product-tabs', '', 'product-tabs', '',	'woo-product-tab.php','TMPCODER_Product_Tabs','product-tabs.svg'],
+			'Product Excerpt' => ['product-excerpt', '', 'product-excerpt', '',	'woo-short-description.php','TMPCODER_Woo_Short_Description','product-excerpt.svg'],
+			'Product Content' => ['product-content', '', 'product-content', '',	'woo-product-content.php','TMPCODER_Woo_Product_Content','product-content.svg'],
+			'Product Rating' => ['product-rating', '', 'product-rating', '',	'woo-product-rating.php','TMPCODER_Product_Rating','product-rating.svg'],
+			'Product Meta' => ['product-meta', '', 'product-meta', '',	'woo-product-meta.php','TMPCODER_Product_Meta','product-meta.svg'],
+			'Product Stock' => ['product-stock', '', 'product-stock', '',	'woo-product-stock.php','TMPCODER_Product_Stock','product-stock.svg'],
+			'Product Mini Cart' => ['product-mini-cart', '', 'product-mini-cart', '',	'woo-mini-cart.php','TMPCODER_Product_Mini_Cart','product-mini-cart.svg'],
+			'Product Additional Information' => ['product-additional-information', '', 'product-additional-information', '',	'woo-product-additional-info.php','TMPCODER_Product_AdditionalInformation','product-meta.svg'],
 		];
 	}
 }
@@ -1503,15 +1504,15 @@ if (!function_exists('tmpcoder_get_theme_builder_modules')) {
 			// ------ Array Value name ------
 			// 'widget name' => ['widget-slug', 'live demo link', 'docs link', 'tag','file name','widget class','widget icon'],
 
-			'Post Title' => ['post-title', '', 'post-title', 'new','post-title.php','TMPCODER_Post_Title','post-title.svg'],
-			'Archive Title' => ['archive-title', '', 'archive-title', 'new','archive-title.php','TMPCODER_Archive_Title','post-title.svg'],
-			'Post Thumbnail' => ['post-thumbnail', '', 'post-thumbnail', 'new','post-thumbnail.php','TMPCODER_Post_Thumbnail','post-thumbnail.svg'],
-			'Post Content' => ['post-content', '', 'post-content', 'new','post-content.php','TMPCODER_Post_Content','post-content.svg'],
-			'Post Meta' => ['post-info', '', 'post-meta', 'new','post-info.php','TMPCODER_Post_Info','post-meta.svg'],
-			'Post Navigation' => ['post-navigation', '', 'post-navigation', 'new','post-navigation.php','TMPCODER_Post_Navigation','post-navigation.svg'],
-			'Post Comments' => ['post-comments', '', 'post-comments', 'new','post-comments.php','TMPCODER_Post_Comments','post-comments.svg'],
-			'Author Box' => ['author-box', '', 'author-box', 'new','author-box.php','TMPCODER_Author_Box','author-box.svg'],
-			'Post Excerpt' => ['post-excerpt', '', 'post-excerpt', 'new','post-excerpt.php','TMPCODER_Post_Excerpt','post-content.svg'],
+			'Post Title' => ['post-title', '', 'post-title', '',	'post-title.php','TMPCODER_Post_Title','post-title.svg'],
+			'Archive Title' => ['archive-title', '', 'archive-title', '',	'archive-title.php','TMPCODER_Archive_Title','post-title.svg'],
+			'Post Thumbnail' => ['post-thumbnail', '', 'post-thumbnail', '',	'post-thumbnail.php','TMPCODER_Post_Thumbnail','post-thumbnail.svg'],
+			'Post Content' => ['post-content', '', 'post-content', '',	'post-content.php','TMPCODER_Post_Content','post-content.svg'],
+			'Post Meta' => ['post-info', '', 'post-meta', '',	'post-info.php','TMPCODER_Post_Info','post-meta.svg'],
+			'Post Navigation' => ['post-navigation', '', 'post-navigation', '',	'post-navigation.php','TMPCODER_Post_Navigation','post-navigation.svg'],
+			'Post Comments' => ['post-comments', '', 'post-comments', '',	'post-comments.php','TMPCODER_Post_Comments','post-comments.svg'],
+			'Author Box' => ['author-box', '', 'author-box', '',	'author-box.php','TMPCODER_Author_Box','author-box.svg'],
+			'Post Excerpt' => ['post-excerpt', '', 'post-excerpt', '',	'post-excerpt.php','TMPCODER_Post_Excerpt','post-content.svg'],
 		];
 	}
 }
@@ -1523,53 +1524,122 @@ if (!function_exists('tmpcoder_get_registered_modules')) {
 			// ------ Array Value name ------
 			// 'widget name' => ['widget-slug', 'live demo link', 'docs link', 'tag','file name','widget class','widget icon','js-file-name','css-file-name'], css and js file should be same as widget-slug name 
 
-			'Post Grid/Slider/Carousel' => ['post-grid', 'post-grid-slider-carousel', 'post-grid-slider-carousel', 'new','post-grid.php','TMPCODER_Post_Grid','post-grid.svg'],
-			'Image Grid/Slider/Carousel' => ['media-grid', 'image-grid-slider-carousel', 'image-grid-slider-carousel', 'new','media-grid.php','TMPCODER_Media_Grid','img-grid.svg'],
-			'Magazine Grid/Slider' => ['magazine-grid', 'magazine-grid-slider', 'magazine-grid-slider', 'new','magazine-grid.php','TMPCODER_Magazine_Grid','magazine-grid.svg'],
-			'Posts/Story Timeline' => ['posts-timeline', 'posts-story-timeline', 'posts-story-timeline', 'new','post-timeline.php','TMPCODER_Posts_Timeline','post-timeline.svg'],
-			'Advanced Slider' => ['advanced-slider', 'advanced-slider', 'advanced-slider', 'new','advanced-slider.php','TMPCODER_Advanced_Slider','advance-slider.svg'],
-			'Off-Canvas Content' => ['offcanvas', 'off-canvas-content', 'off-canvas-content', 'new','off-canvas.php','TMPCODER_Offcanvas','off-canvas-menu.svg'],
-			'Testimonial' => ['testimonial', 'testimonial', 'testimonial', 'new','testimonial-carousel.php','TMPCODER_Testimonial_Carousel','testimonial.svg'],
-			'Nav Menu' => ['nav-menu', 'nav-menu', 'nav-menu', 'new','navigation-menu.php','TMPCODER_Navigation_Menu','nav-menu.svg'],
-			'Mega Menu' => ['mega-menu', 'mega-menu', 'mega-menu', 'new','mega-menu.php','TMPCODER_Mega_Menu','mega-menu.svg'],
-			'Onepage Navigation' => ['onepage-nav', 'onepage-nav', 'onepage-navigation', 'new','onepage-nav.php','TMPCODER_OnepageNav','one-page-nav.svg'],
-			'Data Table' => ['data-table', 'data-table', 'data-table', 'new','data-table.php','TMPCODER_Data_Table','data-table.svg'],
-			'Pricing Table' => ['pricing-table', 'pricing-table', 'pricing-table', 'new','pricing-table.php','TMPCODER_Pricing_Table','price-table.svg'],
-			'Countdown' => ['countdown', 'countdown', 'countdown', 'new','countdown.php','TMPCODER_Countdown','countdown.svg'],
-			'Progress Bar' => ['progress-bar', 'progress-bar', 'progress-bar', 'new','progress-bar.php','TMPCODER_Progress_Bar','progress-bar.svg'],
-			'Dual Color Heading' => ['dual-color-heading', 'dual-color-heading', 'dual-color-heading', 'new','dual-color-heading.php','TMPCODER_Dual_Color_Heading','dual-color-heading.svg'],
-			'Image Accordion' => ['image-accordion', 'image-accordion', 'image-accordion', 'new','image-accordion.php','TMPCODER_Image_Accordion','image-accordian.svg'],
-			'Advanced Accordion' => ['advanced-accordion', 'advance-accordion', 'advanced-accordion', 'new','advanced-accordion.php','TMPCODER_Advanced_Accordion','advance-accordion.svg'],
-			'Advanced Text' => ['advanced-text', 'advanced-text', 'advanced-text', 'new','animation-text.php','TMPCODER_Advanced_Text','advance-text.svg'],
-			'Flip Carousel' => ['flip-carousel', 'flip-carousel', 'flip-carousel', 'new','flip-carousel.php','TMPCODER_Flip_Carousel','flip-carousel.svg'],
-			'Flip Box' => ['flip-box', 'flip-box', 'flip-box', 'new','flip-box.php','TMPCODER_Flip_Box','flip-box.svg'],
-			'Promo Box' => ['promo-box', 'promo-box', 'promo-box', 'new','promo-box.php','TMPCODER_Promo_Box','promo-box.svg'],
-			'Feature List' => ['feature-list', 'feature-list', 'feature-list', 'new','feature-list.php','TMPCODER_Feature_List','feature-list.svg'],
-			'Before After' => ['before-after', 'before-after', 'before-after', 'new','before-after.php','TMPCODER_Before_After','before-after.svg'],
-			'Image Hotspots' => ['image-hotspots', 'image-hotspots', 'image-hotspots', 'new','image-hotspots.php','TMPCODER_Image_Hotspots','image-hotspots.svg'],
-			'Form Styler' => ['forms', 'form-styler', 'form-styler', 'new','form-styler.php','TMPCODER_Form_Styler','form-styler.svg'],
-			'MailChimp' => ['mailchimp', 'mailchimp', 'mailchimp', 'new','mailchimp.php','TMPCODER_Mailchimp','mailchimp.svg'],
-			'Content Ticker' => ['content-ticker', 'content-ticker', 'content-ticker', 'new','content-ticker.php','TMPCODER_Content_Ticker','content-ticker.svg'],
-			'Button' => ['button', 'button', 'button', 'new','button.php','TMPCODER_Button','button.svg'],
-			'Dual Button' => ['dual-button', 'dual-button', 'dual-button', 'new','dual-button.php','TMPCODER_Dual_Button','dual-button.svg'],
-			'Team Member' => ['team-member', 'team-member', 'team-member', 'new','team-member.php','TMPCODER_Team_Member','team-member.svg'],
-			'Price List' => ['price-list', 'price-list', 'price-list', 'new','price-list.php','TMPCODER_Price_List','price-list.svg'],
-			'Business Hours' => ['business-hours', 'business-hours', 'business-hours', 'new','business-hours.php','TMPCODER_Business_Hours','business-hour.svg'],
-			'Sharing Buttons' => ['sharing-buttons', 'sharing-buttons', 'sharing-buttons', 'new','social-share.php','TMPCODER_Social_Share','sharing-buttons.svg'],
-			'Search Form' => ['search', 'search-form', 'search-form', 'new','wp-search.php','TMPCODER_Search','search-form.svg'],
-			'Back to Top' => ['back-to-top', 'back-to-top-button', 'back-to-top', 'new','top-scroll.php','TMPCODER_Back_To_Top','back-to-top.svg'],
-			'Phone Call' => ['phone-call', 'phone-call-button', 'phone-call', 'new','phone-call.php','TMPCODER_Phone_Call','phone-call.svg'],
-			'Lottie Animations' => ['lottie-animations', 'lottie-animation', 'lottie-animations', 'new','lottie-animations.php','TMPCODER_Lottie_Animations','lottie-animations.svg'],
-			'Site Logo' => ['logo', '', 'site-logo', 'new','site-logo.php','TMPCODER_Site_Logo','site-logo.svg'],
-			'Taxonomy List' => ['taxonomy-list', '', 'taxonomy-list', 'new','taxonomy-list.php','TMPCODER_Taxonomy_List','taxonomy-list.svg'],
-			'Page List' => ['page-list', 'page-list', 'page-list', 'new', 'page-list.php','TMPCODER_Page_List','page-list.svg'],
-			'Reading Progress Bar' => ['reading-progress-bar', 'reading-progress-bar-widget', 'reading-progress-bar', 'new','reading-progress-bar.php','TMPCODER_Reading_Progress_Bar','reading-progress-bar.svg'],
-			'Breadcrumb' => ['Breadcrumb', '', 'breadcrumb', 'new','breadcrumb.php','TMPCODER_Breadcrumb','breadcrumb.svg'],
-			'Archive List' => ['archive-list', '', 'archive-list', 'new','archive-list.php','TMPCODER_Archive_List','page-list.svg'],
-            'Recent Post List' => ['recent-post-list', 'recent-post-list', 'recent-post-list', 'new','recent-post-list.php','TMPCODER_Post_List','page-list.svg'],
-            'Global Template' => ['elementor-template', '', 'global-templates', 'new','elementor-template.php','TMPCODER_Elementor_Template','elementor-template.svg'],
-            'Popup Trigger' => ['popup-trigger', 'popup-trigger', 'popup-trigger', 'new','popup-trigger.php','TMPCODER_Popup_Trigger','button.svg'],
+			'Post Grid/Slider/Carousel' => ['post-grid', 'post-grid-slider-carousel', 'post-grid-slider-carousel', '','post-grid.php','TMPCODER_Post_Grid','post-grid.svg'],
+			'Image Grid/Slider/Carousel' => ['media-grid', 'image-grid-slider-carousel', 'image-grid-slider-carousel', '',	'media-grid.php','TMPCODER_Media_Grid','img-grid.svg'],
+			'Magazine Grid/Slider' => ['magazine-grid', 'magazine-grid-slider', 'magazine-grid-slider', '','magazine-grid.php','TMPCODER_Magazine_Grid','magazine-grid.svg'],
+			'Posts/Story Timeline' => ['posts-timeline', 'posts-story-timeline', 'posts-story-timeline', '','post-timeline.php','TMPCODER_Posts_Timeline','post-timeline.svg'],
+			'Advanced Slider' => ['advanced-slider', 'advanced-slider', 'advanced-slider', '','advanced-slider.php','TMPCODER_Advanced_Slider','advance-slider.svg'],
+			'Off-Canvas Content' => ['offcanvas', 'off-canvas-content', 'off-canvas-content', '','off-canvas.php','TMPCODER_Offcanvas','off-canvas-menu.svg'],
+			'Testimonial' => ['testimonial', 'testimonial', 'testimonial', '','testimonial-carousel.php','TMPCODER_Testimonial_Carousel','testimonial.svg'],
+			'Nav Menu' => ['nav-menu', 'nav-menu', 'nav-menu', '','navigation-menu.php','TMPCODER_Navigation_Menu','nav-menu.svg'],
+			'Mega Menu' => ['mega-menu', 'mega-menu', 'mega-menu', '',	'mega-menu.php','TMPCODER_Mega_Menu','mega-menu.svg'],
+			'Onepage Navigation' => ['onepage-nav', 'onepage-nav', 'onepage-navigation', '',	'onepage-nav.php','TMPCODER_OnepageNav','one-page-nav.svg'],
+			'Data Table' => ['data-table', 'data-table', 'data-table', '',	'data-table.php','TMPCODER_Data_Table','data-table.svg'],
+			'Pricing Table' => ['pricing-table', 'pricing-table', 'pricing-table', '','pricing-table.php','TMPCODER_Pricing_Table','price-table.svg'],
+			'Countdown' => ['countdown', 'countdown', 'countdown', '','countdown.php','TMPCODER_Countdown','countdown.svg'],
+			'Progress Bar' => ['progress-bar', 'progress-bar', 'progress-bar', '','progress-bar.php','TMPCODER_Progress_Bar','progress-bar.svg'],
+			'Dual Color Heading' => ['dual-color-heading', 'dual-color-heading', 'dual-color-heading', '','dual-color-heading.php','TMPCODER_Dual_Color_Heading','dual-color-heading.svg'],
+			'Image Accordion' => ['image-accordion', 'image-accordion', 'image-accordion', '','image-accordion.php','TMPCODER_Image_Accordion','image-accordian.svg'],
+			'Advanced Accordion' => ['advanced-accordion', 'advance-accordion', 'advanced-accordion', '','advanced-accordion.php','TMPCODER_Advanced_Accordion','advance-accordion.svg'],
+			'Advanced Text' => ['advanced-text', 'advanced-text', 'advanced-text', '','animation-text.php','TMPCODER_Advanced_Text','advance-text.svg'],
+			'Flip Carousel' => ['flip-carousel', 'flip-carousel', 'flip-carousel', '','flip-carousel.php','TMPCODER_Flip_Carousel','flip-carousel.svg'],
+			'Flip Box' => ['flip-box', 'flip-box', 'flip-box', '','flip-box.php','TMPCODER_Flip_Box','flip-box.svg'],
+			'Promo Box' => ['promo-box', 'promo-box', 'promo-box', '','promo-box.php','TMPCODER_Promo_Box','promo-box.svg'],
+			'Feature List' => ['feature-list', 'feature-list', 'feature-list', '','feature-list.php','TMPCODER_Feature_List','feature-list.svg'],
+			'Before After' => ['before-after', 'before-after', 'before-after', '','before-after.php','TMPCODER_Before_After','before-after.svg'],
+			'Image Hotspots' => ['image-hotspots', 'image-hotspots', 'image-hotspots', '','image-hotspots.php','TMPCODER_Image_Hotspots','image-hotspots.svg'],
+			'Form Styler' => ['forms', 'form-styler', 'form-styler', '','form-styler.php','TMPCODER_Form_Styler','form-styler.svg'],
+			'MailChimp' => ['mailchimp', 'mailchimp', 'mailchimp', '','mailchimp.php','TMPCODER_Mailchimp','mailchimp.svg'],
+			'Content Ticker' => ['content-ticker', 'content-ticker', 'content-ticker', '','content-ticker.php','TMPCODER_Content_Ticker','content-ticker.svg'],
+			'Button' => ['button', 'button', 'button', '','button.php','TMPCODER_Button','button.svg'],
+			'Dual Button' => ['dual-button', 'dual-button', 'dual-button', '','dual-button.php','TMPCODER_Dual_Button','dual-button.svg'],
+			'Team Member' => ['team-member', 'team-member', 'team-member', '','team-member.php','TMPCODER_Team_Member','team-member.svg'],
+			'Price List' => ['price-list', 'price-list', 'price-list', '','price-list.php','TMPCODER_Price_List','price-list.svg'],
+			'Business Hours' => ['business-hours', 'business-hours', 'business-hours', '','business-hours.php','TMPCODER_Business_Hours','business-hour.svg'],
+			'Sharing Buttons' => ['sharing-buttons', 'sharing-buttons', 'sharing-buttons', '','social-share.php','TMPCODER_Social_Share','sharing-buttons.svg'],
+			'Search Form' => ['search', 'search-form', 'search-form', '','wp-search.php','TMPCODER_Search','search-form.svg'],
+			'Back to Top' => ['back-to-top', 'back-to-top-button', 'back-to-top', '','top-scroll.php','TMPCODER_Back_To_Top','back-to-top.svg'],
+			'Phone Call' => ['phone-call', 'phone-call-button', 'phone-call', '','phone-call.php','TMPCODER_Phone_Call','phone-call.svg'],
+			'Lottie Animations' => ['lottie-animations', 'lottie-animation', 'lottie-animations', '','lottie-animations.php','TMPCODER_Lottie_Animations','lottie-animations.svg'],
+			'Site Logo' => ['logo', '', 'site-logo', '','site-logo.php','TMPCODER_Site_Logo','site-logo.svg'],
+			'Taxonomy List' => ['taxonomy-list', '', 'taxonomy-list', '','taxonomy-list.php','TMPCODER_Taxonomy_List','taxonomy-list.svg'],
+			'Page List' => ['page-list', 'page-list', 'page-list', '', 'page-list.php','TMPCODER_Page_List','page-list.svg'],
+			'Reading Progress Bar' => ['reading-progress-bar', 'reading-progress-bar-widget', 'reading-progress-bar', '','reading-progress-bar.php','TMPCODER_Reading_Progress_Bar','reading-progress-bar.svg'],
+			'Breadcrumb' => ['Breadcrumb', '', 'breadcrumb', '','breadcrumb.php','TMPCODER_Breadcrumb','breadcrumb.svg'],
+			'Archive List' => ['archive-list', '', 'archive-list', '','archive-list.php','TMPCODER_Archive_List','page-list.svg'],
+            'Recent Post List' => ['recent-post-list', 'recent-post-list', 'recent-post-list', '','recent-post-list.php','TMPCODER_Post_List','page-list.svg'],
+            'Global Template' => ['elementor-template', '', 'global-templates', '','elementor-template.php','TMPCODER_Elementor_Template','elementor-template.svg'],
+            'Popup Trigger' => ['popup-trigger', '', 'popup-trigger', 'new','popup-trigger.php','TMPCODER_Popup_Trigger','button.svg'],
 		];
+	}
+}
+
+if ( ! function_exists( 'tmpcoder_widgets_row_is_locked_pro_upsell' ) ) {
+	/**
+	 * Spexo widgets settings: row is the locked Pro upsell card (tag === pro, no license).
+	 *
+	 * @param array $data Row metadata; [3] is existing tag.
+	 * @return bool
+	 */
+	function tmpcoder_widgets_row_is_locked_pro_upsell( $data ) {
+		return is_array( $data )
+			&& isset( $data[3] )
+			&& 'pro' === $data[3]
+			&& function_exists( 'tmpcoder_is_availble' )
+			&& ! tmpcoder_is_availble();
+	}
+}
+
+if ( ! function_exists( 'tmpcoder_widgets_row_has_new_badge' ) ) {
+	/**
+	 * Spexo widgets settings: show NEW badge (tmpcoder-new-element) independent of [3] when [7] set.
+	 *
+	 * Optional index [7]: explicit NEW flag — true, 1, '1', 'yes', 'new' = show; false, 0, '0', 'no', '' = hide.
+	 * When [7] is omitted, behavior matches legacy [3]-only rules:
+	 *   - 'new' === [3], or [3] contains substring 'new', or locked Pro upsell ([3] 'pro' without license).
+	 *
+	 * @param array $data Row metadata.
+	 * @return bool
+	 */
+	function tmpcoder_widgets_row_has_new_badge( $data ) {
+		if ( ! is_array( $data ) ) {
+			return false;
+		}
+
+		if ( array_key_exists( 7, $data ) ) {
+			$flag = $data[7];
+			if ( in_array( $flag, array( false, 0, '0', 'no', '', null ), true ) ) {
+				return false;
+			}
+			if ( is_string( $flag ) ) {
+				$norm = strtolower( trim( $flag ) );
+				if ( in_array( $norm, array( 'no', 'false', 'off', '' ), true ) ) {
+					return false;
+				}
+				if ( in_array( $norm, array( 'yes', 'true', 'on', 'new', '1' ), true ) ) {
+					return true;
+				}
+				return false;
+			}
+			if ( in_array( $flag, array( true, 1, '1', 'yes', 'new' ), true ) ) {
+				return true;
+			}
+			return (bool) $flag;
+		}
+
+		$tag = isset( $data[3] ) ? (string) $data[3] : '';
+
+		if ( 'new' === $tag ) {
+			return true;
+		}
+		if ( '' !== $tag && false !== strpos( $tag, 'new' ) ) {
+			return true;
+		}
+		if ( tmpcoder_widgets_row_is_locked_pro_upsell( $data ) ) {
+			return true;
+		}
+
+		return false;
 	}
 }
 
@@ -1608,6 +1678,26 @@ if (!function_exists('tmpcoder_get_all_widgtes')) {
 		$woo_builder_widgets = tmpcoder_get_woocommerce_builder_modules();
 
 		return array_merge($general_widgets,$theme_builder_widgets,$woo_builder_widgets);
+	}
+}
+
+if ( ! function_exists( 'tmpcoder_get_editor_panel_registered_modules' ) ) {
+
+	/**
+	 * Widget metadata for Elementor editor (preview + predefined styles hooks).
+	 * Merges free widgets with Pro when Spexo Pro is active so panel JS receives full list.
+	 */
+	function tmpcoder_get_editor_panel_registered_modules() {
+		$modules = tmpcoder_get_all_widgtes();
+
+		if ( function_exists( 'tmpcoder_is_availble' ) && tmpcoder_is_availble() && function_exists( 'tmpcoder_get_all_pro_widgtes' ) ) {
+			$pro_modules = tmpcoder_get_all_pro_widgtes();
+			if ( is_array( $pro_modules ) && ! empty( $pro_modules ) ) {
+				$modules = array_merge( $modules, $pro_modules );
+			}
+		}
+
+		return $modules;
 	}
 }
 
@@ -1841,27 +1931,112 @@ function tmpcoder_form_wp_kses_allowed_html( $allowed_tags, $context ) {
                 'name' => true,
                 'value' => true,
                 'id' => true,
+				'inputmode' => true,
+				'pattern' => true,
+				'minlength' => true,
+				'maxlength' => true,
+				'min' => true,
+				'max' => true,
+				'step' => true,
+				'placeholder' => true,
+				'autocomplete' => true,
+				'aria-*' => true,
+				'data-*' => true,
+				'oninput' => true,
+				'onchange' => true,
+				'onfocus' => true,
+				'onblur' => true,
+				'onkeydown' => true,
+				'onkeyup' => true,
+				'onkeypress' => true,
+				'onmouseover' => true,
+				'onmouseout' => true,
             ),
             'textarea' => array(
                 'name' => true,
                 'style' => true,
                 'with' => true,
                 'id' => true,
+				'inputmode' => true,
+				'pattern' => true,
+				'minlength' => true,
+				'maxlength' => true,
+				'min' => true,
+				'max' => true,
+				'step' => true,
+				'placeholder' => true,
+				'autocomplete' => true,
+				'aria-*' => true,
+				'data-*' => true,
+				'oninput' => true,
+				'onchange' => true,
+				'onfocus' => true,
+				'onblur' => true,
+				'onkeydown' => true,
+				'onkeyup' => true,
             ),
             'button' => array(
                 'type' => true,
                 'name' => true,
                 'id' => true,
+				'inputmode' => true,
+				'pattern' => true,
+				'minlength' => true,
+				'maxlength' => true,
+				'min' => true,
+				'max' => true,
+				'step' => true,
+				'placeholder' => true,
+				'autocomplete' => true,
+				'aria-*' => true,
+				'data-*' => true,
+				'oninput' => true,
+				'onchange' => true,
+				'onfocus' => true,
+				'onblur' => true,
+				'onkeydown' => true,
+				'onkeyup' => true,
+				'onclick' => true,
             ),
             'select' => array(
                 'name' => true,
                 'id' => true,
+				'inputmode' => true,
+				'pattern' => true,
+				'minlength' => true,
+				'maxlength' => true,
+				'min' => true,
+				'max' => true,
+				'step' => true,
+				'placeholder' => true,
+				'autocomplete' => true,
+				'aria-*' => true,
+				'data-*' => true,
+				'oninput' => true,
+				'onchange' => true,
+				'onfocus' => true,
+				'onblur' => true,
+				'onkeydown' => true,
+				'onkeyup' => true,
             ),
             'option' => array(
                 'value' => true,
+				'aria-*' => true,
+				'data-*' => true,
+				'oninput' => true,
+				'onchange' => true,
+				'onfocus' => true,
             ),
             'label' => array(
                 'for' => true,
+				'aria-*' => true,
+				'data-*' => true,
+				'oninput' => true,
+				'onchange' => true,
+				'onfocus' => true,
+				'onblur' => true,
+				'onkeydown' => true,
+				'onkeyup' => true,
             ),
         ) );
     }
@@ -1883,7 +2058,7 @@ if ( !function_exists('tmpcoder_wp_kses_allowed_html') ){
                 'allowfullscreen' => true,
         	),
             'style'   => array('>' => true),
-            'script'   => array(),
+			'script'   => array('type' => true,'data-*' => true),
             'svg'   => array(
 	            'version' => true,
 	            'style' => true,
@@ -1982,6 +2157,12 @@ if ( !function_exists('tmpcoder_wp_kses_allowed_html') ){
                 'exclude-without-thumb' => true,
                 'link-target' => true,
                 'ajax-search-img-size' => true,
+				'oninput' => true,
+				'onchange' => true,
+				'onfocus' => true,
+				'onblur' => true,
+				'onkeydown' => true,
+				'onkeyup' => true,
             ),
             'select' => array(
                 'name' => true,
@@ -1994,6 +2175,12 @@ if ( !function_exists('tmpcoder_wp_kses_allowed_html') ){
                 'aria-*' => true,
                 'size' => true,
                 'aria-invalid' => true,
+				'oninput' => true,
+				'onchange' => true,
+				'onfocus' => true,
+				'onblur' => true,
+				'onkeydown' => true,
+				'onkeyup' => true,
             ),
             'option' => array(
                 'value' => true,
@@ -2020,6 +2207,12 @@ if ( !function_exists('tmpcoder_wp_kses_allowed_html') ){
                 'aria-*' => true,
                 'size' => true,
                 'aria-invalid' => true,
+				'oninput' => true,
+				'onchange' => true,
+				'onfocus' => true,
+				'onblur' => true,
+				'onkeydown' => true,
+				'onkeyup' => true,
             ),
             'button' => array(
                 'type' => true,
@@ -2033,6 +2226,12 @@ if ( !function_exists('tmpcoder_wp_kses_allowed_html') ){
                 'size' => true,
                 'aria-invalid' => true,
                 'onclick' => true,
+				'oninput' => true,
+				'onchange' => true,
+				'onfocus' => true,
+				'onblur' => true,
+				'onkeydown' => true,
+				'onkeyup' => true,
             ),
             'canvas' => array(
                 'id' => true,
@@ -2204,6 +2403,41 @@ if (!function_exists('tmpcoder_render_svg_icon')) {
 	} 
 }
 
+if ( ! function_exists( 'tmpcoder_render_common_loader' ) ) {
+    /**
+     * Render reusable backend loader overlay.
+     *
+     * @param array $args Loader args.
+     * @return void
+     */
+    function tmpcoder_render_common_loader( $args = array() ) {
+        $defaults = array(
+            'id'          => '',
+            'class'       => '',
+            'type'        => 'sync',
+            'title'       => __( 'Syncing Templates Library...', 'sastra-essential-addons-for-elementor' ),
+            'description' => __( 'Updating the library to include all the latest templates.', 'sastra-essential-addons-for-elementor' ),
+            'visible'     => false,
+            'aria_live'   => 'polite',
+        );
+
+        $args = wp_parse_args( $args, $defaults );
+
+        $loader_classes = trim( 'welcome-backend-loader tmpcoder-common-loader ' . $args['class'] );
+        $loader_id_attr = ! empty( $args['id'] ) ? sprintf( ' id="%s"', esc_attr( $args['id'] ) ) : '';
+        $hidden_attr    = ! $args['visible'] ? ' hidden' : '';
+        ?>
+        <div<?php echo $loader_id_attr; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> class="<?php echo esc_attr( $loader_classes ); ?>" data-loader-type="<?php echo esc_attr( $args['type'] ); ?>"<?php echo $hidden_attr; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
+            <div class="tmpcoder-common-loader__card" role="status" aria-live="<?php echo esc_attr( $args['aria_live'] ); ?>">
+                <span class="tmpcoder-common-loader__spinner" aria-hidden="true"></span>
+                <h4 class="tmpcoder-common-loader__title"><?php echo esc_html( $args['title'] ); ?></h4>
+                <p class="tmpcoder-common-loader__desc"><?php echo esc_html( $args['description'] ); ?></p>
+            </div>
+        </div>
+        <?php
+    }
+}
+
 add_action( 'admin_init', 'tmpcoder_disable_default_woo_pages_creation', 2 );
 /**
 ** Prevent WooCommerce creating default pages
@@ -2223,20 +2457,28 @@ function tmpcoder_add_global_option($data){
 
     if ( in_array(get_template(), array('sastrawp', 'spexo', 'belliza') ) ) {
 
-    	$pro_class = !tmpcoder_is_availble() ? 'set-global-options-pro' : '';
+    	$pro_class = !tmpcoder_is_availble() ? 'set-global-options-pro1' : '';
 
         ?>
         <div class="tmpcoder-settings inte-settings common-box-shadow set-global-fonts-popup <?php echo esc_attr($pro_class); ?>">
             <div class="tmpcoder-settings-group">
                 <div class="tmpcoder-section-info">
-                    <h4 style="margin-bottom: 15px !important;"><?php esc_html_e( 'Apply Global Fonts to All Widgets', 'sastra-essential-addons-for-elementor' ); ?></h4>
+                    <h4 style="margin-bottom: 15px !important;"><strong><?php esc_html_e( 'Apply Global Fonts to All Widgets', 'sastra-essential-addons-for-elementor' ); ?></strong>
+					<?php if (!tmpcoder_is_availble()) { ?>
+						<span class="spexo-pro-label-tag"><?php esc_html_e( 'Pro', 'sastra-essential-addons-for-elementor' ); ?></span>
+					<?php } ?>
+					</h4>
                     <p><?php esc_html_e('Use the Global Options to set and apply selected fonts globally across all widgets.', 'sastra-essential-addons-for-elementor' ); ?></p>
                 </div>
 				<p class="submit">
+					<?php if (!tmpcoder_is_availble()) { ?>
+						<a class="spexo-upgrade-link" href="<?php echo esc_url(TMPCODER_PURCHASE_PRO_URL) ?>?ref=tmpcoder-plugin-backend-settings-global-fonts-pro#purchasepro" target="_blank" rel="noopener noreferrer"><img src="<?php echo esc_url( TMPCODER_ADDONS_ASSETS_URL . 'images/premium-icon-purple.svg' ); ?>"><span><?php esc_html_e( 'Upgrade to Pro', 'sastra-essential-addons-for-elementor' ); ?></span></a>
+					<?php } else { ?>
                     <button class="button tmpcoder-options-button tmpcoder-template-conditions1 set-global-fonts-btn" type="button"><?php esc_html_e('Set Global Fonts', 'sastra-essential-addons-for-elementor'); ?></button>
+					<?php } ?>
                 </p>
             </div>
-            <?php if (!tmpcoder_is_availble()) { ?>	
+            <?php /*if (!tmpcoder_is_availble()) { ?>	
             <div class="tmpcoder-setting-tooltip">
                 <a href="<?php echo esc_attr(TMPCODER_PURCHASE_PRO_URL) ?>?ref=tmpcoder-plugin-backend-settings-woo-pro#purchasepro" class="tmpcoder-setting-tooltip-link" target="_blank">
                     <span class="dashicons dashicons-lock"></span>
@@ -2244,7 +2486,7 @@ function tmpcoder_add_global_option($data){
                 </a>
                 <div class="tmpcoder-setting-tooltip-text"><?php esc_html_e( 'Upgrade to Pro', 'sastra-essential-addons-for-elementor' ); ?></div>
             </div>
-        	<?php } ?>
+        	<?php }*/ ?>
         </div>  
 		
 		<div class="tmpcoder-set-global-fonts-confirm-popup-wrap tmpcoder-admin-popup-wrap">
@@ -2271,9 +2513,16 @@ function tmpcoder_add_global_option($data){
                 <table class="tmpcoder-options-table widefat">
                     <tbody>
                         <tr class="bsf-target-rules-row tmpcoder-options-row">                                
-                            <div class="set-global-loader">
-                            	<img src="<?php echo esc_url(TMPCODER_ADDONS_ASSETS_URL.'images/backend-loader.gif'); ?>" alt="" />
-                            </div>
+                            <?php
+                            tmpcoder_render_common_loader(
+                                array(
+                                    'class'       => 'set-global-loader',
+                                    'type'        => 'set-global-fonts',
+                                    'title'       => '',
+                                    'description' => '',
+                                )
+                            );
+                            ?>
                             <img class="set-global-font-success" src="<?php echo esc_url(TMPCODER_ADDONS_ASSETS_URL.'images/right-sign.jpg'); ?>" alt="" />
                         </tr>
                     </tbody>
@@ -2351,6 +2600,15 @@ function tmpcoder_handle_settings_save() {
 
 	// Sanitize recursively
 	$options = tmpcoder_recursive_sanitize_text_field($raw_options);
+
+	$usage_tracking_enabled = (
+		isset( $options['tmpcoder_usage_tracking'] ) &&
+		'1' === (string) $options['tmpcoder_usage_tracking']
+	);
+	update_site_option( TMPCODER_PLUGIN_KEY . '_usage_optin', $usage_tracking_enabled ? 'yes' : 'no' );
+	if ( ! $usage_tracking_enabled ) {
+		delete_site_transient( TMPCODER_PLUGIN_KEY . '_usage_track' );
+	}
 
     // $options = array_map('sanitize_text_field', wp_unslash($_POST));
     // $options = $_POST;
@@ -3116,7 +3374,7 @@ if ( ! function_exists( 'tmpcoder_generate_admin_url' ) ) {
  */
 if ( ! function_exists( 'tmpcoder_render_admin_header' ) ) {
 
-	function tmpcoder_render_admin_header( $header_logo, $active_tab = 'getting-started' ) {
+	function tmpcoder_render_admin_header( $header_logo, $active_tab = 'getting-started', $external_content = false ) {
 
 		// Get admin header tabs
 		if ( function_exists( 'tmpcoder_get_admin_header_tabs' ) ) {
@@ -3128,7 +3386,6 @@ if ( ! function_exists( 'tmpcoder_render_admin_header' ) ) {
 			<hr class="wp-header-end">
 			
 			<div class="about-wrap epsilon-wrap tmpcoder-theme-welcome">
-	
 				<div class="top-header-main common-box-shadow">
 					<div class="main-header-part">
 						<div class="row">
@@ -3165,28 +3422,144 @@ if ( ! function_exists( 'tmpcoder_render_admin_header' ) ) {
 							</div>
 						</div>
 					</div>
-	
-					<div class="nav-tab-wrapper wp-clearfix">
-						<?php foreach ( $arr as $id => $section ) {
-							if ( $id === 'system-info' ) {
-								continue;
+				</div>
+
+				<div class="wc-part plugin-settings-part-custom">
+					<div class="row">
+						<div class="col-xl-4">
+							<div class="nav-tab-wrapper wp-clearfix">
+								<?php
+								$has_ai_settings      = class_exists( '\Spexo_Addons\AI\Spexo_AI_Manager' );
+								?>
+								<ul>
+									<?php
+									foreach ( $arr as $id => $section ) {
+										if ( $id === 'system-info' ) {
+											continue;
+										}
+										$class = ( $id === $active_tab ) ? 'nav-tab-active' : '';
+										?>
+										<li>
+											<a class="nav-tab <?php echo esc_attr( $class ); ?>" href="<?php echo esc_url( $section['url'] ); ?>">
+												<img src="<?php echo esc_url( TMPCODER_ADDONS_ASSETS_URL . 'images/' . $section['icon'] ); ?>">
+												<span><?php echo wp_kses_post( $section['label'] ); ?></span>
+											</a>
+											<?php
+											if ( 'settings' === $id ) {
+												$settings_base_url = isset( $section['url'] ) ? $section['url'] : tmpcoder_generate_admin_url( 'settings' );
+												$settings_subnav = array(
+													array(
+														'panel' => 'woocommerce',
+														'icon'  => 'dashicons-cart',
+														'label' => esc_html__( 'WooCommerce', 'sastra-essential-addons-for-elementor' ),
+													),
+													array(
+														'panel' => 'media-post-types',
+														'icon'  => 'dashicons-format-video',
+														'label' => esc_html__( 'Media & Post Types', 'sastra-essential-addons-for-elementor' ),
+													),
+													array(
+														'panel' => 'smooth-scroll',
+														'icon'  => 'dashicons-arrow-down-alt',
+														'label' => esc_html__( 'Smooth Scrolling', 'sastra-essential-addons-for-elementor' ),
+													),
+													array(
+														'panel' => 'integration',
+														'icon'  => 'dashicons-admin-generic',
+														'label' => esc_html__( 'Integration', 'sastra-essential-addons-for-elementor' ),
+													),
+												);
+
+												if ( $has_ai_settings ) {
+													array_splice(
+														$settings_subnav,
+														1,
+														0,
+														array(
+															array(
+																'panel' => 'ai-settings',
+																'icon'  => 'dashicons-star-filled',
+																'label' => esc_html__( 'AI Settings', 'sastra-essential-addons-for-elementor' ),
+															),
+														)
+													);
+												}
+												?>
+												<ul>
+													<?php foreach ( $settings_subnav as $subnav ) { ?>
+														<li>
+															<a class="nav-tab" href="<?php echo esc_url( $settings_base_url . '#' . $subnav['panel'] ); ?>" data-settings-panel="<?php echo esc_attr( $subnav['panel'] ); ?>">
+																<span class="dashicons <?php echo esc_attr( $subnav['icon'] ); ?>" aria-hidden="true"></span>
+																<span><?php echo esc_html( $subnav['label'] ); ?></span>
+															</a>
+															<?php if ( 'ai-settings' === $subnav['panel'] ) { ?>
+																<?php
+																$ai_settings_subnav = array(
+																	array(
+																		'anchor' => 'ai-openai',
+																		'icon'   => 'dashicons-admin-settings',
+																		'label'  => esc_html__( 'Configuration', 'sastra-essential-addons-for-elementor' ),
+																	),
+																	array(
+																		'anchor' => 'ai-editor-tools',
+																		'icon'   => 'dashicons-admin-tools',
+																		'label'  => esc_html__( 'Tools & Workflow', 'sastra-essential-addons-for-elementor' ),
+																	),
+																	array(
+																		'anchor' => 'ai-usage-quota',
+																		'icon'   => 'dashicons-chart-area',
+																		'label'  => esc_html__( 'Usage & Limits', 'sastra-essential-addons-for-elementor' ),
+																	),
+																);
+																?>
+																<ul>
+																	<?php foreach ( $ai_settings_subnav as $ai_subnav ) { ?>
+																		<li>
+																			<a class="nav-tab" href="<?php echo esc_url( $settings_base_url . '#ai-settings-' . $ai_subnav['anchor'] ); ?>" data-settings-panel="ai-settings" data-settings-anchor="<?php echo esc_attr( $ai_subnav['anchor'] ); ?>">
+																				<?php if ( ! empty( $ai_subnav['icon'] ) ) { ?>
+																					<span class="dashicons <?php echo esc_attr( $ai_subnav['icon'] ); ?>" aria-hidden="true"></span>
+																				<?php } ?>
+																				<span><?php echo esc_html( $ai_subnav['label'] ); ?></span>
+																			</a>
+																		</li>
+																	<?php } ?>
+																</ul>
+															<?php } ?>
+														</li>
+													<?php } ?>
+												</ul>
+											<?php } ?>
+										</li>
+									<?php } ?>
+								</ul>
+							</div>
+						</div>
+						<div class="col-xl-8">
+							<?php
+							$has_internal_content = isset( $arr[ $active_tab ]['path'] ) && ! empty( $arr[ $active_tab ]['path'] );
+							if ( $has_internal_content ) {
+								require_once $arr[ $active_tab ]['path'];
 							}
-							$class = ( $id === $active_tab ) ? 'nav-tab-active' : '';
+
+							if ( ! $has_internal_content && $external_content ) {
+								return;
+							}
 							?>
-							<a class="nav-tab <?php echo esc_attr( $class ); ?>" href="<?php echo esc_url( $section['url'] ); ?>">
-								<img src="<?php echo esc_url( TMPCODER_ADDONS_ASSETS_URL . 'images/' . $section['icon'] ); ?>">
-								<span><?php echo wp_kses_post( $section['label'] ); ?></span>
-							</a>
-						<?php } ?>
+						</div>
 					</div>
 				</div>
-	
-				<?php
-				if ( isset( $arr[ $active_tab ]['path'] ) && ! empty( $arr[ $active_tab ]['path'] ) ) {
-					require_once $arr[ $active_tab ]['path'];
-				}
-				?>
-	
+			</div>
+		</div>
+		<?php
+	}
+}
+
+if ( ! function_exists( 'tmpcoder_render_admin_header_external_end' ) ) {
+	function tmpcoder_render_admin_header_external_end() {
+		?>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 		<?php
@@ -3589,4 +3962,47 @@ function tmpcoder_custom_woocommerce_tax_query( $query ) {
 	    // Set the modified tax_query back to the query object
 	    $query->set( 'tax_query', $tax_query );
     }
+}
+
+// Client IP for form submission
+if (!function_exists('tmpcoder_get_client_ip')) {
+
+	function tmpcoder_get_client_ip() {
+		$server_ip_keys = [
+			'HTTP_CLIENT_IP',
+			'HTTP_X_FORWARDED_FOR',
+			'HTTP_X_FORWARDED',
+			'HTTP_X_CLUSTER_CLIENT_IP',
+			'HTTP_FORWARDED_FOR',
+			'HTTP_FORWARDED',
+			'REMOTE_ADDR',
+		];
+
+		foreach ( $server_ip_keys as $key ) {
+			$value = tmpcoder_unstable_get_super_global_value( $_SERVER, $key );
+			if ( $value && filter_var( $value, FILTER_VALIDATE_IP ) ) {
+				return $value;
+			}
+		}
+
+		// Fallback local ip.
+		return '127.0.0.1';
+	}
+}
+
+// For tmpcoder_get_client_ip
+if (!function_exists('tmpcoder_unstable_get_super_global_value')) {
+
+		function tmpcoder_unstable_get_super_global_value( $super_global, $key ) {
+		if ( ! isset( $super_global[ $key ] ) ) {
+			return null;
+		}
+
+		if ( $_FILES === $super_global ) {
+			$super_global[ $key ]['name'] = sanitize_file_name( $super_global[ $key ]['name'] );
+			return $super_global[ $key ];
+		}
+
+		return wp_kses_post_deep( wp_unslash( $super_global[ $key ] ) );
+	}
 }

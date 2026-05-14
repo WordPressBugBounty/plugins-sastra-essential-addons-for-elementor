@@ -148,6 +148,7 @@ class TMPCODER_Welcome_Screen {
 		 */
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_global_options_styles' ) );
+		add_filter( 'admin_body_class', array( $this, 'add_spexo_admin_body_class' ) );
 
 		add_action( 'admin_init', [$this, 'tmpcoder_register_addons_settings'] );
 		
@@ -165,6 +166,9 @@ class TMPCODER_Welcome_Screen {
 		}
 
 	    register_setting( 'tmpcoder-settings', 'tmpcoder_mailchimp_api_key', 'tmpcoder_sanitize_register_key' );
+	    register_setting( 'tmpcoder-settings', 'tmpcoder_recaptcha_v3_site_key', 'tmpcoder_sanitize_register_key' );
+	    register_setting( 'tmpcoder-settings', 'tmpcoder_recaptcha_v3_secret_key', 'tmpcoder_sanitize_register_key' );
+	    register_setting( 'tmpcoder-settings', 'tmpcoder_usage_tracking', 'tmpcoder_sanitize_register_key' );
 
 	    // WooCommerce
 	    register_setting( 'tmpcoder-settings', 'tmpcoder_add_wishlist_to_my_account', 'tmpcoder_sanitize_register_key'  );
@@ -197,6 +201,21 @@ class TMPCODER_Welcome_Screen {
 				add_option( 'tmpcoder-element-'.$slug ,"on" );
 			}
 	        register_setting( 'tmpcoder-elements-settings', 'tmpcoder-element-'. $slug, [ 'default' => 'on' ] );
+	    }
+
+	    // Pro-only widgets (no matching free module slug) must be registered here or the
+	    // widgets settings form cannot persist toggles via options.php.
+	    if ( function_exists( 'tmpcoder_get_pro_registered_modules' ) ) {
+	    	foreach ( tmpcoder_get_pro_registered_modules() as $title => $data ) {
+	    		if ( empty( $data[0] ) ) {
+	    			continue;
+	    		}
+	    		$slug = str_replace( '-pro', '', $data[0] );
+	    		if ( false == get_option( 'tmpcoder-element-' . $slug ) ) {
+	    			add_option( 'tmpcoder-element-' . $slug, 'on' );
+	    		}
+	    		register_setting( 'tmpcoder-elements-settings', 'tmpcoder-element-' . $slug, [ 'default' => 'on' ] );
+	    	}
 	    }
 
 	    $theme_builder_modules = tmpcoder_get_theme_builder_modules();
@@ -268,23 +287,51 @@ class TMPCODER_Welcome_Screen {
 	 */
 	public function enqueue() {
 		if ( is_admin() ) {
+			$screen        = get_current_screen();
+			$welcome_deps  = array( 'jquery-ui-slider' );
+
+			if ( $screen && 'toplevel_page_spexo-welcome' === $screen->id ) {
+				$common_loader_base = TMPCODER_PLUGIN_URI . 'inc/admin/lib/welcome-screen/';
+
+				if ( is_multisite() ) {
+					$common_loader_base = network_site_url(
+						'wp-content/plugins/' . dirname( TMPCODER_PLUGIN_BASE ) . '/inc/admin/lib/welcome-screen/'
+					);
+				}
+
+				wp_enqueue_style(
+					'tmpcoder-common-loader',
+					$common_loader_base . 'css/common-loader.css',
+					array(),
+					tmpcoder_get_plugin_version()
+				);
+
+				wp_enqueue_script(
+					'tmpcoder-common-loader',
+					$common_loader_base . 'js/common-loader.js',
+					array( 'jquery' ),
+					tmpcoder_get_plugin_version(),
+					true
+				);
+
+				$welcome_deps[] = 'tmpcoder-common-loader';
+			}
+
 			wp_enqueue_style(
 				'welcome-screen',
-				TMPCODER_PLUGIN_URI . 'inc/admin/lib/welcome-screen/css/welcome'.tmpcoder_script_suffix().'.css', 
-                array(),  
-                tmpcoder_get_plugin_version()
+				TMPCODER_PLUGIN_URI . 'inc/admin/lib/welcome-screen/css/welcome.css',
+				array(),
+				tmpcoder_get_plugin_version()
 			);
 
 			wp_enqueue_script(
 				'welcome-screen',
-				TMPCODER_PLUGIN_URI . 'inc/admin/lib/welcome-screen/js/welcome'.tmpcoder_script_suffix().'.js',
-				array(
-					'jquery-ui-slider',
-				),
+				TMPCODER_PLUGIN_URI . 'inc/admin/lib/welcome-screen/js/welcome.js',
+				$welcome_deps,
 				tmpcoder_get_plugin_version()
 			);
 
-            wp_localize_script(
+			wp_localize_script(
 				'welcome-screen',
 				'welcomeScreen',
 				array(
@@ -292,38 +339,71 @@ class TMPCODER_Welcome_Screen {
 					'template_directory'       => esc_url( get_template_directory_uri() ),
 					'no_required_actions_text' => esc_html__( 'Hooray! There are no required actions for you right now.', 'sastra-essential-addons-for-elementor' ),
 					'ajax_nonce'               => wp_create_nonce( 'welcome_nonce' ),
-					'ajax_url'                 => admin_url('admin-ajax.php'),
+					'ajax_url'                 => admin_url( 'admin-ajax.php' ),
 					'activating_string'        => esc_html__( 'Activating', 'sastra-essential-addons-for-elementor' ),
 					'body_class'               => 'appearance_page_' . $this->theme_slug . '-welcome',
 					'no_actions'               => esc_html__( 'Hooray! There are no required actions for you right now.', 'sastra-essential-addons-for-elementor' ),
-                    'global_options_link' => esc_url('admin.php?page=spexo_addons_global_settings'),
-                    'widget_settings_link' => esc_url('admin.php?page='.TMPCODER_THEME.'-welcome&tab=widgets'),
-                    'global_settings_link' => esc_url('admin.php?page='.TMPCODER_THEME.'-welcome&tab=settings'),
-                    'spexo_ai_nonce'        => wp_create_nonce( 'spexo_ai_admin_nonce' ),
+					'global_options_link'      => esc_url( 'admin.php?page=spexo_addons_global_settings' ),
+					'widget_settings_link'     => esc_url( 'admin.php?page=' . TMPCODER_THEME . '-welcome&tab=widgets' ),
+					'global_settings_link'     => esc_url( 'admin.php?page=' . TMPCODER_THEME . '-welcome&tab=settings' ),
+					'spexo_ai_nonce'           => wp_create_nonce( 'spexo_ai_admin_nonce' ),
+					'disable_unused_widgets_loader_title' => esc_html__( 'Scanning Elementor Content...', 'sastra-essential-addons-for-elementor' ),
+					'disable_unused_widgets_loader_desc'  => esc_html__( 'Finding unused widgets to disable. The page will reload when finished.', 'sastra-essential-addons-for-elementor' ),
 				)
 			);
 
-        $screen = get_current_screen();
         $current_tab = isset( $_GET['tab'] ) ? sanitize_key( wp_unslash( $_GET['tab'] ) ) : 'getting-started'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        $is_license_page = ( $screen && false !== strpos( (string) $screen->id, '_page_tmpcoder-license-activation' ) );
 
-        if ( $screen && 'toplevel_page_spexo-welcome' === $screen->id && 'settings' === $current_tab ) {
-            $suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+        if ( $screen && 'toplevel_page_spexo-welcome' === $screen->id && defined( 'REDUX_PLUGIN_FILE' ) ) {
+            wp_enqueue_style(
+                'spexo-redux-elusive-icons',
+                plugins_url( 'redux-core/assets/css/vendor/elusive-icons.min.css', REDUX_PLUGIN_FILE ),
+                array(),
+                tmpcoder_get_plugin_version()
+            );
+        }
+
+        if ( $screen && ( ( 'toplevel_page_spexo-welcome' === $screen->id && in_array( $current_tab, array( 'settings', 'tools' ), true ) ) || $is_license_page ) ) {
+            $suffix = '';
+            $settings_layout_base = TMPCODER_PLUGIN_URI . 'inc/admin/lib/welcome-screen/';
+
+            if ( is_multisite() ) {
+                $settings_layout_base = network_site_url(
+                    'wp-content/plugins/' . dirname( TMPCODER_PLUGIN_BASE ) . '/inc/admin/lib/welcome-screen/'
+                );
+            }
 
             wp_enqueue_style(
                 'spexo-settings-layout',
-                TMPCODER_PLUGIN_URI . 'inc/admin/lib/welcome-screen/css/settings-layout' . $suffix . '.css',
+                $settings_layout_base . 'css/settings-layout' . $suffix . '.css',
+                array( 'welcome-screen' ),
+                tmpcoder_get_plugin_version()
+            );
+
+            wp_enqueue_style(
+                'tmpcoder-common-loader',
+                $settings_layout_base . 'css/common-loader.css',
                 array( 'welcome-screen' ),
                 tmpcoder_get_plugin_version()
             );
 
             wp_enqueue_script(
-                'spexo-settings-layout',
-                TMPCODER_PLUGIN_URI . 'inc/admin/lib/welcome-screen/js/settings-layout' . $suffix . '.js',
+                'tmpcoder-common-loader',
+                $settings_layout_base . 'js/common-loader.js',
                 array( 'jquery' ),
                 tmpcoder_get_plugin_version(),
                 true
             );
 
+            wp_enqueue_script(
+                'spexo-settings-layout',
+                $settings_layout_base . 'js/settings-layout' . $suffix . '.js',
+                array( 'jquery', 'tmpcoder-common-loader' ),
+                tmpcoder_get_plugin_version(),
+                true
+            );
+ 
             wp_localize_script(
                 'spexo-settings-layout',
                 'spexoSettingsLayout',
@@ -336,6 +416,37 @@ class TMPCODER_Welcome_Screen {
             );
         }
 		}
+	}
+
+	/**
+	 * Add a common body class for Spexo Addons admin pages.
+	 *
+	 * @param string $classes Existing admin body classes.
+	 * @return string
+	 */
+	public function add_spexo_admin_body_class( $classes ) {
+		$screen = get_current_screen();
+		if ( ! $screen ) {
+			return $classes;
+		}
+
+		global $parent_file;
+		$is_license_page = ( false !== strpos( (string) $screen->id, '_page_tmpcoder-license-activation' ) );
+		$is_spexo_admin_page = (
+			'toplevel_page_spexo-welcome' === $screen->id ||
+			'spexo-welcome' === $parent_file ||
+			$is_license_page
+		);
+
+		if ( $is_spexo_admin_page && false === strpos( $classes, 'spexo-addons-admin-page' ) ) {
+			$classes .= ' spexo-addons-admin-page';
+		}
+
+		if ( $is_license_page && false === strpos( $classes, 'toplevel_page_spexo-welcome' ) ) {
+			$classes .= ' toplevel_page_spexo-welcome';
+		}
+
+		return $classes;
 	}
 
 	/**

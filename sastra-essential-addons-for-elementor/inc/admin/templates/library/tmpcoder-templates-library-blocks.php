@@ -23,8 +23,13 @@ class TMPCODER_Templates_Library_Blocks {
 	/**
 	** Template Library Popup
 	*/
-	public static function render_library_templates_blocks() {
+	public static function render_library_templates_blocks( $force_prebuild_page = false ) {
 		$license = ! tmpcoder_is_availble() ? 'free' : 'premium';
+		$is_prebuild_page = (bool) $force_prebuild_page;
+		if ( ! $is_prebuild_page && ! wp_doing_ajax() && function_exists( 'get_current_screen' ) ) {
+			$current_screen = get_current_screen();
+			$is_prebuild_page = ( isset( $current_screen->id ) && 'sastra-addon_page_tmpcoder-prebuild-blocks' === $current_screen->id );
+		}
 
         $blocks_template = [];
         $response = wp_remote_get( TMPCODER_DEMO_IMPORT_API . 'prebuild-block/demo-listing.json', [
@@ -104,26 +109,21 @@ class TMPCODER_Templates_Library_Blocks {
 			</div>
 		</div>
 		
-		<div class="tmpcoder-tplib-template-gird elementor-clearfix">
+		<div class="tmpcoder-tplib-template-gird elementor-clearfix<?php echo $is_prebuild_page ? ' tmpcoder-prebuild-blocks-library-page' : ''; ?>">
+			<?php if ( $is_prebuild_page ) : ?>
+			<div class="tmpcoder-blocks-skeleton">
+				<?php for ( $s = 0; $s < 24; $s++ ) : ?>
+					<div class="tmpcoder-blocks-skeleton-card">
+						<div class="tmpcoder-blocks-skeleton-thumb"></div>
+						<div class="tmpcoder-blocks-skeleton-line"></div>
+						<div class="tmpcoder-blocks-skeleton-line"></div>
+					</div>
+				<?php endfor; ?>
+			</div>
+			<?php endif; ?>
 			<div class="tmpcoder-tplib-template-gird-inner">
 
 			<?php
-            
-            // $blocks_template = [];
-            $response = wp_remote_get( TMPCODER_DEMO_IMPORT_API . 'prebuild-block/demo-listing.json', [
-                'timeout'   => 60,
-                'sslverify' => false,
-                'user-agent' => 'templatescoder-user-agent',
-                'headers' => array( 'Referer' => site_url() ),
-            ]);
-            if ( is_array( $response ) && ! is_wp_error( $response ) ) {
-                $headers = $response['headers']; // array of http header lines
-                $req_body    = $response['body']; // use the content
-                if ( ! isset($req_body['message']) ){
-                    // $blocks_template = json_decode($req_body, true);
-                }
-            }
-
 			foreach ($blocks_template as $title => $data ) :
 				$module_slug = $title;//$data[0];
 				$blocks = $blocks_template;
@@ -152,9 +152,7 @@ class TMPCODER_Templates_Library_Blocks {
 
 					// Add Extra Keywords for Search
 					$data_template_title = $template_title;
-					if ( false !== strpos($title, 'Form Builder') ) {
-						$data_template_title .= ' contact';
-					} else if ( false !== strpos($title, 'Nav Menu') ) {
+					if ( false !== strpos($title, 'Nav Menu') ) {
 						$data_template_title .= ' header';
 					} else if ( false !== strpos($title, 'Post Grid') ) {
 						$data_template_title .= ' blog';

@@ -357,9 +357,9 @@ $featuredList = array();
                     <p> <?php echo esc_html__( 'Unlock access to all our premium widgets and features.', 'sastra-essential-addons-for-elementor' ); ?></p>
                     <ul>
                         <li><img src="<?php echo esc_url(TMPCODER_ADDONS_ASSETS_URL.'images/icon-check-white.svg'); ?>"><span><?php echo esc_html('80+ Pro Widgets','sastra-essential-addons-for-elementor'); ?></span></li>
-                        <li><img src="<?php echo esc_url(TMPCODER_ADDONS_ASSETS_URL.'images/icon-check-white.svg'); ?>"><span><?php echo esc_html('75+ Pro Prebuilt Blocks','sastra-essential-addons-for-elementor'); ?></span></li>
-                        <li><img src="<?php echo esc_url(TMPCODER_ADDONS_ASSETS_URL.'images/icon-check-white.svg'); ?>"><span><?php echo esc_html('25+ Pro Prebuilt Sections','sastra-essential-addons-for-elementor'); ?></span></li>
-                        <li><img src="<?php echo esc_url(TMPCODER_ADDONS_ASSETS_URL.'images/icon-check-white.svg'); ?>"><span><?php echo esc_html('30+ Pro Prebuilt WebSites','sastra-essential-addons-for-elementor'); ?></span></li>
+                        <li><img src="<?php echo esc_url(TMPCODER_ADDONS_ASSETS_URL.'images/icon-check-white.svg'); ?>"><span><?php echo esc_html('210+ Pro Prebuilt Blocks','sastra-essential-addons-for-elementor'); ?></span></li>
+                        <li><img src="<?php echo esc_url(TMPCODER_ADDONS_ASSETS_URL.'images/icon-check-white.svg'); ?>"><span><?php echo esc_html('150+ Pro Prebuilt Sections','sastra-essential-addons-for-elementor'); ?></span></li>
+                        <li><img src="<?php echo esc_url(TMPCODER_ADDONS_ASSETS_URL.'images/icon-check-white.svg'); ?>"><span><?php echo esc_html('50+ Pro Prebuilt Websites','sastra-essential-addons-for-elementor'); ?></span></li>
                     </ul>
                     <a href="<?php echo esc_url( TMPCODER_PURCHASE_PRO_URL.'?ref=tmpcoder-welcome-screen' ); ?>" target="_blank" class="pro-btn-link"><?php echo esc_html('Get Spexo Addons Pro','sastra-essential-addons-for-elementor'); ?></a>
                 </div>

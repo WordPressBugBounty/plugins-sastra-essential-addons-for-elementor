@@ -10,6 +10,7 @@
         this.$navItems = $('.spexo-settings-nav-item');
         this.$panels = $('.spexo-settings-panel');
         this.$subLinks = $('.spexo-settings-sub-link');
+        this.$mergedSettingsLinks = $('.tmpcoder-theme-welcome .nav-tab-wrapper .nav-tab[data-settings-panel]');
         this.$title = $('[data-spexo-active-title]');
         this.$description = $('[data-spexo-active-description]');
         this.$saveNotice = $('.spexo-settings-alert');
@@ -52,6 +53,28 @@
             if (anchor) {
                 self.updateSubpanelHash(targetPanel, anchor);
             }
+        });
+
+        this.$mergedSettingsLinks.on('click', function (event) {
+            event.preventDefault();
+            var $link = $(this);
+            var hasNestedSubtabs = $link.closest('li').children('ul').children('li').length > 0;
+            var isLeafSubtab = !!$link.attr('data-settings-anchor');
+
+            // Parent tabs that own child tabs should only toggle accordion.
+            if (hasNestedSubtabs && !isLeafSubtab) {
+                return;
+            }
+
+            var targetPanel = $link.attr('data-settings-panel');
+            var anchor = $link.attr('data-settings-anchor') || null;
+            if (!targetPanel) {
+                return;
+            }
+
+            var $navItem = self.$navItems.filter('[data-panel="' + targetPanel + '"]');
+            self.activatePanel(targetPanel, $navItem, anchor, false);
+            self.syncMergedSettingsLinks(targetPanel, anchor);
         });
 
         $('.spexo-reset-section').on('click', function (event) {
@@ -145,6 +168,41 @@
         // localStorage persistence disabled - use anchor, hash, or default
         var targetSubpanel = anchorId || hashSubpanel || this.lastActiveSubpanels[panelId] || this.getDefaultSubpanelId($panel);
         this.setActiveSubpanel(panelId, targetSubpanel, { scroll: !!anchorId || !!hashSubpanel });
+        this.syncMergedSettingsLinks(panelId, targetSubpanel);
+    };
+
+    SpexoSettingsLayout.prototype.syncMergedSettingsLinks = function (panelId, subpanelId) {
+        if (!this.$mergedSettingsLinks.length) {
+            return;
+        }
+
+        this.$mergedSettingsLinks.closest('.nav-tab-wrapper').find('.nav-tab').removeClass('nav-tab-active');
+        var $activeLink = $();
+
+        var $activePanelLink = this.$mergedSettingsLinks.filter('[data-settings-panel="' + panelId + '"]:not([data-settings-anchor])').first();
+
+        if (subpanelId) {
+            var $activeSubpanelLink = this.$mergedSettingsLinks.filter('[data-settings-panel="' + panelId + '"][data-settings-anchor="' + subpanelId + '"]').first();
+            if ($activeSubpanelLink.length) {
+                $activeLink = $activeSubpanelLink;
+            }
+        }
+
+        if (!$activeLink.length && $activePanelLink.length) {
+            $activeLink = $activePanelLink;
+        }
+
+        if (!$activeLink.length) {
+            $activeLink = this.$mergedSettingsLinks.first();
+        }
+
+        if ($activeLink.length) {
+            $activeLink.addClass('nav-tab-active');
+        }
+
+        if ($activeLink.length) {
+            $(document).trigger('tmpcoder:sidebar-tab-active', [$activeLink]);
+        }
     };
 
     SpexoSettingsLayout.prototype.updateHeader = function ($item) {
@@ -616,7 +674,11 @@
     SpexoSettingsLayout.prototype.showLoader = function () {
         var $loader = $('.welcome-backend-loader');
         if ($loader.length) {
-            $loader.fadeIn(200);
+            if (window.tmpcoderCommonLoader && typeof window.tmpcoderCommonLoader.show === 'function') {
+                window.tmpcoderCommonLoader.show('.welcome-backend-loader');
+            } else {
+                $loader.fadeIn(200);
+            }
             this.$form.css('opacity', '0.5');
             this.$form.css('pointer-events', 'none');
         }
@@ -625,7 +687,11 @@
     SpexoSettingsLayout.prototype.hideLoader = function () {
         var $loader = $('.welcome-backend-loader');
         if ($loader.length) {
-            $loader.fadeOut(200);
+            if (window.tmpcoderCommonLoader && typeof window.tmpcoderCommonLoader.hide === 'function') {
+                window.tmpcoderCommonLoader.hide('.welcome-backend-loader');
+            } else {
+                $loader.fadeOut(200);
+            }
             this.$form.css('opacity', '1');
             this.$form.css('pointer-events', 'auto');
         }

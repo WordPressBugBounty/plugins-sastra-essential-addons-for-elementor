@@ -33,7 +33,14 @@ if ( ! defined( 'ABSPATH' ) ) {
         </div>
     </div>
 
-    <div class="welcome-backend-loader">
-        <img src="<?php echo esc_url(TMPCODER_ADDONS_ASSETS_URL.'images/backend-loader.gif'); ?>" alt="" width="80" height="80" />
-    </div>
+    <?php
+    tmpcoder_render_common_loader(
+        array(
+            'class' => 'tmpcoder-tools-sync-loader',
+            'type'  => 'tools-sync',
+            'title' => __( 'Regenerating Assets...', 'sastra-essential-addons-for-elementor' ),
+            'description' => __( 'Please wait while Spexo Addons rebuilds cache files.', 'sastra-essential-addons-for-elementor' ),
+        )
+    );
+    ?>
 </div>

@@ -314,6 +314,25 @@ class TMPCODER_Advanced_Accordion extends Widget_Base {
 			]
 		);
 
+		$this->add_control(
+			'schema_enable',
+			[
+				'label' => esc_html__( 'Enable FAQ Schema', 'sastra-essential-addons-for-elementor' ),
+				'description' => wp_kses_post(
+					sprintf(
+						'%1$s <a href="%2$s" target="_blank" rel="noopener">%3$s</a>',
+						esc_html__( 'Enable this to boost your page SEO using built-in FAQ Schema markup, making your accordion content eligible for rich snippets on Google.', 'sastra-essential-addons-for-elementor' ),
+						esc_url( 'https://developers.google.com/search/docs/appearance/structured-data/faqpage' ),
+						esc_html__( 'Learn More', 'sastra-essential-addons-for-elementor' )
+					)
+				),
+				'type' => Controls_Manager::SWITCHER,
+				'return_value' => 'yes',
+				'default' => '',
+				'separator' => 'before',
+			]
+		);
+
 		$this->end_controls_section();
 
 		// Tab: Content ==========
@@ -463,7 +482,9 @@ class TMPCODER_Advanced_Accordion extends Widget_Base {
 		$this->end_controls_section();
 
 		// Section: Help & Docs
-		tmpcoder_add_section_help_docs( $this, Controls_Manager::RAW_HTML, '' );
+		if(function_exists('tmpcoder_add_section_help_docs')) {
+			tmpcoder_add_section_help_docs( $this, Controls_Manager::RAW_HTML, '' );
+		}
 
 		// Section: Pro Features
 		tmpcoder_pro_features_list_section( $this, '', Controls_Manager::RAW_HTML, 'advanced-accordion', [
@@ -1242,6 +1263,60 @@ class TMPCODER_Advanced_Accordion extends Widget_Base {
 		return Elementor\Plugin::instance()->frontend->get_builder_content_for_display( $id, $has_css ) . $edit_link;
 	}
 
+	private function get_faq_schema_data( $settings ) {
+		if ( empty( $settings['advanced_accordion'] ) || ! is_array( $settings['advanced_accordion'] ) ) {
+			return [];
+		}
+
+		$main_entity = [];
+
+		foreach ( $settings['advanced_accordion'] as $acc ) {
+			if ( empty( $acc['accordion_title'] ) ) {
+				continue;
+			}
+
+			$acc_content_type = isset( $acc['accordion_content_type'] ) ? $acc['accordion_content_type'] : 'editor';
+			if ( ! tmpcoder_is_availble() ) {
+				$acc_content_type = 'editor';
+			}
+
+			$question_text = trim( sanitize_text_field( $acc['accordion_title'] ) );
+			$answer_text = '';
+
+			if ( 'editor' === $acc_content_type ) {
+				$answer_text = isset( $acc['accordion_content'] ) ? wp_strip_all_tags( wp_kses_post( $acc['accordion_content'] ), true ) : '';
+			} elseif ( ! empty( $acc['accordion_content_template'] ) ) {
+				$template_content = $this->tmpcoder_accordion_template( $acc['accordion_content_template'] );
+				$answer_text = wp_strip_all_tags( wp_kses_post( $template_content ), true );
+			}
+
+			$answer_text = trim( preg_replace( '/\s+/', ' ', $answer_text ) );
+
+			if ( '' === $question_text || '' === $answer_text ) {
+				continue;
+			}
+
+			$main_entity[] = [
+				'@type' => 'Question',
+				'name' => $question_text,
+				'acceptedAnswer' => [
+					'@type' => 'Answer',
+					'text' => $answer_text,
+				],
+			];
+		}
+
+		if ( empty( $main_entity ) ) {
+			return [];
+		}
+
+		return [
+			'@context' => 'https://schema.org',
+			'@type' => 'FAQPage',
+			'mainEntity' => $main_entity,
+		];
+	}
+
 	public function render_first_icon($settings, $acc) {
 		if ( $settings['change_icons_position'] == 'reverse' ) :
 			if (!empty($settings['toggle_icon'])) : ?>
@@ -1359,6 +1434,17 @@ $settings = array_merge( $settings, $settings_new );
 
                 <?php endforeach; ?>
             </div>
+
+			<?php
+			if ( isset( $settings['schema_enable'] ) && 'yes' === $settings['schema_enable'] ) {
+				$faq_schema_data = $this->get_faq_schema_data( $settings );
+				if ( ! empty( $faq_schema_data ) ) {
+					?>
+					<script type="application/ld+json" class="rank-math-schema-pro"><?php echo wp_json_encode( $faq_schema_data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES ); ?></script>
+					<?php
+				}
+			}
+			?>
         <?php
     }
 }

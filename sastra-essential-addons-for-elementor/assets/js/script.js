@@ -235,6 +235,13 @@
                                     // console.log('replace-header');
                                     changeAdminBarOffset($scope.next());
                                 }
+
+                                $(document).trigger('tmpcoder:grid:relayout', [$scope]);
+                                $(document).trigger('tmpcoder:grid:relayout', [$scope.next()]);
+                                setTimeout(function () {
+                                    $(document).trigger('tmpcoder:grid:relayout', [$scope]);
+                                    $(document).trigger('tmpcoder:grid:relayout', [$scope.next()]);
+                                }, 180);
                             } else {
                                 $scope.addClass('tmpcoder-sticky-header');
                             }
@@ -249,6 +256,12 @@
                                 // $scope.next().css('position','fixed !important');
                                 // $scope.next().css('top',-1000);
 
+                                $(document).trigger('tmpcoder:grid:relayout', [$scope]);
+                                $(document).trigger('tmpcoder:grid:relayout', [$scope.next()]);
+                                setTimeout(function () {
+                                    $(document).trigger('tmpcoder:grid:relayout', [$scope]);
+                                    $(document).trigger('tmpcoder:grid:relayout', [$scope.next()]);
+                                }, 180);
                             } else {
                                 $scope.removeClass('tmpcoder-sticky-header');
                             }

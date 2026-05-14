@@ -1589,10 +1589,12 @@ class TMPCODER_Target_Rules_Fields {
 	        $term = get_queried_object();
 
 	        if ( isset( $term->taxonomy ) && isset( $wp_taxonomies[ $term->taxonomy ] ) ) {
-	            $object_types = $wp_taxonomies[ $term->taxonomy ]->object_type;
+	            $object_types = isset( $wp_taxonomies[ $term->taxonomy ]->object_type ) ? (array) $wp_taxonomies[ $term->taxonomy ]->object_type : array();
+	            $object_types = array_values( array_filter( $object_types ) );
 
-	            // If taxonomy is registered to multiple post types, return array or first one
-	            return is_array($object_types) ? $object_types[0] : $object_types;
+	            if ( ! empty( $object_types ) ) {
+	                return $object_types[0];
+	            }
 	        }
 	    }
 
@@ -1600,6 +1602,10 @@ class TMPCODER_Target_Rules_Fields {
 	    $q_post_type = get_query_var('post_type');
 	    if ( $q_post_type ) {
 	        return is_array($q_post_type) ? $q_post_type[0] : $q_post_type;
+	    }
+
+	    if ( is_admin() && isset( $_GET['post_type'] ) ) {
+	        return sanitize_key( wp_unslash( $_GET['post_type'] ) );
 	    }
 
 	    // 4. If inside loop with post loaded (not useful for empty archives)

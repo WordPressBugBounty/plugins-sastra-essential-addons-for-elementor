@@ -1080,7 +1080,6 @@ body.tmpcoder-is-translate-button-added #tmpcoder-template-settings-notification
 .tmpcoder-help-docs-text {
   margin: 0 0 0 28px;
   font-size: 12px;
-  color: #E8E8E8;
   line-height: 1.6;
   font-style: italic;
 }
@@ -1267,35 +1266,6 @@ pre.xdebug-var-dump {
 }
 
 /*--------------------------------------------------------------
-== Form Builder
---------------------------------------------------------------*/
-
-.tmpcoder-step-editor-bg {
-  background: #e73cf6 !important;
-}
-
-#e-notice-bar {
-  display: none !important;
-}
-
-.elementor-panel .elementor-control.forms-field-shortcode .elementor-control-raw-html {
-  width: 55%;
-}
-
-.elementor-panel .elementor-control.forms-field-shortcode .elementor-control-title {
-  width: 45%;
-}
-
-.elementor-panel .elementor-control.forms-field-shortcode .elementor-control-content {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-.elementor-control-cf7_templates_label {
-    display: none;
-}
-
-/*--------------------------------------------------------------
 == Sections
 --------------------------------------------------------------*/
 .tmpcoder-sticky-advanced-options {
@@ -1352,3 +1322,9 @@ pre.xdebug-var-dump {
 }
 
 /* Product Grid Classic Css - end */
+
+.tmpcoder-controller-label-text {
+  font-size: 11px;
+  color: #9da5ae;
+  line-height: 1.5;
+}

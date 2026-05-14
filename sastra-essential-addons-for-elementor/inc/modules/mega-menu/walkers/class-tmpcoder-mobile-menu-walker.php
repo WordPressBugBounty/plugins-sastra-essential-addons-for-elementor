@@ -26,7 +26,9 @@ class TMPCODER_Mobile_Menu_Walker extends \Walker_Nav_Menu {
 
 		$output .= "{$n}{$indent}<ul $class_names>{$n}";
 
-		if ( tmpcoder_is_availble() && $depth === 0 ) {
+		$is_offcanvas = isset( $args->tmpcoder_mob_menu_display_as ) && 'offcanvas' === $args->tmpcoder_mob_menu_display_as;
+
+		if ( tmpcoder_is_availble() && $depth === 0 && $is_offcanvas ) {
 			$output .= '<li class="tmpcoder-menu-offcanvas-back-wrap">';
 				$output .= '<div class="tmpcoder-menu-offcanvas-back">';
 				$output .= '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 499.6 320.6" style="enable-background:new 0 0 499.6 320.6;" xml:space="preserve"><g><path class="st0" d="M499.6,159.3c0.3,7-2.4,13.2-7,17.9c-4.3,4.3-10.4,7-16.9,7H81.6l95.6,95.6c9.3,9.3,9.3,24.4,0,33.8c-4.6,4.6-10.8,7-16.9,7c-6.1,0-12.3-2.4-16.9-7L6.9,177.2c-9.3-9.3-9.3-24.4,0-33.8l16.9-16.9l0,0L143.3,6.9c9.3-9.3,24.4-9.3,33.8,0c4.6,4.6,7,10.8,7,16.9s-2.4,12.3-7,16.9l-95.6,95.6h393.7C488.3,136.3,499.1,146.4,499.6,159.3z"/></g></svg>'; 
@@ -180,6 +182,8 @@ class TMPCODER_Mobile_Menu_Walker extends \Walker_Nav_Menu {
 		if ( 'mega-content' === $this->get_menu_item_type() && 0 < $depth ) {
 			return;
 		}
+
+		$is_offcanvas = isset( $args->tmpcoder_mob_menu_display_as ) && 'offcanvas' === $args->tmpcoder_mob_menu_display_as;
 		
 		if ( $depth === 0 ) {
 			if ( $this->has_mega_menu($item->ID) ) {
@@ -188,7 +192,7 @@ class TMPCODER_Mobile_Menu_Walker extends \Walker_Nav_Menu {
 
 				if ( 'ajax' === $settings['tmpcoder_mm_render'] ) {
 					$output .= '<div class="tmpcoder-mobile-sub-mega-menu">';
-						if ( tmpcoder_is_availble() ) {
+						if ( tmpcoder_is_availble() && $is_offcanvas ) {
 							$output .= '<div class="tmpcoder-menu-offcanvas-back">';
 								$output .= '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 499.6 320.6" style="enable-background:new 0 0 499.6 320.6;" xml:space="preserve"><g><path class="st0" d="M499.6,159.3c0.3,7-2.4,13.2-7,17.9c-4.3,4.3-10.4,7-16.9,7H81.6l95.6,95.6c9.3,9.3,9.3,24.4,0,33.8c-4.6,4.6-10.8,7-16.9,7c-6.1,0-12.3-2.4-16.9-7L6.9,177.2c-9.3-9.3-9.3-24.4,0-33.8l16.9-16.9l0,0L143.3,6.9c9.3-9.3,24.4-9.3,33.8,0c4.6,4.6,7,10.8,7,16.9s-2.4,12.3-7,16.9l-95.6,95.6h393.7C488.3,136.3,499.1,146.4,499.6,159.3z"/></g></svg>'; 
 								$output .= '<h3></h3>';
@@ -201,7 +205,7 @@ class TMPCODER_Mobile_Menu_Walker extends \Walker_Nav_Menu {
 					$content = $elementor->frontend->get_builder_content_for_display($mega_id);
 
 					$output .= '<div class="tmpcoder-mobile-sub-mega-menu">';
-						if ( tmpcoder_is_availble() ) {
+						if ( tmpcoder_is_availble() && $is_offcanvas ) {
 							$output .= '<div class="tmpcoder-menu-offcanvas-back">';
 								$output .= '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 499.6 320.6" style="enable-background:new 0 0 499.6 320.6;" xml:space="preserve"><g><path class="st0" d="M499.6,159.3c0.3,7-2.4,13.2-7,17.9c-4.3,4.3-10.4,7-16.9,7H81.6l95.6,95.6c9.3,9.3,9.3,24.4,0,33.8c-4.6,4.6-10.8,7-16.9,7c-6.1,0-12.3-2.4-16.9-7L6.9,177.2c-9.3-9.3-9.3-24.4,0-33.8l16.9-16.9l0,0L143.3,6.9c9.3-9.3,24.4-9.3,33.8,0c4.6,4.6,7,10.8,7,16.9s-2.4,12.3-7,16.9l-95.6,95.6h393.7C488.3,136.3,499.1,146.4,499.6,159.3z"/></g></svg>'; 
 								$output .= '<h3></h3>';

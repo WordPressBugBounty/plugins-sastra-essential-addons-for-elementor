@@ -213,7 +213,6 @@
 			model.renderRemoteServer();
 	}
 
- 
 	// TMPCODER Grid Widget: Select Element (Filter Taxonomies)
 	function filterGridTaxonomies( data, value ) {
 		var options = [];

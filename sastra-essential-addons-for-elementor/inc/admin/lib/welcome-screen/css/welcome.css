@@ -25,7 +25,6 @@
 
 .tmpcoder-theme-welcome {
     background: #fff;
-    padding: 30px;
     margin: 10px;
     border-radius: 8px;
 }
@@ -203,7 +202,6 @@
     right: 0; */
     font-size: 15px;
     font-weight: 600;
-    height: 18px;
     margin: 0;
     /* padding: 15px; */
     padding: 10px 10px;
@@ -257,6 +255,7 @@
 .uninstall-button:hover, .uninstall-button:focus, .uninstall-button:active {
     background: #D21312 !important;
     border-color: #D21312 !important;
+    color: #fff !important;
 }
 
 .plugin_box .action_button.active {
@@ -571,7 +570,7 @@
 
 .tmpcoder-notice {
     margin-top: 16px;
-    padding: 15px;
+    padding: 8px 15px;
     /* background-color: #ccc; */
     /* color: #fff; */
     border-radius: 6px;

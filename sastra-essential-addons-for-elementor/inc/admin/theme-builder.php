@@ -232,8 +232,7 @@ function tmpcoder_addons_theme_builder_page() {
 } // End tmpcoder_addons_theme_builder_page()
 
 /**
- * Popup Builder standalone page (separate from Site Builder).
- * Uses the same common header and nav tabs as other Spexo Addons pages (Getting Started, Site Builder, etc.).
+ * Popup Builder page.
  */
 function tmpcoder_popup_builder_page() {
 	
@@ -306,8 +305,9 @@ function tmpcoder_popup_builder_page() {
                             <tr class="bsf-target-rules-row tmpcoder-options-row">
                                 <td class="bsf-target-rules-row-heading tmpcoder-options-row-heading">
                                     <label><?php esc_html_e( 'Display On', 'sastra-essential-addons-for-elementor' ); ?></label>
-                                    <i class="bsf-target-rules-heading-help dashicons dashicons-editor-help"
-                                        title="<?php esc_attr_e( 'Add locations for where this template should appear.', 'sastra-essential-addons-for-elementor' ); ?>"></i>
+                                    <i class="bsf-target-rules-heading-help dashicons dashicons-editor-help">
+                                        <span class="tooltip"><?php esc_attr_e( 'Add locations for where this template should appear.', 'sastra-essential-addons-for-elementor' ); ?></span>
+                                    </i>
                                 </td>
                                 <td class="bsf-target-rules-row-content tmpcoder-options-row-content tmpcoder-popup-setup-conditions-cell">
                                     <div class="tmpcoder-popup-setup-conditions-placeholder">
@@ -367,7 +367,7 @@ function tmpcoder_popup_builder_page() {
  */
 function tmpcoder_theme_builder_enqueue_scripts( $hook ) {
 	$is_site_builder = ( false !== strpos( $hook, 'spexo-welcome' ) && isset( $_GET['tab'] ) && 'site-builder' === sanitize_key( $_GET['tab'] ) );
-	$is_popup_builder = ( false !== strpos( $hook, 'popup-builder' ) );
+	$is_popup_builder = ( isset( $_GET['tab'] ) && 'popup-builder' === sanitize_key( $_GET['tab'] ) );
 
 	if ( $is_site_builder || $is_popup_builder ) {
 		wp_enqueue_style( 'tmpcoder-plugin-import-demos', plugins_url( 'inc/admin/import/assets/css/tmpcoder-plugin-import-demos' . tmpcoder_script_suffix() . '.css', TMPCODER_PLUGIN_FILE ), [], TMPCODER_PLUGIN_VER, false );

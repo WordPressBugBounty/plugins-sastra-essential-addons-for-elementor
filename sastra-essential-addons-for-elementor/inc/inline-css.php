@@ -43,11 +43,11 @@ if (!function_exists('tmpcoder_add_dynamic_styles')) {
 
 		body {
 			margin: 0;
-			font-family: var(--theme-font-family)!important;
-			font-size: var(--theme-font-size)!important;
-			line-height: var(--theme-line-height)!important;
+			font-family: var(--theme-font-family);
+			font-size: var(--theme-font-size);
+			line-height: var(--theme-line-height);
 			letter-spacing: var(--theme-letter-spacing);
-			font-weight: var(--theme-font-weight) !important;
+			font-weight: var(--theme-font-weight);
 			color: var(--theme-text-color);
 			background-color: var(--theme-background-color) !important;
 			-webkit-font-smoothing: antialiased;

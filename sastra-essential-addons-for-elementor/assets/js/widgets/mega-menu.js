@@ -320,6 +320,11 @@
         function subMenuAnimation(selector, show) {
             if (show === true) {
                 selector.stop().addClass('tmpcoder-animate-sub');
+                $(document).trigger('tmpcoder:grid:relayout', [selector]);
+
+                setTimeout(function () {
+                    $(document).trigger('tmpcoder:grid:relayout', [selector]);
+                }, 180);
             } else {
                 selector.stop().removeClass('tmpcoder-animate-sub');
             }

@@ -25,6 +25,38 @@ if ( ! defined( 'ABSPATH' ) ) {
             do_settings_sections( 'tmpcoder-elements-settings' );
 
             ?>
+            <style>
+                .toplevel_page_spexo-welcome .tmpcoder-element.tmpcoder-pro-element.tmpcoder-new-element::before {
+                    content: 'PRO';
+                    position: absolute;
+                    top: -10px;
+                    left: 28px;
+                    z-index: 10;
+                    padding: 0px 6px;
+                    color: #fff;
+                    background-color: #f44;
+                    border-radius: 3px;
+                    font-size: 9px;
+                    font-weight: 700;
+                    letter-spacing: 0.4px;
+                    line-height: 18px;
+                }
+                .toplevel_page_spexo-welcome .tmpcoder-element.tmpcoder-pro-element.tmpcoder-new-element::after {
+                    content: 'NEW';
+                    position: absolute;
+                    top: -10px;
+                    left: 72px;
+                    z-index: 10;
+                    padding: 0 6px;
+                    color: #fff;
+                    background-color: #18bc66;
+                    border-radius: 3px;
+                    font-size: 9px;
+                    font-weight: 700;
+                    line-height: 18px;
+                    letter-spacing: 0.4px;
+                }
+            </style>
 
             <div class="tmpcoder-section-info-wrap common-box-shadow">
                 <div class="tmpcoder-section-info">
@@ -78,15 +110,23 @@ if ( ! defined( 'ABSPATH' ) ) {
                         $modules = tmpcoder_get_registered_modules();
                         $premium_modules = [
                             // ------ Array Value name ------
-                            // 'widget name' => ['widget-slug', 'purchase pro url', 'docs link', 'tag', 'file name', 'widget class', 'widget icon'], 
-
-                            // 'Advanced Breadcrumbs' => ['breadcrumbs-pro', TMPCODER_PURCHASE_PRO_URL.'?ref=tmpcoder-plugin-backend-elements-breadcrumbs-widgets-upgrade-pro#purchasepro', '', 'pro', '', '', 'advance-breadcrumb.svg'],
+                            // 'widget name' => ['widget-slug', 'purchase pro url', 'docs link', 'tag', 'file name', 'widget class', 'widget icon', optional NEW flag ],
+                            // Optional index [7]: 'yes'|'no'|true|false — NEW badge for Pro rows without changing [3]. Omit = legacy (locked Pro keeps NEW).
+                            'Login Register Pro' => ['login-register-pro', '', 'login-register-pro', 'pro', '', '', 'author-box.svg','new'],
+                            'Coupon Code Pro' => ['coupon-code-pro', '', 'coupon-code', 'pro', '', '', 'price-table.svg','new'],
                         ];
 
                         foreach ( array_merge($modules, $premium_modules) as $title => $data ) {
                             $slug = $data[0];
                             $icon = isset($data[6]) && !empty($data[6]) ? '<img class="widget-icon" src="'.esc_url(TMPCODER_ADDONS_ASSETS_URL.'widget-icons/'.$data[6]).'" />' : '';
-                            $class = ('new' === $data[3]) ? 'tmpcoder-new-element' : '';
+                            $class_parts = array();
+                            if ( tmpcoder_widgets_row_is_locked_pro_upsell( $data ) ) {
+                                $class_parts[] = 'tmpcoder-pro-element';
+                            }
+                            if ( tmpcoder_widgets_row_has_new_badge( $data ) ) {
+                                $class_parts[] = 'tmpcoder-new-element';
+                            }
+                            $class = implode( ' ', array_unique( array_filter( $class_parts ) ) );
                             $default_value = 'on';
                             
                             $url = isset($data[1]) && !empty($data[1]) ? $data[1] : '';
@@ -95,11 +135,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                             $docs_url = isset($data[2]) && !empty($data[2]) ? $data[2] : '';
                             $docs_text = esc_html__('Docs', 'sastra-essential-addons-for-elementor');
 
-                            if ( 'pro' === $data[3] && !tmpcoder_is_availble() ) {
-                                $class = 'tmpcoder-pro-element';
-                            }
-
-                            if ( 'tmpcoder-pro-element' === $class) {
+                            if ( false !== strpos( $class, 'tmpcoder-pro-element' ) ) {
                                 $default_value = 'off';
                                 $live_demo_text = '';
                                 $docs_text = '';
@@ -115,10 +151,12 @@ if ( ! defined( 'ABSPATH' ) ) {
                                 $class .= ' no-demo-link';
                             }
 
-                            if ( 'tmpcoder-pro-element' === $class && $docs_url == '')
+                            if ( false !== strpos( $class, 'tmpcoder-pro-element' ) && $docs_url == '')
                             {
                                 $class .= ' no-demo-link';
                             }
+
+                            $option_slug = str_replace( '-pro', '', $slug );
 
                             echo '<div class="tmpcoder-element-box-inner">';
                                 echo '<div class="tmpcoder-element '. esc_attr($class) .'">';
@@ -166,8 +204,8 @@ if ( ! defined( 'ABSPATH' ) ) {
                                             }
                                         echo '</div>';
                                         echo '<div class="tmpcoder-element-lable">';
-                                            echo '<input type="checkbox" name="tmpcoder-element-'. esc_attr($slug) .'" id="tmpcoder-element-'. esc_attr($slug) .'" '. checked( get_option('tmpcoder-element-'. $slug, $default_value), 'on', false ) .'>';
-                                            echo '<label for="tmpcoder-element-'. esc_attr($slug) .'"></label>';
+                                            echo '<input type="checkbox" name="tmpcoder-element-'. esc_attr($option_slug) .'" id="tmpcoder-element-'. esc_attr($option_slug) .'" '. checked( get_option('tmpcoder-element-'. $option_slug, $default_value), 'on', false ) .'>';
+                                            echo '<label for="tmpcoder-element-'. esc_attr($option_slug) .'"></label>';
                                         echo '</div>';
                                     echo '</div>';
                                 echo '</div>';
@@ -187,7 +225,8 @@ if ( ! defined( 'ABSPATH' ) ) {
                     // ------ Array Value name ------
                     // 'widget name' => ['widget-slug', 'purchase pro url', 'docs link', 'tag', 'file name', 'widget class', 'widget icon'],
                     $theme_builder_modules_pro = [
-                        'Custom Field' => ['custom-field-pro', TMPCODER_PURCHASE_PRO_URL.'?ref=tmpcoder-plugin-backend-elements-theme-builder-widgets-upgrade-pro#purchasepro', 'custom-field', 'pro', '', '', 'custom-field.svg'],
+                        // Optional [7]: NEW badge override for Pro upsell rows ('yes' / 'no').
+                        'Custom Field' => ['custom-field-pro', TMPCODER_PURCHASE_PRO_URL.'?ref=tmpcoder-plugin-backend-elements-theme-builder-widgets-upgrade-pro#purchasepro', 'custom-field', 'pro', '', '', 'custom-field.svg',''],
                         // 'Category Grid' => ['category-grid-pro', TMPCODER_PURCHASE_PRO_URL.'?ref=tmpcoder-plugin-backend-elements-catgrid-widgets-upgrade-pro#purchasepro', 'category-grid', 'pro', '', '', 'woo-category-grid.svg'],
                     ];
 
@@ -195,8 +234,14 @@ if ( ! defined( 'ABSPATH' ) ) {
                         $slug = $data[0];
                         $slug = str_replace('-pro', '', $slug);
                         $icon = isset($data[6]) && !empty($data[6]) ? '<img class="widget-icon" src="'.esc_url(TMPCODER_ADDONS_ASSETS_URL.'widget-icons/'.$data[6]).'" />' : '';
-                        $class = 'new' === $data[3] ? 'tmpcoder-new-element' : '';
-                        $class .= ('pro' === $data[3] && !tmpcoder_is_availble()) ? ' tmpcoder-pro-element' : '';
+                        $class_parts = array();
+                        if ( tmpcoder_widgets_row_is_locked_pro_upsell( $data ) ) {
+                            $class_parts[] = 'tmpcoder-pro-element';
+                        }
+                        if ( tmpcoder_widgets_row_has_new_badge( $data ) ) {
+                            $class_parts[] = 'tmpcoder-new-element';
+                        }
+                        $class = implode( ' ', array_unique( array_filter( $class_parts ) ) );
                         $default_value = 'off';
 
                         $url = isset($data[1]) && !empty($data[1]) ? $data[1] : '';
@@ -205,12 +250,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                         $docs_url = isset($data[2]) && !empty($data[2]) ? $data[2] : '';
                         $docs_text = esc_html__('Docs', 'sastra-essential-addons-for-elementor');
 
-
-                        if ( 'pro' === $data[3] && !tmpcoder_is_availble() ) {
-                            $class = 'tmpcoder-pro-element';
-                        } 
-
-                        if ( 'tmpcoder-pro-element' === $class ) {
+                        if ( false !== strpos( $class, 'tmpcoder-pro-element' ) ) {
                             $default_value = 'off';
                             $reff = '';
                         }
@@ -275,7 +315,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                 <div class="tmpcoder-elements-heading">
                     <h3><?php esc_html_e( 'WooCommerce Builder Widgets', 'sastra-essential-addons-for-elementor' ); ?></h3>
                     <?php if (!class_exists('WooCommerce')) : ?>
-                        <p class='tmpcoder-install-activate-woocommerce'><span class="dashicons dashicons-info-outline"></span> <?php esc_html_e( 'Install/Activate WooCommerce to use these widgets', 'sastra-essential-addons-for-elementor' ); ?></p>
+                        <p class='tmpcoder-install-activate-woocommerce'><span class="dashicons dashicons-info-outline"></span> <?php esc_html_e( 'Unlock these widgets by installing and activating WooCommerce.', 'sastra-essential-addons-for-elementor' ); ?></p>
                     <?php endif; ?>
                 </div>
                 <div class="tmpcoder-elements tmpcoder-elements-woo">
@@ -283,32 +323,43 @@ if ( ! defined( 'ABSPATH' ) ) {
                 <?php
                 
                 // ------ Array Value name ------
-                // 'widget name' => ['widget-slug', 'purchase pro url', 'docs link', 'tag', 'file name', 'widget class', 'widget icon'], 
+                // 'widget name' => ['widget-slug', 'purchase pro url', 'docs link', 'tag', 'file name', 'widget class', 'widget icon', optional NEW flag ],
+                // Optional [7]: 'yes'|'no' — NEW on Pro upsell without changing [3].
 
                 $woocommerce_builder_modules = tmpcoder_get_woocommerce_builder_modules();
                 $premium_woo_modules = [
-                    'Product Filters' => ['product-filters-pro', TMPCODER_PURCHASE_PRO_URL.'?ref=tmpcoder-plugin-backend-elements-woo-prodfilter-widgets-upgrade-pro#purchasepro', 'product-filters', 'pro', '', '', 'product-filters.svg'],
-                    'Product Breadcrumbs' => ['product-breadcrumbs-pro', TMPCODER_PURCHASE_PRO_URL.'?ref=tmpcoder-plugin-backend-elements-woo-breadcru-widgets-upgrade-pro#purchasepro', 'product-breadcrumb', 'pro', '', '', 'product-breadcrumbs.svg'],
-                    'My Account Page' => ['my-account-page-pro', TMPCODER_PURCHASE_PRO_URL.'?ref=tmpcoder-plugin-backend-elements-woo-myacc-widgets-upgrade-pro#purchasepro', 'my-account-page', 'pro', '', '', 'page-my-account.svg'],
-                    'Category Grid' => ['category-grid-pro', TMPCODER_PURCHASE_PRO_URL.'?ref=tmpcoder-plugin-backend-elements-catgrid-widgets-upgrade-pro#purchasepro', 'category-grid', 'pro', '', '', 'woo-category-grid.svg'],
-                    'Woo Category Grid' => ['woo-category-grid-pro', TMPCODER_PURCHASE_PRO_URL.'?ref=tmpcoder-plugin-backend-elements-woo-catgrid-widgets-upgrade-pro#purchasepro', 'woo-category-grid', 'pro', '', '', 'woo-category-grid.svg'],
-                    'Wishlist Button' => ['wishlist-button-pro', TMPCODER_PURCHASE_PRO_URL.'#purchasepro?ref=tmpcoder-plugin-backend-elements-woo-wishlist-btn-widgets-upgrade-expert#purchasepro', 'wishlist-button', 'pro', '', '', 'wishlist-button.svg'],
-                    'Mini Wishlist' => ['mini-wishlist-pro', TMPCODER_PURCHASE_PRO_URL.'#purchasepro?ref=tmpcoder-plugin-backend-elements-woo-wishlist-mini-widgets-upgrade-expert#purchasepro', 'mini-wishlist', 'pro', '', '', 'mini-wishlist.svg'],
-                    'Wishlist Table' => ['wishlist-pro', TMPCODER_PURCHASE_PRO_URL.'#purchasepro?ref=tmpcoder-plugin-backend-elements-woo-wishlist-widgets-upgrade-expert#purchasepro', 'wishlist-table', 'pro', '', '', 'wishlist-table.svg'],
-                    'Compare Button' => ['compare-button-pro', TMPCODER_PURCHASE_PRO_URL.'#purchasepro?ref=tmpcoder-plugin-backend-elements-woo-compare-btn-widgets-upgrade-expert#purchasepro', 'compare-button', 'pro', '', '', 'compare-button.svg'],
-                    'Mini Compare' => ['mini-compare-pro', TMPCODER_PURCHASE_PRO_URL.'#purchasepro?ref=tmpcoder-plugin-backend-elements-woo-compare-mini-widgets-upgrade-expert#purchasepro', 'mini-compare', 'pro', '', '', 'mini-compare.svg'],
-                    'Compare Table' => ['compare-pro', TMPCODER_PURCHASE_PRO_URL.'#purchasepro?ref=tmpcoder-plugin-backend-elements-woo-compare-widgets-upgrade-expert#purchasepro', 'compare-table', 'pro', '', '', 'compare-table.svg'],
-                    'Product Notice' => ['product-notice-pro', TMPCODER_PURCHASE_PRO_URL.'#purchasepro?ref=tmpcoder-plugin-backend-elements-woo-notice-widgets-upgrade-expert#purchasepro', 'product-notice', 'pro', '', '', 'product-notice.svg'],
-                    'Cart Page' => ['page-cart', TMPCODER_PURCHASE_PRO_URL.'#purchasepro?ref=tmpcoder-plugin-backend-elements-woo-notice-widgets-upgrade-expert#purchasepro', 'cart-page', 'pro', '', '', 'cart-page.svg'],
-                    'Checkout Page' => ['page-checkout', TMPCODER_PURCHASE_PRO_URL.'#purchasepro?ref=tmpcoder-plugin-backend-elements-woo-notice-widgets-upgrade-expert#purchasepro', 'checkout-page', 'pro', '', '', 'checkout-page.svg'],
+                    'Product Filters' => ['product-filters-pro', TMPCODER_PURCHASE_PRO_URL.'?ref=tmpcoder-plugin-backend-elements-woo-prodfilter-widgets-upgrade-pro#purchasepro', 'product-filters', 'pro', '', '', 'product-filters.svg',''],
+                    'Product Breadcrumbs' => ['product-breadcrumbs-pro', TMPCODER_PURCHASE_PRO_URL.'?ref=tmpcoder-plugin-backend-elements-woo-breadcru-widgets-upgrade-pro#purchasepro', 'product-breadcrumb', 'pro', '', '', 'product-breadcrumbs.svg',''],
+                    'My Account Page' => ['my-account-page-pro', TMPCODER_PURCHASE_PRO_URL.'?ref=tmpcoder-plugin-backend-elements-woo-myacc-widgets-upgrade-pro#purchasepro', 'my-account-page', 'pro', '', '', 'page-my-account.svg',''],
+                    'Category Grid' => ['category-grid-pro', TMPCODER_PURCHASE_PRO_URL.'?ref=tmpcoder-plugin-backend-elements-catgrid-widgets-upgrade-pro#purchasepro', 'category-grid', 'pro', '', '', 'woo-category-grid.svg',''],
+                    'Woo Category Grid' => ['woo-category-grid-pro', TMPCODER_PURCHASE_PRO_URL.'?ref=tmpcoder-plugin-backend-elements-woo-catgrid-widgets-upgrade-pro#purchasepro', 'woo-category-grid', 'pro', '', '', 'woo-category-grid.svg',''],
+                    'Wishlist Button' => ['wishlist-button-pro', TMPCODER_PURCHASE_PRO_URL.'#purchasepro?ref=tmpcoder-plugin-backend-elements-woo-wishlist-btn-widgets-upgrade-expert#purchasepro', 'wishlist-button', 'pro', '', '', 'wishlist-button.svg',''],
+                    'Mini Wishlist' => ['mini-wishlist-pro', TMPCODER_PURCHASE_PRO_URL.'#purchasepro?ref=tmpcoder-plugin-backend-elements-woo-wishlist-mini-widgets-upgrade-expert#purchasepro', 'mini-wishlist', 'pro', '', '', 'mini-wishlist.svg',''],
+                    'Wishlist Table' => ['wishlist-pro', TMPCODER_PURCHASE_PRO_URL.'#purchasepro?ref=tmpcoder-plugin-backend-elements-woo-wishlist-widgets-upgrade-expert#purchasepro', 'wishlist-table', 'pro', '', '', 'wishlist-table.svg',''],
+                    'Compare Button' => ['compare-button-pro', TMPCODER_PURCHASE_PRO_URL.'#purchasepro?ref=tmpcoder-plugin-backend-elements-woo-compare-btn-widgets-upgrade-expert#purchasepro', 'compare-button', 'pro', '', '', 'compare-button.svg',''],
+                    'Mini Compare' => ['mini-compare-pro', TMPCODER_PURCHASE_PRO_URL.'#purchasepro?ref=tmpcoder-plugin-backend-elements-woo-compare-mini-widgets-upgrade-expert#purchasepro', 'mini-compare', 'pro', '', '', 'mini-compare.svg',''],
+                    'Compare Table' => ['compare-pro', TMPCODER_PURCHASE_PRO_URL.'#purchasepro?ref=tmpcoder-plugin-backend-elements-woo-compare-widgets-upgrade-expert#purchasepro', 'compare-table', 'pro', '', '', 'compare-table.svg',''],
+                    'Product Notice' => ['product-notice-pro', TMPCODER_PURCHASE_PRO_URL.'#purchasepro?ref=tmpcoder-plugin-backend-elements-woo-notice-widgets-upgrade-expert#purchasepro', 'product-notice', 'pro', '', '', 'product-notice.svg',''],
+                    'Cart Page' => ['page-cart', TMPCODER_PURCHASE_PRO_URL.'#purchasepro?ref=tmpcoder-plugin-backend-elements-woo-notice-widgets-upgrade-expert#purchasepro', 'cart-page', 'pro', '', '', 'cart-page.svg',''],
+                    'Checkout Page' => ['page-checkout', TMPCODER_PURCHASE_PRO_URL.'#purchasepro?ref=tmpcoder-plugin-backend-elements-woo-notice-widgets-upgrade-expert#purchasepro', 'checkout-page', 'pro', '', '', 'checkout-page.svg',''],
                 ];
+
+                // echo '<pre>';
+                // print_r(array_merge($woocommerce_builder_modules, $premium_woo_modules));
+                // echo '</pre>';
 
                 foreach ( array_merge($woocommerce_builder_modules, $premium_woo_modules) as $title => $data ) {
                     $slug = $data[0];
                     $slug = str_replace('-pro', '', $slug);
                     $icon = isset($data[6]) && !empty($data[6]) ? '<img class="widget-icon" src="'.esc_url(TMPCODER_ADDONS_ASSETS_URL.'widget-icons/'.$data[6]).'" />' : '';
-                    $class = 'new' === $data[3] ? 'tmpcoder-new-element' : '';
-                    $class .= ('pro' === $data[3] && !tmpcoder_is_availble()) ? ' tmpcoder-pro-element' : '';
+                    $class_parts = array();
+                    if ( tmpcoder_widgets_row_is_locked_pro_upsell( $data ) ) {
+                        $class_parts[] = 'tmpcoder-pro-element';
+                    }
+                    if ( tmpcoder_widgets_row_has_new_badge( $data ) ) {
+                        $class_parts[] = 'tmpcoder-new-element';
+                    }
+                    $class = implode( ' ', array_unique( array_filter( $class_parts ) ) );
                     $default_value = class_exists( 'WooCommerce' ) ? 'on' : 'off';
 
                     $url = isset($data[1]) && !empty($data[1]) ? $data[1] : '';
@@ -317,11 +368,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                     $docs_url = isset($data[2]) && !empty($data[2]) ? $data[2] : '';
                     $docs_text = esc_html__('Docs', 'sastra-essential-addons-for-elementor');
 
-                    if ( 'pro' === $data[3] && !tmpcoder_is_availble() ) {
-                        $class = 'tmpcoder-pro-element';
-                    } 
-
-                    if ( 'tmpcoder-pro-element' === $class ) {
+                    if ( false !== strpos( $class, 'tmpcoder-pro-element' ) ) {
                         $default_value = 'off';
                         $reff = '';
                     }
@@ -530,9 +577,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 
             <?php 
             endif; ?>
-            <div class="welcome-backend-loader">
-                <img src="<?php echo esc_url(TMPCODER_ADDONS_ASSETS_URL.'images/backend-loader.gif'); ?>" alt="" width="80" height="80" />
-            </div>
+            <?php
+            tmpcoder_render_common_loader(
+                array(
+                    'class'       => 'tmpcoder-widgets-sync-loader',
+                    'type'        => 'widgets-sync',
+                    'title'       => __( 'Saving Widget Settings...', 'sastra-essential-addons-for-elementor' ),
+                    'description' => __( 'Applying your widget configuration changes.', 'sastra-essential-addons-for-elementor' ),
+                )
+            );
+            ?>
             <div class="tmpcoder-settings-saved">
                 <span><?php esc_html_e('Settings Saved', 'sastra-essential-addons-for-elementor'); ?></span>
                 <span class="dashicons dashicons-smiley"></span>

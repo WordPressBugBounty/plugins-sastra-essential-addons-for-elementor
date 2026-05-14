@@ -97,7 +97,9 @@ class TMPCODER_Post_Title extends Widget_Base {
 		$this->end_controls_section(); // End Controls Section
 
 		// Section: Help & Docs
-		tmpcoder_add_section_help_docs( $this, Controls_Manager::RAW_HTML, '' );
+		if(function_exists('tmpcoder_add_section_help_docs')) {
+			tmpcoder_add_section_help_docs( $this, Controls_Manager::RAW_HTML, '' );
+		}
 
 		// Styles ====================
 		// Section: Title ------------

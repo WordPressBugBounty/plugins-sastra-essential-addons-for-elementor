@@ -1,7 +1,7 @@
 === Spexo Addons for Elementor - Elementor Widgets, Mega Menu, Popup Builder, Template Kits and Starter Templates for Elementor ===
 Contributors: templatescoderthemes, skywebtech
 Tags: elementor addons, elementor widgets, woocommerce elementor, header footer builder, elementor templates
-Stable tag: 1.0.32
+Stable tag: 1.0.33
 Requires at least: 5.0
 Tested up to: 6.9
 Requires PHP: 7.4
@@ -23,7 +23,8 @@ Spexo Addons includes a wide range of Elementor widgets for layouts, marketing s
 **Useful Links** 👇
 
 - [Live Widget Demo](https://spexoaddons.com/widgets/)
-- [Free Templates for Elementor](https://spexoaddons.com/spexo-elementor-theme/)
+- [Free Templates for Elementor](https://spexoaddons.com/templates/)
+- [Free Theme](https://spexoaddons.com/spexo-elementor-theme/)
 - [Documentation](https://spexoaddons.com/documentation)
 - [Need Support?](https://fastthemes.com/support/)
 
@@ -55,8 +56,6 @@ Key advantages include:
 - Pre built templates and starter websites
 - Developer friendly design options
 - Modular widgets that can be enabled or disabled
-- Elementor 4.0 compatible
-- Per-widget asset loading optimized
 
 ## Popup Builder for Elementor
 
@@ -196,19 +195,15 @@ https://www.youtube.com/watch?v=9FVni0rGjOM
 
 Spexo Addons provides ready to use Elementor templates and starter websites that help launch websites faster.
 
-Explore all templates in the [Elementor Templates Library](https://spexoaddons.com/spexo-elementor-theme/).
+Explore all templates in the [Elementor Templates Library](https://spexoaddons.com/templates/).
 
 Templates are available for many industries:
 
 - **Digital Agencies** – Launch marketing websites using [Agency Elementor Templates](https://spexoaddons.com/templates/digital-agency-elementor-template/).
 
-- **AI Software Companies** – Build startup websites using [AI Software Elementor Templates](https://spexoaddons.com/templates/ai-software-agency-elementor-template/).
-
 - **Corporate Websites** – Create business websites using [Corporate Elementor Templates](https://spexoaddons.com/templates/business-corporate-elementor-template/).
 
 - **SaaS Startups** – Design product landing pages using [SaaS Elementor Templates](https://spexoaddons.com/templates/ai-saas-agency-elementor-template/).
-
-- **Blog and Magazine Websites** – Publish content using [Blog Elementor Templates](https://spexoaddons.com/templates/classic-blog-elementor-template/).
 
 - **Real Estate Websites** – Build property listing websites using [Real Estate Elementor Templates](https://spexoaddons.com/templates/real-estate-elementor-template/).
 
@@ -219,6 +214,20 @@ Templates are available for many industries:
 - **WooCommerce Online Stores** – Launch ecommerce websites using [WooCommerce Elementor Templates](https://spexoaddons.com/templates/fashion-ecommerce-elementor-template/).
 
 Starter websites allow developers to launch new projects quickly and customize layouts using Elementor.
+
+## Free Elementor Template Kits
+
+Spexo Addons has collection of Elementor template library for various industries and elementor landing page templates.
+
+- **Blog and Magazine Websites** – Publish content using [Blog Elementor Templates](https://spexoaddons.com/templates/classic-blog-elementor-template/).
+
+- **AI Software Companies** – Build startup websites using [AI Software Elementor Templates](https://spexoaddons.com/templates/ai-software-agency-elementor-template/).
+
+- **Furniture Store** – Design online furniture store using [Furniture Store Elementor Templates](https://spexoaddons.com/templates/furniture-store-elementor-template/).
+
+- **News Portal** – Create News portal using [News Portal Elementor Templates](https://spexoaddons.com/templates/news-portal-elementor-template/).
+
+- **Industrial** – Make industrial company website using [Industrial Elementor Templates](https://spexoaddons.com/templates/industrial-elementor-template/).
 
 
 ## Spexo Widgets for Elementor
@@ -231,7 +240,7 @@ Spexo Addons works with most themes that support Elementor.
 
 Commonly used themes include:
 
-- Spexo Theme
+- [Spexo Theme](https://spexoaddons.com/spexo-elementor-theme/)
 - Hello Elementor
 - Astra
 - GeneratePress
@@ -296,7 +305,7 @@ Widgets and other features will be added with each major update based on popular
 **Spexo Addons** (formerly Sastra Addons) is powered by [Fast Themes](https://fastthemes.com), a dedicated WordPress product company, trusted by various happy users. Fast Themes is a division of [SkyWebTech](https://www.skywebtech.net/), An award winning agency with 15+ years of development experience in small to large scale projects.
 
 Keywords
-Before and after image sliders, WooCommerce pricing tools, advanced tools for professionals, custom form builder WordPress, speed-enhanced WordPress plugins, temp, WooCommerce product grid, advanced styling options, templ, bu, form, se, wucomerce, ki, essent, ultimate, elim, ultimat, li, performan, c, live search, galle, websi, go, searc, aja, carous, par, parral, m, med, v, vid, butto, prod, cal, calen, calenda, jq, ta, gr, bo, popu, Elementor custom breakpoints, sticky header plugin, Elementor mega menu, custom Elementor modules, woocommerc, responsive product galleries, perfor, AJAX-powered search, templa, build, premium, MailChimp integration plugin, carou, interactive blog grids, elimentr, perf, testimonials and reviews, addo, beginner-friendly plugins, a, drag and drop editor, woocomme, sl, slid, g, perfo, Elementor plugin, lite, dynamic content display, ga, visual website builder, t, pag, widg, elemen, wid, e, template, interactive forms for Elementor, fr, paral, essentia, ai, woocommer, business hours widget, fre, easy to use, da, premi, wo, for, s, blog post carousels, parala, ima, team member showcase, ele, call-to-action buttons, gri, po, elementor, paralla, elime, best Elementor widgets, extens, d, boost conversions with Elementor, te, pricing tables WordPress, woocom, per, mobile-friendly WordPress addons, ulti, extensi, unyson, gallery, si, site, web, pricing calculator for services, parall, i, caro, engage visitors with interactive elements, element, customizable progress bars, googl, sea, es, WordPress page builder, as, astr, woo, esse, lightweight Elementor tools, eli, templat, ast, k, prem, kin, ess, ult, l, webs, lit, pe, ultima,performa, dat, performanc, co, pre, sit, websit, goog, se, sear, aj, ca, carouse, parr, paralax, im, imag, me, medi, vi, vide, butt, produ, cale, b, calend, wu, wc, tabl, contact, Gutenberg bridging plugin, white label Elementor plugin, exten, conditional logic for WordPress, add, WooCommerce Elementor widgets, ad, news ticker for WordPress, eleme, product showcases, contac, pro, Elementor addons, widge, bui, Elementor templates, elementr, ex, magazine-style layouts, wooco, free Elementor widgets, wi, essen, uneson, astra, WordPress charts plugin, elem, optimized Elementor widgets, w, alimentor, p, tem, essential, data tables for Elementor, extensio, protected content WordPress, elementar, wucom, essenti, u, cross-domain copy-paste Elementor, s, ul, conta, pr, slide, gall, no coding required, wor, product sliders for WooCommerce, exte, content tickers for updates, f, responsive grid layouts, wooc, interactive sliders for Elementor, buil, elemento, lightweight WordPress plugins, woocomm, sale countdown timer, ext, sli, timeline widgets for WordPress, galler, s, elimentor, perform, SEO-friendly WordPress addons, con, premiu, fo, gal, responsive design tools, el, service comparison tables, pa, interactive pricing slider, create visually stunning designs, builde, advanced Elementor features, newsletter sign-up forms.
+Before and after image sliders, WooCommerce pricing tools, advanced tools for professionals, custom form builder WordPress, speed-enhanced WordPress plugins, temp, WooCommerce product grid, advanced styling options, templ, bu, form, se, wucomerce, ki, essent, ultimate, elim, ultimat, li, performan, c, live search, galle, websi, go, searc, aja, carous, par, parral, m, med, v, vid, butto, prod, cal, calen, calenda, jq, ta, gr, bo, popu, Elementor custom breakpoints, sticky header plugin, Elementor mega menu, custom Elementor modules, woocommerc, responsive product galleries, perfor, AJAX-powered search, templa, build, premium, MailChimp integration plugin, carou, interactive blog grids, elimentr, perf, testimonials and reviews, addo, beginner-friendly plugins, a, drag and drop editor, woocomme, sl, slid, g, perfo, Elementor plugin, lite, dynamic content display, ga, visual website builder, t, pag, widg, elemen, wid, e, template, interactive forms for Elementor, fr, paral, essentia, ai, woocommer, business hours widget, fre, easy to use, da, premi, wo, for, s, blog post carousels, parala, ima, team member showcase, ele, call-to-action buttons, gri, po, elementor, paralla, elime, best Elementor widgets, extens, d, boost conversions with Elementor, te, pricing tables WordPress, woocom, per, mobile-friendly WordPress addons, ulti, extensi, unyson, gallery, si, site, web, pricing calculator for services, parall, i, caro, engage visitors with interactive elements, element, customizable progress bars, googl, sea, es, WordPress page builder, as, astr, woo, esse, lightweight Elementor tools, eli, templat, ast, k, prem, kin, ess, ult, l, webs, lit, pe, ultima,performa, dat, performanc, co, pre, sit, websit, goog, se, sear, aj, ca, carouse, parr, paralax, im, imag, me, medi, vi, vide, butt, produ, cale, b, calend, wu, wc, tabl, contact, Gutenberg bridging plugin, white label Elementor plugin, exten, conditional logic for WordPress, add, WooCommerce Elementor widgets, ad, news ticker for WordPress, eleme, product showcases, contac, pro, Elementor addons, widge, bui, Elementor templates, elementor wordpress themes, elementor themes library, best elementor templates, elementr, ex, magazine-style layouts, wooco, free Elementor widgets, wi, essen, uneson, astra, WordPress charts plugin, elem, optimized Elementor widgets, w, alimentor, p, tem, essential, data tables for Elementor, extensio, protected content WordPress, elementor kit library, template elementor, best theme for elementor, wordpress elementor themes, free elementor theme, elementor templates free,  elementar, wucom, essenti, u, cross-domain copy-paste Elementor, s, ul, conta, pr, slide, gall, no coding required, wor, product sliders for WooCommerce, exte, content tickers for updates, f, responsive grid layouts, wooc, interactive sliders for Elementor, buil, elemento, lightweight WordPress plugins, woocomm, sale countdown timer, ext, sli, timeline widgets for WordPress, galler, s, elimentor, perform, SEO-friendly WordPress addons, responsive design tools, service comparison tables, interactive pricing slider, create visually stunning designs, builde, advanced Elementor features, newsletter sign-up forms.
 
 == Installation ==
 
@@ -369,7 +378,7 @@ Feel free to contact us anytime via [Support](https://fastthemes.com/support/?re
 
 == Screenshots ==
 
-1. Quickly create website using Spexo Addons 
+1. Quickly create website using Spexo Addons
 2. Huge collection of ready to use Elementor Templates
 3. Ready to use Elementor Widgets and Element Pack
 4. Masonary Grid Widget for Elementor
@@ -378,6 +387,19 @@ Feel free to contact us anytime via [Support](https://fastthemes.com/support/?re
 7. Elementor Post Grid, Slider & Carousel Widget: Post Grid / Post Slider / Post Carousel
 
 == Changelog ==
+
+
+= 1.0.33 - 14-May-2026 =
+
+New:
+ 
+* Redesigned Setup Wizard experience for faster and smoother onboarding.
+* Added new WP Login & Register Elementor Widget.
+* Added new Coupon Code Elementor Widget.
+
+Improvements:
+
+* Enhanced the overall admin dashboard interface with a more modern, user-friendly, and visually polished design.
 
 = 1.0.32 - 16-April-2026 =
 
@@ -410,23 +432,5 @@ Improvements
 
 * Improved the Elementor template import process for more reliable and smoother imports
 * Fixed minor issues and made small performance and stability improvements
-
-= 1.0.28 - 2026-01-08 =
-
-New Features:
-
-* Write content instantly using **AI inside Elementor text fields, text areas, and editors**
-* Improve or rewrite existing content with **one-click AI suggestions**
-* Create images directly in Elementor using **built-in AI image generation**
-* Automatically generate **clear and SEO-friendly image alt text** in the Media Library
-* Translate entire Elementor pages **in one click**, with automatic detection of all text content
-* Manage and customize **AI settings and model preferences** from a dedicated settings page
-* Set daily AI usage limits to **control costs and avoid overuse**
-* View detailed AI usage statistics with **helpful learning and support resources from [OpenAI](https://openai.com/)**
-
-Improvements:
-
-* Improved compatibility with **WordPress 6.9** for smoother performance
-* Better support for newer Elementor versions through **cleaned and optimized styles**
 
 [See changelog for all versions.](https://spexoaddons.com/changelog/)

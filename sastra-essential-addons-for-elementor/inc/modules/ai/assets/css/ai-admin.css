@@ -371,20 +371,6 @@
     border: 1px solid #ffc107;
 }
 #spexo-refresh-models-btn {
-    padding: 8px 16px !important;
-    border-radius: 6px !important;
-    font-size: 12px !important;
-    font-weight: 500 !important;
-    cursor: pointer !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    gap: 6px !important;
-    transition: all 0.3s ease !important;
-    margin-top: 10px !important;
-    position: relative !important;
-    z-index: 10 !important;
-    text-decoration: none !important;
-    outline: none !important;
     width: fit-content;
 }
 #spexo-refresh-models-btn .dashicons {

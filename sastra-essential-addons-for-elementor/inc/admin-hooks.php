@@ -15,9 +15,8 @@ if ( ! function_exists( 'tmpcoder_admin_enqueue_scripts_func' ) ) :
 
 	function tmpcoder_admin_enqueue_scripts_func() {
         // Stylesheet files
-		wp_enqueue_style('admin-style', plugins_url( 'assets/css/admin/style'.tmpcoder_script_suffix().'.css', TMPCODER_PLUGIN_FILE ), [] , TMPCODER_PLUGIN_VER, false);
+		wp_enqueue_style( 'admin-style', plugins_url( 'assets/css/admin/style.css', TMPCODER_PLUGIN_FILE ), array(), TMPCODER_PLUGIN_VER, false );
 	}
-
 	
 endif;
 
@@ -47,6 +46,7 @@ if (defined('TMPCODER_CURRENT_THEME_NAME') && in_array(TMPCODER_CURRENT_THEME_NA
 if (class_exists('Elementor\Plugin')) {
     require_once (TMPCODER_PLUGIN_DIR . 'inc/admin/mega-menu.php');
     require_once (TMPCODER_PLUGIN_DIR . 'inc/admin/theme-builder.php');
+    require_once (TMPCODER_PLUGIN_DIR . 'inc/admin/finish-setup/finish-setup-page.php');
     require_once (TMPCODER_PLUGIN_DIR . 'inc/modules/popup/class-tmpcoder-popup-register.php');
     require_once (TMPCODER_PLUGIN_DIR . 'inc/modules/popup/class-tmpcoder-popup-manager.php');
     
@@ -89,6 +89,7 @@ if (class_exists('\Elementor\Plugin')) {
 function tmpcoder_add_feature_notice_action(){
     require TMPCODER_PLUGIN_DIR.'inc/admin/notice/feature-banner-notice.php';
     require TMPCODER_PLUGIN_DIR.'inc/admin/notice/pro-features-notice.php';
+    require TMPCODER_PLUGIN_DIR.'inc/admin/notice/finish-setup-dashboard-notice.php';
 }
 
 require TMPCODER_PLUGIN_DIR.'inc/traits/woo-product-comparable.php';
