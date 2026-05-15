@@ -1,7 +1,7 @@
 === Spexo Addons for Elementor - Elementor Widgets, Mega Menu, Popup Builder, Template Kits and Starter Templates for Elementor ===
 Contributors: templatescoderthemes, skywebtech
 Tags: elementor addons, elementor widgets, woocommerce elementor, header footer builder, elementor templates
-Stable tag: 1.0.33
+Stable tag: 1.0.34
 Requires at least: 5.0
 Tested up to: 6.9
 Requires PHP: 7.4
@@ -23,8 +23,7 @@ Spexo Addons includes a wide range of Elementor widgets for layouts, marketing s
 **Useful Links** 👇
 
 - [Live Widget Demo](https://spexoaddons.com/widgets/)
-- [Free Templates for Elementor](https://spexoaddons.com/templates/)
-- [Free Theme](https://spexoaddons.com/spexo-elementor-theme/)
+- [Free Templates for Elementor](https://spexoaddons.com/spexo-elementor-theme/)
 - [Documentation](https://spexoaddons.com/documentation)
 - [Need Support?](https://fastthemes.com/support/)
 
@@ -195,7 +194,7 @@ https://www.youtube.com/watch?v=9FVni0rGjOM
 
 Spexo Addons provides ready to use Elementor templates and starter websites that help launch websites faster.
 
-Explore all templates in the [Elementor Templates Library](https://spexoaddons.com/templates/).
+Explore all templates in the [Elementor Templates Library](https://spexoaddons.com/spexo-elementor-theme/).
 
 Templates are available for many industries:
 
@@ -240,7 +239,7 @@ Spexo Addons works with most themes that support Elementor.
 
 Commonly used themes include:
 
-- [Spexo Theme](https://spexoaddons.com/spexo-elementor-theme/)
+- Spexo Theme
 - Hello Elementor
 - Astra
 - GeneratePress
@@ -378,7 +377,7 @@ Feel free to contact us anytime via [Support](https://fastthemes.com/support/?re
 
 == Screenshots ==
 
-1. Quickly create website using Spexo Addons
+1. Quickly create website using Spexo Addons 
 2. Huge collection of ready to use Elementor Templates
 3. Ready to use Elementor Widgets and Element Pack
 4. Masonary Grid Widget for Elementor
@@ -388,6 +387,11 @@ Feel free to contact us anytime via [Support](https://fastthemes.com/support/?re
 
 == Changelog ==
 
+= 1.0.34 - 15-May-2026 =
+
+Improvements:
+
+* Improved overall plugin compatibility for a smoother, more stable, and seamless website-building experience.
 
 = 1.0.33 - 14-May-2026 =
 
@@ -395,7 +399,7 @@ New:
  
 * Redesigned Setup Wizard experience for faster and smoother onboarding.
 * Added new WP Login & Register Elementor Widget.
-* Added new Coupon Code Elementor Widget.
+* Added new Coupon Code  Elementor Widget.
 
 Improvements:
 

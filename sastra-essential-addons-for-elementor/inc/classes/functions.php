@@ -3647,7 +3647,7 @@ if ( ! function_exists( 'tmpcoder_get_admin_header_tabs' ) ) {
 	);
 
 	// Remove tabs if not SastraWP or Spexo
-	if (defined('TMPCODER_CURRENT_THEME_NAME') && !in_array(TMPCODER_CURRENT_THEME_NAME, array('SastraWP', 'Spexo'))) {
+	if (defined('TMPCODER_CURRENT_THEME_NAME') && !in_array(TMPCODER_CURRENT_THEME_NAME, array('SastraWP', 'Spexo', 'Belliza'))) {
 			unset($tabs['global-options']);
 			unset($tabs['prebuilt-demos']);
 		}
