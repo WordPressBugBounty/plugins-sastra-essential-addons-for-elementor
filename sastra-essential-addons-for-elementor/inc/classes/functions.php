@@ -3536,7 +3536,9 @@ if ( ! function_exists( 'tmpcoder_render_admin_header' ) ) {
 						</div>
 						<div class="col-xl-8">
 							<?php
+							
 							$has_internal_content = isset( $arr[ $active_tab ]['path'] ) && ! empty( $arr[ $active_tab ]['path'] );
+
 							if ( $has_internal_content ) {
 								require_once $arr[ $active_tab ]['path'];
 							}
@@ -3647,7 +3649,7 @@ if ( ! function_exists( 'tmpcoder_get_admin_header_tabs' ) ) {
 	);
 
 	// Remove tabs if not SastraWP or Spexo
-	if (defined('TMPCODER_CURRENT_THEME_NAME') && !in_array(TMPCODER_CURRENT_THEME_NAME, array('SastraWP', 'Spexo', 'Belliza'))) {
+	if (defined('TMPCODER_CURRENT_THEME_NAME') && !in_array(TMPCODER_CURRENT_THEME_NAME, array('SastraWP', 'Spexo'))) {
 			unset($tabs['global-options']);
 			unset($tabs['prebuilt-demos']);
 		}

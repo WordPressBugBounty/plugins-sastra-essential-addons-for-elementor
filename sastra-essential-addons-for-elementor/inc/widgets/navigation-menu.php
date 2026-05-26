@@ -1660,7 +1660,28 @@ $settings = array_merge( $settings, $settings_new );
 				}
 
 				// Add Sub Menu Icon
-				$output  ='<a href="'. esc_url($item->url) .'" class="'. esc_attr($item_class) .'">'. esc_html($item->title);
+				// $output  ='<a href="'. esc_url($item->url) .'" class="'. esc_attr($item_class) .'">'. esc_html($item->title);
+
+				// Render language switcher correctly
+				$output = '<a aria-haspopup="true" aria-expanded="false" href="' . esc_url($item->url) . '" class="' . esc_attr($item_class) . '">'
+						. wp_kses($item->title, array(
+							'span' => array('class' => array()), // Allow <span> tags with class attribute
+							'a' => array( // Allow <a> tags with specified attributes
+								'href' => array(),
+								'title' => array(),
+								'class' => array(),
+							),
+							'img' => array( // Allow <img> tags with specified attributes
+								'src' => array(),
+								'alt' => array(),
+								'title' => array(),
+								'width' => array(),
+								'height' => array(),
+								'class' => array(),
+							),
+							'i' => array('class' => array()), // Allow <i> tags with class attribute for icons
+						));
+
 				if ( $depth > 0 ) {
 					if ( 'inline' === $settings['menu_items_submenu_position'] ) {
 						$output .='<i class="tmpcoder-sub-icon fas" aria-hidden="true"></i>';

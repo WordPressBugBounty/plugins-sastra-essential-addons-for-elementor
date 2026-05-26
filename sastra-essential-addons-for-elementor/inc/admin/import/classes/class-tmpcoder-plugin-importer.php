@@ -803,6 +803,9 @@ if ( ! class_exists( 'TMPCODER_Importer' ) ) {
 				delete_option( TMPCODER_PLUGIN_KEY . '_wizard_branding_payload' );
 			}
 
+            $tmpcoder_demo_url = (isset($_REQUEST['tmpcoder_demo_url'])) ? sanitize_text_field( wp_unslash( $_REQUEST['tmpcoder_demo_url'] ) ) : '';
+            $tmpcoder_demo_url = esc_url_raw($tmpcoder_demo_url);
+
             // Elementor options cache clear
             if ( did_action( 'elementor/loaded' ) ) {
                 // Automatically purge and regenerate the Elementor CSS cache
@@ -812,6 +815,19 @@ if ( ! class_exists( 'TMPCODER_Importer' ) ) {
             if ( function_exists('tmpcoder_redux_options_update_theme_variable') ){
             	$TMPCODER_THEME_OPTIONS_DATA_CLASS = TMPCODER_THEME_OPTIONS_DATA_CLASS;
                 $theme_options = $TMPCODER_THEME_OPTIONS_DATA_CLASS::tmpcoder_get_all_data();
+
+                if ( is_array( $theme_options ) && isset( $theme_options['tmpcoder_preloder_custom_html'] ) ) {
+                	$updated_preloader_html = $this->replace_sastra_theme_urls_in_editor_content( $theme_options['tmpcoder_preloder_custom_html'], $tmpcoder_demo_url );
+
+                	if ( $updated_preloader_html !== $theme_options['tmpcoder_preloder_custom_html'] ) {
+                		$theme_options['tmpcoder_preloder_custom_html'] = $updated_preloader_html;
+
+                		if ( defined( 'TMPCODER_THEME_OPTION_NAME' ) ) {
+                			update_option( TMPCODER_THEME_OPTION_NAME, $theme_options );
+                		}
+                	}
+                }
+
                 tmpcoder_redux_options_update_theme_variable($theme_options, '', '');
             }
 
@@ -870,11 +886,6 @@ if ( ! class_exists( 'TMPCODER_Importer' ) ) {
 		    }
 
 			// Replace demo url to site url
-
-			$tmpcoder_demo_url = (isset($_REQUEST['tmpcoder_demo_url'])) ? sanitize_text_field( wp_unslash( $_REQUEST['tmpcoder_demo_url'] ) ) : '';
-
-			$tmpcoder_demo_url = esc_url_raw($tmpcoder_demo_url);
-
 			$this->demo_replace_url_aciton($tmpcoder_demo_url);
 
 			delete_option('tmpcoder_is_call_retry');
@@ -885,6 +896,57 @@ if ( ! class_exists( 'TMPCODER_Importer' ) ) {
 			if ( wp_doing_ajax() ) {
 				wp_send_json_success();
 			}
+		}
+
+		/**
+		 * Replace Sastra theme slugs only inside URLs found in editor HTML content.
+		 *
+		 * @param string $content           Editor HTML content.
+		 * @param string $demo_site_raw_url Demo base URL.
+		 * @return string
+		 */
+		private function replace_sastra_theme_urls_in_editor_content( $content, $demo_site_raw_url = '' ) {
+			if ( ! is_string( $content ) || '' === $content ) {
+				return $content;
+			}
+
+			$normalized_demo_url = '';
+			if ( is_string( $demo_site_raw_url ) && '' !== $demo_site_raw_url ) {
+				$normalized_demo_url = trailingslashit( untrailingslashit( esc_url_raw( $demo_site_raw_url ) ) );
+			}
+
+			$current_site_url     = trailingslashit( get_site_url() );
+			$current_site_url_raw = untrailingslashit( $current_site_url );
+
+			$replace_url_value = static function( $url ) use ( $normalized_demo_url, $current_site_url, $current_site_url_raw ) {
+				if ( '' !== $normalized_demo_url ) {
+					$url = str_replace(
+						array( $normalized_demo_url, untrailingslashit( $normalized_demo_url ) ),
+						array( $current_site_url, $current_site_url_raw ),
+						$url
+					);
+				}
+
+				return preg_replace( '/(?<![A-Za-z0-9-])(sastrawp|sastra)(?![A-Za-z0-9-])/i', 'spexo', $url );
+			};
+
+			$content = preg_replace_callback(
+				'/\b(?:href|src)\s*=\s*(["\'])(.*?)\1/i',
+				static function( $matches ) use ( $replace_url_value ) {
+					return str_replace( $matches[2], $replace_url_value( $matches[2] ), $matches[0] );
+				},
+				$content
+			);
+
+			$content = preg_replace_callback(
+				'~https?://[^\s<>"\']+~i',
+				static function( $matches ) use ( $replace_url_value ) {
+					return $replace_url_value( $matches[0] );
+				},
+				$content
+			);
+
+			return $content;
 		}
 
 		public function demo_replace_url_aciton($demo_site_raw_url=''){

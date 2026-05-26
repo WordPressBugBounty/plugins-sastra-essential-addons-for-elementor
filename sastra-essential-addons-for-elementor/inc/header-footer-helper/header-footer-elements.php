@@ -63,6 +63,7 @@ if ( ! class_exists('TMPCODER_Header_Footer_Elements') ){
             );
 
             $id = ! empty( $atts['id'] ) ? apply_filters( 'tmpcoder_render_template_id', intval( $atts['id'] ) ) : '';
+            $id = self::tmpcoder_resolve_wpml_theme_builder_post_id( $id );
 
             if ( empty( $id ) ) {
                 return '';
@@ -191,6 +192,30 @@ if ( ! class_exists('TMPCODER_Header_Footer_Elements') ){
         }
 
         /**
+         * Resolve theme builder / advanced-hook template post ID to the current WPML language.
+         *
+         * @param int|string $post_id Post ID of theme-advanced-hook (or empty).
+         * @return int|string Translated ID if available, else original ID, or empty string if invalid.
+         */
+        private static function tmpcoder_resolve_wpml_theme_builder_post_id( $post_id ) {
+            $post_id = absint( $post_id );
+            if ( ! $post_id ) {
+                return '';
+            }
+
+            $post_type = defined( 'TMPCODER_THEME_ADVANCED_HOOKS_POST_TYPE' ) ? TMPCODER_THEME_ADVANCED_HOOKS_POST_TYPE : 'theme-advanced-hook';
+
+            if ( has_filter( 'wpml_object_id' ) ) {
+                $translated_id = (int) apply_filters( 'wpml_object_id', $post_id, $post_type, true );
+                if ( $translated_id > 0 ) {
+                    return $translated_id;
+                }
+            }
+
+            return $post_id;
+        }
+
+        /**
          * Get header or footer template id based on the meta query.
          *
          * @param  String $type Type of the template header/footer.
@@ -209,7 +234,7 @@ if ( ! class_exists('TMPCODER_Header_Footer_Elements') ){
 
             foreach ( $tmpcoder_templates as $template ) {
                 if ( get_post_meta( absint( $template['id'] ), 'tmpcoder_template_type', true ) === $type ) {
-                    return $template['id'];
+                    return self::tmpcoder_resolve_wpml_theme_builder_post_id( $template['id'] );
                 }
             }
 

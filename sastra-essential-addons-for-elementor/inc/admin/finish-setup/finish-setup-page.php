@@ -216,6 +216,233 @@ if ( ! function_exists( 'tmpcoder_get_finish_setup_user_pending_map' ) ) {
 	}
 }
 
+if ( ! function_exists( 'tmpcoder_get_finish_setup_imported_contact_form_meta_key' ) ) {
+	/**
+	 * Get per-user meta key for latest imported Contact Form 7 ids.
+	 *
+	 * @return string
+	 */
+	function tmpcoder_get_finish_setup_imported_contact_form_meta_key() {
+		return TMPCODER_PLUGIN_KEY . '_finish_setup_imported_contact_form_ids';
+	}
+}
+
+if ( ! function_exists( 'tmpcoder_get_finish_setup_imported_contact_form_ids' ) ) {
+	/**
+	 * Get latest imported Contact Form 7 ids for current user.
+	 *
+	 * @return int[]
+	 */
+	function tmpcoder_get_finish_setup_imported_contact_form_ids() {
+		if ( ! is_user_logged_in() ) {
+			return array();
+		}
+
+		$stored = get_user_meta( get_current_user_id(), tmpcoder_get_finish_setup_imported_contact_form_meta_key(), true );
+		if ( ! is_array( $stored ) ) {
+			return array();
+		}
+
+		$form_ids = array_values(
+			array_unique(
+				array_filter(
+					array_map( 'absint', $stored )
+				)
+			)
+		);
+
+		return $form_ids;
+	}
+}
+
+if ( ! function_exists( 'tmpcoder_set_finish_setup_imported_contact_form_ids' ) ) {
+	/**
+	 * Persist latest imported Contact Form 7 ids for current user.
+	 *
+	 * @param int[] $form_ids Contact form ids.
+	 * @return void
+	 */
+	function tmpcoder_set_finish_setup_imported_contact_form_ids( $form_ids ) {
+		if ( ! is_user_logged_in() ) {
+			return;
+		}
+
+		$form_ids = array_values(
+			array_unique(
+				array_filter(
+					array_map( 'absint', (array) $form_ids )
+				)
+			)
+		);
+
+		if ( empty( $form_ids ) ) {
+			delete_user_meta( get_current_user_id(), tmpcoder_get_finish_setup_imported_contact_form_meta_key() );
+			return;
+		}
+
+		update_user_meta( get_current_user_id(), tmpcoder_get_finish_setup_imported_contact_form_meta_key(), $form_ids );
+	}
+}
+
+if ( ! function_exists( 'tmpcoder_finish_setup_reset_imported_contact_form_ids_before_import' ) ) {
+	/**
+	 * Reset latest imported Contact Form 7 ids before a new XML import starts.
+	 *
+	 * @return void
+	 */
+	function tmpcoder_finish_setup_reset_imported_contact_form_ids_before_import() {
+		if ( ! wp_doing_ajax() || ! is_user_logged_in() || ! current_user_can( 'customize' ) ) {
+			return;
+		}
+
+		$nonce = isset( $_REQUEST['_ajax_nonce'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['_ajax_nonce'] ) ) : '';
+		if ( ! wp_verify_nonce( $nonce, 'spexo-addons' ) ) {
+			return;
+		}
+
+		tmpcoder_set_finish_setup_imported_contact_form_ids( array() );
+	}
+	add_action( 'tmpcoder_before_import_start', 'tmpcoder_finish_setup_reset_imported_contact_form_ids_before_import', 1 );
+	add_action( 'wp_ajax_tmpcoder-plugin-import-prepare-xml', 'tmpcoder_finish_setup_reset_imported_contact_form_ids_before_import', 1 );
+}
+
+if ( ! function_exists( 'tmpcoder_finish_setup_store_imported_contact_form_id' ) ) {
+	/**
+	 * Add one imported Contact Form 7 id to current user's latest import set.
+	 *
+	 * @param int $form_id Contact form id.
+	 * @return void
+	 */
+	function tmpcoder_finish_setup_store_imported_contact_form_id( $form_id ) {
+		if ( ! is_user_logged_in() || ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+
+		$form_id = absint( $form_id );
+		if ( $form_id <= 0 ) {
+			return;
+		}
+
+		$form_ids   = tmpcoder_get_finish_setup_imported_contact_form_ids();
+		$form_ids[] = $form_id;
+
+		tmpcoder_set_finish_setup_imported_contact_form_ids( $form_ids );
+	}
+}
+
+if ( ! function_exists( 'tmpcoder_finish_setup_handle_imported_contact_form_post' ) ) {
+	/**
+	 * Capture Contact Form 7 ids created during demo import.
+	 *
+	 * @param int   $post_id Imported post id.
+	 * @param array $data    Raw imported post data.
+	 * @return void
+	 */
+	function tmpcoder_finish_setup_handle_imported_contact_form_post( $post_id, $data ) {
+		$post_type = isset( $data['post_type'] ) ? sanitize_key( (string) $data['post_type'] ) : '';
+		if ( 'wpcf7_contact_form' !== $post_type ) {
+			return;
+		}
+
+		tmpcoder_finish_setup_store_imported_contact_form_id( $post_id );
+	}
+	add_action( 'tmpcoder_importer.processed.post', 'tmpcoder_finish_setup_handle_imported_contact_form_post', 20, 2 );
+}
+
+if ( ! function_exists( 'tmpcoder_finish_setup_find_existing_contact_form_id_from_import_data' ) ) {
+	/**
+	 * Resolve already-imported Contact Form 7 post id from importer data.
+	 *
+	 * @param array $data Raw imported post data.
+	 * @return int
+	 */
+	function tmpcoder_finish_setup_find_existing_contact_form_id_from_import_data( $data ) {
+		global $wpdb;
+
+		$guid = isset( $data['guid'] ) ? esc_url_raw( (string) $data['guid'] ) : '';
+		if ( '' === $guid ) {
+			return 0;
+		}
+
+		$post_id = (int) $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT ID FROM {$wpdb->posts} WHERE post_type = %s AND guid = %s LIMIT 1",
+				'wpcf7_contact_form',
+				$guid
+			)
+		);
+
+		return $post_id > 0 ? $post_id : 0;
+	}
+}
+
+if ( ! function_exists( 'tmpcoder_finish_setup_handle_already_imported_contact_form_post' ) ) {
+	/**
+	 * Capture Contact Form 7 ids when importer skips forms that already exist.
+	 *
+	 * @param array $data Raw imported post data.
+	 * @return void
+	 */
+	function tmpcoder_finish_setup_handle_already_imported_contact_form_post( $data ) {
+		$post_type = isset( $data['post_type'] ) ? sanitize_key( (string) $data['post_type'] ) : '';
+		if ( 'wpcf7_contact_form' !== $post_type ) {
+			return;
+		}
+
+		$post_id = tmpcoder_finish_setup_find_existing_contact_form_id_from_import_data( $data );
+		if ( $post_id > 0 ) {
+			tmpcoder_finish_setup_store_imported_contact_form_id( $post_id );
+		}
+	}
+	add_action( 'tmpcoder_importer.process_already_imported.post', 'tmpcoder_finish_setup_handle_already_imported_contact_form_post', 20, 1 );
+}
+
+if ( ! function_exists( 'tmpcoder_get_finish_setup_contact_form_review_url' ) ) {
+	/**
+	 * Build Contact Form 7 review URL, including imported form highlight ids when available.
+	 *
+	 * @return string
+	 */
+	function tmpcoder_get_finish_setup_contact_form_review_url() {
+		$base_url = admin_url( 'admin.php?page=wpcf7' );
+		$form_ids = tmpcoder_get_finish_setup_imported_contact_form_ids();
+
+		if ( empty( $form_ids ) ) {
+			return $base_url;
+		}
+
+		return add_query_arg(
+			'tmpcoder_highlight_forms',
+			implode( ',', $form_ids ),
+			$base_url
+		);
+	}
+}
+
+if ( ! function_exists( 'tmpcoder_get_finish_setup_requested_contact_form_ids' ) ) {
+	/**
+	 * Get requested Contact Form 7 ids to highlight on admin list page.
+	 *
+	 * @return int[]
+	 */
+	function tmpcoder_get_finish_setup_requested_contact_form_ids() {
+		$raw_ids = isset( $_GET['tmpcoder_highlight_forms'] ) ? sanitize_text_field( wp_unslash( $_GET['tmpcoder_highlight_forms'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if ( '' === $raw_ids ) {
+			return array();
+		}
+
+		$form_ids = array_values(
+			array_unique(
+				array_filter(
+					array_map( 'absint', explode( ',', $raw_ids ) )
+				)
+			)
+		);
+
+		return $form_ids;
+	}
+}
+
 if ( ! function_exists( 'tmpcoder_finish_setup_get_action_tracking_item_ids' ) ) {
 	/**
 	 * Get item IDs that require click->save flow to auto-complete.
@@ -446,6 +673,105 @@ if ( ! function_exists( 'tmpcoder_finish_setup_handle_contact_form_save_completi
 		}
 	}
 	add_action( 'wpcf7_after_save', 'tmpcoder_finish_setup_handle_contact_form_save_completion' );
+}
+
+if ( ! function_exists( 'tmpcoder_finish_setup_maybe_render_contact_form_highlight_notice' ) ) {
+	/**
+	 * Show which imported Contact Form 7 forms should be reviewed.
+	 *
+	 * @return void
+	 */
+	function tmpcoder_finish_setup_maybe_render_contact_form_highlight_notice() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+
+		$page = isset( $_GET['page'] ) ? sanitize_key( wp_unslash( $_GET['page'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if ( 'wpcf7' !== $page ) {
+			return;
+		}
+
+		$form_ids = tmpcoder_get_finish_setup_requested_contact_form_ids();
+		if ( empty( $form_ids ) ) {
+			return;
+		}
+
+		$links = array();
+		foreach ( $form_ids as $form_id ) {
+			$title = get_the_title( $form_id );
+			if ( '' === $title ) {
+				$title = sprintf(
+					/* translators: %d is Contact Form 7 post id. */
+					__( 'Form #%d', 'sastra-essential-addons-for-elementor' ),
+					$form_id
+				);
+			}
+
+			$links[] = sprintf(
+				'<a href="%1$s">%2$s</a>',
+				esc_url( admin_url( 'admin.php?page=wpcf7&post=' . absint( $form_id ) . '&action=edit' ) ),
+				esc_html( $title )
+			);
+		}
+
+		if ( empty( $links ) ) {
+			return;
+		}
+		?>
+		<div class="notice notice-info">
+			<p>
+				<?php
+				echo wp_kses_post(
+					sprintf(
+						/* translators: %s is a comma-separated list of Contact Form 7 edit links. */
+						__( 'These Contact Form 7 forms were imported with your latest demo import and are highlighted below: %s', 'sastra-essential-addons-for-elementor' ),
+						implode( ', ', $links )
+					)
+				);
+				?>
+			</p>
+		</div>
+		<?php
+	}
+	add_action( 'admin_notices', 'tmpcoder_finish_setup_maybe_render_contact_form_highlight_notice' );
+}
+
+if ( ! function_exists( 'tmpcoder_finish_setup_maybe_enqueue_contact_form_highlight_assets' ) ) {
+	/**
+	 * Highlight imported Contact Form 7 rows on admin list page.
+	 *
+	 * @return void
+	 */
+	function tmpcoder_finish_setup_maybe_enqueue_contact_form_highlight_assets() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+
+		$page = isset( $_GET['page'] ) ? sanitize_key( wp_unslash( $_GET['page'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if ( 'wpcf7' !== $page ) {
+			return;
+		}
+
+		$form_ids = tmpcoder_get_finish_setup_requested_contact_form_ids();
+		if ( empty( $form_ids ) ) {
+			return;
+		}
+
+		wp_register_style( 'tmpcoder-finish-setup-contact-form-highlight', false, array(), TMPCODER_PLUGIN_VER );
+		wp_enqueue_style( 'tmpcoder-finish-setup-contact-form-highlight' );
+		wp_add_inline_style(
+			'tmpcoder-finish-setup-contact-form-highlight',
+			'#wpcf7-contact-form-list-table tr.tmpcoder-finish-setup-highlight{background:#f5efff !important;box-shadow:inset 4px 0 0 #5729d9;}#wpcf7-contact-form-list-table tr.tmpcoder-finish-setup-highlight td{background:transparent !important;}#wpcf7-contact-form-list-table tr.tmpcoder-finish-setup-highlight .row-title{color:#5729d9;font-weight:600;}'
+		);
+
+		wp_register_script( 'tmpcoder-finish-setup-contact-form-highlight', false, array( 'jquery' ), TMPCODER_PLUGIN_VER, true );
+		wp_enqueue_script( 'tmpcoder-finish-setup-contact-form-highlight' );
+		wp_add_inline_script(
+			'tmpcoder-finish-setup-contact-form-highlight',
+			'(function($){var ids=' . wp_json_encode( array_values( $form_ids ) ) . ';$(function(){var firstRow=null;ids.forEach(function(id){var $row=$("#wpcf7-contact-form-list-table a.row-title").filter(function(){var href=$(this).attr("href")||"";return href.indexOf("post="+id)!==-1;}).first().closest("tr");if($row.length){$row.addClass("tmpcoder-finish-setup-highlight");if(!firstRow){firstRow=$row;}}});if(firstRow&&firstRow.length&&firstRow.get(0)&&typeof firstRow.get(0).scrollIntoView==="function"){firstRow.get(0).scrollIntoView({behavior:"smooth",block:"center"});}});})(jQuery);'
+		);
+	}
+	add_action( 'admin_enqueue_scripts', 'tmpcoder_finish_setup_maybe_enqueue_contact_form_highlight_assets' );
 }
 
 if ( ! function_exists( 'tmpcoder_finish_setup_handle_woo_product_save_completion' ) ) {
@@ -844,7 +1170,7 @@ if ( ! function_exists( 'tmpcoder_get_finish_setup_sections' ) ) {
 						'id'         => 'review_contact_form',
 						'label'      => __( 'Review contact form', 'sastra-essential-addons-for-elementor' ),
 						'action'     => __( 'Review', 'sastra-essential-addons-for-elementor' ),
-						'action_url' => admin_url( 'admin.php?page=wpcf7' ),
+						'action_url' => tmpcoder_get_finish_setup_contact_form_review_url(),
 						'help_url'   => esc_url( TMPCODER_DOCUMENTATION_URL . 'form-styler/' ),
 						'done'       => false,
 					),

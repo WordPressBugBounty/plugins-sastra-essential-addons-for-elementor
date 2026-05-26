@@ -730,7 +730,7 @@ class Spexo_AI_Manager {
                                 <option value="low" <?php selected($value, 'low'); ?>><?php esc_html_e('Low', 'sastra-essential-addons-for-elementor'); ?></option>
                                 <option value="high" <?php selected($value, 'high'); ?>><?php esc_html_e('High', 'sastra-essential-addons-for-elementor'); ?></option>
                             </select>
-                            <p class="tmpcoder-smooth-scroll-field-description"><?php esc_html_e('Level of detail for image analysis. High uses more tokens.', 'sastra-essential-addons-for-elementor'); ?></p>
+                            <span class="spexo-woo-config-toggle-description"><?php esc_html_e('Level of detail for image analysis. High uses more tokens.', 'sastra-essential-addons-for-elementor'); ?></span>
                             <?php if ( ! $is_pro ) : ?>
                             <a class="spexo-upgrade-link" href="<?php echo esc_url( $upgrade_link ); ?>" target="_blank" rel="noopener noreferrer">
                                 <img src="<?php echo esc_url( TMPCODER_ADDONS_ASSETS_URL . 'images/premium-icon-purple.svg' ); ?>" alt="" aria-hidden="true">
@@ -804,7 +804,7 @@ class Spexo_AI_Manager {
                             <input type="number" name="spexo_ai_options[daily_token_limit]" id="daily_token_limit" value="<?php echo esc_attr($value); ?>" min="0" step="1000" class="spexo-woo-page-config-input form-control-number-label form-control" data-default="1000000" />
                             <span class="spexo-woo-page-config-suffix">tokens</span>
                         </div>
-                        <span class="tmpcoder-smooth-scroll-field-description"><?php esc_html_e('Set to 0 for unlimited usage.', 'sastra-essential-addons-for-elementor'); ?></span>
+                        <span class="spexo-woo-config-toggle-description"><?php esc_html_e('Set to 0 for unlimited usage.', 'sastra-essential-addons-for-elementor'); ?></span>
                     </div>
                 </div>
             </div>

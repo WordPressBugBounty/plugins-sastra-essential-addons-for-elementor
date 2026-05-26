@@ -568,7 +568,10 @@ body .tmpcoder-license-validation-popup-wrap .button {
     width: calc(100% - 36px);
 }
 .toplevel_page_spexo-welcome .tmpcoder-settings-page .tmpcoder-elements .tmpcoder-element .tmpcoder-element-info .tmpcoder-element-lable{
+    position: relative;
     width: 36px;
+    flex-shrink: 0;
+    overflow: hidden;
 }
 .toplevel_page_spexo-welcome .tmpcoder-settings-page .tmpcoder-elements .tmpcoder-element .wi-icon img{
     width: 16px;
@@ -703,7 +706,7 @@ body .tmpcoder-license-validation-popup-wrap .button {
 }
 .main-header-logo img{
     width: unset !important;
-    max-width: 180px;
+    max-width: 180px!important;
 }
 .btn-group-main{
     text-align: right;
@@ -1673,8 +1676,28 @@ body.spexo-addons_page_spexo_addons_global_settings .tmpcoder-set-global-fonts-p
     order: 2;
 }
 .toplevel_page_spexo-welcome .tmpcoder-settings-page-header .tmpcoder-preview-buttons{
+    display: flex;
+    flex-wrap: wrap;
     order: 1;
+    gap: 10px;
     width: fit-content;
+}
+.toplevel_page_spexo-welcome .tmpcoder-settings-page-header .tmpcoder-preview-buttons .tmpcoder-translate-templates .dashicons-admin-site:before {
+    vertical-align: middle;
+}
+.toplevel_page_spexo-welcome .tmpcoder-settings-page-header .tmpcoder-preview-buttons .tmpcoder-translate-templates i {
+    font-size: 15px;
+    margin-right: 5px;
+}
+.toplevel_page_spexo-welcome .tmpcoder-settings-page-header .tmpcoder-preview-buttons .tmpcoder-translate-templates a {
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    border: 1px solid #bf1864!important;
+    padding: 8px 20px!important;
+}
+.toplevel_page_spexo-welcome .tmpcoder-settings-page-header .tmpcoder-preview-buttons .tmpcoder-translate-templates {
+    order: 2;
 }
 .toplevel_page_spexo-welcome .tmpcoder-settings-page-header .tmpcoder-preview-buttons .tmpcoder-user-template{
     display: flex;
@@ -1724,6 +1747,22 @@ body.spexo-addons_page_spexo_addons_global_settings .tmpcoder-set-global-fonts-p
 .tmpcoder-site-builder-page .tmpcoder-prebuilt-demo-doc-link .btn-link i{ font-size: 18px; height: 18px; width: 18px; margin-right: 8px; top: 0; }
 .tmpcoder-site-builder-page .tmpcoder-prebuilt-demo-doc-link .btn-link:hover{ background: #bf1864; color: #fff;}
 
+.tmpcoder-site-builder-page .tmpcoder-prebuilt-demo-doc-link.tmpcoder-translate-templates {
+    display: inline-block;
+}
+.tmpcoder-site-builder-page .tmpcoder-prebuilt-demo-doc-link .btn-link:hover i {
+	color: #fff;
+}
+.tmpcoder-import-demo-right .tmpcoder-translate-templates a {
+    margin-right: 10px;
+    font-size: 13px!important;
+    padding: 8px 12px!important;
+}
+.tmpcoder-import-demo-right .tmpcoder-translate-templates i {
+    font-size: 16px!important;
+    margin-right: 5px!important;
+    top: 3px!important;
+}
 /* Popup Builder: Create Popup button in header (top right) */
 .tmpcoder-popup-builder-page .site-builder-main header {
     display: flex;
@@ -3938,12 +3977,20 @@ body:not(.spexo-addons_page_tmpcoder-import-demo):not(.toplevel_page_spexo-welco
     font-weight: 600;
 }
 
-.tmpcoder-my-templates-list .tmpcoder-template-card-inner .tmpcoder-action-buttons {
+.tmpcoder-layout-tabs .tmpcoder-my-templates-list .tmpcoder-action-buttons {
     flex: 0 0 auto;
     display: flex;
     align-items: center;
     flex-wrap: wrap;
     gap: 6px 8px;
+}
+
+.tmpcoder-my-templates-list .tmpcoder-action-buttons a {
+    font-size: 13px;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: all 400ms ease;
+    cursor: pointer;
 }
 
 .tmpcoder-popup-library-wrap * {
@@ -4228,11 +4275,26 @@ body.toplevel_page_spexo-welcome .tmpcoder-popup-library-wrap .tmpcoder-tplib-fi
     margin: 0;
     flex-wrap: wrap;
     height: auto;
-    align-items: flex-start;
+    align-items: stretch;
+    position: relative;
+}
+.plugin-settings-part-custom > .row::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 300px;
+    height: 100%;
+    background: #fff;
+    border-radius: 10px 0 0 10px;
+    z-index: 0;
+    pointer-events: none;
 }
 .plugin-settings-part-custom > .row > * {
     padding: 0;
     box-sizing: border-box;
+    position: relative;
+    z-index: 1;
 }
 .plugin-settings-part-custom > .row > .col-xl-4 {
     width: 300px;
@@ -4241,20 +4303,27 @@ body.toplevel_page_spexo-welcome .tmpcoder-popup-library-wrap .tmpcoder-tplib-fi
     align-self: flex-start;
     max-height: calc(100vh - 48px);
     min-height: 0;
+    background: transparent;
+    overflow: hidden;
 }
 .plugin-settings-part-custom > .row > .col-xl-8 {
     width: calc(100% - 300px);
     padding: 24px 24px 24px 24px;
     height: auto;
-    overflow: visible;
+    overflow-x: clip;
+    overflow-y: visible;
+    isolation: isolate;
 }
 .plugin-settings-part-custom .col-xl-4 > .nav-tab-wrapper {
     padding: 24px !important;
     padding-bottom: 44px !important;
-    background: #fff;
+    background: transparent;
     position: relative;
     top: auto;
-    max-height: 100%;
+    width: 100%;
+    height: auto;
+    max-height: calc(100vh - 96px);
+    box-sizing: border-box;
     overflow-x: hidden;
     overflow-y: auto;
     overscroll-behavior: contain;
@@ -4267,13 +4336,16 @@ body.spexo-addons_page_spexo_addons_global_settings .plugin-settings-part-custom
     top: 32px !important;
     align-self: flex-start !important;
     max-height: calc(100vh - 48px) !important;
+    min-height: 0 !important;
+    background: transparent !important;
     overflow: hidden !important;
 }
 body.toplevel_page_spexo-welcome .plugin-settings-part-custom .col-xl-4 > .nav-tab-wrapper,
 body.spexo-addons_page_spexo_addons_global_settings .plugin-settings-part-custom .col-xl-4 > .nav-tab-wrapper {
     position: relative !important;
     top: auto !important;
-    max-height: calc(100vh - 48px) !important;
+    width: 100% !important;
+    max-height: calc(100vh - 96px) !important;
     height: auto !important;
     overflow-y: auto !important;
     overflow-x: hidden !important;
@@ -4654,6 +4726,9 @@ body.spexo-addons_page_spexo_addons_global_settings .wp-color-result-text {
 }
 
 @media (max-width: 1599px) {
+    .plugin-settings-part-custom > .row::before {
+        width: 250px;
+    }
     .plugin-settings-part-custom > .row > .col-xl-4 {
         width: 250px;
     }
@@ -4674,6 +4749,9 @@ body.spexo-addons_page_spexo_addons_global_settings .wp-color-result-text {
     .plugin-settings-part-custom > .row {
         height: auto;
     }
+    .plugin-settings-part-custom > .row::before {
+        display: none;
+    }
     .plugin-settings-part-custom > .row > .col-xl-8 {
         height: auto;
         overflow: visible;
@@ -4682,11 +4760,14 @@ body.spexo-addons_page_spexo_addons_global_settings .wp-color-result-text {
         position: static;
         top: auto;
         max-height: none;
+        background: #fff;
+        overflow: visible;
     }
     .plugin-settings-part-custom .col-xl-4 > .nav-tab-wrapper {
         position: static;
         top: auto;
         max-height: none;
+        background: #fff;
     }
 }
 
@@ -4694,3 +4775,4 @@ body.spexo-addons_page_spexo_addons_global_settings .wp-color-result-text {
     color: #ffffff!important;
     background-color: #ff0000!important;
 }
+

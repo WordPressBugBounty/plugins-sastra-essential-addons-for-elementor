@@ -2812,7 +2812,7 @@ body .next-step-action .next-step-btn:focus{
     color: #fff !important;
     line-height: 16px !important;
     transition: all 400ms ease;
-    vertical-align: middle;
+    vertical-align: sub;
 }
 .spexo-plugin-wizard .spexo-wizard-final-step__submit:hover {
     background: #fff !important;
@@ -3034,6 +3034,7 @@ body .next-step-action .next-step-btn:focus{
     font-size: 16px;
     line-height: 16px !important;
     color: #fff !important;
+    vertical-align: sub!important;
 }
 .spexo-plugin-wizard .spexo-wizard-import-progress-step__view-site:hover {
     background: #fff;
@@ -3200,7 +3201,7 @@ body .next-step-action .next-step-btn:focus{
   100% {background-size:35px 15px,15px 15px,15px 35px,35px 35px}
 }
 
-.notice1, .notice, .updated, .update-nag, .error, .warning {
+.notice1, .notice, .updated, .update-nag, .error, .warning, div.fs-notice.promotion {
     display: none !important;
 }
 

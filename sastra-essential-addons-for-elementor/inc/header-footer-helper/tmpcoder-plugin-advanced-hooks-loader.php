@@ -75,11 +75,29 @@ if ( ! class_exists( 'TMPCODER_Advanced_Hooks_Loader' ) ) {
 			// Show only active tab posts in custom layout.
 			add_action( 'parse_query', array( $this, 'admin_query_filter_types' ) );
 
+			// Custom header + hide core "Add New" on Site Builder list table.
+			add_action( 'admin_head', array( $this, 'site_builder_list_screen_styles' ), 1 );
+
 		}
 
-		public function tmpcoder_admin_enqueue_scripts_func()
+		/**
+		 * Whether the current admin screen is the Site Builder post list.
+		 *
+		 * @return bool
+		 */
+		public function is_site_builder_list_screen() {
+			global $pagenow, $typenow;
+
+			return ( 'edit.php' === $pagenow && ! empty( $typenow ) && TMPCODER_THEME_ADVANCED_HOOKS_POST_TYPE === $typenow );
+		}
+
+		public function tmpcoder_admin_enqueue_scripts_func( $hook = '' )
 		{
 			wp_enqueue_style( 'tmpcoder-admin-style', TMPCODER_PLUGIN_URI . 'inc/header-footer-helper/assets/css/tmpcoder-admin'.tmpcoder_script_suffix().'.css', [], tmpcoder_get_plugin_version() );
+
+			if ( $this->is_site_builder_list_screen() ) {
+				wp_add_inline_style( 'tmpcoder-admin-style', $this->get_site_builder_list_inline_css() );
+			}
 
 		    $is_dismissed = get_user_meta( get_current_user_id(), 'tmpcoder-popup' );
 
@@ -122,14 +140,14 @@ if ( ! class_exists( 'TMPCODER_Advanced_Hooks_Loader' ) ) {
                 $labels = array(
                     'name'          => esc_html_x( 'Site Builder', 'advanced-hooks general name', 'sastra-essential-addons-for-elementor' ),
                     'singular_name' => esc_html_x( 'Custom Layout', 'advanced-hooks singular name', 'sastra-essential-addons-for-elementor' ),
-                    'search_items'  => esc_html__( 'Search Theme Layouts', 'sastra-essential-addons-for-elementor' ),
-                    'all_items'     => esc_html__( 'All Theme Layouts', 'sastra-essential-addons-for-elementor' ),
-                    'edit_item'     => esc_html__( 'Edit Custom Layout', 'sastra-essential-addons-for-elementor' ),
-                    'view_item'     => esc_html__( 'View Custom Layout', 'sastra-essential-addons-for-elementor' ),
+                    'search_items'  => esc_html__( 'Search Site Builder', 'sastra-essential-addons-for-elementor' ),
+                    'all_items'     => esc_html__( 'All Site Builders', 'sastra-essential-addons-for-elementor' ),
+                    'edit_item'     => esc_html__( 'Edit Site Builder', 'sastra-essential-addons-for-elementor' ),
+                    'view_item'     => esc_html__( 'View Site Builder', 'sastra-essential-addons-for-elementor' ),
                     'add_new'       => esc_html__( 'Add New', 'sastra-essential-addons-for-elementor' ),
-                    'update_item'   => esc_html__( 'Update Custom Layout', 'sastra-essential-addons-for-elementor' ),
+                    'update_item'   => esc_html__( 'Update Site Builder', 'sastra-essential-addons-for-elementor' ),
                     'add_new_item'  => esc_html__( 'Add New', 'sastra-essential-addons-for-elementor' ),
-                    'new_item_name' => esc_html__( 'New Custom Layout Name', 'sastra-essential-addons-for-elementor' ),
+                    'new_item_name' => esc_html__( 'New Site Builder Name', 'sastra-essential-addons-for-elementor' ),
                 );
 
                 $rest_support = true;
@@ -446,7 +464,118 @@ if ( ! class_exists( 'TMPCODER_Advanced_Hooks_Loader' ) ) {
 		 *
 		 * @return array An updated array of available list table views.
 		 */
+		/**
+		 * Critical CSS for Site Builder list (inlined in head to prevent FOUC).
+		 *
+		 * @return string
+		 */
+		public function get_site_builder_list_inline_css() {
+			$pt = TMPCODER_THEME_ADVANCED_HOOKS_POST_TYPE;
+
+			return '
+				.post-type-' . $pt . ' #wpwrap{background:#f0f5fa;}
+				.post-type-' . $pt . ' #wpbody-content > .wrap{margin-top:16px;}
+				.post-type-' . $pt . ' .wrap > .page-title-action,
+				.post-type-' . $pt . ' .wrap > h1{display:none!important;}
+				.post-type-' . $pt . ' .wrap > hr.wp-header-end{display:none!important;}
+				.post-type-' . $pt . ' .tmpcoder-site-builder-list-shell.site-builder-main{margin:50px 0 20px;padding:20px 24px 16px;box-shadow:0 0 15px rgb(64 110 157 / 3%);background-color:#fff;border-radius:10px;}
+				.post-type-' . $pt . ' .tmpcoder-site-builder-list-header{margin:0 0 4px;padding:0;}
+				.post-type-' . $pt . ' .tmpcoder-site-builder-list-header .tmpcoder-import-demo-left{width:100%;}
+				.post-type-' . $pt . ' .tmpcoder-site-builder-list-header .tmpcoder-import-demo-logo{display:flex;align-items:center;flex-wrap:wrap;gap:12px 16px;height:auto;min-height:44px;}
+				.post-type-' . $pt . ' .tmpcoder-site-builder-list-logo{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;background:#5729d9;box-shadow:0 4px 12px rgb(87 41 217 / 28%);flex-shrink:0;}
+				.post-type-' . $pt . ' .tmpcoder-site-builder-list-logo img{display:block;width:40px;height:40px;}
+				.post-type-' . $pt . ' .tmpcoder-site-builder-list-header .tmpcoder-import-demo-logo h1{margin:0;padding:0;font-size:23px;font-weight:600;line-height:1.3;color:#1d2327;flex:1 1 auto;min-width:140px;}
+				.post-type-' . $pt . ' .tmpcoder-site-builder-list-header .tmpcoder-prebuilt-demo-doc-link{margin-left:auto;padding:0;}
+				.post-type-' . $pt . ' .tmpcoder-site-builder-list-header .tmpcoder-prebuilt-demo-doc-link .btn-link{display:inline-flex;align-items:center;gap:6px;color:#bf1864;border:1px solid #bf1864;font-size:14px;font-weight:500;padding:9px 15px;border-radius:4px;text-decoration:none;background:#fff;line-height:1.4;}
+				.post-type-' . $pt . ' .tmpcoder-site-builder-list-header .tmpcoder-prebuilt-demo-doc-link .btn-link i{font-size:18px;width:18px;height:18px;margin:0;top:0;}
+				.post-type-' . $pt . ' .tmpcoder-site-builder-list-shell .tmpcoder-custom-layout-tabs-wrapper{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 0;padding:0;border:0;}
+				.post-type-' . $pt . ' .tmpcoder-site-builder-list-shell .tmpcoder-custom-layout-tabs-wrapper .nav-tab{float:none;margin:0!important;border-radius:4px!important;color:#727272!important;border:1px solid #e8e8e8!important;padding:8px 18px!important;font-weight:600;font-size:13px!important;line-height:1.4!important;background:#fff;}
+				.post-type-' . $pt . ' .tmpcoder-site-builder-list-shell .tmpcoder-custom-layout-tabs-wrapper .nav-tab.nav-tab-active,
+				.post-type-' . $pt . ' .tmpcoder-site-builder-list-shell .tmpcoder-custom-layout-tabs-wrapper .nav-tab.nav-tab-active:hover{color:#fff!important;border-color:#5729d9!important;background:#5729d9;}
+				.post-type-' . $pt . ' .subsubsub{margin-top:4px;}
+				.post-type-' . $pt . ' .tablenav.top{margin-top:12px;}
+				.post-type-' . $pt . ' .wp-list-table{border-radius:10px;overflow:hidden;box-shadow:0 0 15px rgb(64 110 157 / 3%);}
+				.post-type-' . $pt . ' .wrap:not(:has(.tmpcoder-site-builder-list-shell)) .subsubsub,
+				.post-type-' . $pt . ' .wrap:not(:has(.tmpcoder-site-builder-list-shell)) .tablenav,
+				.post-type-' . $pt . ' .wrap:not(:has(.tmpcoder-site-builder-list-shell)) .wp-list-table{visibility:hidden;}
+			';
+		}
+
+		/**
+		 * Print critical CSS in head before body paint (avoids FOUC when .min.css is stale).
+		 */
+		public function site_builder_list_screen_styles() {
+			if ( ! $this->is_site_builder_list_screen() ) {
+				return;
+			}
+
+			echo '<style id="tmpcoder-site-builder-list-critical-css">' . $this->get_site_builder_list_inline_css() . '</style>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- CSS from controlled source.
+		}
+
+		/**
+		 * Modern view URL for the list screen back button.
+		 *
+		 * @return string
+		 */
+		public function get_site_builder_modern_view_url() {
+			$layout_type = ! empty( $_GET['layout_type'] ) // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+				? sanitize_text_field( wp_unslash( $_GET['layout_type'] ) ) // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+				: '';
+
+			if ( 'type_popup' === $layout_type ) {
+				$modern_view_url = function_exists( 'tmpcoder_generate_admin_url' )
+					? tmpcoder_generate_admin_url( 'popup-builder' )
+					: admin_url( 'admin.php?page=spexo-welcome&tab=popup-builder' );
+			} else {
+				$modern_view_url = function_exists( 'tmpcoder_generate_admin_url' )
+					? tmpcoder_generate_admin_url( 'site-builder' )
+					: admin_url( 'admin.php?page=spexo-welcome&tab=site-builder' );
+
+				if ( '' !== $layout_type ) {
+					$modern_view_url = add_query_arg( 'layout_type', $layout_type, $modern_view_url );
+				}
+			}
+
+			return $modern_view_url;
+		}
+
+		/**
+		 * Output Site Builder list shell opening + header (PHP, no footer JS).
+		 */
+		public function render_site_builder_list_header_block() {
+			$logo_url        = TMPCODER_ADDONS_ASSETS_URL . 'images/logo-40x40.svg';
+			$modern_view_url = $this->get_site_builder_modern_view_url();
+			?>
+			<div class="tmpcoder-site-builder-list-shell site-builder-main common-box-shadow">
+				<header class="tmpcoder-site-builder-list-header">
+					<div class="tmpcoder-import-demo-left">
+						<div class="tmpcoder-import-demo-logo">
+							<span class="tmpcoder-site-builder-list-logo" aria-hidden="true">
+								<img src="<?php echo esc_url( $logo_url ); ?>" alt="" width="24" height="24" />
+							</span>
+							<h1><?php esc_html_e( 'Site Builder', 'sastra-essential-addons-for-elementor' ); ?></h1>
+							<div class="tmpcoder-prebuilt-demo-doc-link tmpcoder-site-builder-modern-view-link">
+								<a href="<?php echo esc_url( $modern_view_url ); ?>" class="btn-link">
+									<i class="dashicons dashicons-arrow-left-alt" aria-hidden="true"></i>
+									<?php esc_html_e( 'Back to Modern View', 'sastra-essential-addons-for-elementor' ); ?>
+								</a>
+							</div>
+						</div>
+					</div>
+				</header>
+			<?php
+		}
+
 		public function admin_print_tabs( $views ) {
+			static $site_builder_list_ui_rendered = false;
+
+			if ( $site_builder_list_ui_rendered ) {
+				return $views;
+			}
+
+			$site_builder_list_ui_rendered = true;
+
+			$this->render_site_builder_list_header_block();
 
 			$current_type = '';
 			$active_class = ' nav-tab-active';
@@ -467,7 +596,7 @@ if ( ! class_exists( 'TMPCODER_Advanced_Hooks_Loader' ) ) {
 			$baseurl = add_query_arg( $url_args, admin_url( 'edit.php' ) );
 
 			?>
-				<div class="nav-tab-wrapper tmpcoder-custom-layout-tabs-wrapper">
+				<div class="nav-tab-wrapper tmpcoder-nav-tab-wrapper tmpcoder-custom-layout-tabs-wrapper">
 					<?php
 					foreach ( $custom_layout_types as $type => $title ) {
 						$type_url = esc_url( add_query_arg( 'layout_type', $type, $baseurl ) );
@@ -483,6 +612,7 @@ if ( ! class_exists( 'TMPCODER_Advanced_Hooks_Loader' ) ) {
 					}
 					?>
 				</div>
+			</div>
 			<?php
 
 			return $views;

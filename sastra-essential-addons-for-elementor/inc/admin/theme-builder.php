@@ -15,6 +15,22 @@ function tmpcoder_addons_add_theme_builder_menu() {
 
 add_action( 'admin_menu', 'tmpcoder_addons_add_theme_builder_menu', 99 );
 
+/**
+ * WPML translate templates link (matches tmpcoder-prebuilt-demo-doc-link button style).
+ *
+ * @param string $url Admin URL for filtered templates list.
+ */
+function tmpcoder_render_wpml_translate_templates_link( $url ) {
+	?>
+	<div class="tmpcoder-prebuilt-demo-doc-link tmpcoder-translate-templates">
+		<a href="<?php echo esc_url( $url ); ?>" class="btn-link">
+			<i class="dashicons dashicons-admin-site" aria-hidden="true"></i>
+			<?php esc_html_e( 'Translate WPML Templates', 'sastra-essential-addons-for-elementor' ); ?>
+		</a>
+	</div>
+	<?php
+}
+
 function tmpcoder_addons_theme_builder_page() {
  
 ?>
@@ -96,17 +112,7 @@ function tmpcoder_addons_theme_builder_page() {
                     </a>
                 </div>
 
-        <?php
-            if ( is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
-                $url = '';
-                if ( 'tmpcoder_tab_my_templates' === $active_tab ) {
-                    $url = admin_url( 'edit.php?post_type=elementor_library&tabs_group=library' );
-                } else {
-                    $url = admin_url( 'edit.php?s&post_status=all&post_type=tmpcoder_templates&tmpcoder_template_type='. str_replace("tmpcoder_tab_", "", $active_tab) .'&filter_action=Filter' );
-                }
-                echo '<a href="' . esc_url( $url ) . '" class="button button-primary tmpcoder-translate-templates tmpcoder-options-button"><span class="dashicons dashicons-admin-site"></span><span>'.esc_html__('Translate WPML Templates', 'sastra-essential-addons-for-elementor').'</span></a>';
-            }
-        ?>
+        
             <?php if ( $active_tab == 'type_header' ) : ?>
 
                 <!-- Save Conditions -->
@@ -217,6 +223,19 @@ function tmpcoder_addons_theme_builder_page() {
                         }
                         ?>
                     </div>
+
+                    <?php
+                        if ( is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
+                            $url = '';
+                            if ( 'type_global_template' === $active_tab ) {
+                                $url = admin_url( 'edit.php?post_type=elementor_library&tabs_group=library' );
+                            } else {
+                                $url = admin_url( 'edit.php?s&post_status=all&post_type=theme-advanced-hook&layout_type='. str_replace("tmpcoder_tab_", "", $active_tab) .'&filter_action=Filter' );
+                            }
+                            tmpcoder_render_wpml_translate_templates_link( $url );
+                        }
+                    ?>
+
                 </div>
             </div>
         </div>
@@ -346,6 +365,12 @@ function tmpcoder_popup_builder_page() {
                         </div>
                     </div>
                     <div class="tmpcoder-import-demo-right">
+                        <?php
+                            if ( is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
+                                $wpml_popup_templates_url = admin_url( 'edit.php?s&post_status=all&post_type=theme-advanced-hook&layout_type=type_popup&filter_action=Filter' );
+                                tmpcoder_render_wpml_translate_templates_link( $wpml_popup_templates_url );
+                            }
+                        ?>
                         <div class="tmpcoder-user-template tmpcoder-create-popup-btn" role="button" tabindex="0">
                             <span class="tmpcoder-create-popup-icon">+</span>
                             <span><?php esc_html_e( 'Create Popup', 'sastra-essential-addons-for-elementor' ); ?></span>

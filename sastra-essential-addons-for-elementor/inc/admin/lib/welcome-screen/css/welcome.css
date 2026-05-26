@@ -580,6 +580,9 @@
     background-color: #ff3434;
     color: #fff;
 }
+.reg-form .tmpcoder-notice {
+    padding: 8px 15px !important;
+}
 .tmpcoder-notice.tmpcoder-success {
     background-color: #43A047;
     color: #fff;

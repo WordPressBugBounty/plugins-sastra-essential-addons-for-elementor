@@ -1,9 +1,9 @@
 === Spexo Addons for Elementor - Elementor Widgets, Mega Menu, Popup Builder, Template Kits and Starter Templates for Elementor ===
 Contributors: templatescoderthemes, skywebtech
 Tags: elementor addons, elementor widgets, woocommerce elementor, header footer builder, elementor templates
-Stable tag: 1.0.34
+Stable tag: 1.0.35
 Requires at least: 5.0
-Tested up to: 6.9
+Tested up to: 7.0
 Requires PHP: 7.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -387,6 +387,17 @@ Feel free to contact us anytime via [Support](https://fastthemes.com/support/?re
 
 == Changelog ==
 
+= 1.0.35 - 25-May-2026 =
+
+Improvements
+
+* Added: Full compatibility and support for the WPML Multilingual CMS.
+* Added: Compatibility with WordPress 7.0
+
+Bug Fixes
+
+* Minor bug fixes
+
 = 1.0.34 - 15-May-2026 =
 
 Improvements:
@@ -428,13 +439,5 @@ Improvements
 * Improved: Added direct documentation links inside widget editors for quick access while editing
 * Updated: Compatibility with Elementor 3.35.6
 
-= 1.0.30 - 07-Febuary-2026 =
-
-* Fixed minor bugs and improved performance and stability.
-
-= 1.0.29 - 27-January-2026 =
-
-* Improved the Elementor template import process for more reliable and smoother imports
-* Fixed minor issues and made small performance and stability improvements
-
 [See changelog for all versions.](https://spexoaddons.com/changelog/)
+
