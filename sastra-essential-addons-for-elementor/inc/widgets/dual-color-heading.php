@@ -364,7 +364,7 @@ class TMPCODER_Dual_Color_Heading extends Widget_Base {
 			]
 		);
 
-		$this->add_control(
+		$this->add_responsive_control(
 			'primary_heading_radius',
 			[
 				'label' => esc_html__( 'Border Radius', 'sastra-essential-addons-for-elementor' ),
@@ -560,7 +560,7 @@ class TMPCODER_Dual_Color_Heading extends Widget_Base {
 			]
 		);
 
-		$this->add_control(
+		$this->add_responsive_control(
 			'secondary_heading_radius',
 			[
 				'label' => esc_html__( 'Border Radius', 'sastra-essential-addons-for-elementor' ),

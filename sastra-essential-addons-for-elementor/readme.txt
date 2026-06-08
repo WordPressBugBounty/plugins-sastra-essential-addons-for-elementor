@@ -1,7 +1,7 @@
 === Spexo Addons for Elementor - Elementor Widgets, Mega Menu, Popup Builder, Template Kits and Starter Templates for Elementor ===
 Contributors: templatescoderthemes, skywebtech
 Tags: elementor addons, elementor widgets, woocommerce elementor, header footer builder, elementor templates
-Stable tag: 1.0.35
+Stable tag: 1.0.36
 Requires at least: 5.0
 Tested up to: 7.0
 Requires PHP: 7.4
@@ -23,7 +23,8 @@ Spexo Addons includes a wide range of Elementor widgets for layouts, marketing s
 **Useful Links** 👇
 
 - [Live Widget Demo](https://spexoaddons.com/widgets/)
-- [Free Templates for Elementor](https://spexoaddons.com/spexo-elementor-theme/)
+- [Free Templates for Elementor](https://spexoaddons.com/templates/)
+- [Free Theme](https://spexoaddons.com/spexo-elementor-theme/)
 - [Documentation](https://spexoaddons.com/documentation)
 - [Need Support?](https://fastthemes.com/support/)
 
@@ -194,7 +195,7 @@ https://www.youtube.com/watch?v=9FVni0rGjOM
 
 Spexo Addons provides ready to use Elementor templates and starter websites that help launch websites faster.
 
-Explore all templates in the [Elementor Templates Library](https://spexoaddons.com/spexo-elementor-theme/).
+Explore all templates in the [Elementor Templates Library](https://spexoaddons.com/templates/).
 
 Templates are available for many industries:
 
@@ -239,7 +240,7 @@ Spexo Addons works with most themes that support Elementor.
 
 Commonly used themes include:
 
-- Spexo Theme
+- [Spexo Theme](https://spexoaddons.com/spexo-elementor-theme/)
 - Hello Elementor
 - Astra
 - GeneratePress
@@ -377,7 +378,7 @@ Feel free to contact us anytime via [Support](https://fastthemes.com/support/?re
 
 == Screenshots ==
 
-1. Quickly create website using Spexo Addons 
+1. Quickly create website using Spexo Addons
 2. Huge collection of ready to use Elementor Templates
 3. Ready to use Elementor Widgets and Element Pack
 4. Masonary Grid Widget for Elementor
@@ -386,6 +387,12 @@ Feel free to contact us anytime via [Support](https://fastthemes.com/support/?re
 7. Elementor Post Grid, Slider & Carousel Widget: Post Grid / Post Slider / Post Carousel
 
 == Changelog ==
+
+= 1.0.36 - 08-June-2026 =
+
+Bug Fixes
+
+* General bug fixes and performance improvements.
 
 = 1.0.35 - 25-May-2026 =
 
@@ -410,7 +417,7 @@ New:
  
 * Redesigned Setup Wizard experience for faster and smoother onboarding.
 * Added new WP Login & Register Elementor Widget.
-* Added new Coupon Code  Elementor Widget.
+* Added new Coupon Code Elementor Widget.
 
 Improvements:
 
@@ -426,18 +433,4 @@ Improvements
 
 * Updated compatibility with Elementor 4.0.2.
 
-= 1.0.31 - 23-March-2026 =
-
-* Added: Popup Builder to create fully custom popups using Spexo Addons without coding
-* Added: Prebuilt popup templates including  
-    - [Subscribe Popups](https://spexoaddons.com/widgets/elementor-popup-builder/#model-popup)  
-    - [Cookie Notices](https://spexoaddons.com/widgets/elementor-popup-builder/#corner-popup)  
-    - [Top Bar Banners](https://spexoaddons.com/widgets/elementor-popup-builder/#slide-popup)  
-    - [Corner Box Popups](https://spexoaddons.com/widgets/elementor-popup-builder/#corner-popup)  
-    - [Discount Coupon Popup](https://spexoaddons.com/widgets/elementor-popup-builder/#corner-popup)  
-    - [Announcements and more](https://spexoaddons.com/widgets/elementor-popup-builder/#popup-examples)
-* Improved: Added direct documentation links inside widget editors for quick access while editing
-* Updated: Compatibility with Elementor 3.35.6
-
 [See changelog for all versions.](https://spexoaddons.com/changelog/)
-

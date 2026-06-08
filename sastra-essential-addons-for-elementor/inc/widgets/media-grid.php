@@ -45,8 +45,6 @@ class TMPCODER_Media_Grid extends Widget_Base {
 
 		if ( ! tmpcoder_elementor()->preview->is_preview_mode() ) {
 			$settings = $this->get_settings();
-			$settings_new = $this->get_settings_for_display();
-			$settings = array_merge( $settings, $settings_new );
 
 			if ( $settings['layout_select'] != 'slider' ) {
 				unset( $depends['tmpcoder-slick'] );
@@ -54,11 +52,12 @@ class TMPCODER_Media_Grid extends Widget_Base {
 				unset( $depends['tmpcoder-isotope'] );
 			}
 
-			$filtered = array_filter($settings['grid_elements'], function($element) {
-			    return isset($element['element_select']) && $element['element_select'] === 'lightbox';
-			});
+			$grid_elements = ( isset( $settings['grid_elements'] ) && is_array( $settings['grid_elements'] ) ) ? $settings['grid_elements'] : [];
+			$filtered = array_filter( $grid_elements, function( $element ) {
+			    return isset( $element['element_select'] ) && 'lightbox' === $element['element_select'];
+			} );
 
-			if (!$filtered) {
+			if ( ! $filtered ) {
 				unset( $depends['tmpcoder-lightgallery'] );	
 			}
 		}
@@ -73,11 +72,10 @@ class TMPCODER_Media_Grid extends Widget_Base {
 		if ( !tmpcoder_elementor()->preview->is_preview_mode() ) {
 
 			$settings = $this->get_settings();
-			$settings_new = $this->get_settings_for_display();
-			$settings = array_merge( $settings, $settings_new );
-			$filtered = array_filter($settings['grid_elements'], function($element) {
-			    return isset($element['element_select']) && $element['element_select'] === 'lightbox';
-			});
+			$grid_elements = ( isset( $settings['grid_elements'] ) && is_array( $settings['grid_elements'] ) ) ? $settings['grid_elements'] : [];
+			$filtered = array_filter( $grid_elements, function( $element ) {
+			    return isset( $element['element_select'] ) && 'lightbox' === $element['element_select'];
+			} );
 
 			if ($settings['layout_pagination'] != 'yes') {
 				unset( $depends['tmpcoder-loading-animations-css'] );	
@@ -89,6 +87,97 @@ class TMPCODER_Media_Grid extends Widget_Base {
 		}
 
 		return array_keys($depends);
+	}
+
+	/**
+	 * Merge display settings for UI while preserving raw query/filter logic values.
+	 */
+	protected function get_render_settings() {
+		$raw     = $this->get_settings();
+		$display = $this->get_settings_for_display();
+		$settings = array_merge( $raw, $display );
+
+		foreach ( $raw as $key => $value ) {
+			if ( $this->is_logic_setting_key( $key ) ) {
+				$settings[ $key ] = $value;
+			}
+		}
+
+		return $settings;
+	}
+
+	/**
+	 * Settings that must stay raw (not overwritten by get_settings_for_display()).
+	 */
+	protected function is_logic_setting_key( $key ) {
+		if ( 0 === strpos( $key, 'query_' ) ) {
+			return true;
+		}
+
+		$logic_keys = [
+			'filters_select',
+			'filters_linkable',
+			'filters_hide_empty',
+			'filters_all',
+			'filters_count',
+			'filters_count_brackets',
+			'filters_default_filter',
+			'filters_icon_align',
+			'filters_separator_align',
+			'filters_deeplinking',
+			'layout_select',
+			'layout_filters',
+			'layout_pagination',
+			'layout_animation',
+			'layout_animation_duration',
+			'pagination_type',
+		];
+
+		return in_array( $key, $logic_keys, true );
+	}
+
+	/**
+	 * Resolve taxonomy term from ajax-select2 value (slug or legacy numeric ID).
+	 */
+	protected function get_filter_term( $value, $taxonomy ) {
+		if ( is_numeric( $value ) ) {
+			return get_term_by( 'id', (int) $value, $taxonomy );
+		}
+
+		return get_term_by( 'slug', $value, $taxonomy );
+	}
+
+	/**
+	 * Normalize numeric widget settings for safe math operations.
+	 */
+	protected function get_int_setting( $settings, $key, $default = 0 ) {
+		if ( ! isset( $settings[ $key ] ) || '' === $settings[ $key ] || null === $settings[ $key ] ) {
+			return (int) $default;
+		}
+
+		return (int) $settings[ $key ];
+	}
+
+	/**
+	 * Normalize float widget settings for duration/time calculations.
+	 */
+	protected function get_float_setting( $settings, $key, $default = 0.0 ) {
+		if ( ! isset( $settings[ $key ] ) || '' === $settings[ $key ] || null === $settings[ $key ] ) {
+			return (float) $default;
+		}
+
+		return (float) $settings[ $key ];
+	}
+
+	/**
+	 * Read responsive slider/dimension control size safely.
+	 */
+	protected function get_slider_size( $settings, $key, $fallback = 0 ) {
+		if ( isset( $settings[ $key ]['size'] ) && '' !== $settings[ $key ]['size'] && null !== $settings[ $key ]['size'] ) {
+			return $settings[ $key ]['size'];
+		}
+
+		return $fallback;
 	}
 
 	public function add_control_query_randomize() {
@@ -952,14 +1041,13 @@ class TMPCODER_Media_Grid extends Widget_Base {
 			$this->add_control(
 				'query_taxonomy_'. $slug,
 				[
-					'label' => $tax,
+					'label' => $tax->label,
 					'type' => 'tmpcoder-ajax-select2',
 					'options' => 'ajaxselect2/get_taxonomies',
 					'query_slug' => $slug,
 					'multiple' => true,
 					'label_block' => true,
 					'condition' => [
-						'query_source' => $post_type,
 						'query_selection' => 'dynamic',
 					],
 				]
@@ -6567,8 +6655,6 @@ class TMPCODER_Media_Grid extends Widget_Base {
 	// Main Query Args
 	public function get_main_query_args() {
 		$settings = $this->get_settings();
-$settings_new = $this->get_settings_for_display();
-$settings = array_merge( $settings, $settings_new );
 		$author = ! empty( $settings[ 'query_author' ] ) ? implode( ',', $settings[ 'query_author' ] ) : '';
 
 		// Get Paged
@@ -6579,12 +6665,16 @@ $settings = array_merge( $settings, $settings_new );
 		} else {
 			$paged = 1;
 		}
-		
-		if ( empty($settings['query_offset']) ) {
-			$settings[ 'query_offset' ] = 0;
+
+		$paged = max( 1, (int) $paged );
+		$posts_per_page = $this->get_int_setting( $settings, 'query_posts_per_page', 12 );
+		$query_offset = $this->get_int_setting( $settings, 'query_offset', 0 );
+
+		if ( $posts_per_page <= 0 ) {
+			$posts_per_page = 12;
 		}
-		
-		$offset = ( $paged - 1 ) * $settings['query_posts_per_page'] + $settings[ 'query_offset' ];
+
+		$offset = ( $paged - 1 ) * $posts_per_page + $query_offset;
 
 		if ( ! tmpcoder_is_availble() ) {
 			$settings[ 'query_randomize' ] = '';
@@ -6617,7 +6707,7 @@ $settings = array_merge( $settings, $settings_new );
         	'post_status' => 'inherit',
 			'tax_query' => $this->get_tax_query_args(),
 			'post__not_in' => $ids_array,
-			'posts_per_page' => $settings['query_posts_per_page'],
+			'posts_per_page' => $posts_per_page,
 			'orderby' => $query_order_by,
 			'author' => $author,
 			'paged' => $paged,
@@ -6648,8 +6738,7 @@ $settings = array_merge( $settings, $settings_new );
 				'post__in' => $post_ids,
 				'orderby' => $orderby,
 				'paged' => $paged,
-				'posts_per_page' => $settings['query_posts_per_page'],
-				'paged' => $paged,
+				'posts_per_page' => $posts_per_page,
 			];
 		}
 
@@ -6663,16 +6752,21 @@ $settings = array_merge( $settings, $settings_new );
 	// Taxonomy Query Args
 	public function get_tax_query_args() {
 		$settings = $this->get_settings();
-$settings_new = $this->get_settings_for_display();
-$settings = array_merge( $settings, $settings_new );
 		$tax_query = [];
 
 		foreach ( get_object_taxonomies( 'attachment' ) as $tax ) {
-			if ( ! empty($settings[ 'query_taxonomy_'. $tax ]) ) {
+			if ( ! empty( $settings[ 'query_taxonomy_' . $tax ] ) ) {
+				$terms = $settings[ 'query_taxonomy_' . $tax ];
+				$field = 'slug';
+
+				if ( is_array( $terms ) && ! empty( $terms ) && is_numeric( reset( $terms ) ) ) {
+					$field = 'id';
+				}
+
 				array_push( $tax_query, [
 					'taxonomy' => $tax,
-					'field' => 'id',
-					'terms' => $settings[ 'query_taxonomy_'. $tax ]
+					'field' => $field,
+					'terms' => $terms,
 				] );
 			}
 		}
@@ -7138,8 +7232,9 @@ $settings = array_merge( $settings, $settings_new );
 	// Get Elements by Location
 	public function get_elements_by_location( $location, $settings, $post_id ) {
 		$locations = [];
+		$grid_elements = ( isset( $settings['grid_elements'] ) && is_array( $settings['grid_elements'] ) ) ? $settings['grid_elements'] : [];
 
-		foreach ( $settings['grid_elements'] as $data ) {
+		foreach ( $grid_elements as $data ) {
 			$place = $data['element_location'];
 			$align_vr = $data['element_align_vr'];
 
@@ -7209,6 +7304,10 @@ $settings = array_merge( $settings, $settings_new );
 
 	// Render Grid Filters
 	public function render_grid_filters( $settings ) {
+		if ( 'yes' !== $settings['layout_filters'] ) {
+			return;
+		}
+
 		$taxonomy = $settings['filters_select'];
 
 		// Return if Disabled
@@ -7228,8 +7327,9 @@ $settings = array_merge( $settings, $settings_new );
 		}
 
 		// Icon
-		$left_icon = 'left' === $settings['filters_icon_align'] ? '<i class="'. esc_attr($settings['filters_icon']['value']) .' tmpcoder-grid-filters-icon-left"></i>' : '';
-		$right_icon = 'right' === $settings['filters_icon_align'] ? '<i class="'. esc_attr($settings['filters_icon']['value']) .' tmpcoder-grid-filters-icon-right"></i>' : '';
+		$filter_icon_value = ( is_array( $settings['filters_icon'] ) && ! empty( $settings['filters_icon']['value'] ) ) ? $settings['filters_icon']['value'] : '';
+		$left_icon = ( 'left' === $settings['filters_icon_align'] && $filter_icon_value ) ? '<i class="'. esc_attr( $filter_icon_value ) .' tmpcoder-grid-filters-icon-left"></i>' : '';
+		$right_icon = ( 'right' === $settings['filters_icon_align'] && $filter_icon_value ) ? '<i class="'. esc_attr( $filter_icon_value ) .' tmpcoder-grid-filters-icon-right"></i>' : '';
 		
 		// Separator
 		$left_separator = 'left' === $settings['filters_separator_align'] ? '<em class="tmpcoder-grid-filters-sep">'. esc_attr($settings['filters_separator']) .'</em>' : '';
@@ -7259,7 +7359,12 @@ $settings = array_merge( $settings, $settings_new );
 			$parent_filters = [];
 			
 			foreach ( $custom_filters as $key => $term_id ) {
-				$filter = get_term_by( 'id', $term_id, $taxonomy );
+				$filter = $this->get_filter_term( $term_id, $taxonomy );
+
+				if ( ! $filter || is_wp_error( $filter ) ) {
+					continue;
+				}
+
 				$data_attr = 'post_tag' === $taxonomy ? 'tag-'. $filter->slug : $taxonomy .'-'. $filter->slug;
 
 				// Parent Filters
@@ -7547,21 +7652,21 @@ $settings = array_merge( $settings, $settings_new );
 			}
 		}
 
-		$gutter_hr_widescreen = isset($settings['layout_gutter_hr_widescreen']['size']) ? $settings['layout_gutter_hr_widescreen']['size'] : $settings['layout_gutter_hr']['size'];
-		$gutter_hr_desktop = $settings['layout_gutter_hr']['size'];
-		$gutter_hr_laptop = isset($settings['layout_gutter_hr_laptop']['size']) ? $settings['layout_gutter_hr_laptop']['size'] : $gutter_hr_desktop;
-		$gutter_hr_tablet_extra = isset($settings['layout_gutter_hr_tablet_extra']['size']) ? $settings['layout_gutter_hr_tablet_extra']['size'] : $gutter_hr_laptop;
-		$gutter_hr_tablet = isset($settings['layout_gutter_hr_tablet']['size']) ? $settings['layout_gutter_hr_tablet']['size'] : $gutter_hr_tablet_extra;
-		$gutter_hr_mobile_extra = isset($settings['layout_gutter_hr_mobile_extra']['size']) ? $settings['layout_gutter_hr_mobile_extra']['size'] : $gutter_hr_tablet;
-		$gutter_hr_mobile = isset($settings['layout_gutter_hr_mobile']['size']) ? $settings['layout_gutter_hr_mobile']['size'] : $gutter_hr_mobile_extra;
+		$gutter_hr_desktop = $this->get_slider_size( $settings, 'layout_gutter_hr', 10 );
+		$gutter_hr_widescreen = $this->get_slider_size( $settings, 'layout_gutter_hr_widescreen', $gutter_hr_desktop );
+		$gutter_hr_laptop = $this->get_slider_size( $settings, 'layout_gutter_hr_laptop', $gutter_hr_desktop );
+		$gutter_hr_tablet_extra = $this->get_slider_size( $settings, 'layout_gutter_hr_tablet_extra', $gutter_hr_laptop );
+		$gutter_hr_tablet = $this->get_slider_size( $settings, 'layout_gutter_hr_tablet', $gutter_hr_tablet_extra );
+		$gutter_hr_mobile_extra = $this->get_slider_size( $settings, 'layout_gutter_hr_mobile_extra', $gutter_hr_tablet );
+		$gutter_hr_mobile = $this->get_slider_size( $settings, 'layout_gutter_hr_mobile', $gutter_hr_mobile_extra );
 
-		$gutter_vr_widescreen = isset($settings['layout_gutter_vr_widescreen']['size']) ? $settings['layout_gutter_vr_widescreen']['size'] : $settings['layout_gutter_vr']['size'];
-		$gutter_vr_desktop = $settings['layout_gutter_vr']['size'];
-		$gutter_vr_laptop = isset($settings['layout_gutter_vr_laptop']['size']) ? $settings['layout_gutter_vr_laptop']['size'] : $gutter_vr_desktop;
-		$gutter_vr_tablet_extra = isset($settings['layout_gutter_vr_tablet_extra']['size']) ? $settings['layout_gutter_vr_tablet_extra']['size'] : $gutter_vr_laptop;
-		$gutter_vr_tablet = isset($settings['layout_gutter_vr_tablet']['size']) ? $settings['layout_gutter_vr_tablet']['size'] : $gutter_vr_tablet_extra;
-		$gutter_vr_mobile_extra = isset($settings['layout_gutter_vr_mobile_extra']['size']) ? $settings['layout_gutter_vr_mobile_extra']['size'] : $gutter_vr_tablet;
-		$gutter_vr_mobile = isset($settings['layout_gutter_vr_mobile']['size']) ? $settings['layout_gutter_vr_mobile']['size'] : $gutter_vr_mobile_extra;
+		$gutter_vr_desktop = $this->get_slider_size( $settings, 'layout_gutter_vr', 10 );
+		$gutter_vr_widescreen = $this->get_slider_size( $settings, 'layout_gutter_vr_widescreen', $gutter_vr_desktop );
+		$gutter_vr_laptop = $this->get_slider_size( $settings, 'layout_gutter_vr_laptop', $gutter_vr_desktop );
+		$gutter_vr_tablet_extra = $this->get_slider_size( $settings, 'layout_gutter_vr_tablet_extra', $gutter_vr_laptop );
+		$gutter_vr_tablet = $this->get_slider_size( $settings, 'layout_gutter_vr_tablet', $gutter_vr_tablet_extra );
+		$gutter_vr_mobile_extra = $this->get_slider_size( $settings, 'layout_gutter_vr_mobile_extra', $gutter_vr_tablet );
+		$gutter_vr_mobile = $this->get_slider_size( $settings, 'layout_gutter_vr_mobile', $gutter_vr_mobile_extra );
 
 		//:TODO
 		$layout_settings = [
@@ -7607,7 +7712,7 @@ $settings = array_merge( $settings, $settings_new );
 			'iframeMaxWidth' => '60%',
 			'hash' => false,
 			'autoplay' => $settings['lightbox_popup_autoplay'],
-			'pause' => $settings['lightbox_popup_pause'] * 1000,
+			'pause' => absint( $this->get_float_setting( $settings, 'lightbox_popup_pause', 0 ) * 1000 ),
 			'progressBar' => $settings['lightbox_popup_progressbar'],
 			'counter' => $settings['lightbox_popup_counter'],
 			'controls' => $settings['lightbox_popup_arrows'],
@@ -7643,15 +7748,15 @@ $settings = array_merge( $settings, $settings_new );
 		$slider_options = [
 			'rtl' => $slider_is_rtl,
 			'infinite' => ( $settings['layout_slider_loop'] === 'yes' ),
-			'speed' => absint( $settings['layout_slider_effect_duration'] * 1000 ),
+			'speed' => absint( $this->get_float_setting( $settings, 'layout_slider_effect_duration', 0.3 ) * 1000 ),
 			'arrows' => true,
 			'dots' => true,
 			'autoplay' => ( $settings['layout_slider_autoplay'] === 'yes' ),
-			'autoplaySpeed' => absint( $settings['layout_slider_autoplay_duration'] * 1000 ),
+			'autoplaySpeed' => absint( $this->get_float_setting( $settings, 'layout_slider_autoplay_duration', 0 ) * 1000 ),
 			'pauseOnHover' => $settings['layout_slider_pause_on_hover'],
 			'prevArrow' => '#tmpcoder-grid-slider-prev-'. $this->get_id(),
 			'nextArrow' => '#tmpcoder-grid-slider-next-'. $this->get_id(),
-			'sliderSlidesToScroll' => +$settings['layout_slides_to_scroll'],
+			'sliderSlidesToScroll' => $this->get_int_setting( $settings, 'layout_slides_to_scroll', 1 ),
 			'sliderRows' => isset($settings['layout_slider_rows']) ? $settings['layout_slider_rows'] : 1
 		];
 
@@ -7667,7 +7772,7 @@ $settings = array_merge( $settings, $settings_new );
 			'iframeMaxWidth' => '60%',
 			'hash' => false,
 			'autoplay' => $settings['lightbox_popup_autoplay'],
-			'pause' => $settings['lightbox_popup_pause'] * 1000,
+			'pause' => absint( $this->get_float_setting( $settings, 'lightbox_popup_pause', 0 ) * 1000 ),
 			'progressBar' => $settings['lightbox_popup_progressbar'],
 			'counter' => $settings['lightbox_popup_counter'],
 			'controls' => $settings['lightbox_popup_arrows'],
@@ -7692,9 +7797,7 @@ $settings = array_merge( $settings, $settings_new );
 
 	protected function render() {
 		// Get Settings
-		$settings = $this->get_settings();
-		$settings_new = $this->get_settings_for_display();
-		$settings = array_merge( $settings, $settings_new );
+		$settings = $this->get_render_settings();
 		// Get Posts
 		$posts = new \WP_Query( $this->get_main_query_args() );
 
@@ -7706,7 +7809,9 @@ $settings = array_merge( $settings, $settings_new );
 		// Grid Settings
 		if ( 'slider' !== $settings['layout_select'] ) {
 			// Filters
-			$this->render_grid_filters( $settings );
+			if ( 'yes' === $settings['layout_filters'] ) {
+				$this->render_grid_filters( $settings );
+			}
 
 			$this->add_grid_settings( $settings );
 			$render_attribute = $this->get_render_attribute_string( 'grid-settings' );

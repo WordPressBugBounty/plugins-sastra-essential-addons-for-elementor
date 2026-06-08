@@ -2848,7 +2848,7 @@ body.spexo-addons_page_spexo_addons_global_settings #global_theme_options_sastra
 body.spexo-addons_page_spexo_addons_global_settings .redux-container .redux-sidebar .redux-group-menu li.hasSubSections.redux-section-hover>a::after{
     border-right-color: #484848;
 }
-body.spexo-addons_page_spexo_addons_global_settings .tmpcoder-theme-welcome{ padding-bottom: 24px; }
+body.spexo-addons_page_spexo_addons_global_settings .tmpcoder-theme-welcome{ padding-bottom: 0px; }
 body.spexo-addons_page_spexo_addons_global_settings .wrap{ margin-top: 0; }
 .spexo-addons_page_tmpcoder-tools-page .inte-settings{ width: auto; }
 .spexo-addons_page_tmpcoder-tools-page .tmpcoder-section-info-wrap{ display: block; border-radius: 10px; padding: 30px; }
@@ -4304,7 +4304,7 @@ body.toplevel_page_spexo-welcome .tmpcoder-popup-library-wrap .tmpcoder-tplib-fi
     max-height: calc(100vh - 48px);
     min-height: 0;
     background: transparent;
-    overflow: hidden;
+    overflow: unset;
 }
 .plugin-settings-part-custom > .row > .col-xl-8 {
     width: calc(100% - 300px);
@@ -4338,7 +4338,7 @@ body.spexo-addons_page_spexo_addons_global_settings .plugin-settings-part-custom
     max-height: calc(100vh - 48px) !important;
     min-height: 0 !important;
     background: transparent !important;
-    overflow: hidden !important;
+    overflow: unset; !important;
 }
 body.toplevel_page_spexo-welcome .plugin-settings-part-custom .col-xl-4 > .nav-tab-wrapper,
 body.spexo-addons_page_spexo_addons_global_settings .plugin-settings-part-custom .col-xl-4 > .nav-tab-wrapper {
@@ -4359,6 +4359,7 @@ body.spexo-addons_page_spexo_addons_global_settings .plugin-settings-part-custom
 }
 .spexo-addons-admin-page #wpbody-content {
     padding-bottom: 40px !important;
+    float: unset;
 }
 /*.spexo-addons-admin-page #wpbody-content > .clear {
     display: none;
@@ -4725,11 +4726,94 @@ body.spexo-addons_page_spexo_addons_global_settings .wp-color-result-text {
     padding: 8px 15px;
 }
 
+
+
+
+
+
+
+
+
+body.spexo-addons-admin-page #wpwrap {
+    display: flex;
+    flex-wrap: wrap;
+}
+body.spexo-addons-admin-page #wpcontent {
+    width: calc(100% - 160px);
+    margin-left: 0;
+    height: unset;
+    display: flex;
+    flex-wrap: wrap;
+}
+body.spexo-addons-admin-page #wpcontent > * {
+    width: 100%;
+}
+body.spexo-addons-admin-page #wpcontent > .clear {
+    display: none;
+}
+body.spexo-addons-admin-page #wpbody {
+    display: flex;
+    flex-wrap: wrap;
+}
+body.spexo-addons-admin-page #wpbody-content {
+    display: flex;
+    flex-wrap: wrap;
+}
+body.spexo-addons-admin-page #wpbody-content > * {
+    width: 100%;
+}
+body.spexo-addons-admin-page #wpbody-content > .clear {
+    display: none;
+}
+body.spexo-addons-admin-page .tmpcoder-theme-wrap {
+    display: flex;
+    flex-wrap: wrap;
+}
+body.spexo-addons-admin-page .tmpcoder-theme-wrap > * {
+    width: 100%;
+}
+body.spexo-addons-admin-page .tmpcoder-theme-wrap hr.wp-header-end {
+    display: none;
+}
+body.spexo-addons-admin-page .tmpcoder-theme-wrap .about-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    padding-bottom: 0;
+    min-height: 100vh;
+}
+body.spexo-addons-admin-page .tmpcoder-theme-wrap .about-wrap > * {
+    width: 100%;
+}
+body.spexo-addons-admin-page .tmpcoder-theme-wrap .about-wrap .plugin-settings-part-custom {
+    height: calc(100% - 66px);
+    display: flex;
+    flex-wrap: wrap;
+}
+body.spexo-addons-admin-page .tmpcoder-theme-wrap .about-wrap .plugin-settings-part-custom .row {
+    width: 100%;
+}
+body.spexo-addons-admin-page #wpwrap #wpfooter {
+    z-index: 1;
+}
+body.spexo-addons-admin-page #wpwrap #adminmenumain {
+    width: 160px;
+}
+body.spexo-addons-admin-page.folded #wpwrap #adminmenumain {
+    width: 36px;
+}
+body.spexo-addons-admin-page.folded #wpcontent {
+    width: calc(100% - 36px);
+}
+
 @media (max-width: 1599px) {
     .plugin-settings-part-custom > .row::before {
         width: 250px;
     }
     .plugin-settings-part-custom > .row > .col-xl-4 {
+        width: 250px;
+    }
+    .plugin-settings-part-custom > .row > .col-xl-4::before {
         width: 250px;
     }
     .plugin-settings-part-custom > .row > .col-xl-8 {
