@@ -378,6 +378,7 @@ if ( !class_exists('TemplatesWidgetRegister') ){
             TMPCODER_PLUGIN_URI . 'assets/js/woo-grid-classic/general'. tmpcoder_script_suffix() .'.js',
             [
               'jquery',
+              'wp-hooks',
               'elementor-frontend'
             ],
             tmpcoder_get_plugin_version(),
@@ -425,7 +426,8 @@ if ( !class_exists('TemplatesWidgetRegister') ){
               'i18n'               => [
                 'added'   => __( 'Added ', 'sastra-essential-addons-for-elementor' ),
                 'compare' => __( 'Compare', 'sastra-essential-addons-for-elementor' ),
-                'loading' => esc_html__( 'Loading...', 'sastra-essential-addons-for-elementor' )
+                'loading' => esc_html__( 'Loading...', 'sastra-essential-addons-for-elementor' ),
+                'product_unavailable' => __( 'Sorry, this product is unavailable. Please choose a different combination.', 'sastra-essential-addons-for-elementor' ),
               ],
               'tmpcoder_translate_text' => [
                 'required_text' => esc_html__( 'is a required field', 'sastra-essential-addons-for-elementor' ),

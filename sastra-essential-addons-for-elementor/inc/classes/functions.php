@@ -723,7 +723,7 @@ if (!function_exists('tmpcoder_animation_timings')) {
 	}
 }
 
-if (!function_exists('tmpcoder_is_availble')) {
+if ( ! function_exists( 'tmpcoder_is_availble' ) && ! defined( 'TMPCODER_ADDONS_PRO_VERSION' ) ) {
 	
 	function tmpcoder_is_availble(){
 		return false;
@@ -1882,14 +1882,16 @@ function tmpcoder_disabled_unused_elements( $post_id = '', $tmpcoder_widgets_lis
 add_filter( 'loop_shop_per_page', 'tmpcoder_shop_products_per_page', 20 );
 
 function tmpcoder_shop_products_per_page( $cols ) {
- 
+
 	if( is_product_category() ){
-		return get_option('tmpcoder_woo_shop_cat_ppp', 6);
+		$per_page = intval( tmpcoder_get_settings( 'tmpcoder_woo_shop_cat_ppp', 6 ) );
 	} else if(is_product_tag()){
-		return get_option('tmpcoder_woo_shop_tag_ppp', 6);
+		$per_page = intval( tmpcoder_get_settings( 'tmpcoder_woo_shop_tag_ppp', 6 ) );
 	} else {
-	 	return get_option('tmpcoder_woo_shop_ppp', 6);
+		$per_page = intval( tmpcoder_get_settings( 'tmpcoder_woo_shop_ppp', 6 ) );
 	}
+	
+	return $per_page ? $per_page : 6;
 }
 
 /**

@@ -199,6 +199,11 @@ trait Ajax_Handler {
 						$this->change_add_woo_checkout_update_order_reviewto_cart_text( $add_to_cart_text );
 					}
 
+					if ( $class === '\TMPCODER\Widgets\Product_Grid' ) {
+						$this->maybe_apply_added_to_cart_action_filter( $settings );
+						$this->maybe_apply_out_of_stock_atc_filter( $settings );
+					}
+
 					if ( $class === '\Spexo_Addons_Elementor\Pro\Elements\Dynamic_Filterable_Gallery' ) {
 						$html .= "<div class='found_posts' style='display: none;'>{$found_posts}</div>";
 					}
@@ -295,14 +300,41 @@ trait Ajax_Handler {
 
 
 		$template_info = $this->tmpcoder_sanitize_template_param( $_REQUEST['templateInfo'] );
+		$template      = false;
 
-		$this->set_widget_name( $template_info['name'] );
-		$template = realpath( $this->get_template( $template_info['file_name'] ) );
+		if ( $template_info ) {
+			if ( 'theme' === $template_info['dir'] ) {
+				$dir_path = $this->retrive_theme_path();
+			} elseif ( 'pro' === $template_info['dir'] ) {
+				$dir_path = sprintf( '%sinc', TMPCODER_PLUGIN_DIR );
+			} else {
+				$dir_path = sprintf( '%sinc', TMPCODER_PLUGIN_DIR );
+			}
+
+			$template = realpath(
+				sprintf(
+					'%s/woocommerce/%s/%s',
+					$dir_path,
+					$template_info['name'],
+					$template_info['file_name']
+				)
+			);
+
+			if ( ! $template || 0 !== strpos( $template, realpath( $dir_path ) ) ) {
+				$template = false;
+			}
+		}
+
+		$is_product_grid_classic = isset( $template_info['name'] ) && in_array(
+			$template_info['name'],
+			[ 'eicon-woocommerce', 'classic-widget-templates' ],
+			true
+		);
 
 		ob_start();
 		$query = new \WP_Query( $args );
-		if ( $query->have_posts() ) {
-			if ( isset( $template_info['name'] ) && $template_info['name'] === 'eicon-woocommerce' && boolval( $settings['show_add_to_cart_custom_text'] ) ){
+		if ( $query->have_posts() && $template ) {
+			if ( $is_product_grid_classic && boolval( $settings['show_add_to_cart_custom_text'] ) ) {
 				$add_to_cart_text = [
 					'add_to_cart_simple_product_button_text'   => $settings['add_to_cart_simple_product_button_text'],
 					'add_to_cart_variable_product_button_text' => $settings['add_to_cart_variable_product_button_text'],
@@ -311,6 +343,11 @@ trait Ajax_Handler {
 					'add_to_cart_default_product_button_text'  => $settings['add_to_cart_default_product_button_text'],
 				];
 				$this->change_add_woo_checkout_update_order_reviewto_cart_text( $add_to_cart_text );
+			}
+
+			if ( $is_product_grid_classic ) {
+				$this->maybe_apply_added_to_cart_action_filter( $settings );
+				$this->maybe_apply_out_of_stock_atc_filter( $settings );
 			}
 
 			while ( $query->have_posts() ) {

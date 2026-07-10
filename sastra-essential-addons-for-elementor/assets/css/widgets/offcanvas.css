@@ -7,6 +7,10 @@
 	right: 10px;
 }
 
+.tmpcoder-offcanvas-container:has(.tmpcoder-offcanvas-wrap-relative) {
+	position: relative;
+}
+
 .tmpcoder-offcanvas-body-overflow {
 	overflow: hidden;
 }
@@ -19,6 +23,44 @@
 	height: 100vh;
 	display: none;
 	z-index: 9999;
+}
+
+.tmpcoder-offcanvas-wrap.tmpcoder-offcanvas-wrap-relative {
+	position: absolute;
+	top: auto;
+	right: auto;
+	width: auto;
+	height: auto;
+	background-color: transparent;
+	pointer-events: none;
+}
+
+.tmpcoder-offcanvas-wrap.tmpcoder-offcanvas-wrap-relative.tmpcoder-offcanvas-wrap-active::before {
+	content: '';
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	z-index: 0;
+	pointer-events: auto;
+}
+
+.tmpcoder-offcanvas-wrap.tmpcoder-offcanvas-wrap-relative .tmpcoder-offcanvas-content {
+	position: relative;
+	z-index: 1;
+	pointer-events: auto;
+}
+
+.tmpcoder-offcanvas-content.tmpcoder-offcanvas-content-relative {
+	top: auto;
+	left: auto;
+	right: auto;
+	bottom: auto;
+	-webkit-transform: none;
+	-ms-transform: none;
+	transform: none;
+	height: auto;
 }
 
 .tmpcoder-offcanvas-header {

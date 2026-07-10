@@ -15,6 +15,13 @@ use Elementor\Plugin;
 
 class Helper
 {
+	/**
+	 * Temporary context for Product Grid Classic out-of-stock ATC filter.
+	 *
+	 * @var array|null
+	 */
+	public static $tmpcoder_pgc_oos_atc_context = null;
+
 	const TMPCODER_ALLOWED_HTML_TAGS = [
 		'article',
 		'aside',
@@ -383,7 +390,7 @@ class Helper
             $template_info['file_name'] = $settings['tmpcoder_product_grid_template'];
         }
 
-		if( $pagination_Paginationlist > 0 ){
+		if( $pagination_Paginationlist > 1 ){
 
 			$setPagination .="<nav id='{$widget_id}-tmpcoder-pagination' class='tmpcoder-woo-pagination' data-plimit='$paginationLimit' data-totalpage ='{$args['total_post']}' data-widgetid='{$widget_id}' data-pageid='$page_id' data-args='".http_build_query( $args )."'  data-template='".json_encode( $template_info, 1 )."'>";
 			    $setPagination .="<ul class='page-numbers'>";
@@ -934,8 +941,8 @@ class Helper
             $add_button_hidden = in_array( $product->get_id(), $wishlist ) ? 'tmpcoder-button-hidden' : '';
         
             // '. implode( ' ', $wishlist_attributes ) .'
-            echo '<button class="tmpcoder-wishlist-add '. esc_attr($add_button_hidden) .'" '. esc_attr($button_add_title) .' data-product-id=' . esc_attr($product->get_id()) . ''. ' ' . esc_attr(implode( ' ', $wishlist_attributes )) .' >'. wp_kses_post($add_to_wishlist_content) .'</button>';
-            echo '<button class="tmpcoder-wishlist-remove '. esc_attr($remove_button_hidden) .'" '. esc_attr($button_remove_title) .' data-product-id="' . esc_attr($product->get_id()) . '">'. wp_kses_post($remove_from_wishlist_content) .'</button>';
+            echo '<button type="button" class="tmpcoder-wishlist-add '. esc_attr($add_button_hidden) .'" '. esc_attr($button_add_title) .' data-product-id="' . esc_attr($product->get_id()) . '">'. wp_kses_post($add_to_wishlist_content) .'</button>';
+            echo '<button type="button" class="tmpcoder-wishlist-remove '. esc_attr($remove_button_hidden) .'" '. esc_attr($button_remove_title) .' data-product-id="' . esc_attr($product->get_id()) . '">'. wp_kses_post($remove_from_wishlist_content) .'</button>';
 
             echo '</div>';
         echo '</div>';

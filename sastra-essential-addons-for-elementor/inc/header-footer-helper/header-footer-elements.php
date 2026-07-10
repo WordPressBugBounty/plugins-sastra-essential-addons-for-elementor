@@ -84,9 +84,7 @@ if ( ! class_exists('TMPCODER_Header_Footer_Elements') ){
          * Prints the Header content.
          */
         public static function show_builder_content($content) {
-            
             echo wp_kses( $content, tmpcoder_wp_kses_allowed_html() );
-            
         }
 
         /**

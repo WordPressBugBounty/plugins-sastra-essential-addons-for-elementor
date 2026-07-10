@@ -486,7 +486,11 @@ class Product_Grid extends Widget_Base
                 'label' => esc_html__('Columns (Carousel)', 'sastra-essential-addons-for-elementor'),
                 'type' => Controls_Manager::SELECT,
                 'default' => '3',
+                'widescreen_default' => '3',
+                'laptop_default' => '3',
+                'tablet_extra_default' => '2',
                 'tablet_default' => '2',
+                'mobile_extra_default' => '2',
                 'mobile_default' => '1',
                 'options' => [
                     '1' => esc_html__('1', 'sastra-essential-addons-for-elementor'),
@@ -496,6 +500,9 @@ class Product_Grid extends Widget_Base
                     '5' => esc_html__('5', 'sastra-essential-addons-for-elementor'),
                     '6' => esc_html__('6', 'sastra-essential-addons-for-elementor'),
                 ],
+                'prefix_class' => 'tmpcoder-grid-slider-columns-%s',
+                'render_type' => 'template',
+                'frontend_available' => true,
                 'condition' => [
                     'tmpcoder_enable_slider' => 'yes',
                 ],
@@ -1507,6 +1514,22 @@ class Product_Grid extends Widget_Base
                 'ai' => [
                     'active' => false,
                 ],
+            ]
+        );
+
+        $this->add_control(
+            'added_to_cart_action',
+            [
+                'label'       => esc_html__( 'Added To Cart Action', 'sastra-essential-addons-for-elementor' ),
+                'description' => esc_html__( 'Open Mini-cart when product is added to cart.', 'sastra-essential-addons-for-elementor' ),
+                'type'        => Controls_Manager::SELECT,
+                'options'     => [
+                    'none'    => esc_html__( 'None', 'sastra-essential-addons-for-elementor' ),
+                    'sidebar' => esc_html__( 'Open Mini Cart/Sidebar', 'sastra-essential-addons-for-elementor' ),
+                ],
+                'default'     => 'none',
+                'label_block' => true,
+                'separator'   => 'before',
             ]
         );
 
@@ -3794,8 +3817,10 @@ class Product_Grid extends Widget_Base
             [
                 'name' => 'tmpcoder_product_grid_pagination_normal_border',
                 'label' => esc_html__('Border', 'sastra-essential-addons-for-elementor'),
-                'selector' => '{{WRAPPER}} .tmpcoder-woo-pagination a, {{WRAPPER}} .tmpcoder-woo-pagination span, 
-                {{WRAPPER}} .tmpcoder-product-grid-pagination .woocommerce-pagination a',
+                'selector' => '{{WRAPPER}} .tmpcoder-woo-pagination a,
+                            {{WRAPPER}} .tmpcoder-woo-pagination span, 
+                            {{WRAPPER}} .tmpcoder-product-grid-pagination .woocommerce-pagination a,
+                            {{WRAPPER}} .tmpcoder-product-grid-pagination .woocommerce-pagination span',
             ]
         );
 
@@ -4631,6 +4656,9 @@ $settings = array_merge( $settings, $settings_new );
             $this,
             'add_to_cart_button_custom_text',
         ] );
+
+        $this->maybe_apply_added_to_cart_action_filter( $settings );
+        $this->maybe_apply_out_of_stock_atc_filter( $settings );
         ?>
 
         <div <?php $this->print_render_attribute_string('wrap'); ?> >
@@ -4824,6 +4852,7 @@ $settings = array_merge( $settings, $settings_new );
             $this,
             'add_to_cart_button_custom_text',
         ]);
+        $this->maybe_remove_out_of_stock_atc_filter();
         remove_filter( 'single_product_archive_thumbnail_size', [ $this, 'tmpcoder_customize_woo_prod_thumbnail_size' ] );
     }
 

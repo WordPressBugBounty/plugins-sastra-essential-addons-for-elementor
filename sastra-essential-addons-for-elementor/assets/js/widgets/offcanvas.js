@@ -207,17 +207,51 @@
             });
         } else {
 
-            $scope.find('.tmpcoder-offcanvas-trigger').on('click', function () {
-                if (!$scope.find('.tmpcoder-offcanvas-wrap').hasClass('tmpcoder-offcanvas-wrap-active')) {
-                    openOffcanvas($scope.find('.tmpcoder-offcanvas-wrap'));
-                } else if ($scope.find('.tmpcoder-offcanvas-wrap').hasClass('tmpcoder-offcanvas-wrap-active') && $scope.find('.tmpcoder-offcanvas-wrap').hasClass('tmpcoder-offcanvas-wrap-relative')) {
-                    closeOffcanvas($scope.find('.tmpcoder-offcanvas-wrap'));
+            var $wrap = $scope.find('.tmpcoder-offcanvas-wrap');
+
+            var isRelativeOffcanvas = function () {
+                return $wrap.hasClass('tmpcoder-offcanvas-wrap-relative');
+            };
+
+            $scope.find('.tmpcoder-offcanvas-trigger').on('click', function (e) {
+                e.stopPropagation();
+
+                if (!$wrap.hasClass('tmpcoder-offcanvas-wrap-active')) {
+                    openOffcanvas($wrap);
+                } else if ($wrap.hasClass('tmpcoder-offcanvas-wrap-active') && isRelativeOffcanvas()) {
+                    closeOffcanvas($wrap);
                 }
             });
 
-            $scope.find('.tmpcoder-offcanvas-wrap').on('click', function (e) {
+            $wrap.on('click', function (e) {
+                if (isRelativeOffcanvas()) {
+                    return;
+                }
+
                 if (!e.target.classList.value.includes('tmpcoder-offcanvas-content') && !e.target.closest('.tmpcoder-offcanvas-content')) {
-                    closeOffcanvas($scope.find('.tmpcoder-offcanvas-wrap'));
+                    closeOffcanvas($wrap);
+                }
+            });
+
+            $(document).on('click.tmpcoderOffcanvas' + $scope.data('id'), function (e) {
+                if (!isRelativeOffcanvas() || !$wrap.hasClass('tmpcoder-offcanvas-wrap-active')) {
+                    return;
+                }
+
+                if ($(e.target).closest('.tmpcoder-offcanvas-content').length) {
+                    return;
+                }
+
+                if ($(e.target).closest('.tmpcoder-offcanvas-trigger').length) {
+                    return;
+                }
+
+                closeOffcanvas($wrap);
+            });
+
+            $wrap.find('.tmpcoder-offcanvas-content').on('click', function (e) {
+                if (isRelativeOffcanvas()) {
+                    e.stopPropagation();
                 }
             });
 
@@ -227,12 +261,12 @@
 
             $(document).on('keyup', function (event) {
                 if (event.key == "Escape") {
-                    closeOffcanvas($scope.find('.tmpcoder-offcanvas-wrap'));
+                    closeOffcanvas($wrap);
                 }
             });
 
             $scope.find('.tmpcoder-close-offcanvas').on('click', function () {
-                closeOffcanvas($scope.find('.tmpcoder-offcanvas-wrap'));
+                closeOffcanvas($wrap);
             });
         }
     }

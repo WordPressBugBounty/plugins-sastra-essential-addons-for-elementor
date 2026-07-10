@@ -1,7 +1,7 @@
 === Spexo Addons for Elementor - Elementor Widgets, Mega Menu, Popup Builder, Template Kits and Starter Templates for Elementor ===
 Contributors: templatescoderthemes, skywebtech
 Tags: elementor addons, elementor widgets, woocommerce elementor, header footer builder, elementor templates
-Stable tag: 1.0.36
+Stable tag: 1.0.37
 Requires at least: 5.0
 Tested up to: 7.0
 Requires PHP: 7.4
@@ -388,7 +388,20 @@ Feel free to contact us anytime via [Support](https://fastthemes.com/support/?re
 
 == Changelog ==
 
-= 1.0.36 - 08-June-2026 =
+= 1.0.37 - 09-July-2026 =
+
+Improvements
+
+* Enhanced the Product Grid Classic widget for an improved product browsing experience.
+* Improved Add to Cart functionality for a smoother shopping experience.
+* Enhanced product variation switching support within the Product Grid Classic widget.
+* Improved the setup wizard to provide a more reliable demo import and configuration process.
+
+Bug Fixes
+
+* Minor bug fixes and performance improvements
+
+= 1.0.36 - 02-July-2026 =
 
 Bug Fixes
 
@@ -410,27 +423,5 @@ Bug Fixes
 Improvements:
 
 * Improved overall plugin compatibility for a smoother, more stable, and seamless website-building experience.
-
-= 1.0.33 - 14-May-2026 =
-
-New:
- 
-* Redesigned Setup Wizard experience for faster and smoother onboarding.
-* Added new WP Login & Register Elementor Widget.
-* Added new Coupon Code Elementor Widget.
-
-Improvements:
-
-* Enhanced the overall admin dashboard interface with a more modern, user-friendly, and visually polished design.
-
-= 1.0.32 - 16-April-2026 =
-
-New Features
-
-* Added new prebuilt websites: **[Sports Coach](https://spexoaddons.com/templates/free-sports-coach-elementor-template/)** and **[Pet Grooming](https://spexoaddons.com/templates/free-pet-grooming-elementor-template/)**.
-
-Improvements
-
-* Updated compatibility with Elementor 4.0.2.
 
 [See changelog for all versions.](https://spexoaddons.com/changelog/)

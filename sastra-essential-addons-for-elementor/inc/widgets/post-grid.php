@@ -133,6 +133,7 @@ $settings = array_merge( $settings, $settings_new );
 		$post_taxonomies['post_tag'] = esc_html__( 'Tags', 'sastra-essential-addons-for-elementor' );
 
 		$custom_post_taxonomies = tmpcoder_get_custom_types_of( 'tax', true );
+		
 		foreach( $custom_post_taxonomies as $slug => $title ) {
 			if ( 'product_tag' === $slug || 'product_cat' === $slug ) {
 				continue;

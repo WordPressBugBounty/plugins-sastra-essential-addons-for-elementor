@@ -48,6 +48,55 @@ class TMPCODER_Woo_Add_To_Cart extends Widget_Base {
 		return ['tmpcoder-product-add-to-cart'];
 	}
 
+	/**
+	 * Added To Cart Action control (Pro).
+	 *
+	 * @return void
+	 */
+	public function add_added_to_cart_action_control() {
+		if ( tmpcoder_is_availble() ) {
+			$this->add_control(
+				'added_to_cart_action',
+				[
+					'label'       => esc_html__( 'Added To Cart Action', 'sastra-essential-addons-for-elementor' ),
+					'description' => esc_html__( 'Open Mini-cart when product is added to cart.', 'sastra-essential-addons-for-elementor' ),
+					'type'        => Controls_Manager::SELECT,
+					'options'     => [
+						'none'    => esc_html__( 'None', 'sastra-essential-addons-for-elementor' ),
+						'sidebar' => esc_html__( 'Open Mini Cart/Sidebar', 'sastra-essential-addons-for-elementor' ),
+					],
+					'default'     => 'none',
+					'label_block' => true,
+					'separator'   => 'before',
+					'condition'   => [
+						'ajax_add_to_cart' => 'yes',
+					],
+				]
+			);
+		} else {
+			$this->add_control(
+				'added_to_cart_action',
+				[
+					/* translators: %s: Pro icon HTML markup. */
+					'label'       => sprintf( __( 'Added To Cart Action %s', 'sastra-essential-addons-for-elementor' ), '<i class="eicon-pro-icon"></i>' ),
+					'description' => esc_html__( 'Open Mini-cart when product is added to cart.', 'sastra-essential-addons-for-elementor' ),
+					'type'        => Controls_Manager::SELECT,
+					'options'     => [
+						'none'    => esc_html__( 'None', 'sastra-essential-addons-for-elementor' ),
+						'sidebar' => esc_html__( 'Open Mini Cart/Sidebar', 'sastra-essential-addons-for-elementor' ),
+					],
+					'default'     => 'none',
+					'label_block' => true,
+					'separator'   => 'before',
+					'classes'     => 'tmpcoder-pro-control no-distance',
+					'condition'   => [
+						'ajax_add_to_cart' => 'yes',
+					],
+				]
+			);
+		}
+	}
+
 
 	protected function register_controls() {
 
@@ -78,6 +127,8 @@ class TMPCODER_Woo_Add_To_Cart extends Widget_Base {
 				'type' => Controls_Manager::SWITCHER,
 			]
 		);
+
+		$this->add_added_to_cart_action_control();
 
 		$this->add_control(
 			'text',
@@ -2832,6 +2883,10 @@ $settings = array_merge( $settings, $settings_new );
 				'data-ajax-add-to-cart' => $settings['ajax_add_to_cart']
 			]
 		);
+
+		if ( tmpcoder_is_availble() && 'yes' === $settings['ajax_add_to_cart'] && ! empty( $settings['added_to_cart_action'] ) && 'sidebar' === $settings['added_to_cart_action'] ) {
+			$this->add_render_attribute( 'add_to_cart_wrapper', 'data-atc-popup', 'sidebar' );
+		}
 		
 		global $product;
 

@@ -183,6 +183,151 @@ trait Helper
 		}
 	}
 
+	/**
+	 * Add data-atc-popup attribute to loop add-to-cart links when enabled.
+	 *
+	 * @param array $settings Widget settings.
+	 * @return void
+	 */
+	public function maybe_apply_added_to_cart_action_filter( $settings ) {
+		if ( empty( $settings['added_to_cart_action'] ) || 'sidebar' !== $settings['added_to_cart_action'] ) {
+			return;
+		}
+
+		add_filter( 'woocommerce_loop_add_to_cart_link', [ $this, 'filter_add_to_cart_link_atc_popup' ], 10, 2 );
+	}
+
+	/**
+	 * Inject mini-cart action attribute on add-to-cart button markup.
+	 *
+	 * @param string     $link    Add to cart link HTML.
+	 * @param \WC_Product $product Product object.
+	 * @return string
+	 */
+	public function filter_add_to_cart_link_atc_popup( $link, $product ) {
+		if ( false !== strpos( $link, 'data-atc-popup' ) ) {
+			return $link;
+		}
+
+		return preg_replace( '/(\sclass=")/', ' data-atc-popup="sidebar"$1', $link, 1 );
+	}
+
+	/**
+	 * Product Grid Classic: disable out-of-stock loop add-to-cart actions.
+	 *
+	 * @param array $settings Widget settings.
+	 * @return void
+	 */
+	public function maybe_apply_out_of_stock_atc_filter( $settings ) {
+		if ( ! function_exists( 'WC' ) ) {
+			return;
+		}
+
+		HelperClass::$tmpcoder_pgc_oos_atc_context = [
+			'show_custom'  => boolval( $settings['show_add_to_cart_custom_text'] ?? false ),
+			'default_text' => isset( $settings['add_to_cart_default_product_button_text'] ) ? $settings['add_to_cart_default_product_button_text'] : '',
+		];
+
+		add_filter( 'woocommerce_loop_add_to_cart_link', [ $this, 'filter_out_of_stock_loop_add_to_cart_link' ], 25, 2 );
+	}
+
+	/**
+	 * Remove out-of-stock loop add-to-cart filter after Product Grid Classic render.
+	 *
+	 * @return void
+	 */
+	public function maybe_remove_out_of_stock_atc_filter() {
+		remove_filter( 'woocommerce_loop_add_to_cart_link', [ $this, 'filter_out_of_stock_loop_add_to_cart_link' ], 25 );
+		HelperClass::$tmpcoder_pgc_oos_atc_context = null;
+	}
+
+	/**
+	 * Mark out-of-stock loop add-to-cart links as disabled for Product Grid Classic.
+	 *
+	 * @param string     $link    Add to cart link HTML.
+	 * @param \WC_Product $product Product object.
+	 * @return string
+	 */
+	public function filter_out_of_stock_loop_add_to_cart_link( $link, $product ) {
+		if ( ! $product instanceof \WC_Product || $product->is_in_stock() ) {
+			return $link;
+		}
+
+		if ( ! $this->tmpcoder_is_pgc_oos_loop_atc_action( $link, $product ) ) {
+			return $link;
+		}
+
+		if ( false !== strpos( $link, 'tmpcoder-oos-atc-disabled' ) ) {
+			return $link;
+		}
+
+		if ( false !== strpos( $link, 'class="' ) ) {
+			$link = preg_replace( '/class="([^"]*)"/', 'class="$1 tmpcoder-oos-atc-disabled"', $link, 1 );
+		}
+
+		$link = preg_replace( '/<a\s/', '<a aria-disabled="true" tabindex="-1" ', $link, 1 );
+		$link = preg_replace( '/href="[^"]*"/', 'href="#"', $link, 1 );
+
+		return $link;
+	}
+
+	/**
+	 * Whether a loop button is an add-to-cart action (not a product details link).
+	 *
+	 * @param string      $link    Add to cart link HTML.
+	 * @param \WC_Product $product Product object.
+	 * @return bool
+	 */
+	private function tmpcoder_is_pgc_oos_loop_atc_action( $link, $product ) {
+		if ( false !== strpos( $link, 'product_type_grouped' )
+			|| false !== strpos( $link, 'product_type_external' ) ) {
+			return false;
+		}
+
+		if ( false !== strpos( $link, 'add_to_cart_button' )
+			|| false !== strpos( $link, 'ajax_add_to_cart' ) ) {
+			return true;
+		}
+
+		if ( false !== strpos( $link, 'cfvsw_ajax_add_to_cart' )
+			&& ( false !== strpos( $link, 'cfvsw_variation_found' ) || false !== strpos( $link, 'add_to_cart_button' ) ) ) {
+			return true;
+		}
+
+		if ( false !== strpos( $link, 'product_type_variable' ) ) {
+			return false;
+		}
+
+		if ( 'simple' === $product->get_type()
+			&& ! $product->is_purchasable()
+			&& $this->tmpcoder_pgc_oos_simple_uses_custom_atc_label() ) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Whether out-of-stock simple products use a custom non-view label.
+	 *
+	 * @return bool
+	 */
+	private function tmpcoder_pgc_oos_simple_uses_custom_atc_label() {
+		$context = HelperClass::$tmpcoder_pgc_oos_atc_context;
+
+		if ( empty( $context['show_custom'] ) ) {
+			return false;
+		}
+
+		$view_labels = [
+			__( 'Read more', 'sastra-essential-addons-for-elementor' ),
+			esc_html__( 'Read More', 'sastra-essential-addons-for-elementor' ),
+			esc_html__( 'View More', 'sastra-essential-addons-for-elementor' ),
+		];
+
+		return ! in_array( $context['default_text'], $view_labels, true );
+	}
+
 	public function change_add_woo_checkout_update_order_reviewto_cart_text( $add_to_cart_text ) {
 		add_filter( 'woocommerce_product_add_to_cart_text', function ( $default ) use ( $add_to_cart_text ) {
 			global $product;

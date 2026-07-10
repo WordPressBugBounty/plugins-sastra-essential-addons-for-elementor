@@ -235,7 +235,39 @@
                 },
             });
         }
+
+        initAddedToCartAction($scope);
     }
+
+    const openMiniCartSidebar = function() {
+        if ($('.tmpcoder-sticky-replace-header-yes').length) {
+            if (!$('.tmpcoder-sticky-section-yes').hasClass('tmpcoder-visibility-hidden')) {
+                $('.tmpcoder-sticky-section-yes .tmpcoder-mini-cart-toggle-wrap a').trigger('click');
+            } else {
+                $('.tmpcoder-hidden-header .tmpcoder-mini-cart-toggle-wrap a').trigger('click');
+            }
+        } else if ($('.tmpcoder-mini-cart-toggle-wrap a').length) {
+            $('.tmpcoder-mini-cart-toggle-wrap a').each(function() {
+                if ('none' === $(this).closest('.tmpcoder-mini-cart-inner').find('.tmpcoder-mini-cart').css('display')) {
+                    $(this).trigger('click');
+                }
+            });
+        }
+    };
+
+    const initAddedToCartAction = function($scope) {
+        if (!$scope.find('.tmpcoder-product-add-to-cart[data-atc-popup="sidebar"]').length) {
+            return;
+        }
+
+        $('body').on('added_to_cart.tmpcoderWcpcAtc', function(ev, fragments, hash, button) {
+            if (!button || !button.closest($scope[0]).length) {
+                return;
+            }
+
+            openMiniCartSidebar();
+        });
+    };
     
     $(window).on('elementor/frontend/init', function () {
         elementorFrontend.hooks.addAction("frontend/element_ready/tmpcoder-woo-add-to-cart.default",

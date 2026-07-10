@@ -865,12 +865,12 @@ svg.tmpcoder-right-svg-icon {transform: rotate(180deg); -webkit-transform: rotat
 
 /* Product media - thumbnail gallery */
 
-.elementor-widget-tmpcoder-product-media:not(.tmpcoder-product-media-thumbs-slider) .tmpcoder-product-media-wrap .flex-control-nav { 
+.elementor-widget-tmpcoder-product-media:not(.tmpcoder-product-media-thumbs-slider):not(.tmpcoder-product-media-thumbs-side-yes) .tmpcoder-product-media-wrap .flex-control-nav { 
     display: grid;
     grid-column-gap: 10px;
     grid-row-gap: 10px;
 }
-.elementor-widget-tmpcoder-product-media:not(.tmpcoder-product-media-thumbs-slider) .tmpcoder-product-media-wrap .flex-control-thumbs { 
+.elementor-widget-tmpcoder-product-media:not(.tmpcoder-product-media-thumbs-slider):not(.tmpcoder-product-media-thumbs-side-yes) .tmpcoder-product-media-wrap .flex-control-thumbs { 
     grid-template-columns: repeat(4, auto); 
 }
 

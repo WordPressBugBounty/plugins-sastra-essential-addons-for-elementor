@@ -754,6 +754,8 @@
         var requiredStates = demo.required_plugin_states || {};
         var requiredStatesJson = tmpcoderEscapeHtml(JSON.stringify(requiredStates));
         var themeStatus = tmpcoderEscapeHtml(demo.theme_status || 'req-theme-not-installed');
+        var woocommerceAttributesFileUrl = tmpcoderEscapeHtml(demo.woocommerce_attributes_file_url || '');
+        var registerCptData = tmpcoderEscapeHtml(demo.register_cpt_data || '');
 
         $('#spexo-wizard-import-bridge').remove();
 
@@ -771,8 +773,8 @@
         bridgeHtml += '<span class="elementor-file-url" data-file=""></span>';
         bridgeHtml += '<span class="redux-file-url" data-file=""></span>';
         bridgeHtml += '<span class="revslider-file-url" data-file=""></span>';
-        bridgeHtml += '<span class="woocommerce-attributes-file-url" data-file=""></span>';
-        bridgeHtml += '<span class="tmpcoder-cpt-data" data-file=""></span>';
+        bridgeHtml += '<span class="woocommerce-attributes-file-url" data-file="' + woocommerceAttributesFileUrl + '"></span>';
+        bridgeHtml += '<span class="tmpcoder-cpt-data" data-file="' + registerCptData + '"></span>';
         bridgeHtml += '<span class="theme-demo-slug" data-file="' + demoSlug + '"></span>';
         bridgeHtml += '</span>';
         bridgeHtml += '</div>';

@@ -107,6 +107,99 @@ $settings = array_merge( $settings, $settings_new );
 	public function add_controls_group_gallery_slider_thumbs() {}
 
 	public function add_control_gallery_slider_thumbs_to_slide() {}
+
+	/**
+	 * Pro may override thumb column control label/description.
+	 */
+	public function add_control_gallery_slider_thumb_cols() {
+		$this->add_control(
+			'gallery_slider_thumb_cols',
+			[
+				'label' => esc_html__( 'Thumbnails Per Row', 'sastra-essential-addons-for-elementor' ),
+				'type' => Controls_Manager::NUMBER,
+				'min' => 2,
+				'default' => 4,
+				'render_type' => 'template',
+				'selectors' => [
+					'{{WRAPPER}}.tmpcoder-product-media-thumbs-stacked:not(.tmpcoder-product-media-thumbs-side-yes) .tmpcoder-product-media-wrap .flex-control-thumbs' => 'grid-template-columns: repeat({{VALUE}}, auto);',
+					'{{WRAPPER}}.tmpcoder-product-media-thumbs-side-yes.tmpcoder-product-media-thumbs-stacked .tmpcoder-product-media-wrap .flex-control-thumbs' => 'grid-template-columns: repeat({{VALUE}}, auto);',
+					'{{WRAPPER}}.tmpcoder-product-media-thumbs-slider .tmpcoder-product-media-thumbs-horizontal.tmpcoder-product-media-wrap .flex-control-thumbs li' => 'width: calc(100%/{{VALUE}}) !important;',
+					'{{WRAPPER}}.tmpcoder-product-media-thumbs-side-yes.tmpcoder-product-media-thumbs-slider .tmpcoder-product-media-thumbs-vertical.tmpcoder-product-media-wrap .flex-control-thumbs li' => 'height: calc(100%/{{VALUE}}) !important;',
+				],
+				'condition' => [
+					'gallery_slider_thumbs' => 'yes',
+					'gallery_slider_thumbs_type' => [ 'slider', 'stacked' ],
+				],
+				'frontend_available' => true,
+			]
+		);
+	}
+
+	/**
+	 * Info notice below Side Thumbnail Layout control.
+	 */
+	protected function add_control_gallery_slider_thumbs_side_layout_notice() {
+		$this->add_control(
+			'gallery_slider_thumbs_side_notice',
+			[
+				'type' => Controls_Manager::RAW_HTML,
+				'raw' => esc_html__( 'Tip: Preview this widget on the live product page for the most accurate results. Side thumbnails appear beside the main image on desktop and move below it on mobile.', 'sastra-essential-addons-for-elementor' ),
+				'content_classes' => 'elementor-panel-alert elementor-panel-alert-info',
+				'condition' => [
+					'gallery_slider_thumbs' => 'yes',
+				],
+			]
+		);
+	}
+
+	/**
+	 * Pro-only: side thumbnail layout toggle and position.
+	 * Free shows disabled Pro upsell controls; Pro widget overrides when licensed.
+	 */
+	public function add_control_gallery_slider_thumbs_position() {
+		if ( tmpcoder_is_availble() ) {
+			return;
+		}
+
+		$this->add_control(
+			'gallery_slider_thumbs_side_enable',
+			[
+				'label' => sprintf(
+					/* translators: %s: Pro icon markup */
+					__( 'Side Thumbnail Layout %s', 'sastra-essential-addons-for-elementor' ),
+					'<i class="eicon-pro-icon"></i>'
+				),
+				'type' => Controls_Manager::SWITCHER,
+				'classes' => 'tmpcoder-pro-control no-distance',
+				'condition' => [
+					'gallery_slider_thumbs' => 'yes',
+				],
+			]
+		);
+
+		$this->add_control_gallery_slider_thumbs_side_layout_notice();
+
+		$this->add_control(
+			'gallery_slider_thumbs_position',
+			[
+				'label' => sprintf(
+					/* translators: %s: Pro icon markup */
+					__( 'Thumbnails Position %s', 'sastra-essential-addons-for-elementor' ),
+					'<i class="eicon-pro-icon"></i>'
+				),
+				'type' => Controls_Manager::SELECT,
+				'options' => [
+					'left'  => esc_html__( 'Left', 'sastra-essential-addons-for-elementor' ),
+					'right' => esc_html__( 'Right', 'sastra-essential-addons-for-elementor' ),
+				],
+				'default' => 'left',
+				'classes' => 'tmpcoder-pro-control no-distance',
+				'condition' => [
+					'gallery_slider_thumbs' => 'yes',
+				],
+			]
+		);
+	}
 	
 	protected function register_controls() {
 
@@ -251,6 +344,8 @@ $settings = array_merge( $settings, $settings_new );
 			]
 		);
 
+		$this->add_control_gallery_slider_thumbs_position();
+
 		$this->add_control_gallery_slider_thumbs();
 
 		// Upgrade to Pro Notice
@@ -258,27 +353,7 @@ $settings = array_merge( $settings, $settings_new );
 
 		$this->add_controls_group_gallery_slider_thumbs();
 
-		$this->add_control(
-			'gallery_slider_thumb_cols',
-			[
-				'label' => esc_html__( 'Thumbnails Per Row', 'sastra-essential-addons-for-elementor' ),
-				'type' => Controls_Manager::NUMBER,
-				'min' => 2,
-				'default' => 4,
-				'render_type' => 'template',
-				'selectors' => [
-					'{{WRAPPER}}.tmpcoder-product-media-thumbs-stacked .tmpcoder-product-media-wrap .flex-control-thumbs' => 'grid-template-columns: repeat({{VALUE}}, auto);',
-					'{{WRAPPER}}.tmpcoder-product-media-thumbs-slider .tmpcoder-product-media-thumbs-horizontal.tmpcoder-product-media-wrap .flex-control-thumbs li' => 'width: calc(100%/{{VALUE}}) !important;',
-					'{{WRAPPER}}.tmpcoder-product-media-thumbs-slider.tmpcoder-product-media-thumbs-vertical .tmpcoder-product-media-wrap .flex-control-thumbs li' => 'height: calc(100%/{{VALUE}}) !important;'
-				],
-				'condition' => [
-					'gallery_slider_thumbs' => 'yes',
-					'gallery_slider_thumbs_type' => ['slider', 'stacked'],
-				],
-                'frontend_available' => true,
-
-			]
-		);
+		$this->add_control_gallery_slider_thumb_cols();
 
 		$this->add_control_gallery_slider_thumbs_to_slide();
 
@@ -834,8 +909,12 @@ $settings = array_merge( $settings, $settings_new );
 					'size' => 100,
 				],
 				'selectors' => [
-					'{{WRAPPER}} .tmpcoder-product-media-wrap .flex-control-nav' => 'max-width: {{SIZE}}{{UNIT}};',
-					'{{WRAPPER}} .tmpcoder-product-media-wrap .tmpcoder-fcn-wrap' => 'max-width: {{SIZE}}{{UNIT}};'
+					'{{WRAPPER}}:not(.tmpcoder-product-media-thumbs-side-yes) .tmpcoder-product-media-wrap .flex-control-nav' => 'max-width: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}}:not(.tmpcoder-product-media-thumbs-side-yes) .tmpcoder-product-media-wrap .tmpcoder-fcn-wrap' => 'max-width: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}}.tmpcoder-product-media-thumbs-side-yes.tmpcoder-product-media-thumbs-pos-left .tmpcoder-product-media-wrap .flex-control-nav' => 'max-width: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}}.tmpcoder-product-media-thumbs-side-yes.tmpcoder-product-media-thumbs-pos-right .tmpcoder-product-media-wrap .flex-control-nav' => 'max-width: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}}.tmpcoder-product-media-thumbs-side-yes.tmpcoder-product-media-thumbs-pos-left .tmpcoder-product-media-wrap .tmpcoder-fcn-wrap' => 'max-width: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}}.tmpcoder-product-media-thumbs-side-yes.tmpcoder-product-media-thumbs-pos-right .tmpcoder-product-media-wrap .tmpcoder-fcn-wrap' => 'max-width: {{SIZE}}{{UNIT}};',
 				],
 				// 'render_type' => 'template'
 			]
@@ -858,8 +937,11 @@ $settings = array_merge( $settings, $settings_new );
 					'size' => 10,
 				],
 				'selectors' => [
-					'{{WRAPPER}}.tmpcoder-product-media-thumbs-stacked .tmpcoder-product-media-wrap .flex-control-nav' => 'grid-column-gap: {{SIZE}}{{UNIT}} !important;',
-					'{{WRAPPER}}.tmpcoder-product-media-thumbs-slider .tmpcoder-product-media-wrap .flex-control-nav li:not(:last-child)' => 'margin-right: {{SIZE}}{{UNIT}};'
+					'{{WRAPPER}}.tmpcoder-product-media-thumbs-stacked:not(.tmpcoder-product-media-thumbs-side-yes) .tmpcoder-product-media-wrap .flex-control-nav' => 'grid-column-gap: {{SIZE}}{{UNIT}} !important;',
+					'{{WRAPPER}}.tmpcoder-product-media-thumbs-slider:not(.tmpcoder-product-media-thumbs-side-yes) .tmpcoder-product-media-wrap .flex-control-nav li:not(:last-child)' => 'margin-right: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}}.tmpcoder-product-media-thumbs-side-yes.tmpcoder-product-media-thumbs-slider .tmpcoder-product-media-thumbs-horizontal.tmpcoder-product-media-wrap .flex-control-nav li:not(:last-child)' => 'margin-right: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}}.tmpcoder-product-media-thumbs-side-yes.tmpcoder-product-media-thumbs-pos-left .tmpcoder-product-media-wrap .woocommerce-product-gallery' => 'gap: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}}.tmpcoder-product-media-thumbs-side-yes.tmpcoder-product-media-thumbs-pos-right .tmpcoder-product-media-wrap .woocommerce-product-gallery' => 'gap: {{SIZE}}{{UNIT}};',
 				],
 				// 'render_type' => 'template'
 			]
@@ -883,10 +965,10 @@ $settings = array_merge( $settings, $settings_new );
 				],
 				'selectors' => [
 					'{{WRAPPER}}.tmpcoder-product-media-thumbs-stacked .tmpcoder-product-media-wrap .flex-control-nav' => 'grid-row-gap: {{SIZE}}{{UNIT}};',
-					'{{WRAPPER}}.tmpcoder-product-media-thumbs-slider.tmpcoder-product-media-thumbs-vertical .tmpcoder-product-media-wrap .flex-control-nav li:not(:last-child)' => 'margin-bottom: {{SIZE}}{{UNIT}};'
+					'{{WRAPPER}}.tmpcoder-product-media-thumbs-side-yes.tmpcoder-product-media-thumbs-slider .tmpcoder-product-media-thumbs-vertical.tmpcoder-product-media-wrap .flex-control-nav li:not(:last-child)' => 'margin-bottom: {{SIZE}}{{UNIT}};',
 				],
 				'condition' => [
-					'gallery_slider_thumbs_type' => 'stacked'
+					'gallery_slider_thumbs' => 'yes',
 				]
 			]
 		);
@@ -908,7 +990,12 @@ $settings = array_merge( $settings, $settings_new );
 					'size' => 12,
 				],
 				'selectors' => [
-					'{{WRAPPER}}:not(.tmpcoder-product-media-thumbs-vertical) .tmpcoder-product-media-wrap .flex-viewport' => 'margin-bottom: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}}:not(.tmpcoder-product-media-thumbs-side-yes) .tmpcoder-product-media-wrap .flex-viewport' => 'margin-bottom: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}}.tmpcoder-product-media-thumbs-side-yes.tmpcoder-product-media-thumbs-pos-left .tmpcoder-product-media-wrap .flex-viewport' => 'margin-bottom: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}}.tmpcoder-product-media-thumbs-side-yes.tmpcoder-product-media-thumbs-pos-right .tmpcoder-product-media-wrap .flex-viewport' => 'margin-bottom: {{SIZE}}{{UNIT}};',
+				],
+				'condition' => [
+					'gallery_slider_thumbs' => 'yes',
 				]
 			]
 		);
@@ -1561,6 +1648,48 @@ $settings = array_merge( $settings, $settings_new );
 	public function tmpcoder_remove_woo_default_lightbox() {	 	 
 	   remove_theme_support( 'wc-product-gallery-lightbox' );	 	 
 	}
+
+	/**
+	 * Whether side (left/right) thumbnail layout is active.
+	 *
+	 * @param array $settings Widget settings.
+	 * @return bool
+	 */
+	public function is_thumbs_side_layout_enabled( $settings ) {
+		return isset( $settings['gallery_slider_thumbs_side_enable'] ) && 'yes' === $settings['gallery_slider_thumbs_side_enable'];
+	}
+
+	/**
+	 * Effective thumbnail position (below when side layout is off).
+	 *
+	 * @param array $settings Widget settings.
+	 * @return string below|left|right
+	 */
+	public function get_effective_thumbs_position( $settings ) {
+		if ( ! $this->is_thumbs_side_layout_enabled( $settings ) ) {
+			return 'below';
+		}
+
+		$position = isset( $settings['gallery_slider_thumbs_position'] ) ? $settings['gallery_slider_thumbs_position'] : 'left';
+
+		return in_array( $position, array( 'left', 'right' ), true ) ? $position : 'below';
+	}
+
+	/**
+	 * Inner wrap class controlling thumbnail slider scroll axis.
+	 *
+	 * @param array $settings Widget settings.
+	 * @return string
+	 */
+	public function get_thumbs_wrap_layout_class( $settings ) {
+		$position = $this->get_effective_thumbs_position( $settings );
+
+		if ( 'slider' === $settings['gallery_slider_thumbs_type'] && in_array( $position, array( 'left', 'right' ), true ) ) {
+			return 'tmpcoder-product-media-thumbs-vertical';
+		}
+
+		return 'tmpcoder-product-media-thumbs-horizontal';
+	}
 	
 	protected function render() {
 		
@@ -1602,7 +1731,7 @@ $settings = array_merge( $settings, $settings_new );
 		$this->add_render_attribute(
 			'thumbnails_attributes',
 			[
-				'class' => ['tmpcoder-product-media-wrap', 'tmpcoder-product-media-thumbs-horizontal'],
+				'class' => [ 'tmpcoder-product-media-wrap', $this->get_thumbs_wrap_layout_class( $settings ) ],
 				'data-slidestoshow' => $settings['gallery_slider_thumb_cols'],
 				'data-slidestoscroll' => isset($settings['gallery_slider_thumbs_to_slide']) ? $settings['gallery_slider_thumbs_to_slide'] : '',
 			]

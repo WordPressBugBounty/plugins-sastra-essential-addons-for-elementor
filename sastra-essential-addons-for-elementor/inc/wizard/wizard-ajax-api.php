@@ -750,6 +750,8 @@ function tmpcoder_wizard_get_selected_demo_import_context() {
                 'slug'                   => $selected_slug,
                 'name'                   => isset( $selected_demo['name'] ) ? sanitize_text_field( (string) $selected_demo['name'] ) : '',
                 'preview_url'            => isset( $selected_demo['preview-url'] ) ? esc_url_raw( (string) $selected_demo['preview-url'] ) : '',
+                'woocommerce_attributes_file_url' => isset( $selected_demo['woocommerce-attributes-file-url'] ) ? esc_url_raw( (string) $selected_demo['woocommerce-attributes-file-url'] ) : '',
+                'register_cpt_data'               => isset( $selected_demo['register-cpt-data'] ) ? (string) $selected_demo['register-cpt-data'] : '',
                 'required_plugin_slugs'  => array_values( array_unique( $required_plugin_slugs ) ),
                 'required_plugin_states' => $required_plugin_states,
                 'theme_status'           => sanitize_key( (string) $theme_status ),

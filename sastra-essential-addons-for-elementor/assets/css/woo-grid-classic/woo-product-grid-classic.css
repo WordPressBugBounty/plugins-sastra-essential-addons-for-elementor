@@ -1766,6 +1766,16 @@
   margin: 1px;
   width: auto;
 }
+.woocommerce nav.woocommerce-pagination ul {
+  display: inline-block;
+  text-align: center;
+  white-space: nowrap;
+  padding: 0;
+  clear: both;
+  border: 0;
+  margin: 1px;
+  width: auto;
+}
 .tmpcoder-product-grid .tmpcoder-woo-pagination ul li {
   display: inline-block;
   margin: 0 5px 5px 0;
@@ -1773,7 +1783,15 @@
   float: left;
   overflow: hidden;
 }
-.tmpcoder-product-grid .tmpcoder-woo-pagination ul li .page-numbers {
+.woocommerce nav.woocommerce-pagination ul li {
+  display: inline-block;
+  margin: 0 5px 5px 0;
+  padding: 0;
+  float: left;
+  overflow: hidden;
+  border-right: unset;
+}
+.tmpcoder-product-grid .tmpcoder-woo-pagination ul li .page-numbers, .woocommerce nav.woocommerce-pagination ul li .page-numbers {
   margin: 0;
   text-decoration: none;
   color: rgba(0, 0, 0, 0.7411764706);
@@ -3432,6 +3450,12 @@ div.tmpcoder-grid-image-wrap[data-img-on-hover="yes"]:has(img:nth-child(2)):hove
 .tmpcoder-product-grid.slider .products.tmpcoder-product-slider.slick-initialized {
     opacity: 1;
     visibility: visible;
+}
+
+.tmpcoder-product-grid .tmpcoder-oos-atc-disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: auto;
 }
 
 /* Slider Layout Styles - END */

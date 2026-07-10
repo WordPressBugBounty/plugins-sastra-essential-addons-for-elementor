@@ -966,8 +966,10 @@ class TMPCODER_Offcanvas extends Widget_Base {
 				'type' => Controls_Manager::COLOR,
 				'default' => '#07070733',
 				'selectors' => [
-					'{{WRAPPER}} .tmpcoder-offcanvas-wrap' => 'background-color: {{VALUE}};',
-					'.tmpcoder-offcanvas-wrap-{{ID}}' => 'background-color: {{VALUE}};'
+					'{{WRAPPER}} .tmpcoder-offcanvas-wrap:not(.tmpcoder-offcanvas-wrap-relative)' => 'background-color: {{VALUE}};',
+					'{{WRAPPER}} .tmpcoder-offcanvas-wrap.tmpcoder-offcanvas-wrap-relative.tmpcoder-offcanvas-wrap-active::before' => 'background-color: {{VALUE}};',
+					'.tmpcoder-offcanvas-wrap-{{ID}}:not(.tmpcoder-offcanvas-wrap-relative)' => 'background-color: {{VALUE}};',
+					'.tmpcoder-offcanvas-wrap-{{ID}}.tmpcoder-offcanvas-wrap-relative.tmpcoder-offcanvas-wrap-active::before' => 'background-color: {{VALUE}};',
 				],
 				// 'condition' => [
 				// 	'offcanvas_entrance_type!' => 'reveal'

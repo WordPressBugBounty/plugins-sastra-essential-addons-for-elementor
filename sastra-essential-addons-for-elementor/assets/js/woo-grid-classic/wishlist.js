@@ -5,25 +5,13 @@
 
         var iGrid = $scope.find('.tmpcoder-grid');
 
-        var loadedItems;
-
-        // if (!iGrid.length) {
-        //     return;
-        // }
-
         if (!iGrid.length) {
-
-            var iGridDefault = $scope.find('ul.products li.product ');
-
-            if (iGridDefault.length) {
-                var iGrid = $scope.find('ul.products li.product ');
-            } else {
-                return;
-            }
+            iGrid = $scope.find('ul.products');
         }
 
-        // Settings
-        var settings = iGrid.attr('data-settings');
+        if (!iGrid.length) {
+            return;
+        }
 
         checkWishlistAndCompare();
         addRemoveCompare();
@@ -43,7 +31,7 @@
         function checkWishlistAndCompare() {
             var wishlistArray;
 
-            if (iGrid.find('.tmpcoder-wishlist-add').length) {
+            if ($scope.find('.tmpcoder-wishlist-add').length) {
                 $.ajax({
                     url: tmpcoder_plugin_script.ajax_url,
                     type: 'POST',
@@ -57,7 +45,7 @@
                 });
 
 
-                iGrid.find('.tmpcoder-wishlist-add').each(function () {
+                $scope.find('.tmpcoder-wishlist-add').each(function () {
                     var wishlistBtn = $(this);
 
                     if ($.inArray(wishlistBtn.data('product-id'), wishlistArray) !== -1) {
@@ -72,7 +60,7 @@
                 });
             }
 
-            if (iGrid.find('.tmpcoder-compare-add').length > 0) {
+            if ($scope.find('.tmpcoder-compare-add').length > 0) {
                 var compareArray = [];
 
                 $.ajax({
@@ -91,7 +79,7 @@
                 });
 
 
-                iGrid.find('.tmpcoder-compare-add').each(function () {
+                $scope.find('.tmpcoder-compare-add').each(function () {
                     var compareBtn = $(this);
 
                     if ($.inArray(compareBtn.data('product-id'), compareArray) !== -1) {
@@ -109,7 +97,7 @@
         }
 
         function addRemoveCompare() {
-            if (iGrid.find('.tmpcoder-compare-add').length) {    
+            if ($scope.find('.tmpcoder-compare-add').length) {    
 
                 $scope.find('.tmpcoder-compare-add').click(function (e) {
                     e.preventDefault();
@@ -233,9 +221,9 @@
         function addRemoveWishlist() {
 
             let isPopupActive = false;
-            if (iGrid.find('.tmpcoder-wishlist-add').length) {
+            if ($scope.find('.tmpcoder-wishlist-add').length) {
 
-                $scope.find('.tmpcoder-wishlist-add').click(function (e) {
+                $scope.on('click', '.tmpcoder-wishlist-add', function (e) {
                     e.preventDefault();
                     var event_target = $(this);
                     var product_id = $(this).data('product-id');
@@ -325,7 +313,7 @@
                     });
                 });
 
-                $scope.find('.tmpcoder-wishlist-remove').on('click', function (e) {
+                $scope.on('click', '.tmpcoder-wishlist-remove', function (e) {
                     e.preventDefault();
                     var product_id = $(this).data('product-id');
 

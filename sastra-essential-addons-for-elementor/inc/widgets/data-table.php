@@ -559,7 +559,7 @@ $settings = array_merge( $settings, $settings_new );
 				'placeholder' => esc_html__( 'https://your-link.com', 'sastra-essential-addons-for-elementor' ),
 				'show_external' => true,
 				'default' => [
-					'url' => TMPCODER_NEED_HELP_URL,
+					'url' => '',
 					'is_external' => true,
 					'nofollow' => true,
 				],

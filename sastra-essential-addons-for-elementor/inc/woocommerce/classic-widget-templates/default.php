@@ -25,9 +25,12 @@ $tmpcoder_settings = $settings;
 if ( ! function_exists( 'tmpcoder_render_wishlist_button' ) ) {
 	function tmpcoder_render_wishlist_button() {
 		global $tmpcoder_settings;
-		if ( ! empty( $tmpcoder_settings ) ) {
-			Helper::render_product_wishlist_button( $tmpcoder_settings, 'tmpcoder-wishlist-btn' );
+		if ( empty( $tmpcoder_settings ) ) {
+			return;
 		}
+		echo '<div class="tmpcoder-grid tmpcoder-product-wrap">';
+		Helper::render_product_wishlist_button( $tmpcoder_settings, 'tmpcoder-wishlist-btn' );
+		echo '</div>';
 	}
 }
 
@@ -55,8 +58,9 @@ if ( has_post_thumbnail() ) {
 $title_tag = isset( $settings['tmpcoder_product_grid_title_html_tag'] ) ? Helper::tmpcoder_validate_html_tag($settings['tmpcoder_product_grid_title_html_tag'])  : 'h2';
 $should_print_compare_btn = isset( $settings['show_compare'] ) && 'yes' === $settings['show_compare'];
 
+$should_print_wishlist_btn = false;
 if ( tmpcoder_is_availble() ) {
-    $should_print_wishlist_btn = isset( $settings['tmpcoder_product_grid_wishlist'] ) && 'yes' === $settings['tmpcoder_product_grid_wishlist'];
+	$should_print_wishlist_btn = isset( $settings['tmpcoder_product_grid_wishlist'] ) && 'yes' === $settings['tmpcoder_product_grid_wishlist'];
 }
 // Improvement
 $grid_style_preset = isset($settings['tmpcoder_product_grid_style_preset']) ? $settings['tmpcoder_product_grid_style_preset'] : '';
@@ -128,6 +132,24 @@ if ( $should_print_rating ) {
 	add_action( 'woocommerce_after_shop_loop_item_title', 'tmpcoder_render_custom_rating', 5 );
 }
 
+add_action(
+	'woocommerce_before_shop_loop_item_title',
+	function () use ( $stock_out_badge_text ) {
+		global $product;
+
+		if ( ! $product || ! is_a( $product, 'WC_Product' ) ) {
+			return;
+		}
+
+		if ( ! $product->is_in_stock() ) {
+			remove_action( 'woocommerce_before_shop_loop_item_title', 'woocommerce_show_product_loop_sale_flash', 10 );
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Custom badge text may include <br/>.
+			echo '<span class="outofstock-badge">' . $stock_out_badge_text . '</span>';
+		}
+	},
+	9
+);
+
 add_action( 'woocommerce_before_shop_loop_item_title', 'tmpcoder_render_product_thumbnail', 9 );
 
 add_filter('woocommerce_sale_flash', function($text, $post, $product) use( $sale_badge_text ) {
@@ -142,7 +164,7 @@ if ( $should_print_compare_btn ) {
 }
 
 if ( $should_print_wishlist_btn ) {
-    add_action( '[woocommerce_after_shop_loop_item]', 'tmpcoder_render_wishlist_button' );
+	add_action( 'woocommerce_after_shop_loop_item', 'tmpcoder_render_wishlist_button', 20 );
 }
 
 $thumb_size = isset($settings['tmpcoder_product_grid_image_size_size']) ? $settings['tmpcoder_product_grid_image_size_size'] : '';
@@ -154,6 +176,11 @@ add_filter( 'single_product_archive_thumbnail_size', function( $size ) use ( $th
 } );
 
 wc_get_template_part( 'content', 'product' );
+
+// Restore sale flash hook after out-of-stock products remove it globally.
+if ( ! has_action( 'woocommerce_before_shop_loop_item_title', 'woocommerce_show_product_loop_sale_flash' ) ) {
+	add_action( 'woocommerce_before_shop_loop_item_title', 'woocommerce_show_product_loop_sale_flash', 10 );
+}
 
 add_filter( 'single_product_archive_thumbnail_size', function( $size ) {
 	global $tmpcoder_thumb_default;
@@ -168,5 +195,5 @@ if ( $should_print_compare_btn ) {
 }
 
 if ( $should_print_wishlist_btn ) {
-    remove_action( 'woocommerce_after_shop_loop_item', 'tmpcoder_render_wishlist_button' );
+	remove_action( 'woocommerce_after_shop_loop_item', 'tmpcoder_render_wishlist_button', 20 );
 }
