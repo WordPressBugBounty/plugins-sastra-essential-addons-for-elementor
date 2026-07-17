@@ -1,9 +1,9 @@
 === Spexo Addons for Elementor - Elementor Widgets, Mega Menu, Popup Builder, Template Kits and Starter Templates for Elementor ===
 Contributors: templatescoderthemes, skywebtech
 Tags: elementor addons, elementor widgets, woocommerce elementor, header footer builder, elementor templates
-Stable tag: 1.0.37
+Stable tag: 1.0.38
 Requires at least: 5.0
-Tested up to: 7.0
+Tested up to: 7.1
 Requires PHP: 7.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -388,6 +388,17 @@ Feel free to contact us anytime via [Support](https://fastthemes.com/support/?re
 
 == Changelog ==
 
+= 1.0.38 - 17-July-2026 =
+
+New Features
+
+* Added new prebuilt websites:
+  * [**Assetrise**](https://themes.templatescoder.com/sastra-addon/assetrise/) 
+  * [**The Formula**](https://themes.templatescoder.com/sastra-addon/the-formula/)
+  * [**Workora**](https://themes.templatescoder.com/sastra-addon/workora/)
+  * [**Northstone**](https://themes.templatescoder.com/sastra-addon/northstone/)
+
+
 = 1.0.37 - 09-July-2026 =
 
 Improvements
@@ -418,10 +429,3 @@ Bug Fixes
 
 * Minor bug fixes
 
-= 1.0.34 - 15-May-2026 =
-
-Improvements:
-
-* Improved overall plugin compatibility for a smoother, more stable, and seamless website-building experience.
-
-[See changelog for all versions.](https://spexoaddons.com/changelog/)
